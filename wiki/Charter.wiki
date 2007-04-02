@@ -1,4 +1,4 @@
-#summary Project Management Guidelines
+#summary Project Management Guidelines (Issue 1)
 
 == Charter ==
 
