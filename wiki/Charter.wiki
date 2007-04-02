@@ -1,0 +1,19 @@
+#summary Project Management Guidelines
+
+== Charter ==
+
+The project is managed according to ASF voting rules, where the votes of project members are binding. 
+
+Project membership is be open to anyone with their own BSD-licensed code to submit. The original widget author retains a copyright to the code and any subsequent changes. Any other member can apply patches to any widget pursuant to a filed issue and subject to the original author's veto. To keep it sane, all code submissions and revisions must follow the Yazaar coding conventions and include at least one coding example, in the YUI style. 
+
+Code submissions can be accepted by a minimum-quorum majority vote of the existing members. When a submission is accepted, the submission's author becomes a project member. Additional submissions by existing members are accepted by lazy majority vote. (No vote needed unless another project member votes a -1 in response to the submission.) 
+
+Negative votes as to submisions must be on technical grounds only, such as the code is not based on the YUI library, does not meet the style guidelines, or does not perform as expected.
+
+Project members can be removed by 3/4 majority vote of existing members. If a project member is removed, all original code submissions from that member may also be removed, at the member's request. Members may voluntarily change their status to "emeritus" (or inactive), in which case membership is reactivated upon request.
+
+Existing members may post BSD-licensed code that is made available to the general public by non-members, so long as all copyright marks are retained. At a copyright-holder's request, posted code may be removed from the public site and deleted from the repostiory. The submission cannot be removed from the historical Subversion record, so members must exercise due care when posting submissions from a third-party. 
+
+All code submissions and revisions must follow the Yazaar coding conventions and include at least one coding example, in the YUI style. All Subversion commits must reference an issue ticket. (So open the ticket first!) 
+
+All code and documentation is available through the project repository. Convenience distributions of the Yazaar library are made available on a bi-monthly basis.
