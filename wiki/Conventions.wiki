@@ -31,6 +31,7 @@
 || {{{fnFoo}}} || function ||
 || {{{nFoo}}}  || number ||
 || {{{oFoo}}}  || object ||
+|| {{{onFoo}}}}|| function to handle foo event ||
 || {{{sFoo}}}  || string ||
 ||             || regular expression ||
 
