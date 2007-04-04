@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>DataForm</title>
+  </head>
+  <body>
+
+    <p>
+      Welcome to the DataForm test page.
+    </p>
+
+    <ul>
+      <li>
+        A DataForm edits a single record at a time in a vertical form, as opposed to a tabular format.
+        It is a custom Yazaar widget designed to complement the YUI DataTable.
+        A DataForm can share a DataSource and ColumnSet with a DataTable, so that the two widgets can be used in tandem.
+      </li>
+      <li>
+        A FLEV widget is being designed which uses a DataForm, DataTable, and TabView to create a unified Find, List, Edit, View workflow.
+      </li>
+      <li>
+        This example utilizes the test data from the <a href="test-datatable.html"> DataTable</a> documentation.
+      </li>
+    </ul>
+
+    <hr />
+
+    <table cellspacing="16">
+      <tr><td valign="top">
+        <div id="elDataForm"></div>
+        <div id="elDataTable"></div>
+      </td><td>
+        <div id="elLogReader"></div>
+      </td></tr>
+    </table>
+
+  </body>
+
+<!-- Required CSS -->
+<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.2.0/build/datatable/assets/datatable.css">
+<!-- Dependencies -->
+<script src="http://yui.yahooapis.com/2.2.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+<!-- OPTIONAL: Connection (enables XHR) -->
+<script src="http://yui.yahooapis.com/2.2.0/build/connection/connection-min.js"></script>
+<!-- OPTIONAL: Drag Drop (enables resizeable columns) -->
+<script src="http://yui.yahooapis.com/2.2.0/build/dragdrop/dragdrop-min.js"></script>
+<!-- OPTIONAL: External JSON parser from http://www.json.org/ (enables JSON validation) -->
+<script src="http://www.json.org/json.js"></script>
+<!-- YUI Source files -->
+<script src="http://yui.yahooapis.com/2.2.0/build/datasource/datasource-beta-min.js"></script>
+<script src="http://yui.yahooapis.com/2.2.0/build/datatable/datatable-beta-min.js"></script>
+<!-- Anvil Source files -->
+<script src="../../build/yazaar/dataform/dataform-debug-beta.js"></script>
+
+<!-- LogReader -->
+<!-- Required CSS -->
+<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.2.0/build/logger/assets/logger.css">
+<!-- Source file -->
+<script type="text/javascript" src="http://yui.yahooapis.com/2.2.0/build/logger/logger-min.js"></script>
+<script type="text/javascript">
+  var oLogReader = new YAHOO.widget.LogReader("elLogReader");
+</script>
+
+<!-- Page script -->
+<script type="text/javascript">
+var oColumnHeaders = [
+    {key:"name", text:"Dog's Name"},
+    {key:"breed", text:"Dog's Breed"},
+    {key:"age", text:"Dog's Age (in Weeks)", type:"number"}
+];
+var oColumnSet = new YAHOO.widget.ColumnSet(oColumnHeaders);
+
+YAHOO.example.oPuppies = [
+   {name:"Ashley",breed:"German Shepherd",age:12},
+   {name:"Dirty Harry",breed:"Norwich Terrier",age:5},
+   {name:"Emma",breed:"Labrador Retriever",age:9},
+   {name:"Oscar",breed:"Yorkshire Terrier",age:6},
+   {name:"Riley",breed:"Golden Retriever",age:6},
+   {name:"Shannon",breed:"Greyhound",age:12},
+   {name:"Washington",breed:"English Bulldog",age:8},
+   {name:"Zoe",breed:"Labrador Retriever",age:3}
+];
+
+var oDataSource = new YAHOO.util.DataSource(YAHOO.example.oPuppies);
+oDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+oDataSource.responseSchema = {
+    fields: ["name","breed","age"]
+};
+
+var oDataTable = new YAHOO.widget.DataTable("elDataTable", oColumnSet, oDataSource);
+var oConfigs = {oDataTable: oDataTable};
+var oDataForm = new YAHOO.yazaar.widget.DataForm("elDataForm", oColumnSet, oDataSource, oConfigs);
+
+</script>
+
+</html>
