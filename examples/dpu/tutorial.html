@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+	
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><title>Filterable DataTable</title>
+		
+		<style type="text/css">
+			/* custom css*/
+			body {font-family:arial}
+			/* CSS FOR DataTable */
+			div.yui_datatable {margin:1em;}
+			div.yui_datatable table {border-collapse:collapse;}
+			div.yui_datatable th, div.yui_datatable td {border:1px solid #F1EFE2;padding:.25em; text-align:center; }
+			div.yui_datatable th {border-bottom:2px solid #D6D2C2; cursor:default;  font-family:arial;   font-size:8pt;  font-size-adjust:none; line-height:normal; background-color:#EBEADB;}
+			div.yui_datatable th img {border-style:none}
+			div.yui_datatable th a   {text-decoration:none; color:black; font-weight:normal}
+			div.yui_datatable th a:hover {text-decoration:underline; }  
+			div.yui_datatable em {font-style:italic;}
+			div.yui_datatable strong {font-weight:bold;}
+			div.yui_datatable .big {font-size:136%;}
+			div.yui_datatable .small {font-size:77%}
+			div.yui_datatable .yui-dt-sortedbyasc .yui-dt-headtext {background-image: url('assets/sort_asc.gif'); background-repeat:no-repeat; background-position:right;}/*arrow up*/ 
+			div.yui_datatable .yui-dt-sortedbydesc .yui-dt-headtext {background-image: url('assets/sort_desc.gif'); background-repeat:no-repeat; background-position:right;}/*arrow down*/
+			div.yui_datatable th .yui-dt-headtext {margin-right:5px;padding-right:15px;} /*room for arrow*/		
+		
+			/*CSS For Auto Complete*/
+			.ac {position:relative;padding:1em;}
+			.acF {position:relative;margin:1em;width:15em;}/* set width of widget here*/
+			.acInput {position:absolute;width:100%;height:1.4em;}
+			.acResult {position:absolute;top:1.7em;width:100%;}
+			.acResult .yui-ac-content {position:absolute;width:100%;height:11em;border:1px solid #404040;background:#fff;overflow:auto;overflow-x:hidden;z-index:9050;}
+			.acResult .yui-ac-shadow {position:absolute;margin:.3em;width:100%;background:#a0a0a0;z-index:9049;}
+			.acResult ul {padding:5px 0;width:100%;}
+			.acResult li {padding:0 5px;cursor:default;white-space:nowrap; font-size:small}
+			.acResult li.yui-ac-highlight {background:#ff0;}
+		</style>	
+	<link type="text/css" rel="stylesheet" href="test-rowfilterdatatable_files/datatable.css"><link rel="stylesheet" type="text/css" href="test-rowfilterdatatable_files/reset.htm"><link rel="stylesheet" type="text/css" href="test-rowfilterdatatable_files/fonts.htm"><link rel="stylesheet" type="text/css" href="test-rowfilterdatatable_files/menu.htm"></head><body>
+
+		<div class="yui_datatable" id="myContainer"> <table tabindex="0"><thead tabindex="-1"><tr id="yui-dt0-hdrow0"><th colspan="1" rowspan="1" id="yui-dtcol0"><div class="yui-dt-headcontainer" id="yui-dt0-hdrow0-container0"><span class="yui-dt-headtext" id="yui-dt0-hdrow0-text0">Dog's Name</span></div></th><th colspan="1" rowspan="1" id="yui-dtcol1"><div class="yui-dt-headcontainer" id="yui-dt0-hdrow0-container1"><span class="yui-dt-headtext" id="yui-dt0-hdrow0-text1">Dog's Breed</span></div></th><th colspan="1" rowspan="1" id="yui-dtcol2"><div class="yui-dt-headcontainer" id="yui-dt0-hdrow0-container2"><span class="yui-dt-headtext" id="yui-dt0-hdrow0-text2">Dog's Age (in Weeks)</span></div></th></tr></thead><tbody style="display: none;" tabindex="-1"><tr><td class="yui-dt-loading" colspan="3">Loading data...</td></tr></tbody><tbody class="yui-dt-body" tabindex="-1"><tr class="yui-dt-even" id="yui-dt0-bdrow0"><td class="yui-dt-string" headers="yui-dtcol0" id="yui-dt0-bdrow0-cell0">Ashley</td><td class="yui-dt-string" headers="yui-dtcol1" id="yui-dt0-bdrow0-cell1">German Shepherd</td><td class="yui-dt-number" headers="yui-dtcol2" id="yui-dt0-bdrow0-cell2">12</td></tr><tr class="yui-dt-odd" id="yui-dt0-bdrow1"><td class="yui-dt-string" headers="yui-dtcol0" id="yui-dt0-bdrow1-cell0">Dirty Harry</td><td class="yui-dt-string" headers="yui-dtcol1" id="yui-dt0-bdrow1-cell1">Norwich Terrier</td><td class="yui-dt-number" headers="yui-dtcol2" id="yui-dt0-bdrow1-cell2">5</td></tr><tr class="yui-dt-even" id="yui-dt0-bdrow2"><td class="yui-dt-string" headers="yui-dtcol0" id="yui-dt0-bdrow2-cell0">Emma</td><td class="yui-dt-string" headers="yui-dtcol1" id="yui-dt0-bdrow2-cell1">Labrador Retriever</td><td class="yui-dt-number" headers="yui-dtcol2" id="yui-dt0-bdrow2-cell2">9</td></tr><tr class="yui-dt-odd" id="yui-dt0-bdrow3"><td class="yui-dt-string" headers="yui-dtcol0" id="yui-dt0-bdrow3-cell0">Oscar</td><td class="yui-dt-string" headers="yui-dtcol1" id="yui-dt0-bdrow3-cell1">Yorkshire Terrier</td><td class="yui-dt-number" headers="yui-dtcol2" id="yui-dt0-bdrow3-cell2">6</td></tr><tr class="yui-dt-even" id="yui-dt0-bdrow4"><td class="yui-dt-string" headers="yui-dtcol0" id="yui-dt0-bdrow4-cell0">Riley</td><td class="yui-dt-string" headers="yui-dtcol1" id="yui-dt0-bdrow4-cell1">Golden Retriever</td><td class="yui-dt-number" headers="yui-dtcol2" id="yui-dt0-bdrow4-cell2">6</td></tr><tr class="yui-dt-odd" id="yui-dt0-bdrow5"><td class="yui-dt-string" headers="yui-dtcol0" id="yui-dt0-bdrow5-cell0">Shannon</td><td class="yui-dt-string" headers="yui-dtcol1" id="yui-dt0-bdrow5-cell1">Greyhound</td><td class="yui-dt-number" headers="yui-dtcol2" id="yui-dt0-bdrow5-cell2">12</td></tr><tr class="yui-dt-even" id="yui-dt0-bdrow6"><td class="yui-dt-string" headers="yui-dtcol0" id="yui-dt0-bdrow6-cell0">Washington</td><td class="yui-dt-string" headers="yui-dtcol1" id="yui-dt0-bdrow6-cell1">English Bulldog</td><td class="yui-dt-number" headers="yui-dtcol2" id="yui-dt0-bdrow6-cell2">8</td></tr><tr class="yui-dt-odd" id="yui-dt0-bdrow7"><td class="yui-dt-string" headers="yui-dtcol0" id="yui-dt0-bdrow7-cell0">Zoe</td><td class="yui-dt-string" headers="yui-dtcol1" id="yui-dt0-bdrow7-cell1">Labrador Retriever</td><td class="yui-dt-number" headers="yui-dtcol2" id="yui-dt0-bdrow7-cell2">3</td></tr></tbody></table></div>
+
+		
+		<div class="ac">
+	       <p style="font-weight: bold;">Find a dog:</p>
+            <div class="acF">
+           	    <input class="acInput" id="acInput1">
+                <div class="acResult" id="acResult1"></div>
+            </div>
+        </div>			
+<!-- Dependencies for DataTable -->
+<!-- Required CSS -->
+
+<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.2.0/build/datatable/assets/datatable.css">
+
+<script type="text/javascript" src="http://yui.yahooapis.com/2.2.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+
+<!-- OPTIONAL: Drag Drop (enables resizeable columns) -->
+<script type="text/javascript" src="http://yui.yahooapis.com/2.2.0/build/dragdrop/dragdrop-min.js"></script>
+
+<!-- OPTIONAL: External JSON parser from http://www.json.org/ (enables JSON validation) -->
+<!--<script type="text/javascript" src="http://www.json.org/json.js"></script>-->
+
+<script type="text/javascript" src="http://yui.yahooapis.com/2.2.0/build/connection/connection-min.js"></script>
+
+<!-- Source file -->
+<script type="text/javascript" src="http://yui.yahooapis.com/2.2.0/build/datasource/datasource-beta-min.js"></script>
+
+<script type="text/javascript" src="http://yui.yahooapis.com/2.2.0/build/datatable/datatable-beta-min.js"></script>
+<!--<script type="text/javascript" src="lib/YahooUI/datatable/datatable-beta-debug.js"></script>-->
+<!--<script type="text/javascript" src="datatableFixed-min.js"></script>-->
+<!-- Sample Data -->
+
+<!-- Dependencies for Context Menu -->
+<!--CSS-->
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.0/build/reset/reset-min.css">
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.0/build/fonts/fonts-min.css">
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.0/build/menu/assets/menu.css">
+
+<!-- Dependencies --> 
+<script type="text/javascript" src="http://yui.yahooapis.com/2.2.0/build/container/container_core-min.js"></script>
+
+<!-- Source File -->
+
+<script type="text/javascript" src="http://yui.yahooapis.com/2.2.0/build/menu/menu-min.js"></script><!-- End dependencies for Context Menu -->
+<!-- End Dependencies for Context Menu -->
+
+<!-- Dependencies for Autocomplete -->
+<!-- Source File -->
+<!-- Source file -->
+<script type="text/javascript" src="http://yui.yahooapis.com/2.2.0/build/autocomplete/autocomplete-min.js"></script>
+<!-- End dependencies for Autocomplete -->
+<!-- Row filter and new DataTable classes -->
+<script type="text/javascript" src="../js/dpu/RowFilterDataTable.js" ></script>
+<script type="text/javascript" src="../js/dpu/RowFilter.js" ></script>
+
+<script type="text/javascript">
+
+var myColumnHeaders = [
+    {key:"name", text:"Dog's Name" },
+    {key:"breed", text:"Dog's Breed"},
+    {key:"age", text:"Dog's Age (in Weeks)", type:"number", hideable:true}
+];
+var myColumnSet = new YAHOO.widget.ColumnSet(myColumnHeaders);
+
+YAHOO.example.puppies = [
+   {name:"Ashley",breed:"German Shepherd",age:12},
+   {name:"Dirty Harry",breed:"Norwich Terrier",age:5},
+   {name:"Emma",breed:"Labrador Retriever",age:9},
+   {name:"Oscar",breed:"Yorkshire Terrier",age:6},
+   {name:"Riley",breed:"Golden Retriever",age:6},
+   {name:"Shannon",breed:"Greyhound",age:12},
+   {name:"Washington",breed:"English Bulldog",age:8},
+   {name:"Zoe",breed:"Labrador Retriever",age:3}
+];
+
+var myDataSource = new YAHOO.util.DataSource(YAHOO.example.puppies);
+myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+myDataSource.responseSchema = {
+    fields: ["name","breed","age"]
+};
+
+
+var myDataTable = new YAHOO.dpu.widget.DataTable("myContainer", myColumnSet, myDataSource);
+
+fnFilter= new YAHOO.dpu.util.StringFilter(YAHOO.example.puppies,"name")
+fnFilter.maxCacheEntries = 0;
+oAutoComp = new YAHOO.dpu.widget.RowFilter('acInput1','acResult1', myDataTable,fnFilter);
+var ua = navigator.userAgent.toLowerCase();
+if(ua.indexOf('msie') != -1 && ua.indexOf('opera') < 0) {
+        oAutoComp.useIFrame = true;    
+}
+
+
+</script>
+
+</body></html>
