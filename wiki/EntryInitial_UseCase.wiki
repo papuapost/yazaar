@@ -1,4 +1,4 @@
-#summary Filter a set of list entries according initial character (Issue 21)
+#summary Filter a set of list entries according initial character (Issue 5)
 
 ==Narrative==
 
@@ -206,7 +206,4 @@ helper.Execute();
 letter_filter.Open(helper.Outcome);
 }}}
 
-|| [http://code.google.com/p/anvil/issues/detail?id=21 Issue 21] ||
-
-
-
+|| [http://code.google.com/p/yazaar/issues/detail?id=5 Issue 5] ||
