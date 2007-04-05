@@ -1,0 +1,212 @@
+#summary Filter a set of list entries according initial character (Issue 21)
+
+==Narrative==
+
+Vulcan signs up for the task and decides to use the standard {{{LetterFilter}}} in the {{{Nexus.Web.Control}}} library. First, he runs a set of tests to show that the entry query and initial letter queries work. Vulcan then creates a new User Control page called {{{!InitialFilter}}}, and he copies the starter ASPX code from the Nexus Letter Filter control. Vulcan extends the code-behind from the stock {{{LetterFilter}}}, and he removes the excess code. Vulcan registers the User Control with the main ASPX page, and he sets up the server tags for the !InitialFilter. Vulcan adds a !InitialFilter reference to code behind and registers the !InitialFilter event hander. He codes the event handler, and, finally, Vulcan sets the Page Init task to initialize the !InitialFilter with the list of available letter. 
+
+==Goal==
+
+Filter a set of list entries according to the initial character of an
+entry's name, including other criteria as needed.
+
+|| *Level* || Subfunction || 
+|| *Trigger* || Feature request || 
+|| *Primary Actor* || Developer ||
+
+==Main Success Scenario (MSS)==
+
+|| *Step* || *Action* ||
+|| *1* || Test that list query includes a clause to filter by an initial letter || 
+|| *2* || Test that another query can count the unique initial letters || 
+|| *3* || Add !InitialFilter control, based on the Anvil !LetterFilter ||
+|| *4* || Add letter filter tag to ASPX page ||
+|| *5* || Add letter filter reference to code behind, and register letter filter event hander from code-behind  ||
+|| *6* || Add event handler ||
+|| *7* || Initialize letter filter with available letters ||
+
+==Extensions==
+
+|| *1a* || Test fails ||
+|| *.1* || Update query to filter by an initial letter ||
+|| *2a* || Test fails ||
+|| *.1* || Add command and query for counting initial letters ||
+
+==Sample Code==
+
+|| *Step* || Code ||
+|| *1* ||{{{PhoneBook.Test.Commands.EntryTest.cs}}} ||
+
+{{{
+[Test]
+public void Initial()
+{
+ IViewHelper helper = catalog.GetHelperFor(App.ENTRY_LIST);
+ helper.Criteria["initial"] = "C%";
+ helper.Execute();
+ Assert.IsTrue(helper.IsNominal,helper.AlertsText);
+ IList list = helper.Outcome;
+ Assert.IsTrue(list.Count>0,"Expected one or more entries");
+ foreach (AppEntry entry in list) 
+ {
+  Assert.IsTrue("C".Equals(entry.last_name.Substring(0,1)),"Expected all to be C*");
+ }
+ int count = Convert.ToInt32(helper.Criteria["item_count"]);
+ Assert.IsTrue(count==list.Count,"Expected counts to match");
+}
+}}}
+
+|| *1a* || {{{Test/Resources/event_qry.xml}}} ||
+
+{{{last_name LIKE #initial#}}}
+
+|| *2* || {{{PhoneBook.Test.Commands.EntryTest.cs}}} ||
+
+{{{
+[Test]
+public void InitialDistinct()
+{
+ IViewHelper helper = catalog.GetHelperFor(App.ENTRY_INITIAL);
+ helper.Execute();
+ Assert.IsTrue(helper.IsNominal,helper.AlertsText);
+ IList list = helper.Outcome;
+ Assert.IsTrue(list.Count>0,"Expected one or more entries");
+ string a = list[0] as string;
+ Assert.IsNotNull(a,"Expected letter");
+ Assert.IsTrue("C".Equals(a),"Expected C");     
+}
+}}}
+
+|| *2a* || {{{Resources/entry_cmd.xml}}} ||
+
+{{{
+<object id="entry_initial" parent="EntryInitial">
+ <property name="ID">
+  <value>entry_initial</value>
+ </property>
+ <property name="RelatedIDs">
+  <list>
+   <value>entry_initial</value>
+   <value>initial</value>
+  </list>       
+ </property>
+</object>
+}}}
+
+|| ... || {{{Resources/entry_qry.xml}}} ||
+
+{{{
+<select id="entry_initial" paramClass="string" resultClass="string">      
+ SELECT COUNT(*) 
+ FROM entry
+ WHERE entry.flag>0
+ AND last_name LIKE #initial#
+</select>
+}}}
+
+
+|| ... || {{{ PhoneBook.Core.Commands.EntryInitial.cs }}} ||
+
+{{{
+using System.Collections;
+using Nexus.Core;
+using PhoneBook.Core.Commands;
+namespace PhoneBook.Core.Commands
+{
+ public class EntryInitial : BaseMapper
+  {
+   public const string ALL = "[*]";
+   public const string WILDCARD = "%";
+   public const string INITIAL = "initial";
+   public override bool RequestExecute(IRequestContext context)
+   {
+    const string ZERO = "0";
+    string[] input = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
+     "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
+     "U", "V", "W", "X", "Y", "Z"};
+    IList output = new ArrayList(26);
+    foreach (string letter in input)
+    {
+     string initial = letter + WILDCARD;
+     context[INITIAL] = initial;
+     object result = Mapper.QueryForObject(QueryID, context);
+     if (ZERO.Equals(result)) continue;
+     output.Add(letter);
+    }
+   output.Add(ALL);
+   context.Outcome = output;
+   return CONTINUE;
+  }
+ }
+}
+}}}
+
+|| *3* || {{{PhoneBook.Web.Controls.InitialFilter.aspx}}} ||
+
+{{{
+<%@ Control Codebehind="InitialFilter.ascx.cs" 
+  Inherits="PhoneBook.Web.Controls.InitialFilter"
+  Language="c#" AutoEventWireup="false" 
+  TargetSchema="http://schemas.microsoft.com/intellisense/ie5"  %>
+<asp:repeater id="letters" runat="server">
+    <itemtemplate>
+        <asp:linkbutton id="letter" runat="server" 
+            commandname="filter" 
+            commandargument='<%# DataBinder.Eval(Container, "DataItem.Letter")%>' >
+            <%# DataBinder.Eval(Container, "DataItem.Letter")%>
+        </asp:linkbutton>
+    </itemtemplate>
+</asp:repeater>
+}}}
+
+|| ... || {{{PhoneBook.Web.Controls.InitialFilter.aspx.cs}}} ||
+
+{{{
+using Nexus.Web.Controls;
+namespace PhoneBook.Web.Controls
+{
+ public class InitialFilter : LetterFilter
+ }
+ }
+}}}
+
+|| *4* || {{{PhoneBook.Web.Forms.Entry.aspx}}} ||
+
+{{{
+<%@ Register TagPrefix="app" TagName="Filter" Src="../Controls/InitialFilter.ascx" %>
+<body> 
+<!-- ... -->
+<app:Filter id="letter_filter" Runat="server"></app:Filter>
+}}}
+
+|| *5* || {{{PhoneBook.Web.Forms.Directory2.aspx.cs}}} ||
+
+{{{
+protected InitialFilter letter_filter;
+}}}
+{{{
+letter_filter.View_Filter += new EventHandler(letter_filter_View_Filter);
+}}}
+
+|| *6* || {{{PhoneBook.Web.Forms.Directory2.aspx.cs}}} ||
+
+{{{
+private void letter_filter_View_Filter(object sender, EventArgs e)
+{
+    FindArgs a = e as FindArgs;
+    lister.Read(a.Criteria);
+    lister.Reset();
+}
+}}}
+
+|| *7* || {{{PhoneBook.Web.Forms.Directory2.aspx.cs}}} ||
+
+{{{
+IViewHelper helper = Catalog.GetHelperFor(App.LAST_NAME_INITIAL);
+helper.Execute();
+letter_filter.Open(helper.Outcome);
+}}}
+
+|| [http://code.google.com/p/anvil/issues/detail?id=21 Issue 21] ||
+
+
+
