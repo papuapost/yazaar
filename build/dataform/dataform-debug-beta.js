@@ -23,6 +23,15 @@ http://developer.yahoo.net/yui/license.txt
  * provide for progressive enhancement from existing markup, as does the 
  * DataTable control.
  * <p>
+ * To make DataForm easier to use with CSS class-based validation 
+ * (see jc21 in the Yazaar extras module), two extra ColumnHeader 
+ * fields are supported: <code>dataClassName</code>,  
+ * <code>dataTitle</code>, <code>dataMinLength</code>, and 
+ * <code>dataMaxLength</code> These fields generate class, 
+ * title, maxLength, and minlength attributes for input elements. 
+ * MinLength is a custom attribute utilized by the jc21 validation 
+ * module.
+ * 
  * (TODO: Log events for bulk updates, perhaps after reconnecting?)
  * (TODO: Batch or bulk edit selected rows?)
  *
@@ -622,7 +631,19 @@ YAHOO.yazaar.widget.DataForm.prototype._initHead = function(elTable, sForm_id) {
 			var elInput = elDataCell.appendChild(document.createElement("input"));
 			elInput.name = oColumn.key;
 			elInput.id = sForm_id + "_" + elInput.name;
-			elInput.type = "text"; // TODO: change for columnEditor type
+			elInput.type = "text"; // TODO: change for columnEditor type			
+		    if(oColumn.dataMinLength) {
+				elInput.minLength = oColumn.minLength;
+    		}
+		    if(oColumn.dataMaxLength) {
+				elInput.maxLength = oColumn.maxLength;
+    		}
+		    if(oColumn.dataClassName) {
+        		YAHOO.util.Dom.addClass(elInput,oColumn.dataClassName);
+    		}
+		    if(oColumn.dataTitle) {
+				elInput.title = oColumn.dataTitle;
+    		}					
 			aFields[n++] = elInput; 
 		    YAHOO.util.Dom.addClass(elInput,YAHOO.widget.DataTable.CLASS_EDITABLE);
         }
@@ -992,6 +1013,9 @@ YAHOO.yazaar.widget.DataForm.prototype._onReset = function(e, oSelf) {
  * @private
  */
 YAHOO.yazaar.widget.DataForm.prototype._onSubmit = function(e, oSelf) {
+	
+	if (!oSelf.isValidInput()) return;
+	
 	// Gather the usual suspects
 	var oRecord = oSelf._oRecord;
 	var oPrevRecord = oSelf.copyRecord();	
@@ -1014,3 +1038,108 @@ YAHOO.yazaar.widget.DataForm.prototype._onSubmit = function(e, oSelf) {
 		oDataTable.showPage(oDataTable.pageCurrent);	
 	}
 };
+
+
+YAHOO.yazaar.widget.DataForm.prototype.isValidInput = function() {
+	var errs = new Array();
+	var all_valid = true;	
+
+	//access form elements
+	//inputs
+	var f_in = this._aFields; 	
+	// TODO selects
+	// var f_sl = elm.getElementsByTagName('select');
+	// TODO textareas
+	// var f_ta = elm.getElementsByTagName('textarea');
+	
+	//check inputs
+	for (i=0;i<f_in.length;i++) {
+		if (f_in[i].type.toLowerCase() != 'submit' && f_in[i].type.toLowerCase() != 'button' && f_in[i].type.toLowerCase() != 'hidden') {
+			if (isVisible(f_in[i])) {
+				
+				var cname = ' '+f_in[i].className.replace(/^\s*|\s*$/g,'')+' ';
+				cname = cname.toLowerCase();
+				var inv = f_in[i].value.trim();
+				var t = f_in[i].type.toLowerCase();
+				var cext = '';
+				if (t == 'text' || t == 'password') {
+					//text box
+					var valid = FIC_checkField(cname,f_in[i]);
+				} else if(t == 'radio' || t == 'checkbox'){
+					// radio or checkbox
+					var valid = FIC_checkRadCbx(cname,f_in[i],f_in);
+					cext = '-cr';
+				} else {
+					var valid = true;
+				}
+				
+				if (valid) {
+					removeClassName(f_in[i],'validation-failed'+cext);
+					addClassName(f_in[i],'validation-passed'+cext);
+				} else {
+					removeClassName(f_in[i],'validation-passed'+cext);
+					addClassName(f_in[i],'validation-failed'+cext);
+					//try to get title
+					if (f_in[i].getAttribute('title')){
+						errs[errs.length] = f_in[i].getAttribute('title');
+					}					
+					all_valid = false;
+				}
+			}
+		}
+	} //end for i
+	
+	/**
+	//check textareas
+	for (i=0;i<f_ta.length;i++) {
+		if (isVisible(f_ta[i])) {
+			var cname = ' '+f_ta[i].className.replace(/^\s*|\s*$/g,'')+' ';
+			cname = cname.toLowerCase();
+			var valid = FIC_checkField(cname,f_ta[i]);
+			
+			if (valid) {
+				removeClassName(f_ta[i],'validation-failed');
+				addClassName(f_ta[i],'validation-passed');
+			} else {
+				removeClassName(f_ta[i],'validation-passed');
+				addClassName(f_ta[i],'validation-failed');
+				//try to get title
+				if (f_ta[i].getAttribute('title')){
+					errs[errs.length] = f_ta[i].getAttribute('title');
+				}
+				all_valid = false;
+			}
+		}
+	} //end for i
+	
+	//check selects
+	for (i=0;i<f_sl.length;i++) {
+		if (isVisible(f_sl[i])) {
+			var cname = ' '+f_sl[i].className.replace(/^\s*|\s*$/g,'')+' ';
+			cname = cname.toLowerCase();
+			var valid = FIC_checkSel(cname,f_sl[i]);
+			if (valid) {
+				removeClassName(f_sl[i],'validation-failed-sel');
+				addClassName(f_sl[i],'validation-passed-sel');
+			} else {
+				removeClassName(f_sl[i],'validation-passed-sel');
+				addClassName(f_sl[i],'validation-failed-sel');
+				//try to get title
+				if (f_sl[i].getAttribute('title')){
+					errs[errs.length] = f_sl[i].getAttribute('title');
+				}
+				all_valid = false;
+			}
+		}
+	} //end for i
+	*/
+	
+	if (!all_valid) {
+		if (errs.length > 0){
+			alert("We have found the following error(s):\n\n  * "+errs.join("\n  * ")+"\n\nPlease check the fields and try again");
+		} else {
+			alert('Some required values are not correct. Please check the items in red.');
+		}
+	}
+	return all_valid;
+} // end isValidInput

@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>YUI Unobtrusive Javascript Validation Example</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link href="style.css" rel="stylesheet" type="text/css" media="screen, projection" />
+  <link href="slideandhide.css" rel="stylesheet" type="text/css" media="screen, projection" />
+  <style type="text/css">
+
+    input, textarea {
+      border:1px solid #000;
+      background-color:#fff;
+    }
+
+    .validation-failed { /* for textboxes, textareas, passwords */
+      border:1px dashed #F33;
+      background-color:#FCC;
+    }
+
+    .validation-failed-cr { /* for checkboxes and radios */
+
+    }
+
+    .validation-failed-sel { /* for selects */
+
+    }
+
+    .validation-passed { /* for textboxes, textareas, passwords */
+      border:1px solid #6C6;
+      background-color:#CFF;
+    }
+
+    .validation-passed-cr { /* for checkboxes and radios */
+
+    }
+
+    .validation-passed-sel { /* for selects */
+
+    }
+
+    .button {
+      border:1px solid #0B5C8B;
+      background-color:#0B80CD;
+      color:#fff;
+    }
+  </style>
+  <script src="http://yui.yahooapis.com/2.2.0/build/yahoo/yahoo-min.js"></script>
+  <script src="http://yui.yahooapis.com/2.2.0/build/event/event-min.js"></script>
+  <script src="../../../build/extras/jc21/validate.js" type="text/javascript"></script>
+</head>
+
+<body>
+  <div id="header">
+    <h1>YUI Unobtrusive Javascript Validation</h1>
+    <p class="tagline">This example relates to <a href="http://blog.jc21.com/2007-02-05/yui-unobstrusive-javascript-validation/">this blog post</a></p>
+    <p class="purpose">Demonstrates the functionality of my Javascript Validation</p>
+  </div>
+  <div id="main">
+
+    <p>This page shows the form validation in action. Try submitting the form with incorrect values to see the results. For more information
+    on this script, please visit the <a href="http://blog.jc21.com/2007-02-05/yui-unobstrusive-javascript-validation/">announcement post</a>.</p>
+
+    <form method="get" action="#" name="example_form" id="example_form">
+      <table border="0" align="center">
+        <tr>
+          <td>
+            Text Field 1:
+          </td>
+          <td>
+            <input type="text" name="example_field_1" />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Text Field 2: *
+          </td>
+          <td>
+            <input type="text" name="example_field_2" title="Text Field 2 is required" class="required" />
+          </td>
+          <td>
+            'required' - Must be filled
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Text Field 3: *
+          </td>
+          <td>
+            <input type="text" name="example_field_3" title="Text Field 3 is not long enough" class="required" minlength="2" />
+          </td>
+          <td>
+            'required' - Must be filled, min of 2 characters
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Text Field 4:
+          </td>
+          <td>
+            <input type="text" name="example_field_4" title="Text Field 4 will only accept Alpha Characters" class="validate-alpha" />
+          </td>
+          <td>
+            'validate-alpha' - Must be Alpha characters only
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Email: *
+          </td>
+          <td>
+            <input type="text" name="email" title="Email is not valid" class="required validate-email" />
+          </td>
+          <td>
+            'required validate-email' - Must be filled and follow email structure
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Website: *
+          </td>
+          <td>
+            <input type="text" name="email" title="Website is not valid" class="required validate-url" value="http://" />
+          </td>
+          <td>
+            'required' - Must be filled and a valid URL with 'http://'
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Age: *
+          </td>
+          <td>
+            <input type="text" name="example_field_2" title="Age is not a number" class="required validate-number" size="3" maxlength="2" />
+          </td>
+          <td>
+            'required validate-number' - Must be filled, must be a valid number
+        </tr>
+        <tr>
+          <td>
+            Phone Number:
+          </td>
+          <td>
+            <input type="text" name="example_field_2" title="Phone Number is not valid" class="validate-digits" />
+          </td>
+          <td>
+            'validate-digits' - Only numeric characters and spaces allowed
+        </tr>
+        <tr>
+          <td>
+            Hair Colour:
+          </td>
+          <td>
+            <select name="hair" class="validate-not-first" title="Please select your Hair Colour">
+              <option value="">Select:</option>
+              <option value="Brown">Brown</option>
+              <option value="Blonde">Blonde</option>
+              <option value="Black">Black</option>
+              <option value="Other">Other</option>
+            </select>
+          </td>
+          <td>
+            'validate-not-first' - Must select anything but the first in the list
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Position:
+          </td>
+          <td>
+            <select name="position" class="validate-not-empty" title="Please select your Position within a category">
+              <option value="">IT Industry:</option>
+              <option value="Programmer"> - Programmer</option>
+              <option value="Web designer"> - Web Designer</option>
+              <option value="">Building Industry:</option>
+              <option value="Tiler"> - Tiler</option>
+              <option value="Plasterer"> - Plasterer</option>
+              <option value="Brickie"> - Brickie</option>
+            </select>
+          </td>
+          <td>
+            'validate-not-empty' - Any option that does not have an empty value
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">
+            Sports:
+          </td>
+          <td>
+            <input type="checkbox" name="sports[]" value="tennis" id="sports_tennis" class="validate-one-required" title="Please select one or more Sports" /> <label for="sports_tennis">Tennis</label><br />
+            <input type="checkbox" name="sports[]" value="soccer" id="sports_soccer" /> <label for="sports_soccer">Soccer</label><br />
+            <input type="checkbox" name="sports[]" value="extreme" id="sports_extreme" /> <label for="sports_exreme">Extreme Sports</label><br />
+          </td>
+          <td valign="top">
+            'validate-one-required' - At least one must be selected
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">
+            Gender:
+          </td>
+          <td>
+            <input type="radio" name="gender[]" value="male" id="gender_male" class="validate-one-required" title="Please select your Gender" /> <label for="gender_male">Male</label><br />
+            <input type="radio" name="gender[]" value="female" id="gender_female" /> <label for="gender_female">Female</label><br />
+            <input type="radio" name="gender[]" value="dunno" id="gender_dunno" /> <label for="gender_dunno">I don't know!</label><br />
+          </td>
+          <td valign="top">
+            'validate-one-required' - At least one must be selected
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">
+            Comments: *
+          </td>
+          <td>
+            <textarea name="comments" minlength="10" class="required" title="Please enter some worthwhile Comments"></textarea>
+          </td>
+          <td valign="top">
+            'required' - Must be filled, min of 10 characters
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="3" align="center">
+            <input type="submit" name="submit" value="Submit Form" class="button" />
+          </td>
+        </tr>
+      </table>
+
+    </form>
+
+  </div>
+</body>
+</html>
