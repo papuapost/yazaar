@@ -58,10 +58,9 @@
 <!-- YUI Source files -->
 <script src="http://yui.yahooapis.com/2.2.0/build/datasource/datasource-beta-min.js"></script>
 <script src="http://yui.yahooapis.com/2.2.0/build/datatable/datatable-beta-min.js"></script>
-<!-- Anvil Source files -->
+<!-- Yazaar Source files -->
 <script src="../../build/dataform/dataform-debug-beta.js"></script>
-
-<!-- jc21 validator -->
+<!-- OPTIONAL: jc21 validator -->
 <script src="../../build/extras/jc21/validate-min.js"></script>
 
 <!-- TabView -->
@@ -102,9 +101,9 @@
 var oTabView = new YAHOO.widget.TabView("elTabView");
 
 var oColumnHeaders = [
-    {key:"name", text:"Dog's Name", dataClassName: "required", dataTitle: "Dog's Name is required"},
-    {key:"breed", text:"Dog's Breed", dataClassName: "required", dataTitle: "Dog's Breed is required"},
-    {key:"age", text:"Dog's Age (in Weeks)", type:"number", dataClassName: "validate-number", dataTitle: "Enter Dog's Age in number of weeks"}
+    {key:"name", text:"Dog's Name", formClassName: "required", formTitle: "Dog's Name is required"},
+    {key:"breed", text:"Dog's Breed", formClassName: "required", formTitle: "Dog's Breed is required"},
+    {key:"age", text:"Dog's Age (in Weeks)", type:"number", formClassName: "validate-number", formTitle: "Enter Dog's Age in number of weeks"}
 ];
 var oColumnSet = new YAHOO.widget.ColumnSet(oColumnHeaders);
 

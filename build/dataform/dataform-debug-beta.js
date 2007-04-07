@@ -24,13 +24,14 @@ http://developer.yahoo.net/yui/license.txt
  * DataTable control.
  * <p>
  * To make DataForm easier to use with CSS class-based validation 
- * (see jc21 in the Yazaar extras module), two extra ColumnHeader 
- * fields are supported: <code>dataClassName</code>,  
- * <code>dataTitle</code>, <code>dataMinLength</code>, and 
- * <code>dataMaxLength</code> These fields generate class, 
+ * (see jc21 in the Yazaar extras module), extra ColumnHeader 
+ * properties are supported: <code>formClassName</code>,  
+ * <code>formTitle</code>, <code>formMinLength</code>, and 
+ * <code>formMaxLength</code>. These fields generate class, 
  * title, maxLength, and minlength attributes for input elements. 
  * MinLength is a custom attribute utilized by the jc21 validation 
- * module.
+ * module. To enabled inserting a new record with default values, 
+ * the <code>formValue</code> property is provided.  
  * 
  * (TODO: Log events for bulk updates, perhaps after reconnecting?)
  * (TODO: Batch or bulk edit selected rows?)
@@ -568,7 +569,6 @@ YAHOO.yazaar.widget.DataForm.prototype._initForm = function() {
     elBody.tabIndex = -1;
     YAHOO.util.Dom.addClass(elBody,YAHOO.widget.DataTable.MENU_BODY);
 	
-	// TODO: Add submit, reset, and cancel buttons
 	var initButton = this._initButton;
 	var elMenuRow = elBody.appendChild(document.createElement("tr"));
     var elMenuCell = elMenuRow.appendChild(document.createElement("td"));
@@ -579,12 +579,12 @@ YAHOO.yazaar.widget.DataForm.prototype._initForm = function() {
 	initButton(elSubmit, sForm_id, YAHOO.yazaar.widget.DataForm.MSG_SUBMIT);
 	YAHOO.util.Event.addListener(elSubmit, "click", this._onSubmit, this);
 	
- 	// TODO: Reset
+ 	// Reset
 	var elReset = elMenuCell.appendChild(document.createElement("input"));
 	initButton(elReset, sForm_id, YAHOO.yazaar.widget.DataForm.MSG_RESET);
 	YAHOO.util.Event.addListener(elReset, "click", this._onReset, this);
 
-	// TODO: Cancel 
+	// Cancel 
 	var elCancel = elMenuCell.appendChild(document.createElement("input"));
 	initButton(elCancel, sForm_id, YAHOO.yazaar.widget.DataForm.MSG_CANCEL);
 	YAHOO.util.Event.addListener(elCancel, "click", this._onCancel, this);
@@ -632,17 +632,17 @@ YAHOO.yazaar.widget.DataForm.prototype._initHead = function(elTable, sForm_id) {
 			elInput.name = oColumn.key;
 			elInput.id = sForm_id + "_" + elInput.name;
 			elInput.type = "text"; // TODO: change for columnEditor type			
-		    if(oColumn.dataMinLength) {
-				elInput.minLength = oColumn.minLength;
+		    if(oColumn.formMinLength) {
+				elInput.minLength = oColumn.formMinLength;
     		}
-		    if(oColumn.dataMaxLength) {
-				elInput.maxLength = oColumn.maxLength;
+		    if(oColumn.formMaxLength) {
+				elInput.maxLength = oColumn.formMaxLength;
     		}
-		    if(oColumn.dataClassName) {
-        		YAHOO.util.Dom.addClass(elInput,oColumn.dataClassName);
+		    if(oColumn.formClassName) {
+        		YAHOO.util.Dom.addClass(elInput,oColumn.formClassName);
     		}
-		    if(oColumn.dataTitle) {
-				elInput.title = oColumn.dataTitle;
+		    if(oColumn.formTitle) {
+				elInput.title = oColumn.formTitle;
     		}					
 			aFields[n++] = elInput; 
 		    YAHOO.util.Dom.addClass(elInput,YAHOO.widget.DataTable.CLASS_EDITABLE);
@@ -814,6 +814,136 @@ YAHOO.yazaar.widget.DataForm.prototype.isRecordChanged = function(oNewRecord) {
 	}
 	return !same;
 }
+
+/**
+ * Validate form data according to the CSS class names set on the input elements.
+ * If validation fails, the element's title attribute is presented as an error messsage.
+ * <p>
+ * The attributes needed to control validation can be set through the ColumnHeader. 
+ * The supported values for the <code>formClassName</code> attribute are:  
+ * <ul>
+ * <li>required (not blank)
+ * <li>validate-number (a valid number)
+ * <li>validate-digits (digits only, spaces allowed.)
+ * <li>validate-alpha (letters only)
+ * <li>validate-alphanum (only letters and numbers)
+ * <li>validate-date (a valid date value)
+ * <li>validate-email (a valid email address)
+ * <li>validate-url (a valid URL)
+ * <li>validate-date-au (a date formatted as; dd/mm/yyyy)
+ * <li>validate-currency-dollar (a valid dollar value)
+ * <li>validate-one-required (At least one checkbox/radio element must be selected in a group)
+ * <li>validate-not-first (Selects only, must choose an option other than the first)
+ * <li>validate-not-empty (Selects only, must choose an option with a value that is not empty)
+ * <li>Also, you can specify this attribute for text, passwird and textarea elements:
+ * <li>minlength="x" (where x is the minimum number of characters)
+ * </ul>
+ * <p>
+ * This implementation depends on Jamie Curnow's validate script.
+ */
+YAHOO.yazaar.widget.DataForm.prototype.isValidInput = function() {
+	var errs = new Array();
+	var all_valid = true;	
+
+	//access form elements
+	//inputs
+	var f_in = this._aFields; 	
+	// TODO selects
+	// var f_sl = elm.getElementsByTagName('select');
+	// TODO textareas
+	// var f_ta = elm.getElementsByTagName('textarea');
+	
+	//check inputs
+	for (i=0;i<f_in.length;i++) {
+		if (f_in[i].type.toLowerCase() != 'submit' && f_in[i].type.toLowerCase() != 'button' && f_in[i].type.toLowerCase() != 'hidden') {
+			if (isVisible(f_in[i])) {
+				
+				var cname = ' '+f_in[i].className.replace(/^\s*|\s*$/g,'')+' ';
+				cname = cname.toLowerCase();
+				var inv = f_in[i].value.trim();
+				var t = f_in[i].type.toLowerCase();
+				var cext = '';
+				if (t == 'text' || t == 'password') {
+					//text box
+					var valid = FIC_checkField(cname,f_in[i]);
+				} else if(t == 'radio' || t == 'checkbox'){
+					// radio or checkbox
+					var valid = FIC_checkRadCbx(cname,f_in[i],f_in);
+					cext = '-cr';
+				} else {
+					var valid = true;
+				}
+				
+				if (valid) {
+					removeClassName(f_in[i],'validation-failed'+cext);
+					addClassName(f_in[i],'validation-passed'+cext);
+				} else {
+					removeClassName(f_in[i],'validation-passed'+cext);
+					addClassName(f_in[i],'validation-failed'+cext);
+					//try to get title
+					if (f_in[i].getAttribute('title')){
+						errs[errs.length] = f_in[i].getAttribute('title');
+					}					
+					all_valid = false;
+				}
+			}
+		}
+	} //end for i
+	
+	/**
+	//check textareas
+	for (i=0;i<f_ta.length;i++) {
+		if (isVisible(f_ta[i])) {
+			var cname = ' '+f_ta[i].className.replace(/^\s*|\s*$/g,'')+' ';
+			cname = cname.toLowerCase();
+			var valid = FIC_checkField(cname,f_ta[i]);
+			
+			if (valid) {
+				removeClassName(f_ta[i],'validation-failed');
+				addClassName(f_ta[i],'validation-passed');
+			} else {
+				removeClassName(f_ta[i],'validation-passed');
+				addClassName(f_ta[i],'validation-failed');
+				//try to get title
+				if (f_ta[i].getAttribute('title')){
+					errs[errs.length] = f_ta[i].getAttribute('title');
+				}
+				all_valid = false;
+			}
+		}
+	} //end for i
+	
+	//check selects
+	for (i=0;i<f_sl.length;i++) {
+		if (isVisible(f_sl[i])) {
+			var cname = ' '+f_sl[i].className.replace(/^\s*|\s*$/g,'')+' ';
+			cname = cname.toLowerCase();
+			var valid = FIC_checkSel(cname,f_sl[i]);
+			if (valid) {
+				removeClassName(f_sl[i],'validation-failed-sel');
+				addClassName(f_sl[i],'validation-passed-sel');
+			} else {
+				removeClassName(f_sl[i],'validation-passed-sel');
+				addClassName(f_sl[i],'validation-failed-sel');
+				//try to get title
+				if (f_sl[i].getAttribute('title')){
+					errs[errs.length] = f_sl[i].getAttribute('title');
+				}
+				all_valid = false;
+			}
+		}
+	} //end for i
+	*/
+	
+	if (!all_valid) {
+		if (errs.length > 0){
+			alert("We have found the following error(s):\n\n  * "+errs.join("\n  * ")+"\n\nPlease check the fields and try again");
+		} else {
+			alert('Some required values are not correct. Please check the items in red.');
+		}
+	}
+	return all_valid;
+} // end isValidInput
 
 /**
  * Log that an event is raised, including the record and old record data as JSON strings.
@@ -1038,108 +1168,3 @@ YAHOO.yazaar.widget.DataForm.prototype._onSubmit = function(e, oSelf) {
 		oDataTable.showPage(oDataTable.pageCurrent);	
 	}
 };
-
-
-YAHOO.yazaar.widget.DataForm.prototype.isValidInput = function() {
-	var errs = new Array();
-	var all_valid = true;	
-
-	//access form elements
-	//inputs
-	var f_in = this._aFields; 	
-	// TODO selects
-	// var f_sl = elm.getElementsByTagName('select');
-	// TODO textareas
-	// var f_ta = elm.getElementsByTagName('textarea');
-	
-	//check inputs
-	for (i=0;i<f_in.length;i++) {
-		if (f_in[i].type.toLowerCase() != 'submit' && f_in[i].type.toLowerCase() != 'button' && f_in[i].type.toLowerCase() != 'hidden') {
-			if (isVisible(f_in[i])) {
-				
-				var cname = ' '+f_in[i].className.replace(/^\s*|\s*$/g,'')+' ';
-				cname = cname.toLowerCase();
-				var inv = f_in[i].value.trim();
-				var t = f_in[i].type.toLowerCase();
-				var cext = '';
-				if (t == 'text' || t == 'password') {
-					//text box
-					var valid = FIC_checkField(cname,f_in[i]);
-				} else if(t == 'radio' || t == 'checkbox'){
-					// radio or checkbox
-					var valid = FIC_checkRadCbx(cname,f_in[i],f_in);
-					cext = '-cr';
-				} else {
-					var valid = true;
-				}
-				
-				if (valid) {
-					removeClassName(f_in[i],'validation-failed'+cext);
-					addClassName(f_in[i],'validation-passed'+cext);
-				} else {
-					removeClassName(f_in[i],'validation-passed'+cext);
-					addClassName(f_in[i],'validation-failed'+cext);
-					//try to get title
-					if (f_in[i].getAttribute('title')){
-						errs[errs.length] = f_in[i].getAttribute('title');
-					}					
-					all_valid = false;
-				}
-			}
-		}
-	} //end for i
-	
-	/**
-	//check textareas
-	for (i=0;i<f_ta.length;i++) {
-		if (isVisible(f_ta[i])) {
-			var cname = ' '+f_ta[i].className.replace(/^\s*|\s*$/g,'')+' ';
-			cname = cname.toLowerCase();
-			var valid = FIC_checkField(cname,f_ta[i]);
-			
-			if (valid) {
-				removeClassName(f_ta[i],'validation-failed');
-				addClassName(f_ta[i],'validation-passed');
-			} else {
-				removeClassName(f_ta[i],'validation-passed');
-				addClassName(f_ta[i],'validation-failed');
-				//try to get title
-				if (f_ta[i].getAttribute('title')){
-					errs[errs.length] = f_ta[i].getAttribute('title');
-				}
-				all_valid = false;
-			}
-		}
-	} //end for i
-	
-	//check selects
-	for (i=0;i<f_sl.length;i++) {
-		if (isVisible(f_sl[i])) {
-			var cname = ' '+f_sl[i].className.replace(/^\s*|\s*$/g,'')+' ';
-			cname = cname.toLowerCase();
-			var valid = FIC_checkSel(cname,f_sl[i]);
-			if (valid) {
-				removeClassName(f_sl[i],'validation-failed-sel');
-				addClassName(f_sl[i],'validation-passed-sel');
-			} else {
-				removeClassName(f_sl[i],'validation-passed-sel');
-				addClassName(f_sl[i],'validation-failed-sel');
-				//try to get title
-				if (f_sl[i].getAttribute('title')){
-					errs[errs.length] = f_sl[i].getAttribute('title');
-				}
-				all_valid = false;
-			}
-		}
-	} //end for i
-	*/
-	
-	if (!all_valid) {
-		if (errs.length > 0){
-			alert("We have found the following error(s):\n\n  * "+errs.join("\n  * ")+"\n\nPlease check the fields and try again");
-		} else {
-			alert('Some required values are not correct. Please check the items in red.');
-		}
-	}
-	return all_valid;
-} // end isValidInput

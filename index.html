@@ -2,69 +2,118 @@
 <html>
   <head>
   <title>
-    Planet Yazaar - Additions to the Yahoo User Interface (YUI) Library
+    Planet Yazaar - Additions to the Yahoo! User Interface (YUI) Library
   </title>
-  <link rel="stylesheet" type="text/css" media="screen" href="css/example.css">
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.0/build/tabview/assets/tabview.css">
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.0/build/tabview/assets/border_tabs.css">
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.2.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.2.0/build/element/element-beta-min.js"></script>
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.2.0/build/tabview/tabview-min.js"></script>
+	<style>
+		#doc3 {font-family:verdana;}
+		#doc3 h2 {font-size:110%}
+	</style>
   </head>
   <body>
-    <div id="doc">
+    <div id="doc3">
        <div id="hd">
           <h2>
-            Planet Yazaar - Additions to the Yahoo User Interface (YUI) Library
+            Planet Yazaar - Additions to the Yahoo! User Interface (YUI) Library
           </h2>
        </div>
        <div id="bd">
-          <h3>
-            Yazaar Widgets
-          </h3>
-          <ul id="examples">
-            <li>
-              <a href="examples/dataform/tutorial-tabview.html">
-                DataForm Widget
-              </a>
-            </li>
+        <div id="elTabView" class="yui-navset">
+          <ul class="yui-nav">
+            <li class="selected"><a href="#tab1"><em>About</em></a></li>
+            <li><a href="#tab2"><em>Yazaar Widgets</em></a></li>
+            <li><a href="#tab3"><em>Extras</em></a></li>
+            <li><a href="#tab4"><em>Resources</em></a></li>
           </ul>
-          <h3>
-            Extras
-          </h3>
-          <ul id="extras">
-            <li>
-              <a href="examples/extras/dpu/rowfilterdatatable.html">
-                Enhanced Datatable with Row Filtering and Column Hiding by Victor Morales
-              </a>
-            </li>
-            <li>
-              <a href="examples/extras/jc21/validate.html">
-                JavaScript Validator by Jamie Curnow
-              </a>
-            </li>
-          </ul>
-          <h3>
-            Resources
-          </h3>
-          <ul id=links">
-            <li>
-              <a href="http://code.google.com/p/yazaar/">
-                Yazaar Development Site
-              </a>
-            </li>
-            <li>
-              <a href="http://www.yui-ext.com/deploy/yui-ext/docs/">
-                Ext (formerly YUI Ext)
-              </a>
-            </li>
-            <li>
-              <a href="http://bubbling.comarq.com/">
-                Bubbling Library
-              </a>
-            </li>
-            <li>
-              <a href="http://blog.mozmonkey.com/2007/classanim-hoverhijax-keeping-presentation-out-of-your-javascript/">
-                ClassAnim and HoverHijax
-              </a>
-            </li>
-          </ul>
-       </div>
+          <div class="yui-content">
+            <div id="elAbout">
+				<blockquote>
+				<p>
+					Planet Yazaar creates and maintains community-supported additions to the 
+					<a href="http://developer.yahoo.com/yui/">
+						Yahoo User Interface (YUI) Library
+					</a> 
+					(Yahoo + Bazaar = Yazaar).
+				</p>
+				<p>
+					Compared with 'full throttle' open source projects, YUI lacks several key elements:
+				</p>
+				<ul>
+					<li>
+						A vehicle for accepting contributor extensions, either in the form of code or documentation
+					</li>
+					<li>
+						Internal development documentation, such as coding style guides and build systems 
+					</li>
+					<li>
+						A public repository with version to version change logs 
+					</li>
+				</ul>
+				<p>
+					The purpose of Planet Yazaar is fill in the gaps and act as a community-based adapter 
+					for the YUI Library. 
+					Our wish is for the Yazaar community to enjoy the best of both worlds: 
+					the cathedral and the bazaar!
+				</p>
+				</blockquote>
+            </div>		  
+            <div id="elYazaarWidgets">
+              <ul>
+                <li>
+                  <a href="examples/dataform/tutorial-tabview.html">
+                    DataForm Widget
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div id="elExtras">
+              <ul>
+                <li>
+                  <a href="examples/extras/dpu/rowfilterdatatable.html">
+                    Enhanced Datatable with Row Filtering and Column Hiding by Victor Morales
+                  </a>
+                </li>
+                <li>
+                  <a href="examples/extras/jc21/validate.html">
+                    JavaScript Validator by Jamie Curnow
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div id="elResources">
+              <ul>
+                <li>
+                  <a href="http://code.google.com/p/yazaar/">
+                    Yazaar Development Site
+                  </a>
+                </li>
+                <li>
+                  <a href="http://www.yui-ext.com/deploy/yui-ext/docs/">
+                    Ext (formerly YUI Ext)
+                  </a>
+                </li>
+                <li>
+                  <a href="http://bubbling.comarq.com/">
+                    Bubbling Library
+                  </a>
+                </li>
+                <li>
+                  <a href="http://blog.mozmonkey.com/2007/classanim-hoverhijax-keeping-presentation-out-of-your-javascript/">
+                    ClassAnim and HoverHijax
+                  </a>
+                </li>
+              </ul>
+            </div>
+        </div>
+        </div>
+      </div>
     </div>
+	  <script type="text/javascript">
+    	var oTabView = new YAHOO.widget.TabView("elTabView");
+  	</script>
   </body>
 </html>
