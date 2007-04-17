@@ -1,4 +1,5 @@
 #summary Quick solutions to common problems (Issue 26)
+#labels Featured
 
 || (!) || Error Message  ||
 || (?) || Error State    ||
