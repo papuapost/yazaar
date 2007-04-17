@@ -43,13 +43,22 @@
       </td></tr>
     </table>
     
-        <div class="ac">
-           <p style="font-weight: bold;">Find a dog:</p>
+		<div class="ac">
+        <form >
+            <div class="yui_datatable" id="elDataTable"></div>
+             <p style="font-weight:bold">Find an order by:
+             <select id="fs" onchange="changeFilter()">
+                <option value="breed">Breed</option>
+                <option value="name" selected="true">Name</option>
+            </select>
+             </p>
             <div class="acF">
-                <input class="acInput" id="acInput1">
+                <input class="acInput" id="acInput1" />
                 <div class="acResult" id="acResult1"></div>
             </div>
-        </div>          
+            <br/><br/>
+           </form>
+        </div>			
     
   </body>
 
@@ -236,8 +245,29 @@ var onBeforeActiveTabChange = function(e) {
 };
 oTabView.on('beforeActiveTabChange', onBeforeActiveTabChange);
 
-
 // Setup filter 
+oDataTable.subscribe("dataReturnEvent",initFilter,oDataTable);
+YAHOO.util.Event.onAvailable("elDataTable", function(){init("elDataTable")});  
+
+function initFilter(oResp,oDataTable){
+    var data=oResp.response;
+    fnFilter= new YAHOO.dpu.util.StringFilter(data,"Title")
+    fnFilter.maxCacheEntries = 0;
+    oAutoComp = new YAHOO.dpu.widget.RowFilter('acInput1','acResult1', oDataTable,fnFilter);
+    var ua = navigator.userAgent.toLowerCase();
+    if(ua.indexOf('msie') != -1 && ua.indexOf('opera') < 0) {
+        oAutoComp.useIFrame = true;    
+    }
+} 
+
+function changeFilter() {
+    var s = document.getElementById("fs");
+    var column= s.options[s.selectedIndex].value;
+    fnFilter.schemaItem=column
+    
+}
+
+
 fnFilter= new YAHOO.dpu.util.StringFilter(YAHOO.example.oPuppies,"name")
 fnFilter.maxCacheEntries = 0;
 oAutoComp = new YAHOO.dpu.widget.RowFilter('acInput1','acResult1', oDataTable,fnFilter);
@@ -245,7 +275,6 @@ var ua = navigator.userAgent.toLowerCase();
 if(ua.indexOf('msie') != -1 && ua.indexOf('opera') < 0) {
         oAutoComp.useIFrame = true;    
 }
-
 
 </script>
 
