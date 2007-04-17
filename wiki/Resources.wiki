@@ -1,0 +1,56 @@
+#summary Yazaar Developer Resources (issue 1)
+
+= View Me First =
+
+ * [http://developer.yahoo.com/yui/theater/ Douglas Crockford — "The JavaScript Programming Language"]
+ * [http://yuiblog.com/blog/2007/01/17/event-plan/ Event Driven Application Design]
+ * [http://jroller.com/page/TedHusted?entry=yuidocs Happy Trails to YUI!]
+
+= Libraries and tools we use =
+
+ * [http://developer.yahoo.com/yui/Yahoo User Interface (YUI) Library]
+ * [http://www.aptana.com/ Aptana IDE]
+ * [http://jsdoc.sourceforge.net/ JSDoc - JavaScript Documentation Tool]
+   * [http://java.sun.com/j2se/javadoc/writingdoccomments/ Writing JavaDoc Comments]
+   * [http://java.sun.com/j2se/1.5.0/docs/tooldocs/windows/javadoc.html The Java API Documentation Generator]
+
+= Similar Projects =
+
+ * [http://www.yui-ext.com/deploy/yui-ext/docs/ Ext (formerly YUI Ext)]
+ * [http://bubbling.comarq.com/ Bubbling Library]
+ * [http://blog.mozmonkey.com/2007/classanim-hoverhijax-keeping-presentation-out-of-your-javascript/ ClassAnim and HoverHijax]
+
+= Development Resources =
+
+ * [http://www.aptana.com/documentation.php Aptana CSS and HTML References]
+ * [http://domscripting.webstandards.org/ DOM Scripting Task Force]
+ * [http://developer.yahoo.net/common/json.html Using JSON (JavaScript Object Notation)]
+   * [http://yuiblog.com/blog/2007/04/10/json-and-browser-security/ JSON and Browser Security]
+ * [http://www.jslint.com/ JSLint, The JavaScript Verifier]
+ * [http://developer.yahoo.net/javascript/ Yahoo! JavaScript Developer Center]
+ * [http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Guide Core JavaScript Guide (1.5)]
+ * [http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference Core JavaScript  * Reference [1.5]]
+ * [http://www.ecma-international.org/publications/files/ecma-st/ECMA-262.pdf ECMAScript Language Specification - 3rd edition (pdf)]
+ * [http://www.quirksmode.org/ QuirksMode by PPK]
+
+= Design Resources =
+
+ * [http://designinginterfaces.com/ Designing Interfaces]
+ * [http://www.designofsites.com/ Design of Sites book]
+ * [http://www.lukew.com/ff/ Functioning Form Functioning Form]
+ * [http://www.visi.com/~snowfall/InteractionPatterns.html Interaction Design Patterns (Erickson)]
+ * [http://www.welie.com/patterns/ Patterns (van Welie)]
+ * [http://www.ajaxpatterns.org/ Ajax Patterns (Mahemoff)]
+ * [http://www.cs.helsinki.fi/u/salaakso/patterns/ User Interface Design Patterns (Laakso)]
+ * [http://webpatterns.org/wordpress/ WebPatterns (Allsop)]
+
+= Other JavaScript Resources =
+
+ * [http://javascript.crockford.com/ Douglas Crockford's Wrrrld Wide Web]
+
+
+
+
+
+
+
