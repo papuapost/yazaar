@@ -1,0 +1,32 @@
+#summary Quick solutions to common problems (Issue 26)
+
+|| (!) || Error Message  ||
+|| (?) || Error State    ||
+|| (/) || Probable Cause || 
+||     ||                ||
+
+== ==
+
+See also [http://code.google.com/p/anvil/wiki/CommonProblems Anvil Common Problems]
+
+=== JavaScript ===
+|| (?) ||  {whatever} is not a constructor. ||
+|| (/) || Ensure that the the script that defines {whatever} is being imported. ||
+
+=== Yahoo User Interface (YUI) Library ===
+
+|| (!) || *this.oDomCainter is null or not an object.* ||
+|| (/) || Check to see that the element ID referenced by a widget constructor actually exists. ||
+|| ||  ||
+|| (?) || *!TabView - One of the "inner" tabs is displaying on the page along with the first tab.* ||
+|| (/) || Check to see if there is any extra markup between the divs that encapsulate the tabs. ||
+|| ||  ||
+|| (!) || *Object expected* (in our script) ||
+|| (!) || *'prototype' is null or not an object* (in yahoo.js) ||
+|| (/) || One or more dependencies are missing or are in the wrong order. Check the Getting Started section for any new widgets that were added. For example, if adding !ContextMenu, see the Menu Getting Started section for the dependencies. ||
+|| || ||
+|| (!) || *Object doesn't support this property or method* (in yahoo.js) ||
+|| (/) || The order of the dependencies may need to be changed. Try  putting any "beta" components last (particularly !DataTable and !DataSource). ||
+|| || ||
+|| (!) || *: 'undefined' is null or not an object* ||
+|| (/) || If data is being input from a static array, there may be an extra comma after the last array item. || 
