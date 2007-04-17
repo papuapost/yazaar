@@ -34,7 +34,7 @@
                 <li><a href="#tab2"><em>Edit (DataForm)</em></a></li>
             </ul>
             <div class="yui-content">
-            <div id="elDataTable"></div>
+            <div id="elDataTable" class="yui_datatable"></div>
             <div id="elDataForm"></div>
             </div>
         </div>
@@ -42,6 +42,15 @@
         <div id="elLogReader"></div>
       </td></tr>
     </table>
+    
+        <div class="ac">
+           <p style="font-weight: bold;">Find a dog:</p>
+            <div class="acF">
+                <input class="acInput" id="acInput1">
+                <div class="acResult" id="acResult1"></div>
+            </div>
+        </div>          
+    
   </body>
 
 <!-- DataTable/DataForm -->
@@ -58,6 +67,55 @@
 <!-- YUI Source files -->
 <script src="http://yui.yahooapis.com/2.2.0/build/datasource/datasource-beta-min.js"></script>
 <script src="http://yui.yahooapis.com/2.2.0/build/datatable/datatable-beta-min.js"></script>
+
+<!-- Dependencies for Context Menu -->
+<!--CSS-->
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.0/build/reset/reset-min.css">
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.0/build/fonts/fonts-min.css">
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.0/build/menu/assets/menu.css">
+<script type="text/javascript" src="http://yui.yahooapis.com/2.2.0/build/container/container_core-min.js"></script>
+<script type="text/javascript" src="http://yui.yahooapis.com/2.2.0/build/menu/menu-min.js"></script>
+<!-- End dependencies for Context Menu -->
+
+<!-- Dependencies for Autocomplete -->
+<!-- Source file -->
+<script type="text/javascript" src="http://yui.yahooapis.com/2.2.0/build/autocomplete/autocomplete-min.js"></script>
+<!-- End dependencies for Autocomplete -->
+
+<!-- DPU RowFilterTable source (extends YUI version) -->
+<!-- CSS -->
+<style type="text/css">
+    /* custom css*/
+    body {font-family:arial}
+    /* CSS FOR DataTable */
+    div.yui_datatable {margin:1em;}
+    div.yui_datatable table {border-collapse:collapse;}
+    div.yui_datatable th, div.yui_datatable td {border:1px solid #F1EFE2;padding:.25em; text-align:center; }
+    div.yui_datatable th {border-bottom:2px solid #D6D2C2; cursor:default;  font-family:arial;   font-size:8pt;  font-size-adjust:none; line-height:normal; background-color:#EBEADB;}
+    div.yui_datatable th img {border-style:none}
+    div.yui_datatable th a   {text-decoration:none; color:black; font-weight:normal}
+    div.yui_datatable th a:hover {text-decoration:underline; }  
+    div.yui_datatable em {font-style:italic;}
+    div.yui_datatable strong {font-weight:bold;}
+    div.yui_datatable .big {font-size:136%;}
+    div.yui_datatable .small {font-size:77%}
+    div.yui_datatable .yui-dt-sortedbyasc .yui-dt-headtext {background-image: url('assets/sort_asc.gif'); background-repeat:no-repeat; background-position:right;}/*arrow up*/ 
+    div.yui_datatable .yui-dt-sortedbydesc .yui-dt-headtext {background-image: url('assets/sort_desc.gif'); background-repeat:no-repeat; background-position:right;}/*arrow down*/
+    div.yui_datatable th .yui-dt-headtext {margin-right:5px;padding-right:15px;} /*room for arrow*/     
+
+    /*CSS For Auto Complete*/
+    .ac {position:relative;padding:1em;}
+    .acF {position:relative;margin:1em;width:15em;}/* set width of widget here*/
+    .acInput {position:absolute;width:100%;height:1.4em;}
+    .acResult {position:absolute;top:1.7em;width:100%;}
+    .acResult .yui-ac-content {position:absolute;width:100%;height:11em;border:1px solid #404040;background:#fff;overflow:auto;overflow-x:hidden;z-index:9050;}
+    .acResult .yui-ac-shadow {position:absolute;margin:.3em;width:100%;background:#a0a0a0;z-index:9049;}
+    .acResult ul {padding:5px 0;width:100%;}
+    .acResult li {padding:0 5px;cursor:default;white-space:nowrap; font-size:small}
+    .acResult li.yui-ac-highlight {background:#ff0;}
+</style>            
+<script type="text/javascript" src="../../../build/extras/dpu/RowFilterDataTable.js" ></script>
+<script type="text/javascript" src="../../../build/extras/dpu/RowFilter.js" ></script>
 <!-- Yazaar Source files -->
 <script src="../../build/dataform/dataform-debug-beta.js"></script>
 <!-- OPTIONAL: jc21 validator -->
@@ -124,7 +182,7 @@ oDataSource.responseSchema = {
     fields: ["name","breed","age"]
 };
 
-var oDataTable = new YAHOO.widget.DataTable("elDataTable", oColumnSet, oDataSource, {rowSingleSelect: true});
+var oDataTable = new YAHOO.dpu.widget.DataTable("elDataTable", oColumnSet, oDataSource, {rowSingleSelect: true});
 // Enable Row Selection
 oDataTable.subscribe("cellClickEvent",oDataTable.onEventSelectRow);
 oDataTable.select(oDataTable.getRow(0));
@@ -177,6 +235,17 @@ var onBeforeActiveTabChange = function(e) {
   }
 };
 oTabView.on('beforeActiveTabChange', onBeforeActiveTabChange);
+
+
+// Setup filter 
+fnFilter= new YAHOO.dpu.util.StringFilter(YAHOO.example.oPuppies,"name")
+fnFilter.maxCacheEntries = 0;
+oAutoComp = new YAHOO.dpu.widget.RowFilter('acInput1','acResult1', oDataTable,fnFilter);
+var ua = navigator.userAgent.toLowerCase();
+if(ua.indexOf('msie') != -1 && ua.indexOf('opera') < 0) {
+        oAutoComp.useIFrame = true;    
+}
+
 
 </script>
 
