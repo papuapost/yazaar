@@ -40,14 +40,22 @@
 		</head><body>
 
 		<div class="yui_datatable" id="elContainer"> <table tabindex="0"><thead tabindex="-1"><tr id="yui-dt0-hdrow0"><th colspan="1" rowspan="1" id="yui-dtcol0"><div class="yui-dt-headcontainer" id="yui-dt0-hdrow0-container0"><span class="yui-dt-headtext" id="yui-dt0-hdrow0-text0">Dog's Name</span></div></th><th colspan="1" rowspan="1" id="yui-dtcol1"><div class="yui-dt-headcontainer" id="yui-dt0-hdrow0-container1"><span class="yui-dt-headtext" id="yui-dt0-hdrow0-text1">Dog's Breed</span></div></th><th colspan="1" rowspan="1" id="yui-dtcol2"><div class="yui-dt-headcontainer" id="yui-dt0-hdrow0-container2"><span class="yui-dt-headtext" id="yui-dt0-hdrow0-text2">Dog's Age (in Weeks)</span></div></th></tr></thead><tbody style="display: none;" tabindex="-1"><tr><td class="yui-dt-loading" colspan="3">Loading data...</td></tr></tbody><tbody class="yui-dt-body" tabindex="-1"><tr class="yui-dt-even" id="yui-dt0-bdrow0"><td class="yui-dt-string" headers="yui-dtcol0" id="yui-dt0-bdrow0-cell0">Ashley</td><td class="yui-dt-string" headers="yui-dtcol1" id="yui-dt0-bdrow0-cell1">German Shepherd</td><td class="yui-dt-number" headers="yui-dtcol2" id="yui-dt0-bdrow0-cell2">12</td></tr><tr class="yui-dt-odd" id="yui-dt0-bdrow1"><td class="yui-dt-string" headers="yui-dtcol0" id="yui-dt0-bdrow1-cell0">Dirty Harry</td><td class="yui-dt-string" headers="yui-dtcol1" id="yui-dt0-bdrow1-cell1">Norwich Terrier</td><td class="yui-dt-number" headers="yui-dtcol2" id="yui-dt0-bdrow1-cell2">5</td></tr><tr class="yui-dt-even" id="yui-dt0-bdrow2"><td class="yui-dt-string" headers="yui-dtcol0" id="yui-dt0-bdrow2-cell0">Emma</td><td class="yui-dt-string" headers="yui-dtcol1" id="yui-dt0-bdrow2-cell1">Labrador Retriever</td><td class="yui-dt-number" headers="yui-dtcol2" id="yui-dt0-bdrow2-cell2">9</td></tr><tr class="yui-dt-odd" id="yui-dt0-bdrow3"><td class="yui-dt-string" headers="yui-dtcol0" id="yui-dt0-bdrow3-cell0">Oscar</td><td class="yui-dt-string" headers="yui-dtcol1" id="yui-dt0-bdrow3-cell1">Yorkshire Terrier</td><td class="yui-dt-number" headers="yui-dtcol2" id="yui-dt0-bdrow3-cell2">6</td></tr><tr class="yui-dt-even" id="yui-dt0-bdrow4"><td class="yui-dt-string" headers="yui-dtcol0" id="yui-dt0-bdrow4-cell0">Riley</td><td class="yui-dt-string" headers="yui-dtcol1" id="yui-dt0-bdrow4-cell1">Golden Retriever</td><td class="yui-dt-number" headers="yui-dtcol2" id="yui-dt0-bdrow4-cell2">6</td></tr><tr class="yui-dt-odd" id="yui-dt0-bdrow5"><td class="yui-dt-string" headers="yui-dtcol0" id="yui-dt0-bdrow5-cell0">Shannon</td><td class="yui-dt-string" headers="yui-dtcol1" id="yui-dt0-bdrow5-cell1">Greyhound</td><td class="yui-dt-number" headers="yui-dtcol2" id="yui-dt0-bdrow5-cell2">12</td></tr><tr class="yui-dt-even" id="yui-dt0-bdrow6"><td class="yui-dt-string" headers="yui-dtcol0" id="yui-dt0-bdrow6-cell0">Washington</td><td class="yui-dt-string" headers="yui-dtcol1" id="yui-dt0-bdrow6-cell1">English Bulldog</td><td class="yui-dt-number" headers="yui-dtcol2" id="yui-dt0-bdrow6-cell2">8</td></tr><tr class="yui-dt-odd" id="yui-dt0-bdrow7"><td class="yui-dt-string" headers="yui-dtcol0" id="yui-dt0-bdrow7-cell0">Zoe</td><td class="yui-dt-string" headers="yui-dtcol1" id="yui-dt0-bdrow7-cell1">Labrador Retriever</td><td class="yui-dt-number" headers="yui-dtcol2" id="yui-dt0-bdrow7-cell2">3</td></tr></tbody></table></div>
-
 		
 		<div class="ac">
-	       <p style="font-weight: bold;">Find a dog:</p>
+        <form >
+            <div class="yui_datatable" id="table1"></div>
+             <p style="font-weight:bold">Find an order by:
+             <select id="fs" onchange="changeFilter()">
+                <option value="breed">Breed</option>
+                <option value="name" selected="true">Name</option>
+            </select>
+             </p>
             <div class="acF">
-           	    <input class="acInput" id="acInput1">
+                <input class="acInput" id="acInput1" />
                 <div class="acResult" id="acResult1"></div>
             </div>
+            <br/><br/>
+           </form>
         </div>			
 <!-- Dependencies for DataTable -->
 <!-- Required CSS -->
@@ -120,6 +128,26 @@ oDataSource.responseSchema = {
 
 
 var oDataTable = new YAHOO.dpu.widget.DataTable("elContainer", oColumnSet, oDataSource);
+oDataTable.subscribe("dataReturnEvent",initFilter,oDataTable);
+YAHOO.util.Event.onAvailable("elContainer", function(){init("elContainer")});  
+
+function initFilter(oResp,oDataTable){
+    var data=oResp.response;
+    fnFilter= new YAHOO.dpu.util.StringFilter(data,"Title")
+    fnFilter.maxCacheEntries = 0;
+    oAutoComp = new YAHOO.dpu.widget.RowFilter('acInput1','acResult1', oDataTable,fnFilter);
+    var ua = navigator.userAgent.toLowerCase();
+    if(ua.indexOf('msie') != -1 && ua.indexOf('opera') < 0) {
+        oAutoComp.useIFrame = true;    
+    }
+} 
+
+function changeFilter() {
+    var s = document.getElementById("fs");
+    var column= s.options[s.selectedIndex].value;
+    fnFilter.schemaItem=column
+    
+}
 
 fnFilter= new YAHOO.dpu.util.StringFilter(YAHOO.example.puppies,"name")
 fnFilter.maxCacheEntries = 0;
@@ -130,5 +158,4 @@ if(ua.indexOf('msie') != -1 && ua.indexOf('opera') < 0) {
 }
 
 </script>
-
 </body></html>
