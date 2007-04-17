@@ -1,4 +1,5 @@
 #summary Yazaar Developer Resources (issue 1)
+#labels Featured
 
 = View Me First =
 
@@ -47,10 +48,8 @@
 = Other JavaScript Resources =
 
  * [http://javascript.crockford.com/ Douglas Crockford's Wrrrld Wide Web]
-
-
-
-
+ * [http://www.ebook.gen.tr/ajax/Professional%20Ajax%20Php.pdf Professional Ajax (1st Ed)]
+ * [http://msexchangeteam.com/archive/2005/06/21/406646.aspx How Ajax began]
 
 
 
