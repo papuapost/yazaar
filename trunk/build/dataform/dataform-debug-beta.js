@@ -7,8 +7,8 @@ http://developer.yahoo.net/yui/license.txt
 /**
  * The DataForm widget displays a data-entry form that utilizes a ColumnSet 
  * to describe the input controls and a DataSource to store new records and 
- * to populate the fields from a prexisting record (if any). This widget raises 
- * events bundling the record data so that clients can update a remote 
+ * to populate fields from a prexisting record (if any). This widget raises 
+ * events that bundle record data so that clients can update a remote 
  * persistant store, namely updateEvent, insertEvent, deleteEvent, resetEvent, 
  * and cancelEvent.
  * <p>
@@ -32,10 +32,12 @@ http://developer.yahoo.net/yui/license.txt
  * MinLength is a custom attribute utilized by the jc21 validation 
  * module. To enabled inserting a new record with default values, 
  * the <code>formValue</code> property is provided.  
+ * <p>
  * 
  * (TODO: Log events for bulk updates, perhaps after reconnecting?)
  * (TODO: Batch or bulk edit selected rows?)
  *
+ * @see <a href="DataFormWalkThrough">http://code.google.com/p/yazaar/wiki/DataFormWalkThrough</a>
  * @module yazaar
  * @requires yahoo, dom, event, datasource
  * @title DataForm Widget
@@ -58,34 +60,34 @@ YAHOO.namespace("yazaar.widget");
 //
 /////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Creates and configures a new DataForm instance.
-     * <p>
-     * To share a RecordSet with a DataTable, include a oDataTable property 
-     * in the oConfigs, and pass its ColumnSet and DataSource through the 
-     * signature. If a oDataTable property is not passed, then this object 
-     * creates it's own RecordSet instance.
-     *
-     * @event checkboxClickEvent
-     * @param elContainer The element name or object to host the widget
-     * @param oConfigs Property settings. May include oDataTable.
-     */	
+/**
+ * Creates and configures a new DataForm instance.
+ * <p>
+ * To share a RecordSet with a DataTable, include a oDataTable property 
+ * in the oConfigs, and pass its ColumnSet and DataSource through the 
+ * signature. If a oDataTable property is not passed, then this object 
+ * creates it's own RecordSet instance.
+ *
+ * @event checkboxClickEvent
+ * @param elContainer The element name or object to host the widget
+ * @param oConfigs Property settings. May include oDataTable.
+*/	
 YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
 
-    // Internal vars
+    // identify
     var i;
     this._nIndex = YAHOO.yazaar.widget.DataForm._nCount;
     this._sName = "instance" + this._nIndex;
     this.id = "anvil-df"+this._nIndex;
 
-    // Validate configs
+    // configure
     if(typeof oConfigs == "object") {
         for(var sConfig in oConfigs) {
             this[sConfig] = oConfigs[sConfig];
         }
     }
 	
-    // Validate DataSource
+    // validate DataSource
     if(oDataSource) {
         if(oDataSource instanceof YAHOO.util.DataSource) {
             this.dataSource = oDataSource;
@@ -95,7 +97,7 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
         }
     }
 
-    // Validate ColumnSet
+    // validate ColumnSet
     if(oColumnSet && (oColumnSet instanceof YAHOO.widget.ColumnSet)) {
         this._oColumnSet = oColumnSet;
     }
@@ -104,7 +106,13 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
         return;
     }
     
-    // Adopt or create RecordSet
+    // validate HTML Element
+    elContainer = YAHOO.util.Dom.get(elContainer);
+	var isContainer = elContainer && elContainer.tagName && (elContainer.tagName.toLowerCase() == "div"); 
+    if (isContainer) {
+        this._elContainer = elContainer;
+		
+    // adopt or create RecordSet
 	var oDataTable = this.oDataTable;
 	if (oDataTable) {
 	   var isValid = (oDataTable instanceof YAHOO.widget.DataTable); 
@@ -121,12 +129,8 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
 		YAHOO.log("Creating new RecordSet", "info", this.toString()); // debug
 	}
 
-    // Validate HTML Element
-    elContainer = YAHOO.util.Dom.get(elContainer);
-	var isContainer = elContainer && elContainer.tagName && (elContainer.tagName.toLowerCase() == "div"); 
-    if (isContainer) {
-        this._elContainer = elContainer;
-		
+	// enhance markup
+	
         // TODO: Peek in container child nodes to see if TABLE already exists
         
 		// TODO: Progressively enhance an existing form from markup...
@@ -192,7 +196,7 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
      * @param oArgs.event {HTMLEvent} The event object.
      * @param oArgs.target {HTMLElement} The RADIO element.
      */
-    this.createEvent("radioClickEvent");
+    this.createEvent("checkboxClickEvent");
     	
     /**
      * Fired when DataForm instance is first initialized.
@@ -505,7 +509,7 @@ YAHOO.yazaar.widget.DataForm.prototype._oRecord = null;
 /**
  * Creates HTML markup for FORM, TABLE, THEAD, TBODY.
  *
- * @method _initForm
+ * @method _initButton
  * @private
  */
 YAHOO.yazaar.widget.DataForm.prototype._initButton = function(el,id,s) {
@@ -696,6 +700,87 @@ YAHOO.yazaar.widget.DataForm.prototype._initHeadCell = function(elHeadCell,oColu
     elHeadContent.innerHTML = contentText;
 };
 
+/**
+ * Handles form cancel by raising a cancelEvent that bundles the 
+ * original record values.
+ * <p>
+ * Raises cancelEvent. 
+ * 
+ * @method _onCancel
+ * @param e {HTMLEvent} The click event.
+ * @param oSelf {YAHOO.yazaar.widget.DataForm} DataForm instance.
+ * @private
+ */
+YAHOO.yazaar.widget.DataForm.prototype._onCancel = function(e, oSelf) {	
+    	var oRecord = oSelf._oRecord; // Restore this reference				
+		oSelf.fireEvent("cancelEvent", {oRecord: oRecord});
+		oSelf.logRecordEvent("cancelEvent", oRecord); // debug 
+};
+
+/**
+ * Handles form reset by restoring the original values.
+ * <p>
+ * Repopulates form from Recordset, and raises resetEvent.
+ * 
+ * @method _onReset
+ * @param e {HTMLEvent} The click event.
+ * @param oSelf {YAHOO.yazaar.widget.DataForm} DataForm instance.
+ * @private
+ */
+YAHOO.yazaar.widget.DataForm.prototype._onReset = function(e, oSelf) {
+		var oRecord = oSelf._oRecord; // Restore this reference				
+		var aFields = oSelf._aFields;
+		var nFields = aFields.length;
+		for (var i=0; i<nFields; i++) {
+				// TODO: Subclass fields only?
+			var elInput = aFields[i];
+			elInput.value = oRecord[elInput.name];
+		} 				
+    	oSelf.fireEvent("resetEvent", {oRecord:oRecord});		
+		oSelf.logRecordEvent("resetEvent", oRecord); // debug
+};
+
+/**
+ * Handles form submit.
+ * <p>
+ * Updates internal record from data is retrieved from input controls, 
+ * and raises updateEvent with new and old record values and an "isChanged" 
+ * boolean property, so that listeners can update external records.
+ *
+ * @method _onSubmit
+ * @param e {HTMLEvent} The click event.
+ * @param oSelf {YAHOO.yazaar.widget.DataForm} DataForm instance.
+ * @private
+ */
+YAHOO.yazaar.widget.DataForm.prototype._onSubmit = function(e, oSelf) {
+	
+	if (oSelf.isInvalidInput()) return;
+	
+	// Gather the usual suspects
+	var oRecord = oSelf._oRecord;
+	var oPrevRecord = oSelf.copyRecord();	
+	var oNewRecord = oSelf.harvestForm();			
+	// Check to see if anything changed
+	var isChanged = oSelf.isRecordChanged(oNewRecord);
+	if (isChanged) {
+		for (var prop in oRecord) {
+			oRecord[prop] = oNewRecord[prop]			
+		}		 
+	}
+	// Raise updateEvent
+	var context = {oRecord: oNewRecord, oPrevRecord: oPrevRecord, isChanged: isChanged};	
+   	oSelf.fireEvent("updateEvent", context);
+	var sLog = (isChanged) ? "updateEvent" : "updateEvent (no change)"; 
+	oSelf.logRecordEvent(sLog, oNewRecord, oPrevRecord); // debug
+	if (isChanged) {
+		// Refresh the table	
+		var oDataTable = oSelf.oDataTable;
+		if (oDataTable) {
+			oDataTable.showPage(oDataTable.pageCurrent);	
+		}		
+	} 
+};
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Public member variables
@@ -841,7 +926,7 @@ YAHOO.yazaar.widget.DataForm.prototype.isRecordChanged = function(oNewRecord) {
  * <p>
  * This implementation depends on Jamie Curnow's validate script.
  */
-YAHOO.yazaar.widget.DataForm.prototype.isValidInput = function() {
+YAHOO.yazaar.widget.DataForm.prototype.isInvalidInput = function() {
 	var errs = new Array();
 	var all_valid = true;	
 
@@ -935,15 +1020,16 @@ YAHOO.yazaar.widget.DataForm.prototype.isValidInput = function() {
 	} //end for i
 	*/
 	
-	if (!all_valid) {
+	var isInvalid = !all_valid;
+	if (isInvalid) {
 		if (errs.length > 0){
 			alert("We have found the following error(s):\n\n  * "+errs.join("\n  * ")+"\n\nPlease check the fields and try again");
 		} else {
 			alert('Some required values are not correct. Please check the items in red.');
 		}
 	}
-	return all_valid;
-} // end isValidInput
+	return isInvalid;
+} // end isInvalidInput
 
 /**
  * Log that an event is raised, including the record and old record data as JSON strings.
@@ -1058,7 +1144,6 @@ YAHOO.yazaar.widget.DataForm.prototype.showLoadingMessage = function() {
  * @method toString
  * @return {String} Unique name of the DataSource instance.
  */
-
 YAHOO.yazaar.widget.DataForm.prototype.toString = function() {
     return "DataForm " + this._sName;
 };
@@ -1070,7 +1155,7 @@ YAHOO.yazaar.widget.DataForm.prototype.toString = function() {
 /////////////////////////////////////////////////////////////////////////////
 
 /**
- * Handles data return for adding new rows to table, including updating pagination.
+ * Handles data return by populating form fields.
  *
  * @method onDataReturnPopulateForm
  * @param sRequest {String} Original request.
@@ -1080,10 +1165,10 @@ YAHOO.yazaar.widget.DataForm.prototype.onDataReturnPopulateForm = function(sRequ
     this.fireEvent("dataReturnEvent", {request:sRequest,response:oResponse});
     
     var ok = this.doBeforeLoadData(sRequest, oResponse);
-    if(ok) {
+    if (ok) {
         // Update the RecordSet from the response
         var newRecords = this._oRecordSet.append(oResponse);
-        if(newRecords) {
+        if (newRecords) {
             // Update markup
             this.populateForm();
             YAHOO.log("Data returned for " + newRecords.length + " rows","info",this.toString());			
@@ -1091,80 +1176,3 @@ YAHOO.yazaar.widget.DataForm.prototype.onDataReturnPopulateForm = function(sRequ
     }
 };
 
-/**
- * Handles form cancel.
- * <p>
- * Raises cancelEvent. 
- * 
- * @method _onCancel
- * @param e {HTMLEvent} The click event.
- * @param oSelf {YAHOO.yazaar.widget.DataForm} DataForm instance.
- * @private
- */
-YAHOO.yazaar.widget.DataForm.prototype._onCancel = function(e, oSelf) {	
-    	var oRecord = oSelf._oRecord; // Restore this reference				
-		oSelf.fireEvent("cancelEvent", {oRecord: oRecord});
-		oSelf.logRecordEvent("cancelEvent", oRecord); // debug 
-};
-
-/**
- * Handles form reset.
- * <p>
- * Repopulates form from Recordset, and raises resetEvent.
- * 
- * @method _onReset
- * @param e {HTMLEvent} The click event.
- * @param oSelf {YAHOO.yazaar.widget.DataForm} DataForm instance.
- * @private
- */
-YAHOO.yazaar.widget.DataForm.prototype._onReset = function(e, oSelf) {
-		var oRecord = oSelf._oRecord; // Restore this reference				
-		var aFields = oSelf._aFields;
-		var nFields = aFields.length;
-		for (var i=0; i<nFields; i++) {
-				// TODO: Subclass fields only?
-			var elInput = aFields[i];
-			elInput.value = oRecord[elInput.name];
-		} 				
-    	oSelf.fireEvent("resetEvent", {oRecord:oRecord});		
-		oSelf.logRecordEvent("resetEvent", oRecord); // debug
-};
-
-/**
- * Handles form submit.
- * <p>
- * Updates internal record from data is retrieved from input controls, 
- * and raises formEditEvent with new and old record values so that 
- * listeners can update external records.
- *
- * @method _onSubmit
- * @param e {HTMLEvent} The click event.
- * @param oSelf {YAHOO.yazaar.widget.DataForm} DataForm instance.
- * @private
- */
-YAHOO.yazaar.widget.DataForm.prototype._onSubmit = function(e, oSelf) {
-	
-	if (!oSelf.isValidInput()) return;
-	
-	// Gather the usual suspects
-	var oRecord = oSelf._oRecord;
-	var oPrevRecord = oSelf.copyRecord();	
-	var oNewRecord = oSelf.harvestForm();			
-	// Check to see if anything changed
-	var isChanged = oSelf.isRecordChanged(oNewRecord);
-	if (isChanged) {
-		for (var prop in oRecord) {
-			oRecord[prop] = oNewRecord[prop]			
-		}		 
-	}
-	// Fire and log
-	var context = {oRecord: oNewRecord, oPrevRecord: oPrevRecord, isChanged: isChanged};	
-   	oSelf.fireEvent("updateEvent", context);
-	var sLog = (isChanged) ? "updateEvent" : "updateEvent (no change)"; 
-	oSelf.logRecordEvent(sLog, oNewRecord, oPrevRecord); // debug 
-	// Refresh the table	
-	var oDataTable = oSelf.oDataTable;
-	if (oDataTable) {
-		oDataTable.showPage(oDataTable.pageCurrent);	
-	}
-};
