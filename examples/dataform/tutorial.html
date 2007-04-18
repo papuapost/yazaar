@@ -3,6 +3,24 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <title>DataForm</title>
+<style type="text/css">
+    /* custom css*/
+    body {font-family:arial}
+	
+    /* CSS FOR DataTable */	
+    #elDataTable {margin:1em;}
+    #elDataTable table {border-collapse:collapse;}
+    #elDataTable th, #elDataTable td {border:1px solid #000;padding:.25em;}
+    #elDataTable th {background-color:#BEDAFF}
+    #elDataTable.yui-dt-odd {background-color:#eee;} /*light gray*/
+    #elDataTable em {font-style:italic;}
+    #elDataTable strong {font-weight:bold;}
+    #elDataTable .big {font-size:136%;}
+    #elDataTable .small {font-size:77%}
+    #elDataTable .yui-dt-selected {background-color:#000;color:#FFF;} /*white on black*/
+    #elDataTable .yui-dt-editable.yui-dt-highlight {background-color:#BEDAFF;} /*light blue*/
+  </style>
+  
   </head>
   <body>
 
@@ -37,6 +55,14 @@
 
   </body>
 
+<!-- Patch for IE setAttribute issue [http://delete.me.uk/2004/09/ieproto.html] -->
+<!--[if IE]>  
+    <script type="text/javascript" src="../../build/extras/ieproto/attributes.js"></script>
+    <style type="text/css">
+        * { behavior: url(../../build/extras/ieproto/attributes.htc); }
+    </style>
+<![endif]-->  
+
 <!-- Required CSS -->
 <link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.2.0/build/datatable/assets/datatable.css">
 <!-- Dependencies -->
@@ -63,6 +89,7 @@
 </script>
 
 <!-- Page script -->
+<script src="../../build/extras/jc21/validate-min.js"></script>
 <script type="text/javascript">
 var oColumnHeaders = [
     {key:"name", text:"Dog's Name"},
@@ -88,7 +115,38 @@ oDataSource.responseSchema = {
     fields: ["name","breed","age"]
 };
 
-var oDataTable = new YAHOO.widget.DataTable("elDataTable", oColumnSet, oDataSource);
+var oDataTable = new YAHOO.widget.DataTable("elDataTable", oColumnSet, oDataSource, {rowSingleSelect: true});
+// Enable Row Selection
+oDataTable.subscribe("cellClickEvent",oDataTable.onEventSelectRow);
+oDataTable.select(oDataTable.getRow(0));
+// poulate form
+var onRecordSelectEvent = function () {
+  oDataForm.populateForm();
+}
+oDataTable.subscribe("recordSelectEvent", onRecordSelectEvent);
+
+// Create our own event for selecting the record behind a row
+oDataTable.createEvent("recordSelectEvent");
+
+// Raise our event when a row is selected
+var onRowClickEvent = function(oArgs) {
+
+    var dt = oDataTable;
+    var rs = dt.getRecordSet();
+    var row = dt.getSelectedRecordIds();
+    if (row.length===0) {
+        dt.getRow(0); // No row was selected
+        row = dt.getSelectedRecordIds();
+    }
+    var oRecord = rs.getRecord(row[row.length-1]); // ISSUE: Returns row selected on each page
+
+  // Raise RecordSelectEvent with payload
+  this.fireEvent("recordSelectEvent",{record:oRecord});
+  YAHOO.log("Selected Record: " + oRecord.toJSONString());
+}
+oDataTable.subscribe("cellClickEvent", onRowClickEvent);
+
+
 var oConfigs = {oDataTable: oDataTable};
 var oDataForm = new YAHOO.yazaar.widget.DataForm("elDataForm", oColumnSet, oDataSource, oConfigs);
 
