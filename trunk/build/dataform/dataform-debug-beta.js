@@ -513,11 +513,21 @@ YAHOO.yazaar.widget.DataForm.prototype._oRecord = null;
  * @method _initButton
  * @private
  */
-YAHOO.yazaar.widget.DataForm.prototype._initButton = function(el,id,s) {
-	el.setAttribute("type", "button");
+YAHOO.yazaar.widget.DataForm.prototype._initButton = function(name,parent,id,s) {
+	var el;
+	try { 
+		el = document.createElement("<input type='button' />"); // IE idiom
+	}
+	catch(err) { 
+		el = document.createElement("input"); // w3c idiom
+		el.setAttribute("type", "button"); 
+	}
+	el.setAttribute("name", name);
 	el.setAttribute("id", id + "_" + s);
 	el.setAttribute("value", s);
 	el.setAttribute("alt", s);
+	parent.appendChild(el);
+	return el;	
 }
 
 /**
@@ -580,18 +590,15 @@ YAHOO.yazaar.widget.DataForm.prototype._initForm = function() {
 	elMenuCell.colSpan = nColSpan; 
 	
 	// Submit
-	var elSubmit = elMenuCell.appendChild(document.createElement("input"));
-	initButton(elSubmit, sForm_id, YAHOO.yazaar.widget.DataForm.MSG_SUBMIT);
+	var elSubmit = initButton("elSubmit", elMenuCell, sForm_id, YAHOO.yazaar.widget.DataForm.MSG_SUBMIT);	
 	YAHOO.util.Event.addListener(elSubmit, "click", this._onSubmit, this);
 	
  	// Reset
-	var elReset = elMenuCell.appendChild(document.createElement("input"));
-	initButton(elReset, sForm_id, YAHOO.yazaar.widget.DataForm.MSG_RESET);
+	var elReset = initButton("elReset", elMenuCell, sForm_id, YAHOO.yazaar.widget.DataForm.MSG_RESET);
 	YAHOO.util.Event.addListener(elReset, "click", this._onReset, this);
 
 	// Cancel 
-	var elCancel = elMenuCell.appendChild(document.createElement("input"));
-	initButton(elCancel, sForm_id, YAHOO.yazaar.widget.DataForm.MSG_CANCEL);
+	var elCancel = initButton("elCancel", elMenuCell, sForm_id, YAHOO.yazaar.widget.DataForm.MSG_CANCEL);
 	YAHOO.util.Event.addListener(elCancel, "click", this._onCancel, this);
      
 	// Note elements for future reference

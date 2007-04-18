@@ -175,7 +175,7 @@ var onRowClickEvent = function(oArgs) {
     var oRecord = rs.getRecord(row[row.length-1]); // ISSUE: Returns row selected on each page
 
   // Raise RecordSelectEvent with payload
-    this.fireEvent("recordSelectEvent",{record:oRecord});
+  this.fireEvent("recordSelectEvent",{record:oRecord});
   YAHOO.log("Selected Record: " + oRecord.toJSONString());
 }
 oDataTable.subscribe("cellClickEvent", onRowClickEvent);
