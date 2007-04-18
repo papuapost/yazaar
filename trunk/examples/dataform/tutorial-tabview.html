@@ -34,30 +34,34 @@
                 <li><a href="#edit"><em>Edit (DataForm)</em></a></li>
             </ul>
             <div class="yui-content">
-            <div id="elDataTable" class="dpu-dt"></div>
-            <div id="elDataForm"></div>
+				<div id="elList">
+					<div class="filter">
+        				<form >
+             				<p style="font-weight:bold">Find an order by:
+             				<select id="item" onchange="onFilterChange()">
+                				<option value="breed">Breed</option>
+                				<option value="name" selected="true">Name</option>
+            				</select>
+             				</p>
+            				<div class="filterForm">
+							<p>
+                				<input class="filterInput" id="input" />
+                				<div class="filterMatch" id="match"></div>
+							</p>
+            				</div>
+         				</form>
+    			    </div>			
+    	            <div id="elDataTable" class="dpu-dt"></div>				
+				</div>
+				<div id="elEdit">
+		            <div id="elDataForm"></div>				
+				</div>
             </div>
         </div>
       </td><td>
         <div id="elLogReader"></div>
       </td></tr>
     </table>
-    
-		<div class="filter">
-        <form >
-             <p style="font-weight:bold">Find an order by:
-             <select id="item" onchange="onFilterChange()">
-                <option value="breed">Breed</option>
-                <option value="name" selected="true">Name</option>
-            </select>
-             </p>
-            <div class="filterForm">
-                <input class="filterInput" id="input" />
-                <div class="filterMatch" id="match"></div>
-            </div>
-            <br/><br/>
-           </form>
-        </div>			
     
   </body>
 
