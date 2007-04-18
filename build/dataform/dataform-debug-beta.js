@@ -172,6 +172,7 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
 	
     //YAHOO.util.Event.addListener(elForm, "focus", this._onFocus, this);
     //YAHOO.util.Event.addListener(elForm, "blur", this._onBlur, this);
+	YAHOO.util.Event.addListener(document, "keyup", this._onDocumentKeyup, this);	
 
     /////////////////////////////////////////////////////////////////////////////
     //
@@ -717,6 +718,17 @@ YAHOO.yazaar.widget.DataForm.prototype._onCancel = function(e, oSelf) {
 		oSelf.logRecordEvent("cancelEvent", oRecord); // debug 
 };
 
+YAHOO.yazaar.widget.DataForm.prototype._onDocumentKeyup = function(e, oSelf) {
+    if (!oSelf.isActive) return;
+    // escape ?
+    if (e.keyCode == 27)  {
+    }
+    // enter Saves active editor data
+    if (e.keyCode == 13) {
+		oSelf._onSubmit(e, oSelf); // TODO: Is this kosher, or should we raise an event?
+    }
+}
+
 /**
  * Handles form reset by restoring the original values.
  * <p>
@@ -786,6 +798,14 @@ YAHOO.yazaar.widget.DataForm.prototype._onSubmit = function(e, oSelf) {
 // Public member variables
 //
 /////////////////////////////////////////////////////////////////////////////
+
+/**
+ * True if the DataForm is active and receiving input. 
+ *
+ * @property isActive
+ * @type Boolean
+ */
+YAHOO.yazaar.widget.DataForm.prototype.isActive = false;
 
 /**
  * True if the DataForm is empty of data. False if DataForm is populated with

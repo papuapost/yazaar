@@ -206,7 +206,13 @@ var onBeforeActiveTabChange = function(e) {
     return true;
   }
 };
+
+var onActiveTabChange = function(e) {
+	oDataForm.isActive = (1==oTabView.get('activeIndex'));
+}
+
 oTabView.on('beforeActiveTabChange', onBeforeActiveTabChange);
+oTabView.on('activeTabChange', onActiveTabChange);
 
 // Setup filter 
 var fnFilter = null;
