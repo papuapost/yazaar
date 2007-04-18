@@ -161,7 +161,7 @@ oDataTable.createEvent("recordSelectEvent");
 // Raise our event when a row is selected
 var onRowClickEvent = function(oArgs) {
 
-  var dt = oDataTable;
+    var dt = oDataTable;
     var rs = dt.getRecordSet();
     var row = dt.getSelectedRecordIds();
     if (row.length===0) {

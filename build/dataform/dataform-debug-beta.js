@@ -1075,11 +1075,14 @@ YAHOO.yazaar.widget.DataForm.prototype.logRecordEvent = function(sEventName, oRe
  */
 YAHOO.yazaar.widget.DataForm.prototype.populateForm = function() {	
     this.hideTableMessages();
-	var oRecordSet =  this._oRecordSet;
 	var oDataTable = this.oDataTable;
-    var oSelectedRecords = 	(oDataTable) ? oDataTable.getSelectedRecordIds() : this.getSelectedRecordIds();
+	var isShared = !!(oDataTable);
+	var oRecordSet =  (isShared) ? oDataTable._oRecordSet : this._oRecordSet;
+    var oSelectedRecords = 	(isShared) ? oDataTable.getSelectedRecordIds() : this.getSelectedRecordIds();
 	// TODO: For YUI 2.2.1, change to oRecordSet.getRecord(0);
-    var oRecord = (oSelectedRecords.length > 0) ? oRecordSet.getRecord(oSelectedRecords[0]) : oRecordSet._records[0];
+	var nLength = oSelectedRecords.length;
+	// TODO: For YUI 2.2.1, confirm that we still need to grab last selected record
+    var oRecord = (nLength > 0) ? oRecordSet.getRecord(oSelectedRecords[nLength-1]) : oRecordSet._records[0];
     var oTree = this._oColumnSet.tree;
 	var aFields = this._aFields; 	
 	var n = 0;
