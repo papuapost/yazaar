@@ -30,11 +30,11 @@
       <tr><td valign="top" width="98%">
         <div id="elTabView" class="yui-navset">
             <ul class="yui-nav">
-                <li class="selected"><a href="#tab1"><em>List (DataTable)</em></a></li>
-                <li><a href="#tab2"><em>Edit (DataForm)</em></a></li>
+                <li class="selected"><a href="#list"><em>List (DataTable)</em></a></li>
+                <li><a href="#edit"><em>Edit (DataForm)</em></a></li>
             </ul>
             <div class="yui-content">
-            <div id="elDataTable" class="yui_datatable"></div>
+            <div id="elDataTable" class="dpu-dt"></div>
             <div id="elDataForm"></div>
             </div>
         </div>
@@ -43,18 +43,17 @@
       </td></tr>
     </table>
     
-		<div class="ac">
+		<div class="filter">
         <form >
-            <div class="yui_datatable" id="elDataTable"></div>
              <p style="font-weight:bold">Find an order by:
-             <select id="fs" onchange="changeFilter()">
+             <select id="item" onchange="onFilterChange()">
                 <option value="breed">Breed</option>
                 <option value="name" selected="true">Name</option>
             </select>
              </p>
-            <div class="acF">
-                <input class="acInput" id="acInput1" />
-                <div class="acResult" id="acResult1"></div>
+            <div class="filterForm">
+                <input class="filterInput" id="input" />
+                <div class="filterMatch" id="match"></div>
             </div>
             <br/><br/>
            </form>
@@ -97,31 +96,31 @@
     /* custom css*/
     body {font-family:arial}
     /* CSS FOR DataTable */
-    div.yui_datatable {margin:1em;}
-    div.yui_datatable table {border-collapse:collapse;}
-    div.yui_datatable th, div.yui_datatable td {border:1px solid #F1EFE2;padding:.25em; text-align:center; }
-    div.yui_datatable th {border-bottom:2px solid #D6D2C2; cursor:default;  font-family:arial;   font-size:8pt;  font-size-adjust:none; line-height:normal; background-color:#EBEADB;}
-    div.yui_datatable th img {border-style:none}
-    div.yui_datatable th a   {text-decoration:none; color:black; font-weight:normal}
-    div.yui_datatable th a:hover {text-decoration:underline; }  
-    div.yui_datatable em {font-style:italic;}
-    div.yui_datatable strong {font-weight:bold;}
-    div.yui_datatable .big {font-size:136%;}
-    div.yui_datatable .small {font-size:77%}
-    div.yui_datatable .yui-dt-sortedbyasc .yui-dt-headtext {background-image: url('assets/sort_asc.gif'); background-repeat:no-repeat; background-position:right;}/*arrow up*/ 
-    div.yui_datatable .yui-dt-sortedbydesc .yui-dt-headtext {background-image: url('assets/sort_desc.gif'); background-repeat:no-repeat; background-position:right;}/*arrow down*/
-    div.yui_datatable th .yui-dt-headtext {margin-right:5px;padding-right:15px;} /*room for arrow*/     
+    .dpu-dt {margin:1em;}
+    .dpu-dt table {border-collapse:collapse;}
+    .dpu-dt th, div.dpu-dt td {border:1px solid #F1EFE2;padding:.25em; text-align:center; }
+    .dpu-dt th {border-bottom:2px solid #D6D2C2; cursor:default;  font-family:arial;   font-size:8pt;  font-size-adjust:none; line-height:normal; background-color:#EBEADB;}
+    .dpu-dt th img {border-style:none}
+    .dpu-dt th a   {text-decoration:none; color:black; font-weight:normal}
+    .dpu-dt th a:hover {text-decoration:underline; }  
+    .dpu-dt em {font-style:italic;}
+    .dpu-dt strong {font-weight:bold;}
+    .dpu-dt .big {font-size:136%;}
+    .dpu-dt .small {font-size:77%}
+    .dpu-dt .yui-dt-sortedbyasc .yui-dt-headtext {background-image: url('assets/sort_asc.gif'); background-repeat:no-repeat; background-position:right;}/*arrow up*/ 
+    .dpu-dt .yui-dt-sortedbydesc .yui-dt-headtext {background-image: url('assets/sort_desc.gif'); background-repeat:no-repeat; background-position:right;}/*arrow down*/
+    .dpu-dt th .yui-dt-headtext {margin-right:5px;padding-right:15px;} /*room for arrow*/     
 
     /*CSS For Auto Complete*/
-    .ac {position:relative;padding:1em;}
-    .acF {position:relative;margin:1em;width:15em;}/* set width of widget here*/
-    .acInput {position:absolute;width:100%;height:1.4em;}
-    .acResult {position:absolute;top:1.7em;width:100%;}
-    .acResult .yui-ac-content {position:absolute;width:100%;height:11em;border:1px solid #404040;background:#fff;overflow:auto;overflow-x:hidden;z-index:9050;}
-    .acResult .yui-ac-shadow {position:absolute;margin:.3em;width:100%;background:#a0a0a0;z-index:9049;}
-    .acResult ul {padding:5px 0;width:100%;}
-    .acResult li {padding:0 5px;cursor:default;white-space:nowrap; font-size:small}
-    .acResult li.yui-ac-highlight {background:#ff0;}
+    .filter {position:relative;padding:1em;}
+    .filterForm {position:relative;margin:1em;width:15em;}/* set width of widget here*/
+    .filterInput {position:absolute;width:100%;height:1.4em;}
+    .filterMatch {position:absolute;top:1.7em;width:100%;}
+    .filterMatch .yui-ac-content {position:absolute;width:100%;height:11em;border:1px solid #404040;background:#fff;overflow:auto;overflow-x:hidden;z-index:9050;}
+    .filterMatch .yui-ac-shadow {position:absolute;margin:.3em;width:100%;background:#a0a0a0;z-index:9049;}
+    .filterMatch ul {padding:5px 0;width:100%;}
+    .filterMatch li {padding:0 5px;cursor:default;white-space:nowrap; font-size:small}
+    .filterMatch li.yui-ac-highlight {background:#ff0;}
 </style>            
 <script type="text/javascript" src="../../../build/extras/dpu/RowFilterDataTable.js" ></script>
 <script type="text/javascript" src="../../../build/extras/dpu/RowFilter.js" ></script>
@@ -246,35 +245,31 @@ var onBeforeActiveTabChange = function(e) {
 oTabView.on('beforeActiveTabChange', onBeforeActiveTabChange);
 
 // Setup filter 
-oDataTable.subscribe("dataReturnEvent",initFilter,oDataTable);
-YAHOO.util.Event.onAvailable("elDataTable", function(){init("elDataTable")});  
-
+var fnFilter = null;
 function initFilter(oResp,oDataTable){
-    var data=oResp.response;
-    fnFilter= new YAHOO.dpu.util.StringFilter(data,"Title")
-    fnFilter.maxCacheEntries = 0;
-    oAutoComp = new YAHOO.dpu.widget.RowFilter('acInput1','acResult1', oDataTable,fnFilter);
+	var data = null;
+ 	if (oResp) {
+		data=oResp.response;
+	} else {
+		data = 	YAHOO.example.oPuppies; // TODO: Datasource?
+	}	
+    fnFilter= new YAHOO.dpu.util.StringFilter(data,"name")
+    fnFilter.maxCacheEntries = 0;	
+    oAutoComp = new YAHOO.dpu.widget.RowFilter("input","match", oDataTable,fnFilter);
     var ua = navigator.userAgent.toLowerCase();
     if(ua.indexOf('msie') != -1 && ua.indexOf('opera') < 0) {
         oAutoComp.useIFrame = true;    
     }
 } 
 
-function changeFilter() {
-    var s = document.getElementById("fs");
-    var column= s.options[s.selectedIndex].value;
-    fnFilter.schemaItem=column
-    
+function onFilterChange() {
+    var el = document.getElementById("item");
+    var item = el.options[el.selectedIndex].value;
+    fnFilter.schemaItem = item;   
 }
 
-
-fnFilter= new YAHOO.dpu.util.StringFilter(YAHOO.example.oPuppies,"name")
-fnFilter.maxCacheEntries = 0;
-oAutoComp = new YAHOO.dpu.widget.RowFilter('acInput1','acResult1', oDataTable,fnFilter);
-var ua = navigator.userAgent.toLowerCase();
-if(ua.indexOf('msie') != -1 && ua.indexOf('opera') < 0) {
-        oAutoComp.useIFrame = true;    
-}
+oDataTable.subscribe("dataReturnEvent",initFilter,oDataTable);
+YAHOO.util.Event.onAvailable("elDataTable", function(){initFilter(null,oDataTable)});  
 
 </script>
 
