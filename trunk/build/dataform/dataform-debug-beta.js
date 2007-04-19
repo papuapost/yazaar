@@ -732,7 +732,7 @@ YAHOO.yazaar.widget.DataForm.prototype._onDocumentKeyup = function(e, oSelf) {
     }
     // enter Saves active editor data
     if (e.keyCode == 13) {
-		oSelf._onSubmit(e, oSelf); // TODO: Is this kosher, or should we raise an event?
+		oSelf.update();	
     }
 }
 
@@ -771,33 +771,8 @@ YAHOO.yazaar.widget.DataForm.prototype._onReset = function(e, oSelf) {
  * @param oSelf {YAHOO.yazaar.widget.DataForm} DataForm instance.
  * @private
  */
-YAHOO.yazaar.widget.DataForm.prototype._onSubmit = function(e, oSelf) {
-	
-	if (oSelf.isInvalidInput()) return;
-	
-	// Gather the usual suspects
-	var oRecord = oSelf._oRecord;
-	var oPrevRecord = oSelf.copyRecord();	
-	var oNewRecord = oSelf.harvestForm();			
-	// Check to see if anything changed
-	var isChanged = oSelf.isRecordChanged(oNewRecord);
-	if (isChanged) {
-		for (var prop in oRecord) {
-			oRecord[prop] = oNewRecord[prop]			
-		}		 
-	}
-	// Raise updateEvent
-	var context = {oRecord: oNewRecord, oPrevRecord: oPrevRecord, isChanged: isChanged};	
-   	oSelf.fireEvent("updateEvent", context);
-	var sLog = (isChanged) ? "updateEvent" : "updateEvent (no change)"; 
-	oSelf.logRecordEvent(sLog, oNewRecord, oPrevRecord); // debug
-	if (isChanged) {
-		// Refresh the table	
-		var oDataTable = oSelf.oDataTable;
-		if (oDataTable) {
-			oDataTable.showPage(oDataTable.pageCurrent);	
-		}		
-	} 
+YAHOO.yazaar.widget.DataForm.prototype._onSubmit = function(e, oSelf) {	
+	oSelf.update();	
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1176,6 +1151,41 @@ YAHOO.yazaar.widget.DataForm.prototype.showLoadingMessage = function() {
  */
 YAHOO.yazaar.widget.DataForm.prototype.toString = function() {
     return "DataForm " + this._sName;
+};
+
+
+/**
+ * Harvest data from form and raise UpdateEvent. 
+ *
+ * @method update
+ */
+YAHOO.yazaar.widget.DataForm.prototype.update = function() {
+
+	if (this.isInvalidInput()) return;
+	
+	// Gather the usual suspects
+	var oRecord = this._oRecord;
+	var oPrevRecord = this.copyRecord();	
+	var oNewRecord = this.harvestForm();			
+	// Check to see if anything changed
+	var isChanged = this.isRecordChanged(oNewRecord);
+	if (isChanged) {
+		for (var prop in oRecord) {
+			oRecord[prop] = oNewRecord[prop]			
+		}		 
+	}
+	// Raise updateEvent
+	var context = {oRecord: oNewRecord, oPrevRecord: oPrevRecord, isChanged: isChanged};	
+   	this.fireEvent("updateEvent", context);
+	var sLog = (isChanged) ? "updateEvent" : "updateEvent (no change)"; 
+	this.logRecordEvent(sLog, oNewRecord, oPrevRecord); // debug
+	if (isChanged) {
+		// Refresh the table	
+		var oDataTable = this.oDataTable;
+		if (oDataTable) {
+			oDataTable.showPage(oDataTable.pageCurrent);	
+		}		
+	} 
 };
 
 /////////////////////////////////////////////////////////////////////////////
