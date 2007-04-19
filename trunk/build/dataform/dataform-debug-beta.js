@@ -1089,7 +1089,7 @@ YAHOO.yazaar.widget.DataForm.prototype.populateForm = function() {
 	var aFields = this._aFields; 	
 	var n = 0;
 	var elInput = aFields[0];
-	elInput.focus();
+	// FIXME: Breaks in IE - elInput.focus();
 	for(i=0; i<oTree.length; i++) { 
         for(var j=0; j<oTree[i].length; j++) { 	
     		var oColumn = oTree[i][j];
