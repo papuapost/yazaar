@@ -3247,7 +3247,7 @@ YAHOO.widget.DataTable.prototype.getPaginator = function() {
  * @param nPage {Number} Which page.
  */
 YAHOO.widget.DataTable.prototype.showPage = function(nPage) {
-    // Validate input
+    // Validate input (+) Add null guards
   	if (!YAHOO.lang.isNumber(nPage)) nPage = 1;
 	if (this._paginator) {
 		if (nPage > this._paginator.totalPages) nPage = 1;
