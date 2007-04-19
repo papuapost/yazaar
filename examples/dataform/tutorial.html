@@ -20,6 +20,13 @@
     #elDataTable .yui-dt-selected {background-color:#000;color:#FFF;} /*white on black*/
     #elDataTable .yui-dt-editable.yui-dt-highlight {background-color:#BEDAFF;} /*light blue*/
   </style>
+<!-- DataTable/DataForm -->
+<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/datatable/assets/datatable.css">
+<!-- TabView -->
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/tabview.css">
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/border_tabs.css">
+<!-- LogReader -->
+<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/logger/assets/logger.css">
   
   </head>
   <body>
@@ -63,93 +70,40 @@
     </style>
 <![endif]-->  
 
-<!-- Required CSS -->
-<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/datatable/assets/datatable.css">
-<!-- Dependencies -->
+<!-- DataTable/DataForm -->
 <script src="http://yui.yahooapis.com/2.2.2/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-<!-- OPTIONAL: Connection (enables XHR) -->
-<script src="http://yui.yahooapis.com/2.2.2/build/connection/connection-min.js"></script>
-<!-- OPTIONAL: Drag Drop (enables resizeable columns) -->
-<script src="http://yui.yahooapis.com/2.2.2/build/dragdrop/dragdrop-min.js"></script>
-<!-- OPTIONAL: External JSON parser from http://www.json.org/ (enables JSON validation) -->
 <script src="http://www.json.org/json.js"></script>
 <!-- YUI Source files -->
 <script src="http://yui.yahooapis.com/2.2.2/build/datasource/datasource-beta-min.js"></script>
-<!-- script src="../../../branches/yui/build/datatable/datatable-beta-debug.js"></script -->
 <script src="http://yui.yahooapis.com/2.2.0/build/datatable/datatable-beta-min.js"></script>
+<!-- Autocomplete -->
+<script src="http://yui.yahooapis.com/2.2.2/build/autocomplete/autocomplete-min.js"></script>
+<!-- Yazaar Source files -->
 <script src="../../build/dataform/dataform-debug-beta.js"></script>
-
-<!-- LogReader -->
-<!-- Required CSS -->
-<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/logger/assets/logger.css">
-<!-- Source file -->
-<script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/logger/logger-min.js"></script>
-<script type="text/javascript">
-  var oLogReader = new YAHOO.widget.LogReader("elLogReader");
-</script>
-
-<!-- Page script -->
+<!-- OPTIONAL: jc21 validator -->
 <script src="../../build/extras/jc21/validate-min.js"></script>
+<!-- LogReader -->
+<script src="http://yui.yahooapis.com/2.2.2/build/logger/logger-min.js"></script>
+<!-- TabView -->
+<script src="http://yui.yahooapis.com/2.2.2/build/element/element-beta-min.js"></script>
+<!-- Source file -->
+<script src="http://yui.yahooapis.com/2.2.2/build/tabview/tabview-min.js"></script>
+
+<!-- tutorial -->
+<script src="tutorial-data.js"></script>
 <script type="text/javascript">
-var oColumnHeaders = [
-    {key:"name", text:"Dog's Name"},
-    {key:"breed", text:"Dog's Breed"},
-    {key:"age", text:"Dog's Age (in Weeks)", type:"number"}
-];
-var oColumnSet = new YAHOO.widget.ColumnSet(oColumnHeaders);
-
-YAHOO.example.oPuppies = [
-   {name:"Ashley",breed:"German Shepherd",age:12},
-   {name:"Dirty Harry",breed:"Norwich Terrier",age:5},
-   {name:"Emma",breed:"Labrador Retriever",age:9},
-   {name:"Oscar",breed:"Yorkshire Terrier",age:6},
-   {name:"Riley",breed:"Golden Retriever",age:6},
-   {name:"Shannon",breed:"Greyhound",age:12},
-   {name:"Washington",breed:"English Bulldog",age:8},
-   {name:"Zoe",breed:"Labrador Retriever",age:3}
-];
-
-var oDataSource = new YAHOO.util.DataSource(YAHOO.example.oPuppies);
-oDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-oDataSource.responseSchema = {
-    fields: ["name","breed","age"]
-};
-
 var oDataTable = new YAHOO.widget.DataTable("elDataTable", oColumnSet, oDataSource, {rowSingleSelect: true});
-// Enable Row Selection
-oDataTable.subscribe("cellClickEvent",oDataTable.onEventSelectRow);
-oDataTable.select(oDataTable.getRow(0));
-// poulate form
+</script>
+<script src="tutorial.js"></script>
+
+
+<script type="text/javascript">
+// populate form
 var onRecordSelectEvent = function () {
   oDataForm.populateForm();
+  oDataForm.isActive = true;
 }
 oDataTable.subscribe("recordSelectEvent", onRecordSelectEvent);
-
-// Create our own event for selecting the record behind a row
-oDataTable.createEvent("recordSelectEvent");
-
-// Raise our event when a row is selected
-var onRowClickEvent = function(oArgs) {
-
-    var dt = oDataTable;
-    var rs = dt.getRecordSet();
-    var row = dt.getSelectedRecordIds();
-    if (row.length===0) {
-        dt.getRow(0); // No row was selected
-        row = dt.getSelectedRecordIds();
-    }
-    var oRecord = rs.getRecord(row[row.length-1]); // ISSUE: Returns row selected on each page
-
-  // Raise RecordSelectEvent with payload
-  this.fireEvent("recordSelectEvent",{record:oRecord});
-  YAHOO.log("Selected Record: " + oRecord.toJSONString());
-}
-oDataTable.subscribe("cellClickEvent", onRowClickEvent);
-
-
-var oConfigs = {oDataTable: oDataTable};
-var oDataForm = new YAHOO.yazaar.widget.DataForm("elDataForm", oColumnSet, oDataSource, oConfigs);
-
 </script>
 
 </html>

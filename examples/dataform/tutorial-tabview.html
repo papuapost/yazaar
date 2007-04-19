@@ -3,7 +3,45 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <title>DataForm with TabView</title>
-  </head>
+<!-- DPU RowFilterTable source (extends YUI version) -->
+<style type="text/css">
+    /* custom css*/
+    body {font-family:arial}
+	
+    /* CSS FOR DataTable */	
+    .dpu-dt {margin:1em;}
+    .dpu-dt table {border-collapse:collapse;}
+    .dpu-dt th, .dpu-dt td {border:1px solid #000;padding:.25em;}
+    .dpu-dt th {background-color:#BEDAFF}
+    .dpu-dt.yui-dt-odd {background-color:#eee;} /*light gray*/
+    .dpu-dt em {font-style:italic;}
+    .dpu-dt strong {font-weight:bold;}
+    .dpu-dt .big {font-size:136%;}
+    .dpu-dt .small {font-size:77%}
+    .dpu-dt .yui-dt-selected {background-color:#000;color:#FFF;} /*white on black*/
+    .dpu-dt .yui-dt-editable.yui-dt-highlight {background-color:#BEDAFF;} /*light blue*/
+  
+    /*CSS For Auto Complete*/
+    .filter {position:relative;padding:1em;}
+    .filterForm {position:relative;margin:1em;width:15em;}/* set width of widget here*/
+    .filterInput {position:absolute;width:100%;height:1.4em;}
+    .filterMatch {position:absolute;top:1.7em;width:100%;}
+    .filterMatch .yui-ac-content {position:absolute;width:100%;height:11em;border:1px solid #404040;background:#fff;overflow:auto;overflow-x:hidden;z-index:9050;}
+    .filterMatch .yui-ac-shadow {position:absolute;margin:.3em;width:100%;background:#a0a0a0;z-index:9049;}
+    .filterMatch ul {padding:5px 0;width:100%;}
+    .filterMatch li {padding:0 5px;cursor:default;white-space:nowrap; font-size:small}
+    .filterMatch li.yui-ac-highlight {background:#ff0;}
+</style>           
+<!-- DataTable/DataForm -->
+<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/datatable/assets/datatable.css">
+<!-- TabView -->
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/tabview.css">
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/border_tabs.css">
+<!-- LogReader -->
+<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/logger/assets/logger.css">
+
+
+</head>
   <body>
 
     <p>
@@ -65,123 +103,47 @@
     
   </body>
 
+<!-- Patch for IE setAttribute issue [http://delete.me.uk/2004/09/ieproto.html] -->
+<!--[if IE]>  
+    <script type="text/javascript" src="../../build/extras/ieproto/attributes.js"></script>
+    <style type="text/css">
+        * { behavior: url(../../build/extras/ieproto/attributes.htc); }
+    </style>
+<![endif]-->  
+
 <!-- DataTable/DataForm -->
-<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/datatable/assets/datatable.css">
 <script src="http://yui.yahooapis.com/2.2.2/build/yahoo-dom-event/yahoo-dom-event.js"></script>
 <script src="http://www.json.org/json.js"></script>
 <!-- YUI Source files -->
 <script src="http://yui.yahooapis.com/2.2.2/build/datasource/datasource-beta-min.js"></script>
 <script src="http://yui.yahooapis.com/2.2.0/build/datatable/datatable-beta-min.js"></script>
 <!-- Autocomplete -->
-<script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/autocomplete/autocomplete-min.js"></script>
-<!-- DPU RowFilterTable source (extends YUI version) -->
-<style type="text/css">
-    /* custom css*/
-    body {font-family:arial}
-	
-    /* CSS FOR DataTable */	
-    .dpu-dt {margin:1em;}
-    .dpu-dt table {border-collapse:collapse;}
-    .dpu-dt th, .dpu-dt td {border:1px solid #000;padding:.25em;}
-    .dpu-dt th {background-color:#BEDAFF}
-    .dpu-dt.yui-dt-odd {background-color:#eee;} /*light gray*/
-    .dpu-dt em {font-style:italic;}
-    .dpu-dt strong {font-weight:bold;}
-    .dpu-dt .big {font-size:136%;}
-    .dpu-dt .small {font-size:77%}
-    .dpu-dt .yui-dt-selected {background-color:#000;color:#FFF;} /*white on black*/
-    .dpu-dt .yui-dt-editable.yui-dt-highlight {background-color:#BEDAFF;} /*light blue*/
-  
-    /*CSS For Auto Complete*/
-    .filter {position:relative;padding:1em;}
-    .filterForm {position:relative;margin:1em;width:15em;}/* set width of widget here*/
-    .filterInput {position:absolute;width:100%;height:1.4em;}
-    .filterMatch {position:absolute;top:1.7em;width:100%;}
-    .filterMatch .yui-ac-content {position:absolute;width:100%;height:11em;border:1px solid #404040;background:#fff;overflow:auto;overflow-x:hidden;z-index:9050;}
-    .filterMatch .yui-ac-shadow {position:absolute;margin:.3em;width:100%;background:#a0a0a0;z-index:9049;}
-    .filterMatch ul {padding:5px 0;width:100%;}
-    .filterMatch li {padding:0 5px;cursor:default;white-space:nowrap; font-size:small}
-    .filterMatch li.yui-ac-highlight {background:#ff0;}
-</style>            
-<script type="text/javascript" src="../../build/extras/dpu/RowFilterDataTable.js" ></script>
-<script type="text/javascript" src="../../build/extras/dpu/RowFilter.js" ></script>
+<script src="http://yui.yahooapis.com/2.2.2/build/autocomplete/autocomplete-min.js"></script>
 <!-- Yazaar Source files -->
 <script src="../../build/dataform/dataform-debug-beta.js"></script>
 <!-- OPTIONAL: jc21 validator -->
 <script src="../../build/extras/jc21/validate-min.js"></script>
+<!-- LogReader -->
+<script src="http://yui.yahooapis.com/2.2.2/build/logger/logger-min.js"></script>
+
+<!-- DPU RowFilterTable source (extends YUI version) -->   
+<script src="../../build/extras/dpu/RowFilterDataTable.js" ></script>
+<script src="../../build/extras/dpu/RowFilter.js" ></script>
 
 <!-- TabView -->
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/tabview.css">
 <script src="http://yui.yahooapis.com/2.2.2/build/element/element-beta-min.js"></script>
-<!-- OPTIONAL: skin for border tabs -->
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/border_tabs.css">
 <!-- Source file -->
 <script src="http://yui.yahooapis.com/2.2.2/build/tabview/tabview-min.js"></script>
 
-<!-- LogReader -->
-<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/logger/assets/logger.css">
-<script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/logger/logger-min.js"></script>
+<!-- tutorial -->
+<script src="tutorial-data.js"></script>
 <script type="text/javascript">
-  var oLogReader = new YAHOO.widget.LogReader("elLogReader");
-</script>
-
-<!-- Page script -->
-<script type="text/javascript">
-
-var oTabView = new YAHOO.widget.TabView("elTabView");
-
-var oColumnHeaders = [
-    {key:"name", text:"Dog's Name", formClassName: "required", formTitle: "Dog's Name is required"},
-    {key:"breed", text:"Dog's Breed", formClassName: "required", formTitle: "Dog's Breed is required"},
-    {key:"age", text:"Dog's Age (in Weeks)", type:"number", formClassName: "validate-number", formTitle: "Enter Dog's Age in number of weeks"}
-];
-var oColumnSet = new YAHOO.widget.ColumnSet(oColumnHeaders);
-
-YAHOO.example.oPuppies = [
-   {name:"Ashley",breed:"German Shepherd",age:12},
-   {name:"Dirty Harry",breed:"Norwich Terrier",age:5},
-   {name:"Emma",breed:"Labrador Retriever",age:9},
-   {name:"Oscar",breed:"Yorkshire Terrier",age:6},
-   {name:"Riley",breed:"Golden Retriever",age:6},
-   {name:"Shannon",breed:"Greyhound",age:12},
-   {name:"Washington",breed:"English Bulldog",age:8},
-   {name:"Zoe",breed:"Labrador Retriever",age:3}
-];
-
-var oDataSource = new YAHOO.util.DataSource(YAHOO.example.oPuppies);
-oDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-oDataSource.responseSchema = {
-    fields: ["name","breed","age"]
-};
-
 var oDataTable = new YAHOO.dpu.widget.DataTable("elDataTable", oColumnSet, oDataSource, {rowSingleSelect: true});
-// Enable Row Selection
-oDataTable.subscribe("cellClickEvent",oDataTable.onEventSelectRow);
-oDataTable.select(oDataTable.getRow(0));
+</script>
+<script src="tutorial.js"></script>
 
-// Create our own event for selecting the record behind a row
-oDataTable.createEvent("recordSelectEvent");
-
-// Raise our event when a row is selected
-var onRowClickEvent = function(oArgs) {
-
-    var dt = oDataTable;
-    var rs = dt.getRecordSet();
-    var row = dt.getSelectedRecordIds();
-    if (row.length===0) {
-        dt.getRow(0); // No row was selected
-        row = dt.getSelectedRecordIds();
-    }
-    var oRecord = rs.getRecord(row[row.length-1]); // ISSUE: Returns row selected on each page
-
-  // Raise RecordSelectEvent with payload
-  this.fireEvent("recordSelectEvent",{record:oRecord});
-  YAHOO.log("Selected Record: " + oRecord.toJSONString());
-}
-oDataTable.subscribe("cellClickEvent", onRowClickEvent);
-
-var oConfigs = {oDataTable: oDataTable};
-var oDataForm = new YAHOO.yazaar.widget.DataForm("elDataForm", oColumnSet, oDataSource, oConfigs);
+<script type="text/javascript">
+var oTabView = new YAHOO.widget.TabView("elTabView");
 
 // Goto to DataForm
 var onRecordSelectEvent = function () {
@@ -206,41 +168,41 @@ var onBeforeActiveTabChange = function(e) {
     return true;
   }
 };
-
-var onActiveTabChange = function(e) {
-	oDataForm.isActive = (1==oTabView.get('activeIndex'));
-}
-
 oTabView.on('beforeActiveTabChange', onBeforeActiveTabChange);
+
+// Set flag when form is in view
+var onActiveTabChange = function(e) {
+    oDataForm.isActive = (1==oTabView.get('activeIndex'));
+}
 oTabView.on('activeTabChange', onActiveTabChange);
 
 // Setup filter 
 var fnFilter = null;
 function initFilter(oResp,oDataTable){
-	var data = null;
- 	if (oResp) {
-		data=oResp.response;
-	} else {
-		data = 	YAHOO.example.oPuppies; // TODO: Datasource?
-	}	
+    var data = null;
+    if (oResp) {
+        data=oResp.response;
+    } else {
+        data =  YAHOO.example.oPuppies; // TODO: Datasource?
+    }   
     fnFilter= new YAHOO.dpu.util.StringFilter(data,"name")
-    fnFilter.maxCacheEntries = 0;	
+    fnFilter.maxCacheEntries = 0;   
     oAutoComp = new YAHOO.dpu.widget.RowFilter("input","match", oDataTable,fnFilter);
     var ua = navigator.userAgent.toLowerCase();
     if(ua.indexOf('msie') != -1 && ua.indexOf('opera') < 0) {
         oAutoComp.useIFrame = true;    
     }
 } 
+oDataTable.subscribe("dataReturnEvent",initFilter,oDataTable);
+YAHOO.util.Event.onAvailable("elDataTable", function(){initFilter(null,oDataTable)}); 
 
+// Respond to filter change button
 function onFilterChange() {
     var el = document.getElementById("item");
     var item = el.options[el.selectedIndex].value;
     fnFilter.schemaItem = item;   
 }
 
-oDataTable.subscribe("dataReturnEvent",initFilter,oDataTable);
-YAHOO.util.Event.onAvailable("elDataTable", function(){initFilter(null,oDataTable)});  
-
 </script>
-
+ 
 </html>
