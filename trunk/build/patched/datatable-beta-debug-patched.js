@@ -3247,7 +3247,7 @@ YAHOO.widget.DataTable.prototype.getPaginator = function() {
  * @param nPage {Number} Which page.
  */
 YAHOO.widget.DataTable.prototype.showPage = function(nPage) {
-    // Validate input (+) Add null guards
+    // Validate input (+) Add null guards [#1703839]
   	if (!YAHOO.lang.isNumber(nPage)) nPage = 1;
 	if (this._paginator) {
 		if (nPage > this._paginator.totalPages) nPage = 1;
@@ -3756,7 +3756,7 @@ YAHOO.widget.DataTable.prototype.onEventSelectRow = function(oArgs) {
     }
     // Neither SHIFT nor CTRL
     else if(bSingleSelect) {
-        this.unselect(this._lastSelectedId);
+        this.unselectAllRows(); // this.unselect(this._lastSelectedId); (+) [#1703840]   
         this.select(elTarget);
     }
     // Neither SHIFT nor CTRL
