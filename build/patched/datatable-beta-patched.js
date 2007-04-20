@@ -2254,7 +2254,7 @@ YAHOO.widget.DataTable.prototype.focusTable = function() {
         // http://developer.mozilla.org/en/docs/index.php?title=Key-navigable_custom_DHTML_widgets
         // The timeout is necessary in both IE and Firefox 1.5, to prevent scripts from doing
         // strange unexpected things as the user clicks on buttons and other controls.
-        setTimeout(function() { elTable.focus(); },0);
+        // (+) Fails with TabView - setTimeout(function() { elTable.focus(); },0);
         this._bFocused = true;
         this.fireEvent("tableFocusEvent");
     }
