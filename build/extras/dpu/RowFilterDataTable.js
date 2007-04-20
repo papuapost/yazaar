@@ -2,7 +2,7 @@
  * Copyright (c) 2007, Yahoo! Inc. All rights reserved.
  * Code licensed under the BSD License:
  * http://developer.yahoo.net/yui/license.txt
- * version: 2.2.1
+ * version: 2.2.2
 */
 /* Enhanced DataTable with row filtering and hideable columns 
  * Copyright (c) 2007, Victor Morales. All rights reserved.
