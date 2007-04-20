@@ -1,0 +1,16 @@
+#summary List of generic Application Use Cases and Ajax Coding Patterns (Issue 12)
+
+= Common Application Use Cases and Ajax Coding Patterns =
+
+== Application Use Cases ==
+
+ * Find/Edit/List/View
+ * Login and continue 
+ * Interim data-entry save and restore
+
+== Ajax Coding Patterns ==
+
+ * Save references to DOM elements as object properties 
+ * Placeholder DIVs
+ * Marker CSS styles 
+ * try/catch browser incompatibilities
