@@ -2,7 +2,7 @@
  * Copyright (c) 2007, Yahoo! Inc. All rights reserved.
  * Code licensed under the BSD License:
  * http://developer.yahoo.net/yui/license.txt
- * version: 2.2.2
+ * version: 2.2.0
 */
 /* Specialized Autocomplete widget used to feed a DataTable Row Filter;
  * Copyright (c) 2007, Victor Morales. All rights reserved.
@@ -11,19 +11,26 @@
 
 YAHOO.namespace("dpu.widget");
 
-
 YAHOO.dpu.widget.RowFilter = function( elInput,elContainer,oDataTable,fnFilter,oConfigs) {
         if (arguments.length > 0) {
 			YAHOO.dpu.widget.RowFilter.superclass.constructor.call(this, elInput,elContainer,fnFilter,oConfigs);
 		}
-		this._oDataTable=oDataTable;
+        this.Filter=fnFilter;
+        this._oDataTable=oDataTable;
 		this.itemSelectEvent.subscribe(this.myOnSelect);
         this.dataReturnEvent.subscribe(this.myOnDataReturn);
+        this._oDataTable.subscribe("columnSortEvent",this.updateFilter,this._oDataTable,this)
 }
 			
-// Inherit from YAHOO.widget.DataTable
+// Inherit from YAHOO.widget.AutoComplete
 YAHOO.lang.extend(YAHOO.dpu.widget.RowFilter, YAHOO.widget.AutoComplete);
 
+YAHOO.dpu.widget.RowFilter.prototype.updateFilter=function(oColumn,oDataTable) {
+	var records=oDataTable.getRecordSet().getRecords();
+	if (this.Filter._aData!==records) {
+		this.Filter._aData=records
+	}	
+}
 
 YAHOO.dpu.widget.RowFilter.prototype.queryDelay=0;
 YAHOO.dpu.widget.RowFilter.prototype.formatResult = function(aResultItem, sQuery) {
@@ -59,11 +66,12 @@ YAHOO.dpu.widget.RowFilter.prototype.myOnDataReturn= function(sType, aArgs) {
 	var aResults = aArgs[2];
 	
 	if(aResults.length == 0) {
-		oAutoComp.setBody("<div id=\"statescontainerdefault\">No matching results</div>");
+		oAutoComp.setBody("<div id=\"container_default\">No matching results</div>");
 	}
 	
 	if (this._oDataTable.isFiltered) {
 		this._oDataTable.filterRows();
+		this.Filter._aData=this._oDataTable.defaultView;
 	}
 }
 
@@ -71,6 +79,7 @@ YAHOO.dpu.widget.RowFilter.prototype.myOnSelect= function(sType, aArgs) {
 	var objResult = aArgs[2][1];
     this._oDataTable.filterRows(objResult.matchedRows)
 }
+
 
 YAHOO.namespace("dpu.util");
 
