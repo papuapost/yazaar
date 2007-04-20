@@ -11,8 +11,14 @@
 See also [http://code.google.com/p/anvil/wiki/CommonProblems Anvil Common Problems]
 
 === JavaScript ===
-|| (?) ||  {whatever} is not a constructor. ||
+|| (!) || *{whatever} is not a constructor.* ||
 || (/) || Ensure that the the script that defines {whatever} is being imported. ||
+
+=== IE ===
+|| (?) || *Can't set the style attribute in IE* ||
+|| (/) || IE expects the idiom el.style.setAttribute but w3c expects el.setAttribute. Either try the IE approach and fall back to w3c in a catch clause, or [http://delete.me.uk/2004/09/ieproto.html patch IE]. ||
+|| (?) || *Can't change the input type in IE* ||
+|| (/) || The type for an input element must be set at creation for IE. Either create the element using innerHtml, or try the IE approach and fall back to w3c in a catch clause. ||
 
 === Yahoo User Interface (YUI) Library ===
 
