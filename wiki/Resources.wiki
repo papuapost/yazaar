@@ -19,6 +19,11 @@
    * [http://java.sun.com/j2se/javadoc/writingdoccomments/ Writing JavaDoc Comments]
    * [http://java.sun.com/j2se/1.5.0/docs/tooldocs/windows/javadoc.html The Java API Documentation Generator]
 
+= Related Projects =
+
+ * [http://code.google.com/p/sq1-petstore/ Petstore from Square One]
+ * [http://code.google.com/p/anvil/ Anvil Business Logic Framework]
+
 = Similar Projects =
 
  * [http://www.yui-ext.com/deploy/yui-ext/docs/ Ext (formerly YUI Ext)]
