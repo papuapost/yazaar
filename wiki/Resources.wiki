@@ -26,10 +26,13 @@
 
 = Similar Projects =
 
+ * [http://www.openjsan.org/index.html JSAN]
  * [http://www.yui-ext.com/deploy/yui-ext/docs/ Ext (formerly YUI Ext)]
  * [http://bubbling.comarq.com/ Bubbling Library]
  * [http://blog.mozmonkey.com/2007/classanim-hoverhijax-keeping-presentation-out-of-your-javascript/ ClassAnim and HoverHijax]
-
+ * [http://ajaxian.com/archives/y-ui-carousel-component Carousel Component]
+ * [http://stubblog.wordpress.com/2006/12/19/yui-div-swap-with-fade/ Div Swap with Fade]
+ * [http://blog.davglass.com/2006/06/yui-code-samples/ Davs Rants and Random Thoughts]
 = Development Resources =
 
  * [http://www.aptana.com/documentation.php Aptana CSS and HTML References]
@@ -59,6 +62,5 @@
  * [http://javascript.crockford.com/ Douglas Crockford's Wrrrld Wide Web]
  * [http://www.ebook.gen.tr/ajax/Professional%20Ajax%20Php.pdf Professional Ajax (1st Ed)]
  * [http://msexchangeteam.com/archive/2005/06/21/406646.aspx How Ajax began]
-
 
 
