@@ -62,5 +62,5 @@
  * [http://javascript.crockford.com/ Douglas Crockford's Wrrrld Wide Web]
  * [http://www.ebook.gen.tr/ajax/Professional%20Ajax%20Php.pdf Professional Ajax (1st Ed)]
  * [http://msexchangeteam.com/archive/2005/06/21/406646.aspx How Ajax began]
-
+ * [http://www.whenpenguinsattack.com/2007/04/24/top-5-javascript-frameworks/ JS Framework Roundup]
 
