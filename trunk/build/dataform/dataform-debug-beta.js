@@ -737,26 +737,16 @@ YAHOO.yazaar.widget.DataForm.prototype._onDocumentKeyup = function(e, oSelf) {
 }
 
 /**
- * Handles form reset by restoring the original values.
- * <p>
- * Repopulates form from Recordset, and raises resetEvent.
+ * Handles form reset event by invoking reset method.
  * 
  * @method _onReset
  * @param e {HTMLEvent} The click event.
  * @param oSelf {YAHOO.yazaar.widget.DataForm} DataForm instance.
+ * @see reset
  * @private
  */
 YAHOO.yazaar.widget.DataForm.prototype._onReset = function(e, oSelf) {
-		var oRecord = oSelf._oRecord; // Restore this reference				
-		var aFields = oSelf._aFields;
-		var nFields = aFields.length;
-		for (var i=0; i<nFields; i++) {
-				// TODO: Subclass fields only?
-			var elInput = aFields[i];
-			elInput.value = oRecord[elInput.name];
-		} 				
-    	oSelf.fireEvent("resetEvent", {oRecord:oRecord});		
-		oSelf.logRecordEvent("resetEvent", oRecord); // debug
+    oSelf.reset();
 };
 
 /**
@@ -1153,6 +1143,25 @@ YAHOO.yazaar.widget.DataForm.prototype.toString = function() {
     return "DataForm " + this._sName;
 };
 
+/**
+ * Restoring the original values to the active record.
+ * <p>
+ * Repopulates Recordset, and raises resetEvent.
+ * 
+ * @method reset
+ */
+YAHOO.yazaar.widget.DataForm.prototype.reset = function() {
+    var oRecord = this._oRecord; // Restore this reference				
+	var aFields = this._aFields;
+	var nFields = aFields.length;
+	for (var i=0; i<nFields; i++) {
+			// TODO: Subclass fields only?
+		var elInput = aFields[i];
+		elInput.value = oRecord[elInput.name];
+	} 				
+    this.fireEvent("resetEvent", {oRecord:oRecord});		
+	this.logRecordEvent("resetEvent", oRecord); // debug
+}
 
 /**
  * Harvest data from form and raise UpdateEvent. 
@@ -1187,6 +1196,7 @@ YAHOO.yazaar.widget.DataForm.prototype.update = function() {
 		}		
 	} 
 };
+
 
 /////////////////////////////////////////////////////////////////////////////
 //

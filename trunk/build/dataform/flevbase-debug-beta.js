@@ -86,7 +86,11 @@ var FlevBase = function() {
             var onBeforeActiveTabChange = function(e) {
               var isChanged = oDataForm.isRecordChanged();
               if (isChanged) {
-                return (confirm("Exit form without saving?"));
+                var isExit = confirm("Exit form without saving?");
+                if (isExit) {
+                    oDataForm.reset();
+                }
+                return isExit;
               } else {
                 return true;
               }
