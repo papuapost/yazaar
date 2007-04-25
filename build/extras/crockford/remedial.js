@@ -1,6 +1,8 @@
 /*
 Remedial JavaScript Functions recommended by Crockford 
 (http://javascript.crockford.com/remedial.html)
+Plus "object" function from Advanced JavaScript video series 
+(http://developer.yahoo.com/yui/theater/)
 */
 
 Function.prototype.si = function (v) {
@@ -119,4 +121,11 @@ Object.prototype.later =
         method.apply(that, args); 
     }, msec); 
     return that; 
+}; 
+
+// var newobject = object(oldobject); 
+function object (o) {
+ function F() {} 
+ F.prototype = o;
+ return new F()
 }; 
