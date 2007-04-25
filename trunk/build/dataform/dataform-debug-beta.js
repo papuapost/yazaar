@@ -1055,14 +1055,14 @@ YAHOO.yazaar.widget.DataForm.prototype.logRecordEvent = function(sEventName, oRe
 			sMessage = sEventName;
 			break;
 		case 2: 
-			sRecord = oRecord.toJSONString();			
+		    sRecord = (oRecord) ? oRecord.toJSONString() : "undefined";
 			sMessage = sEventName + "{oRecord: " + sRecord + "}";
 			break;
 		case 3:
 			// fall through
 		default: 
-			sRecord = oRecord.toJSONString();			
-			sPrevRecord = oPrevRecord.toJSONString();
+		    sRecord = (oRecord) ? oRecord.toJSONString() : "undefined";
+			sPrevRecord = (oPrevRecord) ? oPrevRecord.toJSONString() : "undefined";
 			sMessage = sEventName + "{oRecord: " + sRecord + ", " + "oPrevRecord: " + sPrevRecord + "}";
 			break; 
 	} 
@@ -1090,7 +1090,8 @@ YAHOO.yazaar.widget.DataForm.prototype.populateForm = function() {
 	var n = 0;
 	var elInput = aFields[0];
 	// FIXME: Breaks in IE - elInput.focus();
-	for(i=0; i<oTree.length; i++) { 
+	// If the Record is empty, there's nothing to populate
+	if (oRecord) for(i=0; i<oTree.length; i++) { 
         for(var j=0; j<oTree[i].length; j++) { 	
     		var oColumn = oTree[i][j];
     		var sKey = oColumn.key;
