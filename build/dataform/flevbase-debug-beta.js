@@ -128,10 +128,10 @@ var FlevBase = function() {
         }, 
             
         onFilterChange: function () {
-            var sItem = oSelf.sForm + "_item";
+            var sItem = this.sForm + "_item";
             var el = document.getElementById(sItem);
             var item = el.options[el.selectedIndex].value;
-            oSelf.fnFilter.schemaItem = item; 
+            this.fnFilter.schemaItem = item; 
         }        
     }; // end return
 }();
