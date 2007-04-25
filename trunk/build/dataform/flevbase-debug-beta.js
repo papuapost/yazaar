@@ -91,13 +91,13 @@ var FlevBase = function() {
                 return true;
               }
             };
-            oTabView.subscribe('beforeActiveTabChange', onBeforeActiveTabChange);
+            oTabView.on('beforeActiveTabChange', onBeforeActiveTabChange);
 
             // Set flag when form is in view
             var onActiveTabChange = function(e) {
                 oDataForm.isActive = (1==oTabView.get('activeIndex'));
             };
-            oTabView.subscribe('activeTabChange', onActiveTabChange);     
+            oTabView.on('activeTabChange', onActiveTabChange);     
             YAHOO.util.Event.onAvailable(sDataTable, function(){oSelf.initFilter(null,oSelf)}); 
             
             // Retain references
