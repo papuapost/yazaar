@@ -125,8 +125,7 @@ oDataSource.responseSchema = {
     fields: ["name","breed","age"]
 };
 
-
-var oDataTable = new YAHOO.dpu.widget.DataTable("elDataTable", oColumnSet, oDataSource);
+var oDataTable = new YAHOO.dpu.widget.DataTable("elDataTable", oColumnSet, oDataSource, {rowsPerPage: 2});
 oDataTable.subscribe("dataReturnEvent",initFilter,oDataTable);
 
 function initFilter(oResp,oDataTable){

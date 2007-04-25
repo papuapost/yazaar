@@ -112,7 +112,7 @@ YAHOO.dpu.util.StringFilter.prototype.doQuery = function(oCallbackFn, sQuery, oP
     this._addCacheElem(resultObj);
     
     this.getResultsEvent.fire(this, oParent, sQuery, aResults);
-    oCallbackFn(sQuery, aResults, oParent);
+    oCallbackFn(sQuery, aResults, oParent)
     return;
 };
 YAHOO.dpu.util.StringFilter.prototype.schemaItem=null;

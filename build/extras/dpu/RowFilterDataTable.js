@@ -16,7 +16,7 @@ YAHOO.dpu.widget.DataTable = function(elContainer , oColumnSet , oDataSource , o
 			YAHOO.dpu.widget.DataTable.superclass.constructor.call(this, elContainer , oColumnSet , oDataSource , oConfigs);
 		}
 		//Call ContextMenu initialization method
-       this._initHideMenu();
+       this._initHideMenu();22
 };
 
 // Inherit from YAHOO.widget.DataTable
