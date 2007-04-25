@@ -1081,10 +1081,9 @@ YAHOO.yazaar.widget.DataForm.prototype.populateForm = function() {
 	var isShared = !!(oDataTable);
 	var oRecordSet =  (isShared) ? oDataTable._oRecordSet : this._oRecordSet;
     var oSelectedRecords = 	(isShared) ? oDataTable.getSelectedRecordIds() : this.getSelectedRecordIds();
-	// TODO: For YUI 2.2.1, change to oRecordSet.getRecord(0);
 	var nLength = oSelectedRecords.length;
-	// TODO: For YUI 2.2.1, confirm that we still need to grab last selected record
-    var oRecord = (nLength > 0) ? oRecordSet.getRecord(oSelectedRecords[nLength-1]) : oRecordSet._records[0];
+	// TODO: For YUI 2.2.4, confirm that single select only selects one row (1703840)
+    var oRecord = (nLength > 0) ? oRecordSet.getRecord(oSelectedRecords[nLength-1]) : oRecordSet.getRecord(0);
     var oTree = this._oColumnSet.tree;
 	var aFields = this._aFields; 	
 	var n = 0;
