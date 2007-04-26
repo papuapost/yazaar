@@ -54,11 +54,11 @@
  * [http://designinginterfaces.com/ Designing Interfaces]
  * [http://www.designofsites.com/ Design of Sites book]
  * [http://www.lukew.com/ff/ Functioning Form Functioning Form]
- * [http://www.visi.com/~snowfall/InteractionPatterns.html Interaction Design Patterns (Erickson)]
- * [http://www.welie.com/patterns/ Patterns (van Welie)]
- * [http://www.ajaxpatterns.org/ Ajax Patterns (Mahemoff)]
- * [http://www.cs.helsinki.fi/u/salaakso/patterns/ User Interface Design Patterns (Laakso)]
- * [http://webpatterns.org/wordpress/ WebPatterns (Allsop)]
+ * [http://www.visi.com/~snowfall/InteractionPatterns.html Interaction Design Patterns] (Erickson)
+ * [http://www.welie.com/patterns/ Patterns] (van Welie)
+ * [http://www.ajaxpatterns.org/ Ajax Patterns] (Mahemoff)
+ * [http://www.cs.helsinki.fi/u/salaakso/patterns/ User Interface Design Patterns] (Laakso)
+ * [http://webpatterns.org/wordpress/ WebPatterns] (Allsop)
 
 = YUI Articles and Tutorials =
 
@@ -68,9 +68,9 @@
  * [http://yuiblog.com/blog/ YUI Blog]
 
 = Selenium Articles and Tutorials =
-* [http://rip747.wordpress.com/2007/04/09/selenium-ide-im-in-love-sorry-linda/ Selenium IDE: I'm in love (sorry Linda)] (Rip's Domain)
-* [http://www.devchix.com/2007/02/19/an-introduction-to-selenium-ide/ An Introduction to Selenium IDE] (devChix)
-* [http://www.codeodor.com/index.cfm/2006/11/14/Getting-started-with-Selenium/842 Getting started with Selenium]
+ * [http://rip747.wordpress.com/2007/04/09/selenium-ide-im-in-love-sorry-linda/ Selenium IDE: I'm in love (sorry Linda)] (Rip's Domain)
+ * [http://www.devchix.com/2007/02/19/an-introduction-to-selenium-ide/ An Introduction to Selenium IDE] (devChix)
+ * [http://www.codeodor.com/index.cfm/2006/11/14/Getting-started-with-Selenium/842 Getting started with Selenium] (Sammy Larbi)
 
 = Other JavaScript Resources =
 
