@@ -74,7 +74,7 @@
  * [http://agiletesting.blogspot.com/2006/01/useful-tools-for-writing-selenium.html Useful tools for writing Selenium tests] (Grig Gheorghiu)
 
 = Other JavaScript Resources =
-
+ * [http://www.cambiaresearch.com/c4/702b8cd1-e5b0-42e6-83ac-25f0306e3e25/Javascript-Char-Codes-Key-Codes.aspx JavaScript Char Codes]
  * [http://javascript.crockford.com/ Douglas Crockford's Wrrrld Wide Web]
  * [http://www.ebook.gen.tr/ajax/Professional%20Ajax%20Php.pdf Professional Ajax (1st Ed)]
  * [http://msexchangeteam.com/archive/2005/06/21/406646.aspx How Ajax began]
