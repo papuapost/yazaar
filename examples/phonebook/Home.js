@@ -60,7 +60,6 @@ YAHOO.my.Phonebook = function() {
 
     YAHOO.my.events.subscribe("entryList", oPhonebook.load, oPhonebook);    
     // Home.rpc.entryList(YAHOO.my.events.onEntryListReturn).call(ANVIL.channel); // live database
-    YAHOO.my.events.subscribe("entryList", oPhonebook.load, oPhonebook);    
     YAHOO.my.events.onEntryListReturn(YAHOO.my.oLocalData); // static data
 
     return oPhonebook;
