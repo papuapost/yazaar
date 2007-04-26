@@ -19,7 +19,7 @@
    
      // ...
 }}}
- * Composite widgets (say, a DataForm, DataView, and TabView) can often be reused either within an application or between applications. Create a base object that can be used as template for other objects, and configured by a power constructor.
+ * Composite widgets (say, a !DataForm, !DataView, and !TabView) can often be reused either within an application or between applications. Create a base object that can be used as template for other objects, and configured by a power constructor.
 {{{
    var FlevBase = function() {
      // define private members (none)
