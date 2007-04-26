@@ -1,0 +1,108 @@
+#summary Use case describing the example phonebook application (Issue 13)
+
+=== Narrative ===
+
+The Heart of Gold takes on a new crew member, so Ford Prefect brings up the ship's phone book directory. To be sure Marvin hasn't already added the newbie, Ford makes a quick search by last name. 
+
+Filter Entries by: \[Last Name \]
+|| Ma  || 
+||     ||
+|| No matching results ||
+
+The system comes up empty ... 
+
+... so Ford selects the (Add) command.
+
+|| *First Name* || Tricia     || 
+|| *Last Name*  || !MacMillan ||
+|| *Extension*  || 5551234567 ||
+|| *User Name*  || trillian   ||
+|| *Hired*      || 01/01/01   ||
+|| *Hours*	|| 37.5       ||
+|| *Editor*     || NO         || 
+||              || (Delete) (Cancel) (Save) ||
+
+Ford selects (Save), and system confirms the entry on a view-only screen. Ford presses (Save) again, and the directory list displays, with the new entry included. 
+
+|| *Last Name* || *First Name* || *Extension*  || *User*   || *Hired*  || *Hours* || 
+|| Android     || Marvin       || 555-123-4568 || peanut   || 06/15/00 || 161  || 
+|| Beeblebrox  || Zaphod       || 555-123-4565 || zaphie   || 04/01/00 || -1   ||
+|| Halfrunt    || Gag          || 555-123-4566 || ziggy    || 04/01/00 || 7    ||
+|| !MacMillan  || Tricia       || 555-123-4569 || trillian || 01/01/01 || 37.5 ||
+|| Prefect     || Ford         || 555-123-4567 || peanut   || 05/31/00 || 37.5 ||
+
+Trillian checks the entry later, but she can't edit it, since {{{trillian}}} is not registered as an "editor". 
+
+=== Goal ===
+
+|| *Goal*    || Maintain !PhoneBook directory ||
+|| *Level*   || User Goal                     || (User Goal, Summary, Subfunction) ||
+|| *Trigger* || Change to directory roster    || 
+
+== ==
+=== Main Success Scenario (MSS) ===
+
+|| *Step* || *Action* || 
+|| 1    || Client accesses !PhoneBook site ||
+|| 2    || System presents a list entries view with a search field ||
+|| 3    || Client enters criteria  ||
+|| 4    || System filters and presents matching entries ||
+|| 5    || Client selects directory entry ||
+|| 6    || System presents input form for selected entry ||
+|| 7    || Client edits form and selects (Save) ||
+|| 8    || System presents current directory ||
+
+== ==
+=== Extensions ===
+
+|| *Step* || *Extension Action*        ||
+||        ||                           ||
+|| 3a     || _Alternate Sort Orders_   ||
+|| .1     || Client selects row column ||
+|| .2     || System presents list collated by selected column ||
+||        ||                           ||
+|| 3b     || _Column Filters_          ||
+|| .1     || System presents list of search fields  ||
+|| .2     || Client selects a search field ||
+|| .3     || System matches search criteria against selected field ||
+||        ||                           ||
+|| 5a     || _Insert Entry_            ||
+|| .1     || Client selects (Add)      ||
+|| .2     || System presents entry form with some columns set to default values (Hired: today, Hours: 37.5) ||
+|| .3     || Return to MSS 5 ||
+||        ||                           ||
+|| 7a     || _Cancel Edit_             ||
+|| .1     || Client selects (Cancel)   ||
+|| .2     || System does not change entry ||
+|| .3     || Return to MSS 8           ||
+||        ||                           ||
+|| 7b     || _Revert Edit_             ||
+|| .1     || Client selects (Reset)   ||
+|| .2     || System restores original values ||
+|| .3     || Return to MSS 6          ||
+||        ||                           ||
+|| 7c     || _Exit Guard _             ||
+|| .1     || Client selects another menu ||
+|| .2     || System verifies that data is unchanged ||
+|| .3     || If data changed, System raises confirmation ||
+|| .3     || If exit is confirmed, return to MSS 8 ||
+||        ||                           ||
+|| 7d     || _Delete Entry_            ||
+|| .1     || Client selects (Delete)   ||
+|| .2     || System deletes entry      || 
+|| .3     || Return to MSS 8           ||
+||        ||                           || 
+|| 5b     || _Authorize Editors_       ||  
+|| .1     || Client is not registered as a !PhoneBook editor ||
+|| .2     || System does not present edit form when entry is selected ||
+||        ||                           ||
+
+
+
+== ==
+=== Preconditions and Guarantees ===
+
+|| *Preconditions* || At least one client is lised as an editor in the directory ||
+||                 || Client Windows user name matches !PhoneBook user name column ||
+
+|| *Issue* || 4 ||
