@@ -4,22 +4,22 @@
 
 The Heart of Gold takes on a new crew member, so Trillian brings up the ship's phone book directory. To be sure Marvin hasn't already added the newbie, Trillian makes a quick search by last name. 
 
-Filter Entries by: \[Last Name \]
-|| Pr  || 
+Filter Entries by: (Last Name)
+|| *Pr*  || 
 ||     ||
 || No matching results ||
+(Add)
 
 The system comes up empty ... 
 
 ... so Trillian selects the (Add) command.
 
-|| *First Name* || Ford|| 
+|| *First Name* || Ford    || 
 || *Last Name*  || Prefect ||
 || *Extension*  || 5551234570 ||
-|| *User Name*  || peanut   ||
-|| *Hired*      || 01/01/01   ||
-|| *Hours*	|| 37.5       ||
-|| *Editor*     || NO         || 
+|| *User Name*  || peanut  ||
+|| *Hired*      || 07/26/1978 ||
+|| *Hours*	|| 35      ||
 ||              || (Delete) (Cancel) (Save) ||
 
 Ford selects (Save), and system confirms the entry on a view-only screen. Ford presses (Save) again, and the directory list displays, with the new entry included. 
@@ -98,12 +98,10 @@ Arthur checks the entry later, but he can't edit it, since {{{monk}}} is not lis
 || .2     || System does not present edit form when entry is selected ||
 ||        ||                           ||
 
-
-
 == ==
 === Preconditions and Guarantees ===
 
 || *Preconditions* || At least one client is lised as an editor in the directory ||
 ||                 || Client Windows user name matches !PhoneBook user name column ||
 
-|| *Issue* || 4 ||
+|| *Issue* || 13 ||
