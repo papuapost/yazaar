@@ -5,11 +5,12 @@ YAHOO.my.oLogReader = new YAHOO.widget.LogReader("elLogReader");
 // Static data for low-level testing    
 YAHOO.my.oLocalData = { 
     result : [
-		{entry_key: 'c5b6bbb1-66d6-49cb-9db6-743af6627828', last_name: 'Clinton', first_name: 'William', extension: '555-743-7828', username: 'bubba', hired: '08/19/1992', hours: 37.5, editor: '0'},
-	    {entry_key: '7c424227-8e19-4fb5-b089-423cfca723e1', last_name: 'Roosevelt', first_name: 'Theodore', extension: '555-743-8942', username: 'bull', hired: '09/14/2002', hours: 37.5, editor: '0'},
-		{entry_key: '9320ea40-0c01-43e8-9cec-8fb9b3928c2c', last_name: 'Kennedy', first_name: 'John F.', extension: '555-743-3928', username: 'fitz', hired: '05/29/1987', hours: 37.5, editor: '0'},
-    	{entry_key: '3b27c933-c1dc-4d85-9744-c7d9debae196', last_name:'Pierce', first_name: 'Franklin', extension: '555-743-7919', username: 'benji', hired: '11/18/1984', hours: 35, editor:'0'},
-    	{entry_key: '554ff9e7-a6f5-478a-b76b-a666f5c54e40', last_name:'Jefferson', first_name: 'Thomas', extension: '555-743-5440', username: 'monty', hired: '07/04/1976', hours: 37.5, editor:'0'}
+		{entry_key: 'c5b6bbb1-66d6-49cb-9db6-743af6627828', last_name: 'Beeblebrox ', first_name: 'Zaphod ', extension: '555-123-4566', username: 'zaphie ', hired: '04/01/1978', hours: -1, editor: '1'},
+	    {entry_key: '7c424227-8e19-4fb5-b089-423cfca723e1', last_name: 'Halfrunt', first_name: 'Gag', extension: '555-123-4567', username: 'ziggy', hired: '04/01/1978', hours: 7, editor: '0'},
+		{entry_key: '9320ea40-0c01-43e8-9cec-8fb9b3928c2c', last_name: 'Android', first_name: 'Marvin', extension: '555-123-4568', username: 'blue', hired: '06/15/1978', hours: 161, editor: '1'},
+    	{entry_key: '554ff9e7-a6f5-478a-b76b-a666f5c54e40', last_name: 'McMillan', first_name: 'Tricia', extension: '555-123-4569', username: 'trillian', hired: '05/28/1978', hours: 37.5, editor:'0'},
+    	{entry_key: '3b27c933-c1dc-4d85-9744-c7d9debae196', last_name: 'Prefect', first_name: 'Ford', extension: '555-123-4570', username: 'peanut', hired: '07/26/1978', hours: 35, editor:'1'},
+    	{entry_key: 'a4065cc1-b59d-4d0d-8210-c3757e686e6c', last_name: 'Dent', first_name: 'Arthur', extension: '555-123-4571', username: 'monk', hired: '07/26/1978', hours: 35, editor:'1'}
 		]
 	};
 
