@@ -38,7 +38,7 @@ http://developer.yahoo.net/yui/license.txt
  * (TODO: Batch or bulk edit selected rows?)
  *
  * @see <a href="DataFormWalkThrough">http://code.google.com/p/yazaar/wiki/DataFormWalkThrough</a>
- * @module yazaar
+ * @module yazaar.dataform
  * @requires yahoo, dom, event, datasource
  * @title DataForm Widget
  * @alpha

@@ -51,7 +51,7 @@ YAHOO.my.Phonebook = function() {
         fields: ["entry_key","last_name","first_name","extension","username","hired","hours","editor"]
     };            
 
-    oPhonebook.sName = "last_name";
+    oPhonebook.sItemName = "last_name";
     
     oPhonebook.sDataTable = "elDataTable";
     oPhonebook.sDataForm = "elDataForm";
@@ -60,6 +60,7 @@ YAHOO.my.Phonebook = function() {
 
     YAHOO.my.events.subscribe("entryList", oPhonebook.load, oPhonebook);    
     // Home.rpc.entryList(YAHOO.my.events.onEntryListReturn).call(ANVIL.channel); // live database
+    YAHOO.my.events.subscribe("entryList", oPhonebook.load, oPhonebook);    
     YAHOO.my.events.onEntryListReturn(YAHOO.my.oLocalData); // static data
 
     return oPhonebook;

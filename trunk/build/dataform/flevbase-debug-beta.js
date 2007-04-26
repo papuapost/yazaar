@@ -1,24 +1,133 @@
+/*
+Copyright (c) 2007, Husted dot Com, Inc. All rights reserved.
+Portions Copyright (c) 2007, Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.net/yui/license.txt
+*/
+/**
+ * The FlevBase object combines a DataForm, DataView, and TabView to create 
+ * a Find/List/Edit workflow. This object may be instantiated via a 
+ * "power constructor" so that it can be configured before use.
+ * <p/>
+ * Once configured, the "sub" object will automatically display 
+ * the dataset on one tab and edit individual rows on another tab.
+ * Editing features are derived from the columnset and supports 
+ * unobstrusive validation via "marker" CSS classes. (See DataForm 
+ * for more about the validation support.)
+ * <p/>
+ * This object combines the ease of inline editing with the 
+ * convenience of a full-featured edint form.
+ * 
+ * @see DataForm, TabView, DataView
+ * @module yazaar.dataform
+ * @requires yahoo, dom, event, datasource, RowFilter, DataView, DataForm, Element, TabView, remedial, json
+ * @title FLEV base widget
+ * @alpha
+*/
+/**
+ * Pseudo constructor.
+ * <p />
+ * Creates a base FLEV widget that must be configured
+ * by a "power constructor" before use.
+ * <p/>
+ * The properties to be configured are oColumnHeaders, oResponseSchema, 
+ * sDataTable, oConfigs, sDataForm, sTabView, sForm, sItemName.
+ * The client application must also provide a dataset for the load 
+ * method. 
+ */
 var FlevBase = function() { 
     // return public members
     return {
         
-        oColumnHeaders: null,         
-        oConfigs: null, 
-        oResponseSchema: null,
-        sName: null, 
-        sDataTable: null,
-        sDataForm: null, 
-        sTabView: null,
-        sForm:null,
+        /**
+         * Array of object literals that define header cells for the ColumnSet. 
+         * At a minimum, each object should contain a key and a text property.
+         * Must be configured.
+         */
+        oColumnHeaders: null,
         
+        /**
+         * Description of how data is formatted in the response.
+         * Must be configured.
+         */         
+        oResponseSchema: null,
+        
+        /**
+         * DOM ID for the DataTable container (div).
+         * Must be configured.
+         */
+        sDataTable: null,
+        
+        /**
+         * Array of object literals that define the DataTable configuration.
+         * Must be configured.
+         */
+        oConfigs: null,
+        
+        /**
+         * DOM ID for the DataForm container (div).
+         * Must be configured.
+         */ 
+        sDataForm: null,
+        
+        /**
+         * DOM ID for the TabView container (div).
+         * Must be configured.
+         */ 
+        sTabView: null,
+        
+        /**
+         * DOM ID for the Form control. 
+         * Must be configured.
+         */
+        sForm: null,
+        
+        /**
+         * Initial autocomplete field name.
+         * Must be configured.
+         */
+        sItemName: null, 
+        
+        /**
+         * Instance created by this object.
+         */
         oColumnSet: null,
+        
+        /**
+         * Instance created by this object.
+         */
         oDataSource: null,
+
+        /**
+         * Instance created by this object.
+         */
         oDataTable: null, 
+
+        /**
+         * Instance created by this object.
+         */
         oDataForm: null,
+
+        /**
+         * Instance created by this object.
+         */
         oTabView: null,
+
+        /**
+         * Instance created by this object.
+         */     
         fnFilter: null,
+        
+        /**
+         * Instance created by this object.
+         */     
         oFormConfigs: null,
         
+        /**
+         * Initialize object with response data. 
+         * @param {Object} oData
+         * @param {Object} oSelf
+         */
         load: function(oData,oSelf) {
             // previously defined
             var oColumnHeaders = oSelf.oColumnHeaders;
@@ -112,7 +221,12 @@ var FlevBase = function() {
             oSelf.oDataForm = oDataForm;
             oSelf.oTabView = oTabView;
         },   
-             
+
+        /**
+         * Setup autocomplete filtering. Called automatically.
+         * @param {Object} oData
+         * @param {Object} oSelf
+         */             
         initFilter: function (oData,oSelf) {
             var list = null;
             if ((oData) && (oData.response)) {
@@ -120,7 +234,7 @@ var FlevBase = function() {
             } else {
                 list = oSelf.oDataSource.liveData;
             };   
-            oSelf.fnFilter= new YAHOO.dpu.util.StringFilter(list,oSelf.sName)
+            oSelf.fnFilter= new YAHOO.dpu.util.StringFilter(list,oSelf.sItemName)
             oSelf.fnFilter.maxCacheEntries = 0;   
             var sInput = oSelf.sForm + "_input";
             var sMatch = oSelf.sForm + "_match";
@@ -130,7 +244,11 @@ var FlevBase = function() {
                 oAutoComp.useIFrame = true;    
             }
         }, 
-            
+
+        /**
+         * Change the autocomplete field. 
+         * Must be wired to an input control via an onChange handler.
+         */            
         onFilterChange: function () {
             var sItem = this.sForm + "_item";
             var el = document.getElementById(sItem);
