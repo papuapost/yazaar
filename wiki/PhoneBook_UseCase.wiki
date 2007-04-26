@@ -2,21 +2,21 @@
 
 === Narrative ===
 
-The Heart of Gold takes on a new crew member, so Ford Prefect brings up the ship's phone book directory. To be sure Marvin hasn't already added the newbie, Ford makes a quick search by last name. 
+The Heart of Gold takes on a new crew member, so Trillian brings up the ship's phone book directory. To be sure Marvin hasn't already added the newbie, Trillian makes a quick search by last name. 
 
 Filter Entries by: \[Last Name \]
-|| Ma  || 
+|| Pr  || 
 ||     ||
 || No matching results ||
 
 The system comes up empty ... 
 
-... so Ford selects the (Add) command.
+... so Trillian selects the (Add) command.
 
-|| *First Name* || Tricia     || 
-|| *Last Name*  || !MacMillan ||
-|| *Extension*  || 5551234567 ||
-|| *User Name*  || trillian   ||
+|| *First Name* || Ford|| 
+|| *Last Name*  || Prefect ||
+|| *Extension*  || 5551234570 ||
+|| *User Name*  || peanut   ||
 || *Hired*      || 01/01/01   ||
 || *Hours*	|| 37.5       ||
 || *Editor*     || NO         || 
@@ -25,13 +25,14 @@ The system comes up empty ...
 Ford selects (Save), and system confirms the entry on a view-only screen. Ford presses (Save) again, and the directory list displays, with the new entry included. 
 
 || *Last Name* || *First Name* || *Extension*  || *User*   || *Hired*  || *Hours* || 
-|| Android     || Marvin       || 555-123-4568 || peanut   || 06/15/00 || 161  || 
-|| Beeblebrox  || Zaphod       || 555-123-4565 || zaphie   || 04/01/00 || -1   ||
-|| Halfrunt    || Gag          || 555-123-4566 || ziggy    || 04/01/00 || 7    ||
-|| !MacMillan  || Tricia       || 555-123-4569 || trillian || 01/01/01 || 37.5 ||
-|| Prefect     || Ford         || 555-123-4567 || peanut   || 05/31/00 || 37.5 ||
+|| Android     || Marvin       || 555-123-4568 || peanut   || 06/15/78 || 161  || 
+|| Beeblebrox  || Zaphod       || 555-123-4566 || zaphie   || 04/01/78 || -1   ||
+|| Halfrunt    || Gag          || 555-123-4567 || ziggy    || 04/01/78 || 7    ||
+|| !MacMillan  || Tricia       || 555-123-4569 || trillian || 05/28/78 || 37.5 ||
+|| Prefect     || Ford         || 555-123-4570 || peanut   || 07/26/78 || 35   ||
+|| Dent        || Arthur       || 555-123-4571 || monk     || 07/26/78 || 35   ||
 
-Trillian checks the entry later, but she can't edit it, since {{{trillian}}} is not registered as an "editor". 
+Arthur checks the entry later, but he can't edit it, since {{{monk}}} is not listed as an "editor". 
 
 === Goal ===
 
