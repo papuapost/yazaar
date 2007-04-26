@@ -33,6 +33,7 @@
  * [http://ajaxian.com/archives/y-ui-carousel-component Carousel Component]
  * [http://stubblog.wordpress.com/2006/12/19/yui-div-swap-with-fade/ Div Swap with Fade]
  * [http://blog.davglass.com/2006/06/yui-code-samples/ Davs Rants and Random Thoughts]
+
 = Development Resources =
 
  * [http://www.aptana.com/documentation.php Aptana CSS and HTML References]
@@ -57,10 +58,15 @@
  * [http://www.cs.helsinki.fi/u/salaakso/patterns/ User Interface Design Patterns (Laakso)]
  * [http://webpatterns.org/wordpress/ WebPatterns (Allsop)]
 
+= YUI Articles and Tutorials =
+
+ * [http://www.devarticles.com/c/a/Web-Authoring/An-Overview-of-the-Yahoo-User-Interface-Library/ An Overview of the Yahoo User Interface Library]
+ * [http://www.whenpenguinsattack.com/2007/04/24/top-5-javascript-frameworks/ JS Framework Roundup]
+ * [http://yuiblog.com/blog/ YUI Blog]
+
 = Other JavaScript Resources =
 
  * [http://javascript.crockford.com/ Douglas Crockford's Wrrrld Wide Web]
  * [http://www.ebook.gen.tr/ajax/Professional%20Ajax%20Php.pdf Professional Ajax (1st Ed)]
  * [http://msexchangeteam.com/archive/2005/06/21/406646.aspx How Ajax began]
- * [http://www.whenpenguinsattack.com/2007/04/24/top-5-javascript-frameworks/ JS Framework Roundup]
 
