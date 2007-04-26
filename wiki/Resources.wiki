@@ -62,8 +62,9 @@
 
 = YUI Articles and Tutorials =
 
- * [http://www.devarticles.com/c/a/Web-Authoring/An-Overview-of-the-Yahoo-User-Interface-Library/ An Overview of the Yahoo User Interface Library]
- * [http://www.whenpenguinsattack.com/2007/04/24/top-5-javascript-frameworks/ JS Framework Roundup]
+ * [http://www.devarticles.com/c/a/Web-Authoring/An-Overview-of-the-Yahoo-User-Interface-Library/ An Overview of the Yahoo User Interface Library] (Dan Wellman)
+ * [http://www.whenpenguinsattack.com/2007/04/24/top-5-javascript-frameworks/ Top 5 JavaScript Frameworks] (Justin Silverton)
+ * [http://www.devchix.com/2007/02/28/getting-started-with-yui%E2%80%99s-connection-manager-in-rails-and-php-or-all-happy-families-are-not-alike/  Getting Started with YUI's Connection Manager in Rails] (devChix)
  * [http://yuiblog.com/blog/ YUI Blog]
 
 = Other JavaScript Resources =
