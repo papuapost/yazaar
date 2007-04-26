@@ -1,4 +1,4 @@
-Ajax Application Design
+#summary Ajax Application Design (Issue 13)
 
  * Global variables are evil. Create a "module" for an application that can house all of its members. The YAHOO namespace function is a good way to create a module for a YUI application.
 {{{
@@ -39,7 +39,6 @@ The [http://www.geocities.com/planetyazaar/examples/phonebook/Home.html PhoneBoo
  * [http://www.geocities.com/planetyazaar/examples/phonebook/Home.html HTML page]
  * [http://www.geocities.com/planetyazaar/examples/phonebook/Home.js Page Script]
  * [http://www.geocities.com/planetyazaar/build/dataform/flevbase-debug-beta.js FLEV script]
-
 
 
 
