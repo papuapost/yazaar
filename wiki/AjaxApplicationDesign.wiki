@@ -1,0 +1,45 @@
+Ajax Application Design
+
+ * Global variables are evil. Create a "module" for an application that can house all of its members. The YAHOO namespace function is a good way to create a module for a YUI application.
+{{{
+   YAHOO.namespace("my");
+}}}
+ * Most widgets fire low-level events. An application should create a set of "idiomatic" events to represent the steps from its own use cases. Event handling can be centralized in the application module.
+{{{
+   YAHOO.my.events.onEntryListReturn = function(oData) {
+     YAHOO.log("entryList Event");
+     YAHOO.my.events.fireEvent("entryList", oData);
+   } 
+}}}
+ * Simple widgets are simple to construct, but constructing composite widgets can be complex. Represent composite widgets as a "Crockford singleton" and provide a "power constructor" to configure and augment composite widgets.
+{{{
+   YAHOO.my.PhoneBook = function() {
+     var phonebook = object(FlevBase);                  
+     phonebook.oColumnHeaders = [
+   
+     // ...
+}}}
+ * Composite widgets (say, a DataForm, DataView, and TabView) can often be reused either within an application or between applications. Create a base object that can be used as template for other objects, and configured by a power constructor.
+{{{
+   var FlevBase = function() {
+     // define private members (none)
+     // return public members
+     return {        
+        oColumnHeaders: null,        
+        oConfigs: null,
+        // ...
+        load: function(oData,oSelf) {
+       // ...
+          oSelf.oColumnSet = new
+YAHOO.widget.ColumnSet(oSelf.oColumnHeaders);
+}}} 
+
+The [http://www.geocities.com/planetyazaar/examples/phonebook/Home.html PhoneBook example application] uses this module/events/singletons approach to deploy a FLEV widget. 
+
+ * [http://www.geocities.com/planetyazaar/examples/phonebook/Home.html HTML page]
+ * [http://www.geocities.com/planetyazaar/examples/phonebook/Home.js Page Script]
+ * [http://www.geocities.com/planetyazaar/build/dataform/flevbase-debug-beta.js FLEV script]
+
+
+
+
