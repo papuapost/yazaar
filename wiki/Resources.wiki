@@ -71,6 +71,7 @@
  * [http://rip747.wordpress.com/2007/04/09/selenium-ide-im-in-love-sorry-linda/ Selenium IDE: I'm in love (sorry Linda)] (Rip's Domain)
  * [http://www.devchix.com/2007/02/19/an-introduction-to-selenium-ide/ An Introduction to Selenium IDE] (devChix)
  * [http://www.codeodor.com/index.cfm/2006/11/14/Getting-started-with-Selenium/842 Getting started with Selenium] (Sammy Larbi)
+ * [http://agiletesting.blogspot.com/2006/01/useful-tools-for-writing-selenium.html Useful tools for writing Selenium tests] (Grig Gheorghiu)
 
 = Other JavaScript Resources =
 
