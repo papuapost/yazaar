@@ -18,6 +18,7 @@
  * [http://jsdoc.sourceforge.net/ JSDoc - JavaScript Documentation Tool]
    * [http://java.sun.com/j2se/javadoc/writingdoccomments/ Writing JavaDoc Comments]
    * [http://java.sun.com/j2se/1.5.0/docs/tooldocs/windows/javadoc.html The Java API Documentation Generator]
+ * [http://www.openqa.org/selenium/ Selenium]
 
 = Related Projects =
 
@@ -69,4 +70,3 @@
  * [http://javascript.crockford.com/ Douglas Crockford's Wrrrld Wide Web]
  * [http://www.ebook.gen.tr/ajax/Professional%20Ajax%20Php.pdf Professional Ajax (1st Ed)]
  * [http://msexchangeteam.com/archive/2005/06/21/406646.aspx How Ajax began]
-
