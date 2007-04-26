@@ -2,13 +2,13 @@
 
 === Narrative ===
 
-The Heart of Gold takes on a new crew member, so Trillian brings up the ship's phone book directory. To be sure Marvin hasn't already added the newbie, Trillian makes a quick search by last name. 
+The Heart of Gold takes on a new crew members, Ford Prefect and Arthur Dent. Trillian brings up the ship's phone book directory. To be sure Marvin hasn't already added the newbie, Trillian makes a quick "autoincrement" search by last name. 
 
-Filter Entries by: (Last Name)
+|| (Refresh) (Edit) (Add) (Delete) ||
+|| Filter Entries by: (Last Name) ||
 || *Pr*  || 
 ||     ||
 || No matching results ||
-(Add)
 
 The system comes up empty ... 
 
@@ -22,17 +22,26 @@ The system comes up empty ...
 || *Hours*	|| 35      ||
 ||              || (Delete) (Cancel) (Save) ||
 
-Ford selects (Save), and system confirms the entry on a view-only screen. Ford presses (Save) again, and the directory list displays, with the new entry included. 
+Trillian selects (Save and Add Another), and system confirms the entry on a view-only screen, which includes a (Save and Add Another) command. Trillian Selects (Save and Add Another). The system presents another blank form. At the confirmation screen, Trillian selects (Save) this time, and the directory list displays, with the new entry included. 
 
-|| *Last Name* || *First Name* || *Extension*  || *User*   || *Hired*  || *Hours* || 
-|| Android     || Marvin       || 555-123-4568 || peanut   || 06/15/78 || 161  || 
-|| Beeblebrox  || Zaphod       || 555-123-4566 || zaphie   || 04/01/78 || -1   ||
-|| Halfrunt    || Gag          || 555-123-4567 || ziggy    || 04/01/78 || 7    ||
-|| !MacMillan  || Tricia       || 555-123-4569 || trillian || 05/28/78 || 37.5 ||
-|| Prefect     || Ford         || 555-123-4570 || peanut   || 07/26/78 || 35   ||
-|| Dent        || Arthur       || 555-123-4571 || monk     || 07/26/78 || 35   ||
+|| << < 1 2 3 > >> (20) ||
 
-Arthur checks the entry later, but he can't edit it, since {{{monk}}} is not listed as an "editor". 
+|| *Last Name* || *First Name* || *Extension*  || *User*    || *Hired*  || *Hours* || 
+|| Android     || Marvin       || 555-123-4568 || noid      || 06/15/78 || 161  || 
+|| Beeblebrox  || Zaphod       || 555-123-4566 || zaphie    || 04/01/78 || -1   ||
+|| Halfrunt    || Gag          || 555-123-4567 || ziggy     || 04/01/78 || 7    ||
+|| !MacMillan  || Tricia       || 555-123-4569 || trillian  || 05/28/78 || 37.5 ||
+|| Prefect     || Ford         || 555-123-4570 || peanut    || 07/26/78 || 35   ||
+|| Dent        || Arthur       || 555-123-4571 || monkeyboy || 07/26/78 || 35   ||
+
+|| << < 1 2 3 > >> (20) ||
+|| (Refresh) (Edit) (Add) (Delete) ||
+||Filter Entries by: (Last Name) ||
+|| _ ||
+
+Later, Arthur complains about his user name. To update the directory, Marvin double-clicks on the field and enters the new user name inline 
+
+|| Dent        || Arthur       || 555-123-4571 || *sapien*  || 07/26/78 || 35   ||
 
 === Goal ===
 
@@ -105,3 +114,9 @@ Arthur checks the entry later, but he can't edit it, since {{{monk}}} is not lis
 ||                 || Client Windows user name matches !PhoneBook user name column ||
 
 || *Issue* || 13 ||
+
+
+
+
+
+
