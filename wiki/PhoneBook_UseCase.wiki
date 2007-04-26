@@ -67,19 +67,40 @@ Later, Arthur complains about his user name. To update the directory, Marvin dou
 
 || *Step* || *Extension Action*        ||
 ||        ||                           ||
-|| 3a     || _Alternate Sort Orders_   ||
+|| 3a     || _Column Filters_          ||
+|| .1     || System presents list of columns  ||
+|| .2     || Client selects a column ||
+|| .3     || System presents a set of initial letters for the content of the selected column ||
+|| .4     || Client enters or selects initial letter ||
+|| .5     || System presents entries matching the initial letter ||
+|| .6     || Client selects entries or narrows criteria by adding letters ||
+|| .7     || Systems filters entries or advises "No matching results" ||
+|| .8     || If client reduces criteria, matching entries are represented ||
+|| .9     || On select, return to MSS 6, or return to MSS 2 ||
+||        ||                           ||
+|| 4a     || _Pagination_              ||
+||        ||                           ||
+|| 4b     || _Change Pagination_       ||
+||        ||                           ||
+|| 4c     || _Alternate Sort Orders_   ||
 || .1     || Client selects row column ||
 || .2     || System presents list collated by selected column ||
 ||        ||                           ||
-|| 3b     || _Column Filters_          ||
-|| .1     || System presents list of search fields  ||
-|| .2     || Client selects a search field ||
-|| .3     || System matches search criteria against selected field ||
+|| 4d     || _Inline edit_             ||
 ||        ||                           ||
-|| 5a     || _Insert Entry_            ||
+|| 4e     || _Inline delete_           ||
+||        ||                           ||
+|| 4f     || _Refresh List_            ||
+||        ||                           ||
+|| 4g     || _Edit Entry_              ||
+||        ||                           ||
+|| 4h     || _Insert Entry_            ||
 || .1     || Client selects (Add)      ||
 || .2     || System presents entry form with some columns set to default values (Hired: today, Hours: 37.5) ||
-|| .3     || Return to MSS 5 ||
+|| .3     || Return to MSS 8 ||
+||        ||                           ||
+|| 4i     || _Delete Entry_            ||
+||        || See 7d                    ||
 ||        ||                           ||
 || 7a     || _Cancel Edit_             ||
 || .1     || Client selects (Cancel)   ||
@@ -95,23 +116,19 @@ Later, Arthur complains about his user name. To update the directory, Marvin dou
 || .1     || Client selects another menu ||
 || .2     || System verifies that data is unchanged ||
 || .3     || If data changed, System raises confirmation ||
-|| .3     || If exit is confirmed, return to MSS 8 ||
+|| .4     || If exit is confirmed, return to MSS 8 ||
 ||        ||                           ||
 || 7d     || _Delete Entry_            ||
 || .1     || Client selects (Delete)   ||
-|| .2     || System deletes entry      || 
-|| .3     || Return to MSS 8           ||
+|| .2     || System presents read-only entry with confirmation prompt || 
+|| .3     || Client answers prompt     || 
+|| .4     || On yes, return to MSS 8   ||
+|| .5     || On no, return to MSS 6    ||
 ||        ||                           || 
 || 5b     || _Authorize Editors_       ||  
 || .1     || Client is not registered as a !PhoneBook editor ||
 || .2     || System does not present edit form when entry is selected ||
 ||        ||                           ||
-
-== ==
-=== Preconditions and Guarantees ===
-
-|| *Preconditions* || At least one client is lised as an editor in the directory ||
-||                 || Client Windows user name matches !PhoneBook user name column ||
 
 || *Issue* || 13 ||
 
