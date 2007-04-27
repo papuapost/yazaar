@@ -82,7 +82,7 @@ Later, Arthur complains about his user name. To update the directory, Marvin dou
 ||        ||                           ||
 || 4b     || _Change Pagination_       ||
 ||        ||                           ||
-|| 4c     || _Alternate Sort Orders_   ||
+|| 4c     || _Sort by Column_          ||
 || .1     || Client selects row column ||
 || .2     || System presents list collated by selected column ||
 ||        ||                           ||
@@ -102,23 +102,25 @@ Later, Arthur complains about his user name. To update the directory, Marvin dou
 || 4i     || _Delete Entry_            ||
 ||        || See 7d                    ||
 ||        ||                           ||
-|| 7a     || _Cancel Edit_             ||
+|| 7a     || Validate input            ||
+||        ||                           ||
+|| 7b     || _Cancel Edit_             ||
 || .1     || Client selects (Cancel)   ||
 || .2     || System does not change entry ||
 || .3     || Return to MSS 8           ||
 ||        ||                           ||
-|| 7b     || _Revert Edit_             ||
+|| 7c     || _Revert Edit_             ||
 || .1     || Client selects (Reset)   ||
 || .2     || System restores original values ||
 || .3     || Return to MSS 6          ||
 ||        ||                           ||
-|| 7c     || _Exit Guard _             ||
+|| 7d     || _Exit Guard _             ||
 || .1     || Client selects another menu ||
 || .2     || System verifies that data is unchanged ||
 || .3     || If data changed, System raises confirmation ||
 || .4     || If exit is confirmed, return to MSS 8 ||
 ||        ||                           ||
-|| 7d     || _Delete Entry_            ||
+|| 7e     || _Delete Entry_            ||
 || .1     || Client selects (Delete)   ||
 || .2     || System presents read-only entry with confirmation prompt || 
 || .3     || Client answers prompt     || 
@@ -129,6 +131,66 @@ Later, Arthur complains about his user name. To update the directory, Marvin dou
 || .1     || Client is not registered as a !PhoneBook editor ||
 || .2     || System does not present edit form when entry is selected ||
 ||        ||                           ||
+
+=== Test Plans ===
+
+Filter (4)
+ * is title List 
+ * is Vranx
+ * is not Marvin 
+ * filter "and"
+ * enter 
+ * is not Vranx
+ * is Marvin
+ * click row 
+ * is Edit title 
+ * is Marvin
+ * click cancel 
+ * filter "s" (append)
+ * is Vranx 
+
+Pagination (4a)
+ * is title List 
+ * is Vranx
+ * click page 3
+ * is Tricia
+ * select page size 200 
+ * is Vranx
+
+Edit Row (5)
+ * is title List
+ * click row 
+ * is title Edit
+ * hours 10
+ * submit 
+ * is title List
+
+Validation (7a) (Draft)
+ * is title List
+ * click row 
+ * is title Edit
+ * hours "four"
+ * submit 
+ * is alert
+ * cancel
+ * hours 4
+ * submit
+ * is not alert
+ * is title List
+
+Cancel Edit(7b) (Draft)
+ * is title List
+ * click row 2
+ * is title Edit
+ * hours 10
+ * cancel
+ * is title List
+ * is cell 7
+
+Sort by column (4c)
+ * is Vranx
+ * Sort by first name
+ * is not Vranx
 
 || *Issue* || 13 ||
 
