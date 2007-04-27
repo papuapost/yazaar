@@ -1048,9 +1048,8 @@ YAHOO.yazaar.widget.DataForm.prototype.logRecordEvent = function(sEventName, oRe
 		    sRecord = (oRecord) ? oRecord.toJSONString() : "undefined";
 			sMessage = sEventName + "{oRecord: " + sRecord + "}";
 			break;
-		case 3:
-			// fall through
-		default: 
+		default:
+			// 3 args or more 
 		    sRecord = (oRecord) ? oRecord.toJSONString() : "undefined";
 			sPrevRecord = (oPrevRecord) ? oPrevRecord.toJSONString() : "undefined";
 			sMessage = sEventName + "{oRecord: " + sRecord + ", " + "oPrevRecord: " + sPrevRecord + "}";
