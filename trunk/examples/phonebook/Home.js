@@ -10,7 +10,7 @@ YAHOO.my.setTitle = function(sElement, nIndex) {
 			sTitle = "List Entries";
 			break;
 		case 1:
-			sTitle = "Edit Entires";
+			sTitle = "Edit Entries";
 			break;
 		default:
 			sTitle = "";
