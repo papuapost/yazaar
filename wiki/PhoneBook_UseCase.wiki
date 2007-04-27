@@ -194,22 +194,23 @@ Sort by column (4c) (Draft)
  * is not Vranx
 
 ==== Value Reference ====
+
 List
+
 || title             || List Entries - PhoneBook Example Application ||
 || page link         || link=3 ||
 || page size         || link=3, label=200 ||
 || row 1, cell 1     || yui-dt0-bdrow0-cell0 ||
 || row 2, hours cell || yui-dt0-bdrow1-cell5 ||
 || Filter Input      || elForm_input ||
+
 Edit 
 || title         || Edit Entries - PhoneBook Example Application ||
 || Hours field   || anvil-df0-form_hours ||
 || Submit button || anvil-df0-form_SUBMIT ||
 || Cancel button || anvil-df0-form_CANCEL ||
 
-
 || *Issue* || 13 ||
-
 
 
 
