@@ -72,6 +72,7 @@
  * [http://www.devchix.com/2007/02/19/an-introduction-to-selenium-ide/ An Introduction to Selenium IDE] (devChix)
  * [http://www.codeodor.com/index.cfm/2006/11/14/Getting-started-with-Selenium/842 Getting started with Selenium] (Sammy Larbi)
  * [http://agiletesting.blogspot.com/2006/01/useful-tools-for-writing-selenium.html Useful tools for writing Selenium tests] (Grig Gheorghiu)
+ * [http://www-128.ibm.com/developerworks/web/library/wa-selenium-ajax/ Automate acceptance tests with Selenium] (developerWorks)
 
 = Other JavaScript Resources =
  * [http://www.cambiaresearch.com/c4/702b8cd1-e5b0-42e6-83ac-25f0306e3e25/Javascript-Char-Codes-Key-Codes.aspx JavaScript Char Codes]
