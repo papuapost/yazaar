@@ -46,7 +46,7 @@ YAHOO.my.events.onEntryListReturn = function(oData) {
 }
 
 YAHOO.my.events.onPhonebookLoaded = function(oData, oPhonebook) {
-	var isLoaded; 
+	var isLoaded = YAHOO.my.events.onPhonebookLoaded.isLoaded; 
 	if (isLoaded) return;
 	isLoaded = true;
 	// Change title when tab changes
@@ -55,6 +55,8 @@ YAHOO.my.events.onPhonebookLoaded = function(oData, oPhonebook) {
 	}
 	oPhonebook.oTabView.on('activeTabChange', onActiveTabChange);     
 }
+
+YAHOO.my.events.onPhonebookLoaded.isLoaded = false;
 
 YAHOO.my.Phonebook = function() {
     var oPhonebook = object(FlevBase);                   
