@@ -14,7 +14,6 @@
 <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/tabview/tabview-min.js"></script>
 <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/datasource/datasource-beta-min.js"></script>
 <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/datatable/datatable-beta-min.js"></script>
-<script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/logger/logger-min.js"></script>
 
 </head>
 <style type="text/css">
@@ -35,6 +34,17 @@
 #basic .small {font-size:77%}
 </style>
 
+<style type="text/css">
+/* custom css*/
+#xml {margin:1em;}
+#xml table {border-collapse:collapse;}
+#xml th, #xml td {padding:.5em;border:1px solid #000;}
+#xml th {background-color:#696969;color:#fff;}/*dark gray*/
+#xml th a {color:white;}
+#xml th a:hover {color:blue;}
+#xml .yui-dt-odd {background-color:#eee;} /*light gray*/
+</style>
+
 <script type="text/javascript">
 
 YAHOO.example.Data = {
@@ -46,40 +56,76 @@ YAHOO.example.Data = {
     ]
 }
 
-YAHOO.example.InitDataTable = function() {
-var myColumnHeaders = [
-    {key:"id", sortable:true, resizeable:true},
-    {key:"date", type:"date", sortable:true, resizeable:true},
-    {key:"quantity", type:"number", sortable:true, resizeable:true},
-    {key:"amount", type:"currency", sortable:true, resizeable:true},
-    {key:"title", type:"html", sortable:true, resizeable:true}
-];
+YAHOO.example.oBasic = null;
 
-var myColumnSet = new YAHOO.widget.ColumnSet(myColumnHeaders);
-
-var myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.bookorders);
-myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-myDataSource.responseSchema = {
-    fields: ["id","date","quantity","amount","title"]
-};
-var myDataTable = new YAHOO.widget.DataTable("basic", myColumnSet, myDataSource,{caption:"Example: Basic Table"});
-return myDataTable;
+YAHOO.example.InitBasic = function() {
+	
+	var myColumnHeaders = [
+	    {key:"id", sortable:true, resizeable:true},
+	    {key:"date", type:"date", sortable:true, resizeable:true},
+	    {key:"quantity", type:"number", sortable:true, resizeable:true},
+	    {key:"amount", type:"currency", sortable:true, resizeable:true},
+	    {key:"title", type:"html", sortable:true, resizeable:true}
+	];
+	
+	var myColumnSet = new YAHOO.widget.ColumnSet(myColumnHeaders);
+	
+	var myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.bookorders);
+	myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+	myDataSource.responseSchema = {
+	    fields: ["id","date","quantity","amount","title"]
+	};
+	var myDataTable = new YAHOO.widget.DataTable("basic", myColumnSet, myDataSource,{caption:"Example: Basic Table"});
+	return myDataTable;
 }
 
-YAHOO.example.oDataTable = null;
+YAHOO.example.oXML = null;
+
+YAHOO.example.InitXML = function() {
+
+	var formatUrl = function(elCell, oRecord, oColumn, sData) {
+	    elCell.innerHTML = "<a href='" + oRecord.ClickUrl + "' target='_blank'>" + sData + "</a>";
+	};
+	
+	var myColumnHeaders = [
+	    {key:"Title", text:"Name", sortable:true, formatter:formatUrl},
+	    {key:"Phone"},
+	    {key:"City"},
+	    {key:"AverageRating", text:"Rating", type:"number", sortable:true}
+	];
+	var myColumnSet = new YAHOO.widget.ColumnSet(myColumnHeaders);
+	
+	var myDataSource = new YAHOO.util.DataSource("http://developer.yahoo.com/yui/examples/datatable/php/ylocal_proxy.php");
+	myDataSource.responseType = YAHOO.util.DataSource.TYPE_XML;
+	myDataSource.responseSchema = {
+	    resultNode: "Result",
+	    fields: ["Title","Phone","City",{key:"AverageRating",converter:YAHOO.util.DataSource.convertNumber},"ClickUrl"]
+	};
+	
+	var myDataTable = new YAHOO.widget.DataTable("xml", myColumnSet, myDataSource,{initialRequest:"query=pizza&zip=94089&results=10"});
+			
+}
 
 YAHOO.example.init = function() {
     var tabView = new YAHOO.widget.TabView('demo');
     
     tabView.on('contentReady', function() {
     
-        var handleClick = function(e) {			
-			if (!YAHOO.example.oDataTable) {
+        var handleTab1 = function(e) {			
+			if (!YAHOO.example.oBasic) {
 	            alert('Ready to fetch the DataTable?');
-				YAHOO.example.oDataTable = YAHOO.example.InitDataTable(); 
+				YAHOO.example.oBasic = YAHOO.example.InitBasic(); 
 			}
         };
-		this.getTab(1).addListener('click', handleClick);
+		this.getTab(1).addListener('click', handleTab1);
+				
+        var handleTab2 = function(e) {			
+			if (!YAHOO.example.oXML) {
+	            alert('Ready to fetch the DataTable by XHR/XML?');
+				YAHOO.example.oXML = YAHOO.example.InitXML(); 
+			}
+        };
+		this.getTab(2).addListener('click', handleTab2);
     });
 };
 
@@ -90,7 +136,7 @@ YAHOO.example.init();
 <body>
 <div id="doc">
     <h1>TabView Example - Adding Event Listeners</h1>
-    <p>This example demonstrates how to add listen for tab events.</p>
+    <p>This example demonstrates how to add listeners for tab events.</p>
 
     <div id="demo" class="yui-navset">
         <ul class="yui-nav">
@@ -118,6 +164,7 @@ YAHOO.example.init();
                         <legend>Lorem Ipsum</legend>						
                         <label for="foo"> <input id="foo" name="foo"></label>
                         <input type="submit" value="submit">
+						<div id="xml"></div>						
                     </fieldset>
                 </form>
             </div>
