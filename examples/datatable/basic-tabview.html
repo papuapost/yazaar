@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>TabView Example - Adding Event Listeners</title>
+
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.2/build/reset-fonts-grids/reset-fonts-grids.css">
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/tabview.css">
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/border_tabs.css">
+<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/logger/assets/logger.css">
+
+<script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+<script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/element/element-beta-min.js"></script>
+<script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/connection/connection-min.js"></script>
+<script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/tabview/tabview-min.js"></script>
+<script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/datasource/datasource-beta-min.js"></script>
+<script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/datatable/datatable-beta-min.js"></script>
+<script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/logger/logger-min.js"></script>
+
+</head>
+<style type="text/css">
+#demo { width:30em; }
+#demo .yui-content { padding:1em; } /* pad content container */
+</style>
+
+<style type="text/css">
+/* custom css*/
+#basic {margin:1em;}
+#basic table {border-collapse:collapse;}
+#basic th, #basic td {border:1px solid #000;padding:.25em;}
+#basic th {background-color:#696969;color:#fff;} /*dark gray*/
+#basic .yui-dt-odd {background-color:#eee;} /*light gray*/
+#basic em {font-style:italic;}
+#basic strong {font-weight:bold;}
+#basic .big {font-size:136%;}
+#basic .small {font-size:77%}
+</style>
+
+<script type="text/javascript">
+
+YAHOO.example.Data = {
+    bookorders: [
+        {id:"po-0167", date:new Date(1980, 2, 24), quantity:1, amount:4, title:"A Book About Nothing"},
+        {id:"po-0297", date:new Date("January 3, 1983"), quantity:null, amount:12.12345, title:"The Meaning of Life"},
+        {id:"po-0783", date:new Date(1978, 11, 12), quantity:12, amount:1.25, title:"This Book Was Meant to Be Read Aloud"},
+        {id:"po-1482", date:new Date("March 11, 1985"), quantity:6, amount:3.5, title:"Read Me Twice"}
+    ]
+}
+
+YAHOO.example.InitDataTable = function() {
+var myColumnHeaders = [
+    {key:"id", sortable:true, resizeable:true},
+    {key:"date", type:"date", sortable:true, resizeable:true},
+    {key:"quantity", type:"number", sortable:true, resizeable:true},
+    {key:"amount", type:"currency", sortable:true, resizeable:true},
+    {key:"title", type:"html", sortable:true, resizeable:true}
+];
+
+var myColumnSet = new YAHOO.widget.ColumnSet(myColumnHeaders);
+
+var myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.bookorders);
+myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+myDataSource.responseSchema = {
+    fields: ["id","date","quantity","amount","title"]
+};
+var myDataTable = new YAHOO.widget.DataTable("basic", myColumnSet, myDataSource,{caption:"Example: Basic Table"});
+return myDataTable;
+}
+
+YAHOO.example.oDataTable = null;
+
+YAHOO.example.init = function() {
+    var tabView = new YAHOO.widget.TabView('demo');
+    
+    tabView.on('contentReady', function() {
+    
+        var handleClick = function(e) {			
+			if (!YAHOO.example.oDataTable) {
+	            alert('Ready to fetch the DataTable?');
+				YAHOO.example.oDataTable = YAHOO.example.InitDataTable(); 
+			}
+        };
+		this.getTab(1).addListener('click', handleClick);
+    });
+};
+
+YAHOO.example.init();
+</script>
+
+</head>
+<body>
+<div id="doc">
+    <h1>TabView Example - Adding Event Listeners</h1>
+    <p>This example demonstrates how to add listen for tab events.</p>
+
+    <div id="demo" class="yui-navset">
+        <ul class="yui-nav">
+            <li class="selected"><a href="#lorem"><em>lorem</em></a></li>
+            <li><a href="#ipsum"><em>ipsum</em></a></li>
+            <li><a href="#dolor"><em>dolor</em></a></li>
+        </ul>
+        <div class="yui-content">
+
+            <div id="lorem">
+                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat.</p>
+            </div>
+            <div id="ipsum">
+                <ul>
+                    <li><a href="#">Lorem ipsum dolor sit amet.</a></li>
+                    <li><a href="#">Lorem ipsum dolor sit amet.</a></li>
+                    <li><a href="#">Lorem ipsum dolor sit amet.</a></li>
+                    <li><a href="#">Lorem ipsum dolor sit amet.</a></li>
+					<div id="basic" class="example"></div>					
+                </ul>
+            </div>
+            <div id="dolor">
+                <form action="#">
+                    <fieldset>
+                        <legend>Lorem Ipsum</legend>						
+                        <label for="foo"> <input id="foo" name="foo"></label>
+                        <input type="submit" value="submit">
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
