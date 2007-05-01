@@ -17,6 +17,7 @@ See also
 || Role-based access || Base access to the application on a security role, with unauthenticated clients being placed into a "guest" role.  ||
 || Inline edit || Allow clients to change data in a cell directly, without otherwise changing the view context. ||
 || Inline delete/insert || Allow clients to select a table row to be deleted, or to insert a new row into the table, without otherwise chancing the view context. ||
+|| Initial letter search || For a dataset field, provide a linked list of characters matching the first character of the dataset items. Selecting a letter filters the dataset for that initial character. May be combined with Search Pagination and Autocomplete. Differs from Alphanumeric Filter Links in that dataset is dynamically filtered. ||
 
 == Functionality and Usability ==
 
@@ -34,9 +35,6 @@ See also
 || Return to state || Workaround HTTP post warnings by providing a link that will safely return to a previous state (e.g. search query). (JIRA) ||
 || Workflow Wizard || (JIRA) ||
 
-
-
-
 == Ajax Coding Patterns ==
 
  * Placeholder DIVs
@@ -47,7 +45,6 @@ See also
  * Power constructors 
  * Contextual instantiation (create on demand)
  * Idiomatic events
-
 
 
 
