@@ -2,16 +2,17 @@
 
 = Application Use Cases and Ajax Coding Patterns =
 
-See also [http://ajaxpatterns.org/Patterns AjaxPatterns.org]
+See also 
+
+ * [http://ajaxpatterns.org/Patterns AjaxPatterns.org]
+ * [http://developer.yahoo.com/ypatterns/atoz.php Yahoo! Design Pattern Library]
 
 == Programming Patterns  ==
 
 || Finely-grained document titles || Change the document title to match the application state ||
 || Create/Retrieve/Update/Delete || Provide a workflow for creating, retrieving, updating and deleting entities || 
 || Login and continue || Authenticate client from any public state and return to the original workflow || 
-|| Initial letter search || For a dataset field, provide a linked list of characters matching the first character of the dataset items. Selecting a letter filters the dataset for that initial character. ||
-|| Client-side pagination || For a dataset held locally, present a block of items at a time, allowing the client to move through the data set, block by block ||
-|| Server-side pagination || Retrieve and present only one block of a larger dataset at time, fetching additional items as needed. ||
+|| Server-side pagination || Retrieve and present only one block of a larger dataset at time, fetching additional items as needed. Applies to both Search Pagination and Item Pagination.||
 || Validate input || Confirm that data being submitted meets any data constraints, canceling the operation and reporting errors when found. ||
 || Role-based access || Base access to the application on a security role, with unauthenticated clients being placed into a "guest" role.  ||
 || Inline edit || Allow clients to change data in a cell directly, without otherwise changing the view context. ||
@@ -30,18 +31,22 @@ See also [http://ajaxpatterns.org/Patterns AjaxPatterns.org]
 || Revert Edit || Restore original state to an data-entry form, undoing unsaved changes made by client || 
 || Direct state links || Provide a mechanism for proceeding directly to a common application states  ||
 || Find/Edit/List/View || Provide a coherent mechanism for finding, editing, listing, and viewing entities as part of a CRUD workflow ||
-|| Tab Motif || Organize workflows into a set of selectable headings running along the top or side of a display that remain visible between workflows. ||
+|| Return to state || Workaround HTTP post warnings by providing a link that will safely return to a previous state (e.g. search query). (JIRA) ||
+|| Workflow Wizard || (JIRA) ||
+
+
+
 
 == Ajax Coding Patterns ==
 
  * Placeholder DIVs
+ * Configure object by parsing markup in a placeholder DIV
  * Save references to DOM elements as object properties 
  * Marker CSS styles 
  * try/catch browser incompatibilities
  * Power constructors 
  * Contextual instantiation (create on demand)
  * Idiomatic events
-
 
 
 
