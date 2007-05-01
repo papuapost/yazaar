@@ -1,0 +1,38 @@
+#summary Happy Trails to YUI
+
+The trails step through the [http://developer.yahoo.com/yui/ YUI documentation] in a  progressive, tutorial-style order. There are three trails: Backbone, Workhorse, and Special Effects.
+
+First Trail - YUI builds on several "backbone" packages that hold the library together.
+
+ * Yahoo Global
+ * Dom
+ * Event
+   ** [http://yuiblog.com/blog/2007/01/17/event-plan/ Event-Driven Application Design]
+ * Element
+ * Logger
+ * Connection
+ * Animation
+ * Drag and Drop
+
+Second Trail - The library provides several workhorse packages that manage and display data.
+
+ * Container
+   ** Module, Overlay, Panel, Tooltip, Dialog,
+ * SimpleDialog
+ * Menu
+ * Tabview
+ * TreeView
+ * DataSource
+ *  DataTable
+
+Third Trail - Other library controls provides special effects, like sliders, buttons, and calendars, along with browser history management, and grid-based layouts.
+
+ * Autocomplete
+ * Button
+ * Slider
+ * Calendar
+ * Browser History Manager
+ * Reset, Fonts, and Grids (This could also be viewed first.)
+
+The mass of YUI documentation can seem imposing at first, but if follow the trails, you'll be up and running in a New York minute (or three). :) 
+
