@@ -1,4 +1,4 @@
-#summary Happy Trails to YUI
+#summary (Issue 1)
 
 The trails step through the [http://developer.yahoo.com/yui/ YUI documentation] in a  progressive, tutorial-style order. There are three trails: Backbone, Workhorse, and Special Effects.
 
@@ -35,4 +35,6 @@ Third Trail - Other library controls provides special effects, like sliders, but
  * Reset, Fonts, and Grids (This could also be viewed first.)
 
 The mass of YUI documentation can seem imposing at first, but if follow the trails, you'll be up and running in a New York minute (or three). :) 
+
+ * [Resources]
 
