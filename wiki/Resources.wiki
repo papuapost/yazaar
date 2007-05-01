@@ -8,8 +8,8 @@
 
 = Read Me First =
 
- * [http://yuiblog.com/blog/2007/01/17/event-plan/ Event Driven Application Design]
- * [http://jroller.com/page/TedHusted?entry=yuidocs Happy Trails to YUI!]
+ * [http://simon.incutio.com/slides/2006/xtech/yui-slides.pdf Ajax XTech Slides]
+ * [HappyTrails Happy Trails to YUI!]
 
 = Libraries and tools we use =
 
