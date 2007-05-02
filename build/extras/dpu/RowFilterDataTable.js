@@ -2,7 +2,7 @@
  * Copyright (c) 2007, Yahoo! Inc. All rights reserved.
  * Code licensed under the BSD License:
  * http://developer.yahoo.net/yui/license.txt
- * version: 2.2.2
+ * version: 2.2.1
 */
 /* Enhanced DataTable with row filtering and hideable columns 
  * Copyright (c) 2007, Victor Morales. All rights reserved.
@@ -16,16 +16,19 @@ YAHOO.dpu.widget.DataTable = function(elContainer , oColumnSet , oDataSource , o
 			YAHOO.dpu.widget.DataTable.superclass.constructor.call(this, elContainer , oColumnSet , oDataSource , oConfigs);
 		}
 		//Call ContextMenu initialization method
-       this._initHideMenu();22
+       this._initHideMenu();
+	
+	
 };
 
 // Inherit from YAHOO.widget.DataTable
 YAHOO.lang.extend(YAHOO.dpu.widget.DataTable, YAHOO.widget.DataTable);
 
+
 YAHOO.dpu.widget.DataTable.prototype._initHideMenu=function() {
     
 	var oColumnSet= this._oColumnSet
-	
+	this.aColState=[];
 	var _hideCol=[]
         var keys= oColumnSet.keys;
         for (var i=0; i<keys.length;i++) {
@@ -33,6 +36,7 @@ YAHOO.dpu.widget.DataTable.prototype._initHideMenu=function() {
 				itemText = keys[i].text || keys[i].key;
                 _hideCol.push({text:itemText,checked:true, colNum:i})
             }
+            this.aColState[i]=0;
         }
         if (_hideCol.length>0)    {
           var oContextMenu = new YAHOO.widget.ContextMenu("hideMenu", { zindex:32767,trigger: this.getHead()     } );
@@ -52,26 +56,34 @@ YAHOO.dpu.widget.DataTable.prototype._initHideMenu=function() {
 };
 
 YAHOO.dpu.widget.DataTable.prototype.onhideMenuClick=function(p_sType, p_aArgs, p_oMenuItem) {
-	var oMenuItem= p_oMenuItem[0];
-	var col_no=p_oMenuItem[1];
-	var swap=! oMenuItem.cfg.getProperty("checked")
-	oMenuItem.cfg.setProperty("checked", swap);
-	var colstyle;
-	if (!swap) { colstyle = 'none';      }
-	else {       colstyle='';    }
-	
-	   //Hide column header
-	var headRow= this.getHead().getElementsByTagName('th')
-	headRow[col_no].style.display=colstyle;
-	
-	var rows= this.getBody().getElementsByTagName('tr')
-	
-	// Hide column rows 
-	for (var row=0; row<rows.length;row++) {
-	  var cels = rows[row].getElementsByTagName('td')
-	  cels[col_no].style.display=colstyle;
-	}
+        var oMenuItem= p_oMenuItem[0];
+        var col_no=p_oMenuItem[1];
+        var swap=! oMenuItem.cfg.getProperty("checked")
+        oMenuItem.cfg.setProperty("checked", swap);
+        var colstyle;
+        if (!swap) {
+            this.hideSwap(col_no,'none',0)
+            this.aColState[col_no]=1      
+        }
+        else {
+            this.hideSwap(col_no,'',0)
+            this.aColState[col_no]=0
+        }
 };
+
+YAHOO.dpu.widget.DataTable.prototype.hideSwap=function(col_no,colstyle,startRow) {
+       //Hide or unhide column header
+        var headRow= this.getHead().getElementsByTagName('th')
+        headRow[col_no].style.display=colstyle;
+		
+        var rows= this.getBody().getElementsByTagName('tr')
+        
+        // Hide or unhide column rows 
+        for (var row=startRow; row<rows.length;row++) {
+          var cels = rows[row].getElementsByTagName('td')
+	      cels[col_no].style.display=colstyle;
+        }
+}
 
 YAHOO.dpu.widget.DataTable.prototype.isFiltered=false;
 
@@ -81,7 +93,6 @@ YAHOO.dpu.widget.DataTable.prototype.doBeforeLoadData= function( sRequest ,oResp
     }    
     return true;
 }
-
 YAHOO.dpu.widget.DataTable.prototype.filterRows=function(filteredRows) {
     if(filteredRows == undefined) {
         this._oRecordSet.replace(this.defaultView);
@@ -95,7 +106,8 @@ YAHOO.dpu.widget.DataTable.prototype.filterRows=function(filteredRows) {
 			var row= this._oRecordSet._records[r];
             dataView.push(row);
 		}
-		this.replaceRows(dataView)
-		this.isFiltered=true;
+         this.replaceRows(dataView);
+         this._oRecordSet._records=dataView;
+         this.isFiltered=true;
     }
 };
