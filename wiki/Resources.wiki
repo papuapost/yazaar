@@ -15,6 +15,7 @@
 
  * [http://developer.yahoo.com/yui/Yahoo User Interface (YUI) Library]
    ** [http://www.nabble.com/ydn-javascript-f16949.html YUI Group via Nabble]
+   ** [http://yuiblog.com/sandbox/yui/v010/examples/calendar/calendar_intl.php Sandbox Examples]
  * [http://www.aptana.com/ Aptana IDE]
  * [http://jsdoc.sourceforge.net/ JSDoc - JavaScript Documentation Tool]
    * [http://java.sun.com/j2se/javadoc/writingdoccomments/ Writing JavaDoc Comments]
