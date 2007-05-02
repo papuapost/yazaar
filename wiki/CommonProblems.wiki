@@ -15,6 +15,8 @@ See also [http://code.google.com/p/anvil/wiki/CommonProblems Anvil Common Proble
 || (/) || Ensure that the the script that defines {whatever} is being imported. ||
 
 === IE ===
+|| (!) || *Children is null or not an object* ||
+|| (/) || If JSON is being used to create objects, ensure that the last item in an array does not include a trailing comma before the closing bracket. FireFox ignores a trailing JSON comma, but IE does not. ||
 || (?) || *Can't set the style attribute in IE* ||
 || (/) || IE expects the idiom el.style.setAttribute but w3c expects el.setAttribute. Either try the IE approach and fall back to w3c in a catch clause, or [http://delete.me.uk/2004/09/ieproto.html patch IE]. ||
 || (?) || *Can't change the input type in IE* ||
