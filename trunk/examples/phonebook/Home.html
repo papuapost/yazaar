@@ -51,8 +51,7 @@
             </ul>
             <div class="yui-content">
 				<div id="elList">
-    	            <div id="elDataTable" class="dpu-dt"></div>				
-					<div class="filter">
+					<div id="elFilter" class="filter">
         				<form id="elForm">
              				<p style="font-weight:bold">Filter Entries by:
              				<select id="elForm_item" onchange="YAHOO.my.oPhonebook.onFilterChange()">
@@ -68,7 +67,8 @@
                 				<div class="filterMatch" id="elForm_match"></div>
             				</div>
          				</form>
-    			    </div>			
+    			    </div>
+    	            <div id="elDataTable" class="dpu-dt"></div>												
 				</div>
 				<div id="elEdit">
 		            <div id="elDataForm"></div>				
@@ -94,6 +94,8 @@
 
 <!-- DOM/Events -->
 <script src="http://yui.yahooapis.com/2.2.2/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+<!-- Overlay -->
+<script src="http://yui.yahooapis.com/2.2.2/build/container/container-min.js"></script>
 <!-- DataTable/DataForm -->
 <script src="http://yui.yahooapis.com/2.2.2/build/datasource/datasource-beta-min.js"></script>
 <script src="../../build/patched/datatable-beta-debug-patched.js"></script>
