@@ -31,7 +31,7 @@ http://developer.yahoo.net/yui/license.txt
  * by a "power constructor" before use.
  * <p />
  * The properties to be configured are oColumnHeaders, oResponseSchema, 
- * sDataTable, oConfigs, sDataForm, sTabView, sForm, sItemName.
+ * sDataTable, oConfigs, sDataForm, sTabView, sListForm, sItemName.
  * The client application must also provide a dataset for the load 
  * method. 
  */
@@ -77,10 +77,10 @@ var FlevBase = function() {
         sTabView: null,
         
         /**
-         * DOM ID for the Form control. 
+         * DOM ID for the List Form control (filters list entries). 
          * Must be configured.
          */
-        sForm: null,
+        sListForm: null,
         
         /**
          * Initial autocomplete field name.
@@ -236,8 +236,8 @@ var FlevBase = function() {
             };   
             oSelf.fnFilter= new YAHOO.dpu.util.StringFilter(list,oSelf.sItemName)
             oSelf.fnFilter.maxCacheEntries = 0;   
-            var sInput = oSelf.sForm + "_input";
-            var sMatch = oSelf.sForm + "_match";
+            var sInput = oSelf.sListForm + "_input";
+            var sMatch = oSelf.sListForm + "_match";
             var oAutoComp = new YAHOO.dpu.widget.RowFilter(sInput,sMatch,oSelf.oDataTable,oSelf.fnFilter);
             var ua = navigator.userAgent.toLowerCase();
             if(ua.indexOf('msie') != -1 && ua.indexOf('opera') < 0) {
@@ -250,7 +250,7 @@ var FlevBase = function() {
          * Must be wired to an input control via an onChange handler.
          */            
         onFilterChange: function () {
-            var sItem = this.sForm + "_item";
+            var sItem = this.sListForm + "_item";
             var el = document.getElementById(sItem);
             var item = el.options[el.selectedIndex].value;
             this.fnFilter.schemaItem = item; 

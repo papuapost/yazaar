@@ -2,7 +2,7 @@
  * Copyright (c) 2007, Yahoo! Inc. All rights reserved.
  * Code licensed under the BSD License:
  * http://developer.yahoo.net/yui/license.txt
- * version: 2.2.2
+ * version: 2.2.0
 */
 /* Specialized Autocomplete widget used to feed a DataTable Row Filter;
  * Copyright (c) 2007, Victor Morales. All rights reserved.
@@ -10,6 +10,7 @@
 */
 
 YAHOO.namespace("dpu.widget");
+
 
 YAHOO.dpu.widget.RowFilter = function( elInput,elContainer,oDataTable,fnFilter,oConfigs) {
         if (arguments.length > 0) {
@@ -22,14 +23,18 @@ YAHOO.dpu.widget.RowFilter = function( elInput,elContainer,oDataTable,fnFilter,o
         this._oDataTable.subscribe("columnSortEvent",this.updateFilter,this._oDataTable,this)
 }
 			
-// Inherit from YAHOO.widget.AutoComplete
+// Inherit from YAHOO.widget.DataTable
 YAHOO.lang.extend(YAHOO.dpu.widget.RowFilter, YAHOO.widget.AutoComplete);
 
 YAHOO.dpu.widget.RowFilter.prototype.updateFilter=function(oColumn,oDataTable) {
 	var records=oDataTable.getRecordSet().getRecords();
-	if (this.Filter._aData!==records) {
-		this.Filter._aData=records
-	}	
+    var startRow=this.filterCount;
+
+	this.Filter._aData=records;
+    
+    if (oDataTable.isFiltered) {
+        this.hideColumns(); 
+    }	
 }
 
 YAHOO.dpu.widget.RowFilter.prototype.queryDelay=0;
@@ -69,15 +74,37 @@ YAHOO.dpu.widget.RowFilter.prototype.myOnDataReturn= function(sType, aArgs) {
 		oAutoComp.setBody("<div id=\"container_default\">No matching results</div>");
 	}
 	
-	if (this._oDataTable.isFiltered) {
-		this._oDataTable.filterRows();
-		this.Filter._aData=this._oDataTable.defaultView;
-	}
+	this.reset();
 }
+
+YAHOO.dpu.widget.RowFilter.prototype.reset= function() {
+	var isReset=false
+    var oDataTable=this._oDataTable
+    
+	if (oDataTable.isFiltered) {
+		oDataTable.filterRows();
+		this.Filter._aData=oDataTable.defaultView;
+        this.hideColumns();        
+        isReset=true;
+	}
+	return isReset;
+}
+YAHOO.dpu.widget.RowFilter.prototype.hideColumns=function() {
+    var oDataTable=this._oDataTable
+    var colArray=oDataTable.aColState
+    var startRow=this.filterCount;
+    for (var i=0; i<colArray.length;i++) {
+        if(colArray[i]===1) {
+            oDataTable.hideSwap(i,'none',startRow) 
+        }
+    }
+}
+YAHOO.dpu.widget.RowFilter.prototype.filterCount=0;
 
 YAHOO.dpu.widget.RowFilter.prototype.myOnSelect= function(sType, aArgs) {
 	var objResult = aArgs[2][1];
     this._oDataTable.filterRows(objResult.matchedRows)
+    this.filterCount=objResult.matchedRows.length
 }
 
 
@@ -112,7 +139,7 @@ YAHOO.dpu.util.StringFilter.prototype.doQuery = function(oCallbackFn, sQuery, oP
     this._addCacheElem(resultObj);
     
     this.getResultsEvent.fire(this, oParent, sQuery, aResults);
-    oCallbackFn(sQuery, aResults, oParent)
+    oCallbackFn(sQuery, aResults, oParent);
     return;
 };
 YAHOO.dpu.util.StringFilter.prototype.schemaItem=null;
