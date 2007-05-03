@@ -1,9 +1,6 @@
 YAHOO.namespace("my");
 
 YAHOO.my.sTemplate = "{sTitle} - PhoneBook Example Application";
-
-YAHOO.my.oLogReader = new YAHOO.widget.LogReader("elLogReader");    
-
 // Static data for low-level testing    
 YAHOO.my.oLocalData = { 
     result : [
@@ -16,6 +13,7 @@ YAHOO.my.oLocalData = {
 	};
 // 	{entry_key: 'a4065cc1-b59d-4d0d-8210-c3757e686e6c', last_name: 'Prefect', first_name: 'Ford', extension: '555-123-4570', username: 'peanut', hired: '07/26/1978', hours: 35, editor:'1'},
 // 	{entry_key: '59a5c1da-9750-4b2c-8fcb-833bd16aca26', last_name: 'Dent', first_name: 'Arthur', extension: '555-123-4571', username: 'monk', hired: '07/26/1978', hours: 35, editor:'1'}
+
 
 YAHOO.my.Events = function() {
     this.createEvent("entryList")
@@ -59,7 +57,7 @@ YAHOO.my.Phonebook = function() {
     
     oPhonebook.sDataTable = "elDataTable";
     oPhonebook.sDataForm = "elDataForm";
-    oPhonebook.sTabView = "elPhoneBook";
+    oPhonebook.sTabView = "elPhonebook";
     oPhonebook.sForm = "elForm";
 
     YAHOO.my.events.subscribe("entryList", oPhonebook.load, oPhonebook);    
@@ -105,7 +103,86 @@ YAHOO.my.events.onPhonebookLoaded = function(oData, oSelf) {
 
 YAHOO.my.events.onPhonebookLoaded.isLoaded = false;
 
-YAHOO.my.oBody = new YAHOO.widget.TabView("elBody");
+YAHOO.my.oBody = {};
+
+function newEl(sElement, elParent, sID, sClass) {
+	var el = elParent.appendChild(document.createElement(sElement));
+	el.id = sID;
+	if (arguments.length>3) YAHOO.util.Dom.addClass(el,sClass);
+	return el;
+} 
+
+function newDiv(elParent, sID, sClass) {
+	return newEl("DIV", elParent, sID, sClass)
+} 
+
+function newForm(elParent, sID, sClass) {
+	return newEl("FORM", elParent, sID, sClass)
+} 
+
+function newInputText(elParent, sID, sClass) {
+	var el = newEl("INPUT", elParent, sID, sClass);
+	el.type = "text"; 
+	return el;			
+}
+
+YAHOO.my.oBody.TabView = function() {
+
+    var oTabView = new YAHOO.widget.TabView({id:'elBody'});
+    oTabView.addTab( new YAHOO.widget.Tab({
+        label: "Home",
+        content: "<p><em>Under Construction!</em> Utlimately, PhoneBook will be a working phonebook application utilizing a variety of widgets with a simple service layer. Today, PhoneBook demonstrates combining Unobtrusive Validation, DataForm, DataView, and TabView into a Find/List/Edit workflow, using static data.</p>",
+        active: true
+    }));    
+    oTabView.addTab( new YAHOO.widget.Tab({
+        label: "PhoneBook",
+        content: '<div id="elPhonebook">'
+    }));    
+    oTabView.addTab( new YAHOO.widget.Tab({
+        label: "Logger",
+        content: '<div id="elLogReader"></div>'
+    }));
+
+    YAHOO.util.Event.onContentReady("elBody", function() {
+        oTabView.appendTo(this); // #elBody
+	YAHOO.my.oLogReader = new YAHOO.widget.LogReader("elLogReader");
+	// <div id="elList"><div id="elFilter" class="filter"><form id="elForm"><p style="font-weight:bold">Filter Entries by:<select id="elForm_item" onchange="YAHOO.my.oPhonebook.onFilterChange()"><option value="last_name" selected="selected">Last Name</option><option value="first_name">First Name</option><option value="username">Username</option></select></p><div class="filterForm"><p><input class="filterInput" id="elForm_input" /></p><div class="filterMatch" id="elForm_match"></div></div></form></div><div id="elDataTable" class="dpu-dt"></div></div><div id="elEdit"><div id="elDataForm"></div></div></div>
+	var elPhonebook = document.getElementById("elPhonebook");
+		// NavSet
+		var elNavset = newDiv(elPhonebook,"elNavset","yui-navset");
+			var elNav = newEl("UL",elNavset,"elNav","yui-nav");
+			var elNav1 = newEl("LI",elNav,"elNav1");
+			var elNav1Link = newEl("A",elNav1,"elNav1Link", "selected");
+			elNav1Link.href = '#'; 
+			elNav1Link.innerHTML = 'List';			
+			var elNav2 = newEl("LI",elNav,"elNav2");
+			var elNav2Link = newEl("A",elNav2,"elNav2Link");
+			elNav2Link.href = '#'; 
+			elNav2Link.innerHTML = 'Edit';
+		// Content
+		var elContent = newDiv(elPhonebook,"elContent","yui-content");
+			var elList = newDiv(elContent,"elList");
+				var elFilter = newDiv(elList,"elFilter","filter"); 
+					var elForm = newForm(elFilter,"elForm");
+						var elP = elForm.appendChild(document.createElement("P"));
+							elP.innerHTML = "Filter Entries by:";
+						var elForm_item = newEl("SELECT",elForm,"elForm_item");
+							elForm_item.options[0] = new Option("Last Name","last_name",true,true);
+							elForm_item.options[1] = new Option("First Name","first_name",false,false);
+							elForm_item.options[2] = new Option("UserName","username",false,false);
+						elFilterForm = newDiv(elForm_item,"elFilterForm","filterForm");
+							var elForm_input = newInputText(elFilterForm,"elForm_input", "filterInput");
+							var elForm_match = newDiv(elFilterForm,"elForm_match","filterMatch");				
+					var elDataTable = newDiv(elFilter,"elDataTable", "dpu-dt");
+			var elEdit = newDiv(elContent,"elEdit");
+				var elDataForm = newDiv(elEdit,"elDataForm");
+	// Render
+	YAHOO.my.oPhonebook = new YAHOO.my.Phonebook();	      
+	elForm_item.onchange = YAHOO.my.oPhonebook.onFilterChange();
+    });
+	
+	return oTabView;
+};
 
 YAHOO.my.oBody.setTitle = function(nIndex) {
 	var sTitle;
@@ -130,12 +207,18 @@ YAHOO.my.oBody.setTitle = function(nIndex) {
 	document.title = YAHOO.my.sTemplate.supplant({sTitle: sTitle}); 
 }
 
+YAHOO.my.oBody.handleOnDOMReady = function () {
+	YAHOO.my.oBody.oTabView = new YAHOO.my.oBody.TabView();	
+}
+
+YAHOO.util.Event.onDOMReady(YAHOO.my.oBody.handleOnDOMReady);
+
 YAHOO.my.oBody.handleOnContentReady = function(oData, oSelf) {
     var onActiveTabChange = function(e) {
-        var nIndex = YAHOO.my.oBody.get('activeIndex');
+        var nIndex = YAHOO.my.oBody.oTabView.get('activeIndex');
 		YAHOO.my.oBody.setTitle(nIndex);
 	}
-	YAHOO.my.oBody.on('activeTabChange', onActiveTabChange);     
+	YAHOO.my.oBody.oTabView.on('activeTabChange', onActiveTabChange);     
 	YAHOO.my.oBody.setTitle(0);
 }
 

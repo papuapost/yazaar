@@ -37,70 +37,23 @@
   }
 </style>
 <!-- DataTable/DataForm -->
-<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/datatable/assets/datatable.css">
+<link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/datatable/assets/datatable.css">
 <!-- TabView -->
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/tabview.css">
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/border_tabs.css">
+<link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/tabview.css">
+<link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/border_tabs.css">
 <!-- LogReader -->
-<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/logger/assets/logger.css">
+<link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/logger/assets/logger.css">
 
 </head>
   <body>
-        <div id="elBody" class="yui-navset">
-            <ul class="yui-nav">
-                <li class="selected"><a href="#home"><em>Home</em></a></li>
-                <li><a href="#phonebook"><em>PhoneBook</em></a></li>
-                <li><a href="#logger"><em>Logger</em></a></li>
-            </ul>
-            <div class="yui-content">
-              <div id="elHome">
-                <p>
-                  <em>Under Construction!</em>
-          Utlimately, PhoneBook will be a working phonebook application
-          utilizing a variety of widgets with a simple service layer.
-          Today, PhoneBook demonstrates combining Unobtrusive Validation,
-          DataForm, DataView, and TabView into a Find/List/Edit workflow,
-          using static data.
-                </p>
-              </div>
-            <div id="elPhoneBook" class="yui-navset">
-                <ul class="yui-nav">
-                    <li><a href="#list"><em>List Entries</em></a></li>
-                    <li><a href="#edit"><em>Edit Entry</em></a></li>
-                </ul>
-                <div class="yui-content">
-            <div id="elList">
-              <div id="elFilter" class="filter">
-                    <form id="elForm">
-                        <p style="font-weight:bold">Filter Entries by:
-                        <select id="elForm_item" onchange="YAHOO.my.oPhonebook.onFilterChange()">
-                            <option value="last_name" selected="selected">Last Name</option>
-                            <option value="first_name">First Name</option>
-                            <option value="username">Username</option>
-                        </select>
-                        </p>
-                        <div class="filterForm">
-                      <p>
-                                <input class="filterInput" id="elForm_input" />
-                      </p>
-                            <div class="filterMatch" id="elForm_match"></div>
-                        </div>
-                    </form>
-                  </div>
-                      <div id="elDataTable" class="dpu-dt"></div>
-            </div>
-            <div id="elEdit">
-                    <div id="elDataForm"></div>
-            </div>
-                </div>
-            </div>
-            <div id="elLogReader"></div>
-    </div>
-    <div id="footer">
+    <div id="elHeader" class="hd">
           <hr />
-      </div>
-  </body>
-
+	</div>
+    <div id="elBody" class="bd"></div>
+    <div id="elFooter" class="ft">
+          <hr />
+	</div>
+	<div id="elScripts">
 <!-- Patch for IE setAttribute issue [http://delete.me.uk/2004/09/ieproto.html] -->
 <!--[if IE]>
     <script type="text/javascript" src="../../build/extras/ieproto/attributes.js"></script>
@@ -139,5 +92,6 @@
 <script src="../../build/extras/crockford/remedial.js" ></script>
 <script src="http://www.json.org/json.js"></script>
 <script src="Home.js"></script>
-
+	</div>
+  </body>
 </html>
