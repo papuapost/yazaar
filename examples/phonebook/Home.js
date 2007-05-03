@@ -1,25 +1,9 @@
 YAHOO.namespace("my");
 
+YAHOO.my.sTemplate = "{sTitle} - PhoneBook Example Application";
+
 YAHOO.my.oLogReader = new YAHOO.widget.LogReader("elLogReader");    
 
-YAHOO.my.setTitle = function(sElement, nIndex) {
-	var sTitle;
-	// sElement is for future use, just elTabview for now.
-	switch(nIndex) {
-		case 0: 
-			sTitle = "List Entries";
-			break;
-		case 1:
-			sTitle = "Edit Entries";
-			break;
-		default:
-			sTitle = "";
-			break;
-	}
-    var sTemplate = "{sTitle} - PhoneBook Example Application";
-	document.title = sTemplate.supplant({sTitle: sTitle}); 
-}
-	
 // Static data for low-level testing    
 YAHOO.my.oLocalData = { 
     result : [
@@ -44,19 +28,6 @@ YAHOO.my.events.onEntryListReturn = function(oData) {
     YAHOO.log("entryList Event");
     YAHOO.my.events.fireEvent("entryList", oData);	
 }
-
-YAHOO.my.events.onPhonebookLoaded = function(oData, oPhonebook) {
-	var isLoaded = YAHOO.my.events.onPhonebookLoaded.isLoaded; 
-	if (isLoaded) return;
-	isLoaded = true;
-	// Change title when tab changes
-    var onActiveTabChange = function(e) {
-		YAHOO.my.setTitle(oPhonebook.sTabView, oPhonebook.oTabView.get('activeIndex'));
-	}
-	oPhonebook.oTabView.on('activeTabChange', onActiveTabChange);     
-}
-
-YAHOO.my.events.onPhonebookLoaded.isLoaded = false;
 
 YAHOO.my.Phonebook = function() {
     var oPhonebook = object(FlevBase);                   
@@ -88,7 +59,7 @@ YAHOO.my.Phonebook = function() {
     
     oPhonebook.sDataTable = "elDataTable";
     oPhonebook.sDataForm = "elDataForm";
-    oPhonebook.sTabView = "elTabView";
+    oPhonebook.sTabView = "elPhoneBook";
     oPhonebook.sForm = "elForm";
 
     YAHOO.my.events.subscribe("entryList", oPhonebook.load, oPhonebook);    
@@ -100,8 +71,73 @@ YAHOO.my.Phonebook = function() {
     return oPhonebook;
 };
 YAHOO.augment(YAHOO.my.Phonebook, YAHOO.util.EventProvider);
-YAHOO.my.oPhonebook = new YAHOO.my.Phonebook();
-YAHOO.my.setTitle(YAHOO.my.oPhonebook.sTabView, 0);
 
-YAHOO.my.filter = new YAHOO.widget.Overlay("elFilter"); 
-YAHOO.my.filter.render(); 
+YAHOO.my.events.onPhonebookLoaded = function(oData, oSelf) {
+	var isLoaded = YAHOO.my.events.onPhonebookLoaded.isLoaded; 
+	if (isLoaded) return;
+	isLoaded = true;
+	
+	oSelf.filter = new YAHOO.widget.Overlay("elFilter"); 
+	oSelf.filter.render();
+	
+	oSelf.setTitle = function(nIndex) {
+		var sTitle;
+		switch(nIndex) {
+			case 0: 
+				sTitle = "List Entries";
+				break;
+			case 1: 
+				sTitle = "Edit Entry";
+				break;
+			default:
+				sTitle = "";
+				break;
+		}
+		document.title = YAHOO.my.sTemplate.supplant({sTitle: sTitle}); 
+	}
+	 
+    var onActiveTabChange = function(e) {
+        var nIndex = oSelf.oTabView.get('activeIndex');
+		oSelf.setTitle(nIndex);
+	}
+	oSelf.oTabView.on('activeTabChange', onActiveTabChange);     
+}
+
+YAHOO.my.events.onPhonebookLoaded.isLoaded = false;
+
+YAHOO.my.oBody = new YAHOO.widget.TabView("elBody");
+
+YAHOO.my.oBody.setTitle = function(nIndex) {
+	var sTitle;
+	// sElement is for future use, just elTabview for now.
+	switch(nIndex) {
+		case 0: 
+			sTitle = "Home";
+			break;
+		case 1: 
+			sTitle = "PhoneBook";
+			if (!YAHOO.my.oPhonebook) {
+				YAHOO.my.oPhonebook = new YAHOO.my.Phonebook();
+			}
+			break;
+		case 2: 
+			sTitle = "Logger";
+			break;
+		default:
+			sTitle = "";
+			break;
+	}
+	document.title = YAHOO.my.sTemplate.supplant({sTitle: sTitle}); 
+}
+
+YAHOO.my.oBody.handleOnContentReady = function(oData, oSelf) {
+    var onActiveTabChange = function(e) {
+        var nIndex = YAHOO.my.oBody.get('activeIndex');
+		YAHOO.my.oBody.setTitle(nIndex);
+	}
+	YAHOO.my.oBody.on('activeTabChange', onActiveTabChange);     
+	YAHOO.my.oBody.setTitle(0);
+}
+
+YAHOO.util.Event.onContentReady("elBody", YAHOO.my.oBody.handleOnContentReady, YAHOO.my);  
+

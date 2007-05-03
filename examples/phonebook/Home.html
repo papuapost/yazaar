@@ -7,8 +7,8 @@
 <style type="text/css">
     /* custom css*/
     body {font-family:arial}
-	
-    /* CSS FOR DataTable */	
+
+    /* CSS FOR DataTable */
     .dpu-dt {margin:1em;}
     .dpu-dt table {border-collapse:collapse;}
     .dpu-dt th, .dpu-dt td {border:1px solid #000;padding:.25em;}
@@ -20,7 +20,7 @@
     .dpu-dt .small {font-size:77%}
     .dpu-dt .yui-dt-selected {background-color:#000;color:#FFF;} /*white on black*/
     .dpu-dt .yui-dt-editable.yui-dt-highlight {background-color:#BEDAFF;} /*light blue*/
-  
+
     /*CSS For Auto Complete*/
     .filter {position:relative;padding:1em;}
     .filterForm {position:relative;margin:1em;width:15em;}/* set width of widget here*/
@@ -31,7 +31,11 @@
     .filterMatch ul {padding:5px 0;width:100%;}
     .filterMatch li {padding:0 5px;cursor:default;white-space:nowrap; font-size:small}
     .filterMatch li.yui-ac-highlight {background:#ff0;}
-</style>           
+
+  #elBody-off div.yui-content div {
+    display: none;
+  }
+</style>
 <!-- DataTable/DataForm -->
 <link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/datatable/assets/datatable.css">
 <!-- TabView -->
@@ -42,55 +46,68 @@
 
 </head>
   <body>
-    <table cellspacing="16">
-      <tr><td valign="top" width="98%">
-        <div id="elTabView" class="yui-navset">
+        <div id="elBody" class="yui-navset">
             <ul class="yui-nav">
-                <li class="selected"><a href="#list"><em>List Entries</em></a></li>
-                <li><a href="#edit"><em>Edit Entry</em></a></li>
+                <li class="selected"><a href="#home"><em>Home</em></a></li>
+                <li><a href="#phonebook"><em>PhoneBook</em></a></li>
+                <li><a href="#logger"><em>Logger</em></a></li>
             </ul>
             <div class="yui-content">
-				<div id="elList">
-					<div id="elFilter" class="filter">
-        				<form id="elForm">
-             				<p style="font-weight:bold">Filter Entries by:
-             				<select id="elForm_item" onchange="YAHOO.my.oPhonebook.onFilterChange()">
-                				<option value="last_name" selected="selected">Last Name</option>
-                				<option value="first_name">First Name</option>
-                				<option value="username">Username</option>
-            				</select>
-             				</p>
-            				<div class="filterForm">
-							    <p>
-                				    <input class="filterInput" id="elForm_input" />
-							    </p>
-                				<div class="filterMatch" id="elForm_match"></div>
-            				</div>
-         				</form>
-    			    </div>
-    	            <div id="elDataTable" class="dpu-dt"></div>												
-				</div>
-				<div id="elEdit">
-		            <div id="elDataForm"></div>				
-				</div>
+              <div id="elHome">
+                <p>
+                  <em>Under Construction!</em>
+          Utlimately, PhoneBook will be a working phonebook application
+          utilizing a variety of widgets with a simple service layer.
+          Today, PhoneBook demonstrates combining Unobtrusive Validation,
+          DataForm, DataView, and TabView into a Find/List/Edit workflow,
+          using static data.
+                </p>
+              </div>
+            <div id="elPhoneBook" class="yui-navset">
+                <ul class="yui-nav">
+                    <li><a href="#list"><em>List Entries</em></a></li>
+                    <li><a href="#edit"><em>Edit Entry</em></a></li>
+                </ul>
+                <div class="yui-content">
+            <div id="elList">
+              <div id="elFilter" class="filter">
+                    <form id="elForm">
+                        <p style="font-weight:bold">Filter Entries by:
+                        <select id="elForm_item" onchange="YAHOO.my.oPhonebook.onFilterChange()">
+                            <option value="last_name" selected="selected">Last Name</option>
+                            <option value="first_name">First Name</option>
+                            <option value="username">Username</option>
+                        </select>
+                        </p>
+                        <div class="filterForm">
+                      <p>
+                                <input class="filterInput" id="elForm_input" />
+                      </p>
+                            <div class="filterMatch" id="elForm_match"></div>
+                        </div>
+                    </form>
+                  </div>
+                      <div id="elDataTable" class="dpu-dt"></div>
             </div>
-        </div>
-      </td><td>
-        <div id="elLogReader"></div>
-      </td></tr>
-    </table>
+            <div id="elEdit">
+                    <div id="elDataForm"></div>
+            </div>
+                </div>
+            </div>
+            <div id="elLogReader"></div>
+    </div>
     <div id="footer">
-        <hr />
-    </div>  
+          <hr />
+      </div>
   </body>
 
 <!-- Patch for IE setAttribute issue [http://delete.me.uk/2004/09/ieproto.html] -->
-<!--[if IE]>  
+<!--[if IE]>
     <script type="text/javascript" src="../../build/extras/ieproto/attributes.js"></script>
     <style type="text/css">
         * { behavior: url(../../build/extras/ieproto/attributes.htc); }
     </style>
-<![endif]-->  
+<![endif]-->
 
 <!-- DOM/Events -->
 <script src="http://yui.yahooapis.com/2.2.2/build/yahoo-dom-event/yahoo-dom-event.js"></script>
@@ -109,7 +126,7 @@
 <!-- LogReader -->
 <script src="http://yui.yahooapis.com/2.2.2/build/logger/logger-min.js"></script>
 
-<!-- DPU RowFilterTable source (extends YUI version) -->   
+<!-- DPU RowFilterTable source (extends YUI version) -->
 <script src="../../build/extras/dpu/RowFilterDataTable.js" ></script>
 <script src="../../build/extras/dpu/RowFilter.js" ></script>
 
