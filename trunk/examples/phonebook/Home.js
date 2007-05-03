@@ -211,13 +211,8 @@ YAHOO.my.oBody.setTitle = function(nIndex) {
 	document.title = YAHOO.my.sTemplate.supplant({sTitle: sTitle}); 
 }
 
-YAHOO.my.oBody.handleOnDOMReady = function () {
-	YAHOO.my.oBody.oTabView = new YAHOO.my.oBody.TabView();	
-}
-
-YAHOO.util.Event.onDOMReady(YAHOO.my.oBody.handleOnDOMReady);
-
 YAHOO.my.oBody.handleOnContentReady = function(oData, oSelf) {
+	YAHOO.my.oBody.oTabView = new YAHOO.my.oBody.TabView();	
     var onActiveTabChange = function(e) {
         var nIndex = YAHOO.my.oBody.oTabView.get('activeIndex');
 		YAHOO.my.oBody.setTitle(nIndex);
