@@ -122,7 +122,7 @@ function newForm(elParent, sID, sClass) {
 
 function newInputText(elParent, sID, sClass) {
 	var el = newEl("INPUT", elParent, sID, sClass);
-	el.type = "text"; 
+	// el.type = "text"; 
 	return el;			
 }
 
@@ -146,7 +146,8 @@ YAHOO.my.oBody.TabView = function() {
     YAHOO.util.Event.onContentReady("elBody", function() {
         oTabView.appendTo(this); // #elBody
 	YAHOO.my.oLogReader = new YAHOO.widget.LogReader("elLogReader");
-	// <div id="elList"><div id="elFilter" class="filter"><form id="elForm"><p style="font-weight:bold">Filter Entries by:<select id="elForm_item" onchange="YAHOO.my.oPhonebook.onFilterChange()"><option value="last_name" selected="selected">Last Name</option><option value="first_name">First Name</option><option value="username">Username</option></select></p><div class="filterForm"><p><input class="filterInput" id="elForm_input" /></p><div class="filterMatch" id="elForm_match"></div></div></form></div><div id="elDataTable" class="dpu-dt"></div></div><div id="elEdit"><div id="elDataForm"></div></div></div>
+	// <div id="elList"><div id="elFilter" class="filter"><form id="elForm"><p style="font-weight:bold">Filter Entries by:<select id="elForm_item" onchange="YAHOO.my.oPhonebook.onFilterChange()"><option value="last_name" selected="selected">Last Name</option><option value="first_name">First Name</option><option value="username">Username</option></select></p>
+	// <div class="filterForm"><p><input class="filterInput" id="elForm_input" /></p><div class="filterMatch" id="elForm_match"></div></div></form></div><div id="elDataTable" class="dpu-dt"></div></div><div id="elEdit"><div id="elDataForm"></div></div></div>
 	var elPhonebook = document.getElementById("elPhonebook");
 		// NavSet
 		var elNavset = newDiv(elPhonebook,"elNavset","yui-navset");
@@ -163,22 +164,19 @@ YAHOO.my.oBody.TabView = function() {
 		var elContent = newDiv(elPhonebook,"elContent","yui-content");
 			var elList = newDiv(elContent,"elList");
 				var elFilter = newDiv(elList,"elFilter","filter"); 
-					var elForm = newForm(elFilter,"elForm");
+					var elForm = newForm(elFilter,"elForm");					
 						var elP = elForm.appendChild(document.createElement("P"));
-							elP.innerHTML = "Filter Entries by:";
-						var elForm_item = newEl("SELECT",elForm,"elForm_item");
+							elP.innerHTML = "Filter Entries by: &nbsp;";
+						var elForm_item = newEl("SELECT",elP,"elForm_item");
 							elForm_item.options[0] = new Option("Last Name","last_name",true,true);
 							elForm_item.options[1] = new Option("First Name","first_name",false,false);
 							elForm_item.options[2] = new Option("UserName","username",false,false);
-						elFilterForm = newDiv(elForm_item,"elFilterForm","filterForm");
+						elFilterForm = newEl("DIV",elP,"elFilterForm","filterForm");
 							var elForm_input = newInputText(elFilterForm,"elForm_input", "filterInput");
 							var elForm_match = newDiv(elFilterForm,"elForm_match","filterMatch");				
 					var elDataTable = newDiv(elFilter,"elDataTable", "dpu-dt");
 			var elEdit = newDiv(elContent,"elEdit");
 				var elDataForm = newDiv(elEdit,"elDataForm");
-	// Render
-	YAHOO.my.oPhonebook = new YAHOO.my.Phonebook();	      
-	elForm_item.onchange = YAHOO.my.oPhonebook.onFilterChange();
     });
 	
 	return oTabView;
@@ -195,6 +193,12 @@ YAHOO.my.oBody.setTitle = function(nIndex) {
 			sTitle = "PhoneBook";
 			if (!YAHOO.my.oPhonebook) {
 				YAHOO.my.oPhonebook = new YAHOO.my.Phonebook();
+				var elForm_item = document.getElementById("elForm_item");				
+				elForm_item.onchange = YAHOO.my.oPhonebook.onFilterChange();
+				var oTabView =YAHOO.my.oPhonebook.oTabView; 
+				oTabView.set('activeIndex',0);
+				var oTab = oTabView.getTab(0);
+				oTab.active = true;
 			}
 			break;
 		case 2: 
