@@ -4,26 +4,28 @@ Portions Copyright (c) 2007, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
 */
-/**
- * The FlevBase object combines a DataForm, DataView, and TabView to create 
- * a Find/List/Edit workflow. This object may be instantiated via a 
- * "power constructor" so that it can be configured before use.
- * <p />
- * Once configured, the "sub" object will automatically display 
- * the dataset on one tab and edit individual rows on another tab.
- * Editing features are derived from the columnset and supports 
- * unobstrusive validation via "marker" CSS classes. (See DataForm 
- * for more about the validation support.)
- * <p />
- * This object combines the ease of inline editing with the 
- * convenience of a full-featured edint form.
- * 
- * @see DataForm, TabView, DataView
- * @module yazaar.dataform
- * @requires yahoo, dom, event, datasource, RowFilter, DataView, DataForm, Element, TabView, remedial, json
- * @title FLEV base widget
- * @alpha
-*/
+ /**
+  * @overview 
+  * @see <a href="DataFormWalkThrough">http://code.google.com/p/yazaar/wiki/DataFormWalkThrough</a>
+  * @module yazaar.dataform
+  * @requires yahoo, dom, event, datasource
+  * @title DataForm Widget
+  * @alpha
+  * 
+  * The FlevBase object combines a DataForm, DataView, and TabView to create 
+  * a Find/List/Edit workflow. This object may be instantiated via a 
+  * "power constructor" so that it can be configured before use.
+  * <p />
+  * Once configured, the "sub" object will automatically display 
+  * the dataset on one tab and edit individual rows on another tab.
+  * Editing features are derived from the columnset and supports 
+  * unobstrusive validation via "marker" CSS classes. (See DataForm 
+  * for more about the validation support.)
+  * <p />
+  * This object combines the ease of inline editing with the 
+  * convenience of a full-featured edit form.
+  * 
+ */
 /**
  * Pseudo constructor.
  * <p />
@@ -34,6 +36,8 @@ http://developer.yahoo.net/yui/license.txt
  * sDataTable, oConfigs, sDataForm, sTabView, sListForm, sItemName.
  * The client application must also provide a dataset for the load 
  * method. 
+ * 
+ * @function
  */
 var FlevBase = function() { 
     // return public members
@@ -257,4 +261,3 @@ var FlevBase = function() {
         }        
     }; // end return
 }();
-
