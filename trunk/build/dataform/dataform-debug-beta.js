@@ -37,6 +37,7 @@ http://developer.yahoo.net/yui/license.txt
  * (TODO: Log events for bulk updates, perhaps after reconnecting?)
  * (TODO: Batch or bulk edit selected rows?)
  *
+ * @overview
  * @see <a href="DataFormWalkThrough">http://code.google.com/p/yazaar/wiki/DataFormWalkThrough</a>
  * @module yazaar.dataform
  * @requires yahoo, dom, event, datasource
@@ -49,9 +50,9 @@ http://developer.yahoo.net/yui/license.txt
 /****************************************************************************/
 
 /**
- * @class DataForm
+ * Define yazaar.widget namespace. 
+ * @global
  */
-
 YAHOO.namespace("yazaar.widget");	
 
 /////////////////////////////////////////////////////////////////////////////
@@ -68,6 +69,7 @@ YAHOO.namespace("yazaar.widget");
  * signature. If a oDataTable property is not passed, then this object 
  * creates it's own RecordSet instance.
  *
+ * @class
  * @event checkboxClickEvent
  * @param elContainer The element name or object to host the widget
  * @param oConfigs Property settings. May include oDataTable.
@@ -183,9 +185,10 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
     /**
      * Fired when a CHECKBOX element is clicked.
      *
-     * @event checkboxClickEvent
+     * @method
      * @param oArgs.event {HTMLEvent} The event object.
      * @param oArgs.target {HTMLElement} The CHECKBOX element.
+     * @event checkboxClickEvent
      */
     this.checkboxClickEvent = this.createEvent("checkboxClickEvent");
     //this.checkboxClickEvent.subscribeEvent.subscribe(this._registerEvent,{type:"checkboxClickEvent"},this);
@@ -193,15 +196,17 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
     /**
      * Fired when a RADIO element is clicked.
      *
-     * @event radioClickEvent
+     * @method
      * @param oArgs.event {HTMLEvent} The event object.
      * @param oArgs.target {HTMLElement} The RADIO element.
+     * @event radioClickEvent
      */
     this.createEvent("checkboxClickEvent");
     	
     /**
      * Fired when DataForm instance is first initialized.
      *
+     * @method
      * @event tableInitEvent
      */
     this.createEvent("tableInitEvent");
@@ -209,6 +214,7 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
     /**
      * Fired when DataForm instance is focused.
      *
+     * @method
      * @event tableFocusEvent
      */
     this.createEvent("tableFocusEvent");
@@ -216,67 +222,75 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
     /**
      * Fired when data is returned from DataSource.
      *
-     * @event dataReturnEvent
+     * @method
      * @param oArgs.request {String} Original request.
      * @param oArgs.response {Object} Response object.
+     * @event dataReturnEvent
      */
     this.createEvent("dataReturnEvent");
 
     /**
      * Fired when a TD element is formatted.
      *
-     * @event cellFormatEvent
+     * @method
      * @param oArgs.el {HTMLElement} Reference to the TD element.
+     * @event cellFormatEvent
      */
     this.createEvent("cellFormatEvent");
 
     /**
      * Fired when DataForm is populated.
      *
-     * @event formPopulateEvent
+     * @method
      * @param oArgs.oRecord {YAHOO.widget.Record} Record instance.
+     * @event formPopulateEvent
      */
     this.createEvent("populateEvent");
 
     /**
      * Fired when Record is updated.
      *
-     * @event updateEvent
+     * @method
      * @param oArgs.oRecord {Object} Updated Record instance.
      * @param oArgs.oPrevRecord {Object} Prior record data. 
      * @param oArgs.isChanged {Boolean} Did any of the field values change? 
+     * @event updateEvent
      */
     this.createEvent("updateEvent");
     
     /**
      * Fired when Record is inserted.
      *
-     * @event insertEvent
+     * @method
      * @param oArgs.oRecord {Object} Inserted Record instance.
+     * @event insertEvent
      */
     this.createEvent("insertEvent");
     
     /**
      * Fired when a Record is deleted.
      *
-     * @event deleteEvent
+     * @method
      * @param oArgs.oRecord {Object} Deleted Record instance.
+     * @event deleteEvent
      */
     this.createEvent("deleteEvent");
 
     /**
      * Fired when editing is cancelled.
      *
-     * @event cancelEvent
+     * @method
      * @param oArgs.oRecord {Object} Record instance.
+     * @event cancelEvent
      */
     this.createEvent("cancelEvent");
     
     /**
      * Fired when editing form is reset.
      *
-     * @event resetEvent
+     * @method
      * @param oArgs.oRecord {Object} Record instance.
+     * @event resetEvent
      */
     this.createEvent("resetEvent");
 
@@ -287,6 +301,7 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
 }; // end Constructor
 
 /**
+ * @global
  * Instantiate EventProvider
  */
 if(YAHOO.util.EventProvider) {
@@ -305,9 +320,10 @@ else {
 /**
  * Class name assigned to container element within THEAD.
  *
+ * @field
+ * @static
  * @property CLASS_HEADCONTAINER
  * @type String
- * @static
  * @final
  */
 YAHOO.yazaar.widget.DataForm.CLASS_HEADCONTAINER = "anvil-df-headcontainer";
@@ -315,9 +331,10 @@ YAHOO.yazaar.widget.DataForm.CLASS_HEADCONTAINER = "anvil-df-headcontainer";
 /**
  * Class name assigned to text displayed within THEAD.
  *
+ * @field
+ * @static
  * @property CLASS_HEADTEXT
  * @type String
- * @static
  * @final
  * @default anvil-dt-headtext"
  */
@@ -326,6 +343,7 @@ YAHOO.yazaar.widget.DataForm.CLASS_HEADTEXT = "anvil-df-headtext";
 /**
  * Class name assigned to TBODY element that holds buttons.
  *
+ * @field
  * @property MENU_BODY
  * @type String
  * @static
@@ -337,6 +355,7 @@ YAHOO.yazaar.widget.DataForm.MENU_BODY = "anvil-df-menu";
 /**
  * Label for Submit button
  *
+ * @field
  * @property MSG_SUBMIT
  * @type String
  * @static
@@ -348,6 +367,7 @@ YAHOO.yazaar.widget.DataForm.MSG_SUBMIT = "SUBMIT";
 /**
  * Label for Reset button
  *
+ * @field
  * @property MSG_RESET
  * @type String
  * @static
@@ -359,6 +379,7 @@ YAHOO.yazaar.widget.DataForm.MSG_RESET = "RESET";
 /**
  * Label for Cancel button
  *
+ * @field 
  * @property MSG_CANCEL
  * @type String
  * @static
