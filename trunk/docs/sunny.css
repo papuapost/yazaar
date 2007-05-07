@@ -1,0 +1,231 @@
+body
+{
+	color: black;
+	font: 11px verdana;
+}
+
+a { color: black; }
+
+h1
+{
+	margin: 4px 4px 4px 8px;
+	font-size: 20px;
+	font-family: Verdana, Geneva, Arial, sans-serif;
+	color: #535989;
+}
+
+h2
+{
+	margin: 4px 4px 4px 8px;
+	width: 100%;
+	margin-top: 24px;
+	padding-top: 16px;
+	border-top: 1px solid #999;
+	font-size: 18px;
+	font-family: Verdana, Geneva, Arial, sans-serif;
+}
+
+h3
+{
+	margin: 4px 4px 2px 0px;
+	font-family: Verdana, Geneva, Arial, sans-serif;
+	font-size: 15px;
+	letter-spacing: 0.1em;
+}
+
+li
+{
+	font-size: 12px;
+	font-weight: normal;
+}
+
+td { vertical-align: top; }
+
+.description
+{
+	padding-top: 2px;
+	margin-bottom: 8px;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 13px;
+	line-height: 16px;
+}
+
+.tag, .summary { margin: 2px 0 0 0; }
+
+.tagHeader
+{
+	padding: 4px 8px 0 12px;
+	font-family: Verdana, Geneva, Arial, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.tagSubheader
+{
+	padding-right: 8px;
+	font-family: Verdana, Geneva, Arial, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.tagType
+{
+	text-align: right;
+	padding-top: 2px;
+	padding-right: 8px;
+	font-size: 11px;
+	font-style: italic;
+}
+
+.tagName
+{
+	padding-top: 2px;
+	padding-right: 8px;
+	font-family: "Andale Mono", monaco, monospace;
+	font-size: 13px;
+	white-space: nowrap;
+}
+
+.tagDescription
+{
+	padding-top: 2px;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 13px;
+}
+
+.class
+{
+	margin: 11px;
+	padding: 4px;
+	background-color: #CCD6E6;
+}
+
+.class .attribute
+{
+	color: #909DBA;
+	font-style: italic;
+}
+.class .tagHeader { color: #E8F1F7; }
+.classDetails { padding-left: 18px; }
+
+.field
+{
+	border-top: 1px solid #E8F1F7;
+	margin: 2px 6px 6px 12px;
+}
+
+.field .attribute
+{
+	color: #909DBA;
+	font-style: italic;
+	font-size: 12px;
+	font-family: Verdana, Geneva, Arial, sans-serif;
+}
+
+.constructor
+{
+	border-top: 1px solid #E8F1F7;
+	margin: 2px 6px 6px 12px;
+}
+.constructorDetails { padding-left: 18px; }
+
+.method
+{
+	border-top: 1px solid #E8F1F7;
+	margin: 2px 6px 6px 12px;
+}
+.method .tag { margin-left: 28px; }
+
+.method .attribute
+{
+	color: #909DBA;
+	font-style: italic;
+	font-size: 12px;
+	font-family: Verdana, Geneva, Arial, sans-serif;
+}
+
+.function
+{
+	margin: 11px;
+	padding: 4px;
+	background-color: #E0DCB4;
+}
+
+.function .attribute
+{
+	color: #BEB79B;
+	font-style: italic;font-size: 12px;
+	font-family: Verdana, Geneva, Arial, sans-serif;
+}
+.function .tagHeader { color: #F9F8E5; }
+.functionDetails { padding-left: 18px; }
+
+.signature
+{
+	border-top: 1px solid #F9F8E5;
+	margin: 2px 6px 6px 12px;
+}
+
+.global
+{
+	margin: 11px;
+	padding: 4px;
+	background-color: #C1D5C0;
+}
+
+.global .attribute
+{
+	color: #9AB69A;
+	font-style: italic;
+	font-size: 12px;
+	font-family: Verdana, Geneva, Arial, sans-serif;
+}
+.global .tagHeader { color: #EAF7E3; }
+.globalDetails { padding-left: 18px; }
+
+.typeDetail
+{
+	border-top: 1px solid #EAF7E3;
+	margin: 2px 6px 6px 12px;
+}
+
+.field .bullet
+{
+	color: black;
+	font-size: 12px;
+	line-height: 17px;
+	padding-right: 8px;
+}
+
+.method .bullet {
+	color: black;
+	font-size: 10px;
+	line-height: 20px;
+	padding-right: 8px;
+}
+
+code 
+{
+	font-family: "Courier new", monaco, monospace;
+	font-size: 13px;
+}
+
+pre
+{
+	font-family: "Courier new", monaco, monospace;
+	font-size: 13px;
+	line-height: 17px;
+	border: 1px dashed #999;
+	padding: 4px 18px 4px 22px;
+}
+
+/** used in file_list **/
+.fileList {
+	list-style: none;
+	font-weight: bold;
+}
+
+.classList{
+	list-style: none;
+	font-weight: normal;
+}
