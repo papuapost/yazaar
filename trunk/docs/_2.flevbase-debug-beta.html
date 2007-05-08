@@ -1,0 +1,371 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title>JsDoc Toolkit</title> 
+	<meta name="generator" content="JsDoc Toolkit" />
+	<link rel="stylesheet" rev="stylesheet" href="sunny.css" type="text/css" />
+</head>
+<body>
+<h1>flevbase-debug-beta.js</h1> 
+
+	<div class="overview">
+		
+			<div class="description">
+				The FlevBase object combines a DataForm, DataView, and TabView to create a Find/List/Edit workflow. This object may be instantiated via a "power constructor" so that it can be configured before use.<p />Once configured, the "sub" object will automatically display the dataset on one tab and edit individual rows on another tab.Editing features are derived from the columnset and supports unobstrusive validation via "marker" CSS classes. (See DataForm for more about the validation support.)<p />This object combines the ease of inline editing with the convenience of a full-featured edit form.@see <a href="DataFormWalkThrough">http://code.google.com/p/yazaar/wiki/DataFormWalkThrough</a>@module yazaar.dataform@requires yahoo, dom, event, datasource@title DataForm Widget@alpha 
+			</div>
+		
+		
+			<table class="tag">
+				
+			</table>
+		
+	</div>
+
+
+<div class="description">
+	Defined in file: flevbase-debug-beta.js 
+</div>
+
+
+	<h2>Classes</h2> 
+	
+		<div class="class">
+			<a name="FlevBase"></a>
+			<h3>
+				
+				FlevBase
+			</h3> 
+			
+				<div class="description">
+					Pseudo constructor.<p />Creates a base FLEV widget that must be configuredby a "power constructor" before use.<p />The properties to be configured are oColumnHeaders, oResponseSchema, sDataTable, oConfigs, sDataForm, sTabView, sListForm, sItemName.The client application must also provide a dataset for the load method. @constructor 
+				</div>
+			
+			
+			  
+				<div class="tagHeader">
+					constructor 
+				</div>
+				<div class="constructor">
+					<table class="tag">
+						<tr>
+							<td class="tagName">
+								
+								<code>new FlevBase()</code> 
+							</td>
+						</tr>
+					</table>
+					<div class="constructorDetails">
+						
+						
+					</div>
+				</div>
+			
+			
+				<div class="tagHeader">
+					fields
+				</div>
+				<table class="tag, field">
+					
+						<tr>
+							<td class="bullet">&#x2022;</td>
+							<td class="tagType">
+								
+								
+								{}
+							</td>
+							<td class="tagName">
+								<code> fnFilter </code> 
+							</td>
+							<td class="tagDescription">
+								Instance created by this object. 
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="bullet">&#x2022;</td>
+							<td class="tagType">
+								
+								
+								{}
+							</td>
+							<td class="tagName">
+								<code> oColumnHeaders </code> 
+							</td>
+							<td class="tagDescription">
+								Array of object literals that define header cells for the ColumnSet. At a minimum, each object should contain a key and a text property.Must be configured. 
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="bullet">&#x2022;</td>
+							<td class="tagType">
+								
+								
+								{}
+							</td>
+							<td class="tagName">
+								<code> oColumnSet </code> 
+							</td>
+							<td class="tagDescription">
+								Instance created by this object. 
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="bullet">&#x2022;</td>
+							<td class="tagType">
+								
+								
+								{}
+							</td>
+							<td class="tagName">
+								<code> oConfigs </code> 
+							</td>
+							<td class="tagDescription">
+								Array of object literals that define the DataTable configuration.Must be configured. 
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="bullet">&#x2022;</td>
+							<td class="tagType">
+								
+								
+								{}
+							</td>
+							<td class="tagName">
+								<code> oDataForm </code> 
+							</td>
+							<td class="tagDescription">
+								Instance created by this object. 
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="bullet">&#x2022;</td>
+							<td class="tagType">
+								
+								
+								{}
+							</td>
+							<td class="tagName">
+								<code> oDataSource </code> 
+							</td>
+							<td class="tagDescription">
+								Instance created by this object. 
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="bullet">&#x2022;</td>
+							<td class="tagType">
+								
+								
+								{}
+							</td>
+							<td class="tagName">
+								<code> oDataTable </code> 
+							</td>
+							<td class="tagDescription">
+								Instance created by this object. 
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="bullet">&#x2022;</td>
+							<td class="tagType">
+								
+								
+								{}
+							</td>
+							<td class="tagName">
+								<code> oFormConfigs </code> 
+							</td>
+							<td class="tagDescription">
+								Instance created by this object. 
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="bullet">&#x2022;</td>
+							<td class="tagType">
+								
+								
+								{}
+							</td>
+							<td class="tagName">
+								<code> oResponseSchema </code> 
+							</td>
+							<td class="tagDescription">
+								Description of how data is formatted in the response.Must be configured. 
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="bullet">&#x2022;</td>
+							<td class="tagType">
+								
+								
+								{}
+							</td>
+							<td class="tagName">
+								<code> oTabView </code> 
+							</td>
+							<td class="tagDescription">
+								Instance created by this object. 
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="bullet">&#x2022;</td>
+							<td class="tagType">
+								
+								
+								{}
+							</td>
+							<td class="tagName">
+								<code> sDataForm </code> 
+							</td>
+							<td class="tagDescription">
+								DOM ID for the DataForm container (div).Must be configured. 
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="bullet">&#x2022;</td>
+							<td class="tagType">
+								
+								
+								{}
+							</td>
+							<td class="tagName">
+								<code> sDataTable </code> 
+							</td>
+							<td class="tagDescription">
+								DOM ID for the DataTable container (div).Must be configured. 
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="bullet">&#x2022;</td>
+							<td class="tagType">
+								
+								
+								{}
+							</td>
+							<td class="tagName">
+								<code> sItemName </code> 
+							</td>
+							<td class="tagDescription">
+								Initial autocomplete field name.Must be configured. 
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="bullet">&#x2022;</td>
+							<td class="tagType">
+								
+								
+								{}
+							</td>
+							<td class="tagName">
+								<code> sListForm </code> 
+							</td>
+							<td class="tagDescription">
+								DOM ID for the List Form control (filters list entries). Must be configured. 
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="bullet">&#x2022;</td>
+							<td class="tagType">
+								
+								
+								{}
+							</td>
+							<td class="tagName">
+								<code> sTabView </code> 
+							</td>
+							<td class="tagDescription">
+								DOM ID for the TabView container (div).Must be configured. 
+							</td>
+						</tr>
+					
+				</table>
+			
+			
+				<div class="tagHeader">
+					methods
+				</div>
+				
+					<div class="method">
+						<table class="summary">
+							<tr>
+								<td class="bullet">&#9674;</td>
+								<td class="tagName">
+									
+									
+									<code> initFilter() </code> 
+								</td>
+								<td class="tagDescription">
+									Setup autocomplete filtering. Called automatically.@param {Object} oData@param {Object} oSelf 
+								</td>
+							</tr>
+						</table>
+						
+						
+						
+					</div>
+				
+					<div class="method">
+						<table class="summary">
+							<tr>
+								<td class="bullet">&#9674;</td>
+								<td class="tagName">
+									
+									
+									<code> load() </code> 
+								</td>
+								<td class="tagDescription">
+									Initialize object with response data. @param {Object} oData@param {Object} oSelf 
+								</td>
+							</tr>
+						</table>
+						
+						
+						
+					</div>
+				
+					<div class="method">
+						<table class="summary">
+							<tr>
+								<td class="bullet">&#9674;</td>
+								<td class="tagName">
+									
+									
+									<code> onFilterChange() </code> 
+								</td>
+								<td class="tagDescription">
+									Change the autocomplete field. Must be wired to an input control via an onChange handler. 
+								</td>
+							</tr>
+						</table>
+						
+						
+						
+					</div>
+				
+			
+		</div>
+	
+
+
+
+
+
+<hr />
+<em>Generated by JsDoc Toolkit on Mon May 07 2007 20:45:07 GMT-0400 (EDT).</em> 
+</body>
+</html>

@@ -104,6 +104,8 @@ td { vertical-align: top; }
 {
 	color: #909DBA;
 	font-style: italic;
+	font-size: 12px;
+	font-family: Verdana, Geneva, Arial, sans-serif;
 }
 .class .tagHeader { color: #E8F1F7; }
 .classDetails { padding-left: 18px; }
