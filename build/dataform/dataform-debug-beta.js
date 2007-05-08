@@ -5,7 +5,6 @@ Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
 */
 /**
- * @overview
  * The DataForm widget displays a data-entry form that utilizes a ColumnSet 
  * to describe the input controls and a DataSource to store new records and 
  * to populate fields from a prexisting record (if any). This widget raises 
@@ -36,18 +35,21 @@ http://developer.yahoo.net/yui/license.txt
  * <p />
  * (TODO: Log events for bulk updates, perhaps after reconnecting?) <br />
  * (TODO: Batch or bulk edit selected rows?)
- *
+ * @overview 
  * @see <a href="DataFormWalkThrough">http://code.google.com/p/yazaar/wiki/DataFormWalkThrough</a>
  * @module yazaar.dataform
  * @requires yahoo, dom, event, datasource
  * @title DataForm Widget
  * @alpha
- * 
  */
+
+/****************************************************************************/
+/****************************************************************************/
+/****************************************************************************/
 
 /**
  * Define yazaar.widget namespace. 
- * @global
+ * @global yazaar.widget
  */
 YAHOO.namespace("yazaar.widget");	
 
@@ -65,11 +67,10 @@ YAHOO.namespace("yazaar.widget");
  * signature. If a oDataTable property is not passed, then this object 
  * creates it's own RecordSet instance.
  *
- * @class
  * @event checkboxClickEvent
  * @param elContainer The element name or object to host the widget
  * @param oConfigs Property settings. May include oDataTable.
-*/	
+*/
 YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
 
     // identify
@@ -117,14 +118,17 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
        if (isValid) {
 			this._oRecordSet = oDataTable.getRecordSet();
 			YAHOO.log("DataTable RecordSet will be shared", "info", this.toString()); // debug						
+
 		}
 		else {
 			YAHOO.log("Invalid DataTable -- RecordSet will not be shared", "warn", this.toString());			
+
 		}
     }	
 	if (this._oRecordSet==null) {
 		this._oRecordSet = new YAHOO.widget.RecordSet();
 		YAHOO.log("Creating new RecordSet", "info", this.toString()); // debug
+
 	}
 
 	// enhance markup
@@ -141,9 +145,11 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
 				if (oDataTable) {
 					// Already have data
 					this.populateForm();	
+
 				} else {
 	                // Send out for data in an asynchronous request
 					oDataSource.sendRequest(this.initialRequest, this.onDataReturnPopulateForm, this);
+
 				} 
         }
         // Else there is no data
@@ -181,7 +187,7 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
     /**
      * Fired when a CHECKBOX element is clicked.
      *
-     * @method
+     * @method checkboxClickEvent
      * @param oArgs.event {HTMLEvent} The event object.
      * @param oArgs.target {HTMLElement} The CHECKBOX element.
      * @event checkboxClickEvent
@@ -192,7 +198,7 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
     /**
      * Fired when a RADIO element is clicked.
      *
-     * @method
+     * @method checkboxClickEvent
      * @param oArgs.event {HTMLEvent} The event object.
      * @param oArgs.target {HTMLElement} The RADIO element.
      * @event radioClickEvent
@@ -202,7 +208,7 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
     /**
      * Fired when DataForm instance is first initialized.
      *
-     * @method
+     * @method tableInitEvent
      * @event tableInitEvent
      */
     this.createEvent("tableInitEvent");
@@ -210,7 +216,7 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
     /**
      * Fired when DataForm instance is focused.
      *
-     * @method
+     * @method tableFocusEvent
      * @event tableFocusEvent
      */
     this.createEvent("tableFocusEvent");
@@ -218,7 +224,7 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
     /**
      * Fired when data is returned from DataSource.
      *
-     * @method
+     * @method dataReturnEvent
      * @param oArgs.request {String} Original request.
      * @param oArgs.response {Object} Response object.
      * @event dataReturnEvent
@@ -228,7 +234,7 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
     /**
      * Fired when a TD element is formatted.
      *
-     * @method
+     * @method cellFormatEvent
      * @param oArgs.el {HTMLElement} Reference to the TD element.
      * @event cellFormatEvent
      */
@@ -237,7 +243,7 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
     /**
      * Fired when DataForm is populated.
      *
-     * @method
+     * @method populateEvent
      * @param oArgs.oRecord {YAHOO.widget.Record} Record instance.
      * @event formPopulateEvent
      */
@@ -246,7 +252,7 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
     /**
      * Fired when Record is updated.
      *
-     * @method
+     * @method updateEvent
      * @param oArgs.oRecord {Object} Updated Record instance.
      * @param oArgs.oPrevRecord {Object} Prior record data. 
      * @param oArgs.isChanged {Boolean} Did any of the field values change? 
@@ -257,7 +263,7 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
     /**
      * Fired when Record is inserted.
      *
-     * @method
+     * @method insertEvent
      * @param oArgs.oRecord {Object} Inserted Record instance.
      * @event insertEvent
      */
@@ -266,7 +272,7 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
     /**
      * Fired when a Record is deleted.
      *
-     * @method
+     * @method deleteEvent
      * @param oArgs.oRecord {Object} Deleted Record instance.
      * @event deleteEvent
      */
@@ -275,7 +281,7 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
     /**
      * Fired when editing is cancelled.
      *
-     * @method
+     * @method cancelEvent
      * @param oArgs.oRecord {Object} Record instance.
      * @event cancelEvent
      */
@@ -284,7 +290,7 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
     /**
      * Fired when editing form is reset.
      *
-     * @method
+     * @method resetEvent
      * @param oArgs.oRecord {Object} Record instance.
      * @event resetEvent
      */
@@ -297,8 +303,8 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
 }; // end Constructor
 
 /**
- * @global
  * Instantiate EventProvider
+ * @global YAHOO.util.EventProvider
  */
 if(YAHOO.util.EventProvider) {
     YAHOO.augment(YAHOO.yazaar.widget.DataForm, YAHOO.util.EventProvider);
@@ -316,8 +322,8 @@ else {
 /**
  * Class name assigned to container element within THEAD.
  *
- * @field
  * @static
+ * @field
  * @property CLASS_HEADCONTAINER
  * @type String
  * @final
@@ -327,8 +333,8 @@ YAHOO.yazaar.widget.DataForm.CLASS_HEADCONTAINER = "anvil-df-headcontainer";
 /**
  * Class name assigned to text displayed within THEAD.
  *
- * @field
  * @static
+ * @field
  * @property CLASS_HEADTEXT
  * @type String
  * @final
@@ -339,10 +345,10 @@ YAHOO.yazaar.widget.DataForm.CLASS_HEADTEXT = "anvil-df-headtext";
 /**
  * Class name assigned to TBODY element that holds buttons.
  *
+ * @static
  * @field
  * @property MENU_BODY
  * @type String
- * @static
  * @final
  * @default "anvil-dt-body"
  */
@@ -351,10 +357,10 @@ YAHOO.yazaar.widget.DataForm.MENU_BODY = "anvil-df-menu";
 /**
  * Label for Submit button
  *
+ * @static
  * @field
  * @property MSG_SUBMIT
  * @type String
- * @static
  * @final
  * @default "SUBMIT"
  */
@@ -363,10 +369,10 @@ YAHOO.yazaar.widget.DataForm.MSG_SUBMIT = "SUBMIT";
 /**
  * Label for Reset button
  *
+ * @static
  * @field
  * @property MSG_RESET
  * @type String
- * @static
  * @final
  * @default "RESET"
  */
@@ -375,10 +381,10 @@ YAHOO.yazaar.widget.DataForm.MSG_RESET = "RESET";
 /**
  * Label for Cancel button
  *
+ * @static
  * @field 
  * @property MSG_CANCEL
  * @type String
- * @static
  * @final
  * @default "CANCEL"
  */
@@ -527,7 +533,6 @@ YAHOO.yazaar.widget.DataForm.prototype._oRecord = null;
 /**
  * Creates HTML markup for FORM, TABLE, THEAD, TBODY.
  *
- * @method _initButton
  * @private
  */
 YAHOO.yazaar.widget.DataForm.prototype._initButton = function(name,parent,id,s) {
@@ -550,7 +555,6 @@ YAHOO.yazaar.widget.DataForm.prototype._initButton = function(name,parent,id,s) 
 /**
  * Creates HTML markup for FORM, TABLE, THEAD, TBODY.
  *
- * @method _initForm
  * @private
  */
 YAHOO.yazaar.widget.DataForm.prototype._initForm = function() {
@@ -628,7 +632,6 @@ YAHOO.yazaar.widget.DataForm.prototype._initForm = function() {
 /**
  * Populates THEAD element with TH cells as defined by ColumnSet.
  *
- * @method _initHead
  * @private
  */
 YAHOO.yazaar.widget.DataForm.prototype._initHead = function(elTable, sForm_id) {
@@ -687,7 +690,6 @@ YAHOO.yazaar.widget.DataForm.prototype._initHead = function(elTable, sForm_id) {
 /**
  * Populates TH cell as defined by Column.
  *
- * @method _initHeadCell
  * @param elHeadCell {HTMLElement} TH cell element reference.
  * @param oColumn {YAHOO.widget.Column} Column object.
  * @param row {number} Row index.
@@ -731,7 +733,6 @@ YAHOO.yazaar.widget.DataForm.prototype._initHeadCell = function(elHeadCell,oColu
  * <p>
  * Raises cancelEvent. 
  * 
- * @method _onCancel
  * @param e {HTMLEvent} The click event.
  * @param oSelf {YAHOO.yazaar.widget.DataForm} DataForm instance.
  * @private
@@ -756,7 +757,6 @@ YAHOO.yazaar.widget.DataForm.prototype._onDocumentKeyup = function(e, oSelf) {
 /**
  * Handles form reset event by invoking reset method.
  * 
- * @method _onReset
  * @param e {HTMLEvent} The click event.
  * @param oSelf {YAHOO.yazaar.widget.DataForm} DataForm instance.
  * @see reset
@@ -773,7 +773,6 @@ YAHOO.yazaar.widget.DataForm.prototype._onReset = function(e, oSelf) {
  * and raises updateEvent with new and old record values and an "isChanged" 
  * boolean property, so that listeners can update external records.
  *
- * @method _onSubmit
  * @param e {HTMLEvent} The click event.
  * @param oSelf {YAHOO.yazaar.widget.DataForm} DataForm instance.
  * @private
@@ -850,7 +849,6 @@ YAHOO.yazaar.widget.DataForm.prototype.doBeforeLoadData = function(sRequest, oRe
 /**
  * Returns array of selected Record IDs.
  *
- * @method getSelectedRecordIds
  * @return {HTMLElement[]} Array of selected TR elements.
  */
 YAHOO.yazaar.widget.DataForm.prototype.getSelectedRecordIds = function() {
@@ -860,8 +858,6 @@ YAHOO.yazaar.widget.DataForm.prototype.getSelectedRecordIds = function() {
 /**
  * Obtain the value of form input controls into a copy of the original 
  * record, so that any record values not shown on the form are retained.
- *
- * @method harvestForm
  */
 YAHOO.yazaar.widget.DataForm.prototype.harvestForm = function() {
 	var oRecord = this.copyRecord();
@@ -876,8 +872,6 @@ YAHOO.yazaar.widget.DataForm.prototype.harvestForm = function() {
 
 /**
  * Hide any placeholder message row.
- *
- * @method hideTableMessages
  */
 YAHOO.yazaar.widget.DataForm.prototype.hideTableMessages = function() {
     if(!this.isEmpty && !this.isLoading) {
@@ -984,7 +978,7 @@ YAHOO.yazaar.widget.DataForm.prototype.isInvalidInput = function() {
 		}
 	} //end for i
 	
-	/**
+	/*
 	//check textareas
 	for (i=0;i<f_ta.length;i++) {
 		if (isVisible(f_ta[i])) {
@@ -1046,7 +1040,6 @@ YAHOO.yazaar.widget.DataForm.prototype.isInvalidInput = function() {
  * The method can accept one or both of the record parameters. 
  * Additional parameters are ignored.
  *
- * @method logRecordEvent
  * @param oRecord The current state of record under edit
  * @param oPrevRecord The prior state of record under edit
  * @debug
@@ -1111,8 +1104,6 @@ YAHOO.yazaar.widget.DataForm.prototype.populateForm = function() {
 
 /**
  * Placeholder row to indicate table data is empty.
- *
- * @method showEmptyMessage
  */
 YAHOO.yazaar.widget.DataForm.prototype.showEmptyMessage = function() {
     if(this.isEmpty) {
@@ -1131,8 +1122,6 @@ YAHOO.yazaar.widget.DataForm.prototype.showEmptyMessage = function() {
 
 /**
  * Placeholder row to indicate table data is loading.
- *
- * @method showLoadingMessage
  */
 YAHOO.yazaar.widget.DataForm.prototype.showLoadingMessage = function() {
     if(this.isLoading) {
@@ -1162,8 +1151,6 @@ YAHOO.yazaar.widget.DataForm.prototype.toString = function() {
  * Restoring the original values to the active record.
  * <p>
  * Repopulates Recordset, and raises resetEvent.
- * 
- * @method reset
  */
 YAHOO.yazaar.widget.DataForm.prototype.reset = function() {
     var oRecord = this._oRecord; // Restore this reference				
