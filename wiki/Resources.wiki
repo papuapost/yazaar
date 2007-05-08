@@ -81,6 +81,7 @@
  * [http://www-128.ibm.com/developerworks/web/library/wa-selenium-ajax/ Automate acceptance tests with Selenium] (developerWorks)
 
 = Other JavaScript Resources =
+ * [http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-357.pdf ECMA 357 (Dec 2005)]
  * [http://www.cambiaresearch.com/c4/702b8cd1-e5b0-42e6-83ac-25f0306e3e25/Javascript-Char-Codes-Key-Codes.aspx JavaScript Char Codes]
  * [http://javascript.crockford.com/ Douglas Crockford's Wrrrld Wide Web]
  * [http://www.ebook.gen.tr/ajax/Professional%20Ajax%20Php.pdf Professional Ajax (1st Ed)]
@@ -89,4 +90,3 @@
 = Other Web Application Resources =
 
  * [http://www.whatwg.org/ Web Hypertext Application Technology Working Group]
-
