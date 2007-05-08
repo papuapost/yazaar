@@ -5,24 +5,25 @@ Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
 */
 /**
+ * @overview
  * The DataForm widget displays a data-entry form that utilizes a ColumnSet 
  * to describe the input controls and a DataSource to store new records and 
  * to populate fields from a prexisting record (if any). This widget raises 
  * events that bundle record data so that clients can update a remote 
  * persistant store, namely updateEvent, insertEvent, deleteEvent, resetEvent, 
  * and cancelEvent.
- * <p>
+ * <p />
  * The DataForm can be used with an independant RecordSet, 
  * or it can share a RecordSet with a companion DataTable. 
- * <p>
+ * <p />
  * This control is being created as the first step toward a 
  * Find/List/Edit/View (FLEV) composite control. This control uses the 
  * DataTable control as a starting point, adding and substracting code as needed.
- * <p>
+ * <p />
  * The initial version builds the form from scratch. A later version may 
  * provide for progressive enhancement from existing markup, as does the 
  * DataTable control.
- * <p>
+ * <p />
  * To make DataForm easier to use with CSS class-based validation 
  * (see jc21 in the Yazaar extras module), extra ColumnHeader 
  * properties are supported: <code>formClassName</code>,  
@@ -32,22 +33,17 @@ http://developer.yahoo.net/yui/license.txt
  * MinLength is a custom attribute utilized by the jc21 validation 
  * module. To enabled inserting a new record with default values, 
  * the <code>formValue</code> property is provided.  
- * <p>
- * 
- * (TODO: Log events for bulk updates, perhaps after reconnecting?)
+ * <p />
+ * (TODO: Log events for bulk updates, perhaps after reconnecting?) <br />
  * (TODO: Batch or bulk edit selected rows?)
  *
- * @overview
  * @see <a href="DataFormWalkThrough">http://code.google.com/p/yazaar/wiki/DataFormWalkThrough</a>
  * @module yazaar.dataform
  * @requires yahoo, dom, event, datasource
  * @title DataForm Widget
  * @alpha
+ * 
  */
-
-/****************************************************************************/
-/****************************************************************************/
-/****************************************************************************/
 
 /**
  * Define yazaar.widget namespace. 
