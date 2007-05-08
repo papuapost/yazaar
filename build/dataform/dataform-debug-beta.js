@@ -1156,7 +1156,6 @@ YAHOO.yazaar.widget.DataForm.prototype.showLoadingMessage = function() {
 /**
  * Public accessor to the unique name of the DataSource instance.
  *
- * @method toString
  * @return {String} Unique name of the DataSource instance.
  */
 YAHOO.yazaar.widget.DataForm.prototype.toString = function() {
