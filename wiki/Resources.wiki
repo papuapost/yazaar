@@ -52,6 +52,7 @@
  * [http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference Core JavaScript  * Reference [1.5]]
  * [http://www.ecma-international.org/publications/files/ecma-st/ECMA-262.pdf ECMAScript Language Specification - 3rd edition (pdf)]
  * [http://www.quirksmode.org/ QuirksMode by PPK]
+ ** [http://www.quirksmode.org/js/events_compinfo.html Event Compatibility Tables]
 
 = Design Resources =
 
