@@ -30,7 +30,7 @@
  * [http://code.google.com/p/sq1-petstore/ Petstore from Square One]
  * [http://code.google.com/p/anvil/ Anvil Business Logic Framework]
 
-= Similar Projects =
+= Similar Projects and Extensions =
 
  * [http://www.openjsan.org/index.html JSAN]
  * [http://www.yui-ext.com/deploy/yui-ext/docs/ Ext (formerly YUI Ext)]
@@ -40,6 +40,7 @@
  * [http://stubblog.wordpress.com/2006/12/19/yui-div-swap-with-fade/ Div Swap with Fade]
  * [http://blog.davglass.com/2006/06/yui-code-samples/ Davs Rants and Random Thoughts]
  * [http://www.hedgerwow.com/360/dhtml/yui-connection-watcher/demo.php Connection Manager Watcher]
+ * [http://www.whenpenguinsattack.com/2006/12/12/how-to-create-a-php-upload-progress-meter/ PHP Upload Progress Meter]
 
 = Development Resources =
 
