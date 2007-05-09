@@ -8,7 +8,7 @@
 
 = Read Me First =
 
- * [http://simon.incutio.com/slides/2006/xtech/yui-slides.pdf Ajax XTech Slides]
+ * [http://simon.incutio.com/slides/2006/xtech/yui-slides.pdf Ajax XTech Slides] ([http://simon.incutio.com/slides/2006/xtech/yui-notes.html Notes])
  * [HappyTrails Happy Trails to YUI!]
 
 = Libraries and tools we use =
