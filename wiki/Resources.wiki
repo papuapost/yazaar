@@ -89,4 +89,5 @@
 
 = Other Web Application Resources =
 
+ * [http://www.w3.org/ W3C]
  * [http://www.whatwg.org/ Web Hypertext Application Technology Working Group]
