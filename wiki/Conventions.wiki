@@ -87,9 +87,10 @@ http://developer.yahoo.net/yui/license.txt
  * @property
  * @event
  * @uses
+ * @private
+ * @public
  * @static
  * @type
- * @private
  * @constructor
  * @param {type} name Remark
  * @return
