@@ -32,6 +32,7 @@
 
 = Similar Projects and Extensions =
 
+ * [http://yuiblog.com/sandbox/yui/v222/examples/datatable/filterRows.php YUI Sandbox]
  * [http://www.openjsan.org/index.html JSAN]
  * [http://www.yui-ext.com/deploy/yui-ext/docs/ Ext (formerly YUI Ext)]
  * [http://bubbling.comarq.com/ Bubbling Library]
