@@ -6,6 +6,7 @@ See also
 
  * [http://ajaxpatterns.org/Patterns AjaxPatterns.org]
  * [http://developer.yahoo.com/ypatterns/atoz.php Yahoo! Design Pattern Library]
+ * [http://webpatterns.org/index.html Web Patterns] (Allsop)
  * [http://www.welie.com/patterns/ Web Design Patterns] (von Welie)
  * [http://harbinger.sims.berkeley.edu/ui_designpatterns/webpatterns2/webpatterns/home.php Web Patterns] (Berkely)
 
@@ -47,5 +48,4 @@ See also
  * Power constructors 
  * Contextual instantiation (create on demand)
  * Idiomatic events
-
 
