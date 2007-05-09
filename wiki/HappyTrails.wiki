@@ -4,7 +4,7 @@ The trails step through the [http://developer.yahoo.com/yui/ YUI documentation] 
 
 First Trail - YUI builds on several "backbone" packages that hold the library together.
 
- * [yahoo http://developer.yahoo.com/yui/yahoo/]
+ * [http://developer.yahoo.com/yui/yahoo/ yahoo]
  * [http://developer.yahoo.com/yui/dom/ dom]
  * [http://developer.yahoo.com/yui/event/ event]
    ** [http://yuiblog.com/blog/2007/01/17/event-plan/ Event-Driven Application Design]
@@ -36,3 +36,4 @@ Third Trail - Other library controls provides special effects, like sliders, but
 The mass of YUI documentation can seem imposing at first, but if follow the trails, you'll be up and running in a New York minute (or three). :) 
 
  * [Resources]
+
