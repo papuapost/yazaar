@@ -4,35 +4,34 @@ The trails step through the [http://developer.yahoo.com/yui/ YUI documentation] 
 
 First Trail - YUI builds on several "backbone" packages that hold the library together.
 
- * Yahoo Global
- * Dom
- * Event
+ * [yahoo http://developer.yahoo.com/yui/yahoo/]
+ * [http://developer.yahoo.com/yui/dom/ dom]
+ * [http://developer.yahoo.com/yui/event/ event]
    ** [http://yuiblog.com/blog/2007/01/17/event-plan/ Event-Driven Application Design]
- * Element
- * Logger
- * Connection
- * Animation
- * Drag and Drop
+ * [http://developer.yahoo.com/yui/element/ element]
+ * [http://developer.yahoo.com/yui/logger/ logger]
+ * [http://developer.yahoo.com/yui/connection/ connection]
+ * [http://developer.yahoo.com/yui/animation/ animation]
+ * [http://developer.yahoo.com/yui/dragdrop/ dragdrop]
 
 Second Trail - The library provides several workhorse packages that manage and display data.
 
- * Container
-   ** Module, Overlay, Panel, Tooltip, Dialog,
- * !SimpleDialog
- * Menu
- * Tabview
- * !TreeView
- * !DataSource
- * !DataTable
+ * [http://developer.yahoo.com/yui/container/ container]
+   ** Module, Overlay, Panel, Tooltip, Dialog, !SimpleDialog
+ * [http://developer.yahoo.com/yui/menu/ menu]
+ * [http://developer.yahoo.com/yui/tabview/ tabview]
+ * [http://developer.yahoo.com/yui/treeview/ treeview]
+ * [http://developer.yahoo.com/yui/datasource/ datasource]
+ * [http://developer.yahoo.com/yui/datatable/ datatable]
 
 Third Trail - Other library controls provides special effects, like sliders, buttons, and calendars, along with browser history management, and grid-based layouts.
 
- * Autocomplete
- * Button
- * Slider
- * Calendar
- * Browser History Manager
- * Reset, Fonts, and Grids (This could also be viewed first.)
+ * [http://developer.yahoo.com/yui/autocomplete/ autocomplete]
+ * [http://developer.yahoo.com/yui/button/ button]
+ * [http://developer.yahoo.com/yui/slider/ slider]
+ * [http://developer.yahoo.com/yui/calendar/ calendar]
+ * [http://developer.yahoo.com/yui/history/ history]
+ * [http://developer.yahoo.com/yui/reset/ reset], [http://developer.yahoo.com/yui/fonts/ fonts], and [http://developer.yahoo.com/yui/grids/ grids] (These could also be viewed first.)
 
 The mass of YUI documentation can seem imposing at first, but if follow the trails, you'll be up and running in a New York minute (or three). :) 
 
