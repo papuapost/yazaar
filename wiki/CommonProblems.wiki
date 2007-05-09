@@ -24,6 +24,8 @@ See also [http://code.google.com/p/anvil/wiki/CommonProblems Anvil Common Proble
 
 === Yahoo User Interface (YUI) Library ===
 
+|| (!) || *this.body has no proerties* (Element) ||
+|| (/) || A div ID reference is incorrect. ||
 || (!) || *this.oDomCainter is null or not an object.* ||
 || (/) || Check to see that the element ID referenced by a widget constructor actually exists. ||
 || ||  ||
