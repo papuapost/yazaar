@@ -155,23 +155,7 @@
 			<script>
 				YAHOO.namespace("my");
 				
-				YAHOO.my.setTitle = function(sTitle) {
-					document.title = sTitle; 
-				}	
-				
-				YAHOO.my.MainMenu = function () {
-				 	var oSelf = new YAHOO.widget.TabView("elMainMenu");
-					oSelf.on("contentReady",function() {						
-					    var onActiveTabChange = function(e) {
-    	    				var nIndex = oSelf.get('activeIndex');
-							YAHOO.my.handleTabChange(nIndex);
-						}	
-						oSelf.on('activeTabChange', onActiveTabChange);     						
-					});
-					return oSelf;
-				}
-
-				YAHOO.my.VIEW_CONFIG = {visible:false};
+				YAHOO.my.VIEW_CONFIG = {visible:false}; // TODO: Define View and Views classes
 
 				YAHOO.my.HomeView = function(sElement,sTitle) {
 					var oSelf = new YAHOO.widget.Overlay(sElement, YAHOO.my.VIEW_CONFIG );
@@ -258,9 +242,44 @@
 					return oSelf;					
 				}
 				
+				YAHOO.my.Views = function(aViews) {
+					var oSelf = new YAHOO.widget.OverlayManager();
+					// ModuleManager sorts the array by zindex, so keep our own copy
+					var a = []; 
+					for each (var v in aViews) {
+						a.push(v);
+					}
+					oSelf.aSequence = a;  
+					 // TODO: Override register or give view an index property
+					oSelf.register(aViews); 				
+					oSelf.activeViewChange = function(nIndex,oViews) {
+						var aSequence = oViews.aSequence; 
+						var nLength = aSequence.length;
+						var nView = (nIndex<nLength) ? nIndex : 0; 
+						var oView = aSequence[nView];
+						oViews.hideAll();
+						document.title = oView.sTitle + " (" + nIndex + ")";
+						oViews.focus(oView);
+						oView.show(); 
+					}
+					return oSelf;
+				}
+				
+				YAHOO.my.MainMenu = function (sElement) {
+				 	var oSelf = new YAHOO.widget.TabView(sElement);
+					oSelf.on("contentReady",function() {						
+					    var onActiveTabChange = function(e) {
+    	    				var nIndex = oSelf.get('activeIndex');
+							YAHOO.my.oViews.activeViewChange(nIndex,YAHOO.my.oViews); // TODO: Fire another event
+						}	
+						oSelf.on('activeTabChange', onActiveTabChange);     						
+					});
+					return oSelf;
+				}
+
 				YAHOO.my.load = function () {
 
-					YAHOO.my.oMainMenu = new YAHOO.my.MainMenu();
+					YAHOO.my.oMainMenu = new YAHOO.my.MainMenu("elMainMenu");
 
 					YAHOO.my.oHomeView = new YAHOO.my.HomeView("elHomeView","Home");
 					YAHOO.my.oDogsView = new YAHOO.my.DogsView("elDogsView","Dogs","elDogTable","elDogForm");
@@ -268,40 +287,13 @@
 					YAHOO.my.oNotebookView = new YAHOO.my.NotebookView("elNotebookView","Notebook");
 					YAHOO.my.oLogView = new YAHOO.my.LogView("elLogView","Log","elLogReader");
 					
-					YAHOO.my.oViews = new YAHOO.widget.OverlayManager();
-					YAHOO.my.oViews.register([
-					YAHOO.my.oHomeView,
-					YAHOO.my.oDogsView,
-					YAHOO.my.oPhonebookView,
-					YAHOO.my.oNotebookView,
-					YAHOO.my.oLogView]);
+					var aViews = [YAHOO.my.oHomeView,
+						YAHOO.my.oDogsView,
+						YAHOO.my.oPhonebookView,
+						YAHOO.my.oNotebookView,
+						YAHOO.my.oLogView]
 						
-					YAHOO.my.handleTabChange = function(nIndex) {
-						var oView;
-						YAHOO.my.oViews.hideAll();
-						switch(nIndex) {
-							case 0:
-								oView = YAHOO.my.oHomeView;
-								break;
-							case 1:
-								oView = YAHOO.my.oDogsView;
-								break;
-							case 2: 
-					            oView = YAHOO.my.oPhonebookView; 
-								break;
-							case 3:
-								oView = YAHOO.my.oNotebookView;
-								break;
-							case 4:
-								oView = YAHOO.my.oLogView;
-								break;
-							default:
-								oView = YAHOO.my.oHomeView;
-								break;
-						};
-						document.title = oView.sTitle;
-						oView.show(); 
-					}
+					YAHOO.my.oViews = new YAHOO.my.Views(aViews); 
 	
 				};	// end load			
  				
