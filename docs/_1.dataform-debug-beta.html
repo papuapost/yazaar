@@ -50,16 +50,16 @@ the <code>formValue</code> property is provided.
 				
 					<tr>
 						<td class="tagType">
-							title 
+							see 
 						</td>
 						<td class="tagDescription">
-							DataForm Widget 
+							<a href="DataFormWalkThrough">http://code.google.com/p/yazaar/wiki/DataFormWalkThrough</a> 
 						</td>
 					</tr>
 				
 					<tr>
 						<td class="tagType">
-							alpha 
+							module 
 						</td>
 						<td class="tagDescription">
 							 
@@ -77,19 +77,19 @@ the <code>formValue</code> property is provided.
 				
 					<tr>
 						<td class="tagType">
-							module 
+							title 
 						</td>
 						<td class="tagDescription">
-							 
+							DataForm Widget 
 						</td>
 					</tr>
 				
 					<tr>
 						<td class="tagType">
-							see 
+							alpha 
 						</td>
 						<td class="tagDescription">
-							<a href="DataFormWalkThrough">http://code.google.com/p/yazaar/wiki/DataFormWalkThrough</a> 
+							 
 						</td>
 					</tr>
 				
@@ -539,12 +539,69 @@ data from RecordSet.
 							<tr>
 								<td class="bullet">&#9674;</td>
 								<td class="tagName">
+									<span class="attribute">private</span>
 									
-									
-									<code> (oArgs.oRecord) </code> 
+									<code> _initButton() </code> 
 								</td>
 								<td class="tagDescription">
-									Fired when editing form is reset. 
+									Creates HTML markup for FORM, TABLE, THEAD, TBODY. 
+								</td>
+							</tr>
+						</table>
+						
+						
+						
+					</div>
+				
+					<div class="method">
+						<table class="summary">
+							<tr>
+								<td class="bullet">&#9674;</td>
+								<td class="tagName">
+									<span class="attribute">private</span>
+									
+									<code> _initForm() </code> 
+								</td>
+								<td class="tagDescription">
+									Creates HTML markup for FORM, TABLE, THEAD, TBODY. 
+								</td>
+							</tr>
+						</table>
+						
+						
+						
+					</div>
+				
+					<div class="method">
+						<table class="summary">
+							<tr>
+								<td class="bullet">&#9674;</td>
+								<td class="tagName">
+									<span class="attribute">private</span>
+									
+									<code> _initHead() </code> 
+								</td>
+								<td class="tagDescription">
+									Populates THEAD element with TH cells as defined by ColumnSet. 
+								</td>
+							</tr>
+						</table>
+						
+						
+						
+					</div>
+				
+					<div class="method">
+						<table class="summary">
+							<tr>
+								<td class="bullet">&#9674;</td>
+								<td class="tagName">
+									<span class="attribute">private</span>
+									
+									<code> _initHeadCell(elHeadCell, oColumn, row, col) </code> 
+								</td>
+								<td class="tagDescription">
+									Populates TH cell as defined by Column. 
 								</td>
 							</tr>
 						</table>
@@ -559,13 +616,52 @@ data from RecordSet.
 									<tr>
 										<td class="tagType">
 											
-											{}
+											{HTMLElement}
 										</td>
 										<td class="tagName">
-											<code>oArgs.oRecord</code> 
+											<code>elHeadCell</code> 
 										</td>
 										<td class="tagDescription">
-											{Object} Record instance. 
+											 TH cell element reference. 
+										</td>
+									</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{YAHOO.widget.Column}
+										</td>
+										<td class="tagName">
+											<code>oColumn</code> 
+										</td>
+										<td class="tagDescription">
+											 Column object. 
+										</td>
+									</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{number}
+										</td>
+										<td class="tagName">
+											<code>row</code> 
+										</td>
+										<td class="tagDescription">
+											 Row index. 
+										</td>
+									</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{number}
+										</td>
+										<td class="tagName">
+											<code>col</code> 
+										</td>
+										<td class="tagDescription">
+											 Column index. 
 										</td>
 									</tr>
 								
@@ -580,12 +676,15 @@ data from RecordSet.
 							<tr>
 								<td class="bullet">&#9674;</td>
 								<td class="tagName">
+									<span class="attribute">private</span>
 									
-									
-									<code> checkboxClickEvent(oArgs.event, oArgs.target) </code> 
+									<code> _onCancel(e, oSelf) </code> 
 								</td>
 								<td class="tagDescription">
-									Fired when a CHECKBOX element is clicked. 
+									Handles form cancel by raising a cancelEvent that bundles the 
+original record values.
+<p>
+Raises cancelEvent. 
 								</td>
 							</tr>
 						</table>
@@ -600,26 +699,138 @@ data from RecordSet.
 									<tr>
 										<td class="tagType">
 											
-											{}
+											{HTMLEvent}
 										</td>
 										<td class="tagName">
-											<code>oArgs.event</code> 
+											<code>e</code> 
 										</td>
 										<td class="tagDescription">
-											{HTMLEvent} The event object. 
+											 The click event. 
 										</td>
 									</tr>
 								
 									<tr>
 										<td class="tagType">
 											
-											{}
+											{YAHOO.yazaar.widget.DataForm}
 										</td>
 										<td class="tagName">
-											<code>oArgs.target</code> 
+											<code>oSelf</code> 
 										</td>
 										<td class="tagDescription">
-											{HTMLElement} The CHECKBOX element. 
+											 DataForm instance. 
+										</td>
+									</tr>
+								
+							</table>
+						
+						
+						
+					</div>
+				
+					<div class="method">
+						<table class="summary">
+							<tr>
+								<td class="bullet">&#9674;</td>
+								<td class="tagName">
+									<span class="attribute">private</span>
+									
+									<code> _onReset(e, oSelf) </code> 
+								</td>
+								<td class="tagDescription">
+									Handles form reset event by invoking reset method. 
+								</td>
+							</tr>
+						</table>
+						
+							<table class="tag">
+								<tr>
+									<td class="tagSubheader" colspan="3">
+										parameters 
+									</td>
+								</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{HTMLEvent}
+										</td>
+										<td class="tagName">
+											<code>e</code> 
+										</td>
+										<td class="tagDescription">
+											 The click event. 
+										</td>
+									</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{YAHOO.yazaar.widget.DataForm}
+										</td>
+										<td class="tagName">
+											<code>oSelf</code> 
+										</td>
+										<td class="tagDescription">
+											 DataForm instance. 
+										</td>
+									</tr>
+								
+							</table>
+						
+						
+						
+					</div>
+				
+					<div class="method">
+						<table class="summary">
+							<tr>
+								<td class="bullet">&#9674;</td>
+								<td class="tagName">
+									<span class="attribute">private</span>
+									
+									<code> _onSubmit(e, oSelf) </code> 
+								</td>
+								<td class="tagDescription">
+									Handles form submit.
+<p>
+Updates internal record from data is retrieved from input controls, 
+and raises updateEvent with new and old record values and an "isChanged" 
+boolean property, so that listeners can update external records. 
+								</td>
+							</tr>
+						</table>
+						
+							<table class="tag">
+								<tr>
+									<td class="tagSubheader" colspan="3">
+										parameters 
+									</td>
+								</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{HTMLEvent}
+										</td>
+										<td class="tagName">
+											<code>e</code> 
+										</td>
+										<td class="tagDescription">
+											 The click event. 
+										</td>
+									</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{YAHOO.yazaar.widget.DataForm}
+										</td>
+										<td class="tagName">
+											<code>oSelf</code> 
+										</td>
+										<td class="tagDescription">
+											 DataForm instance. 
 										</td>
 									</tr>
 								
@@ -640,6 +851,82 @@ data from RecordSet.
 								</td>
 								<td class="tagDescription">
 									Create and return a copy of the original record. 
+								</td>
+							</tr>
+						</table>
+						
+						
+						
+					</div>
+				
+					<div class="method">
+						<table class="summary">
+							<tr>
+								<td class="bullet">&#9674;</td>
+								<td class="tagName">
+									
+									
+									<code> getSelectedRecordIds() </code> 
+								</td>
+								<td class="tagDescription">
+									Returns array of selected Record IDs. 
+								</td>
+							</tr>
+						</table>
+						
+						
+							<table class="tag">
+								<tr>
+									<td class="tagSubheader" colspan="2">
+										returns 
+									</td>
+								</tr>
+								
+									<tr>
+										<td class="tagType">
+											{HTMLElement[]}
+										</td>
+										<td class="tagDescription">
+											 Array of selected TR elements. 
+										</td>
+									</tr>
+								
+							</table>
+						
+						
+					</div>
+				
+					<div class="method">
+						<table class="summary">
+							<tr>
+								<td class="bullet">&#9674;</td>
+								<td class="tagName">
+									
+									
+									<code> harvestForm() </code> 
+								</td>
+								<td class="tagDescription">
+									Obtain the value of form input controls into a copy of the original 
+record, so that any record values not shown on the form are retained. 
+								</td>
+							</tr>
+						</table>
+						
+						
+						
+					</div>
+				
+					<div class="method">
+						<table class="summary">
+							<tr>
+								<td class="bullet">&#9674;</td>
+								<td class="tagName">
+									
+									
+									<code> hideTableMessages() </code> 
+								</td>
+								<td class="tagDescription">
+									Hide any placeholder message row. 
 								</td>
 							</tr>
 						</table>
@@ -739,499 +1026,6 @@ record, and return true if any of the values differ.
 								<td class="tagName">
 									
 									
-									<code> toString() </code> 
-								</td>
-								<td class="tagDescription">
-									Public accessor to the unique name of the DataSource instance. 
-								</td>
-							</tr>
-						</table>
-						
-						
-							<table class="tag">
-								<tr>
-									<td class="tagSubheader" colspan="2">
-										returns 
-									</td>
-								</tr>
-								
-									<tr>
-										<td class="tagType">
-											{String}
-										</td>
-										<td class="tagDescription">
-											 Unique name of the DataSource instance. 
-										</td>
-									</tr>
-								
-							</table>
-						
-						
-					</div>
-				
-					<div class="method">
-						<table class="summary">
-							<tr>
-								<td class="bullet">&#9674;</td>
-								<td class="tagName">
-									<span class="attribute">private</span>
-									
-									<code> _initButton() </code> 
-								</td>
-								<td class="tagDescription">
-									Creates HTML markup for FORM, TABLE, THEAD, TBODY. 
-								</td>
-							</tr>
-						</table>
-						
-						
-						
-					</div>
-				
-					<div class="method">
-						<table class="summary">
-							<tr>
-								<td class="bullet">&#9674;</td>
-								<td class="tagName">
-									<span class="attribute">private</span>
-									
-									<code> _initForm() </code> 
-								</td>
-								<td class="tagDescription">
-									Creates HTML markup for FORM, TABLE, THEAD, TBODY. 
-								</td>
-							</tr>
-						</table>
-						
-						
-						
-					</div>
-				
-					<div class="method">
-						<table class="summary">
-							<tr>
-								<td class="bullet">&#9674;</td>
-								<td class="tagName">
-									<span class="attribute">private</span>
-									
-									<code> _initHead() </code> 
-								</td>
-								<td class="tagDescription">
-									Populates THEAD element with TH cells as defined by ColumnSet. 
-								</td>
-							</tr>
-						</table>
-						
-						
-						
-					</div>
-				
-					<div class="method">
-						<table class="summary">
-							<tr>
-								<td class="bullet">&#9674;</td>
-								<td class="tagName">
-									<span class="attribute">private</span>
-									
-									<code> _initHeadCell(elHeadCell, oColumn, row, col) </code> 
-								</td>
-								<td class="tagDescription">
-									Populates TH cell as defined by Column. 
-								</td>
-							</tr>
-						</table>
-						
-							<table class="tag">
-								<tr>
-									<td class="tagSubheader" colspan="3">
-										parameters 
-									</td>
-								</tr>
-								
-									<tr>
-										<td class="tagType">
-											
-											{}
-										</td>
-										<td class="tagName">
-											<code>elHeadCell</code> 
-										</td>
-										<td class="tagDescription">
-											{HTMLElement} TH cell element reference. 
-										</td>
-									</tr>
-								
-									<tr>
-										<td class="tagType">
-											
-											{}
-										</td>
-										<td class="tagName">
-											<code>oColumn</code> 
-										</td>
-										<td class="tagDescription">
-											{YAHOO.widget.Column} Column object. 
-										</td>
-									</tr>
-								
-									<tr>
-										<td class="tagType">
-											
-											{}
-										</td>
-										<td class="tagName">
-											<code>row</code> 
-										</td>
-										<td class="tagDescription">
-											{number} Row index. 
-										</td>
-									</tr>
-								
-									<tr>
-										<td class="tagType">
-											
-											{}
-										</td>
-										<td class="tagName">
-											<code>col</code> 
-										</td>
-										<td class="tagDescription">
-											{number} Column index. 
-										</td>
-									</tr>
-								
-							</table>
-						
-						
-						
-					</div>
-				
-					<div class="method">
-						<table class="summary">
-							<tr>
-								<td class="bullet">&#9674;</td>
-								<td class="tagName">
-									<span class="attribute">private</span>
-									
-									<code> _onCancel(e, oSelf) </code> 
-								</td>
-								<td class="tagDescription">
-									Handles form cancel by raising a cancelEvent that bundles the 
-original record values.
-<p>
-Raises cancelEvent. 
-								</td>
-							</tr>
-						</table>
-						
-							<table class="tag">
-								<tr>
-									<td class="tagSubheader" colspan="3">
-										parameters 
-									</td>
-								</tr>
-								
-									<tr>
-										<td class="tagType">
-											
-											{}
-										</td>
-										<td class="tagName">
-											<code>e</code> 
-										</td>
-										<td class="tagDescription">
-											{HTMLEvent} The click event. 
-										</td>
-									</tr>
-								
-									<tr>
-										<td class="tagType">
-											
-											{}
-										</td>
-										<td class="tagName">
-											<code>oSelf</code> 
-										</td>
-										<td class="tagDescription">
-											{YAHOO.yazaar.widget.DataForm} DataForm instance. 
-										</td>
-									</tr>
-								
-							</table>
-						
-						
-						
-					</div>
-				
-					<div class="method">
-						<table class="summary">
-							<tr>
-								<td class="bullet">&#9674;</td>
-								<td class="tagName">
-									<span class="attribute">private</span>
-									
-									<code> _onReset(e, oSelf) </code> 
-								</td>
-								<td class="tagDescription">
-									Handles form reset event by invoking reset method. 
-								</td>
-							</tr>
-						</table>
-						
-							<table class="tag">
-								<tr>
-									<td class="tagSubheader" colspan="3">
-										parameters 
-									</td>
-								</tr>
-								
-									<tr>
-										<td class="tagType">
-											
-											{}
-										</td>
-										<td class="tagName">
-											<code>e</code> 
-										</td>
-										<td class="tagDescription">
-											{HTMLEvent} The click event. 
-										</td>
-									</tr>
-								
-									<tr>
-										<td class="tagType">
-											
-											{}
-										</td>
-										<td class="tagName">
-											<code>oSelf</code> 
-										</td>
-										<td class="tagDescription">
-											{YAHOO.yazaar.widget.DataForm} DataForm instance. 
-										</td>
-									</tr>
-								
-							</table>
-						
-						
-						
-					</div>
-				
-					<div class="method">
-						<table class="summary">
-							<tr>
-								<td class="bullet">&#9674;</td>
-								<td class="tagName">
-									<span class="attribute">private</span>
-									
-									<code> _onSubmit(e, oSelf) </code> 
-								</td>
-								<td class="tagDescription">
-									Handles form submit.
-<p>
-Updates internal record from data is retrieved from input controls, 
-and raises updateEvent with new and old record values and an "isChanged" 
-boolean property, so that listeners can update external records. 
-								</td>
-							</tr>
-						</table>
-						
-							<table class="tag">
-								<tr>
-									<td class="tagSubheader" colspan="3">
-										parameters 
-									</td>
-								</tr>
-								
-									<tr>
-										<td class="tagType">
-											
-											{}
-										</td>
-										<td class="tagName">
-											<code>e</code> 
-										</td>
-										<td class="tagDescription">
-											{HTMLEvent} The click event. 
-										</td>
-									</tr>
-								
-									<tr>
-										<td class="tagType">
-											
-											{}
-										</td>
-										<td class="tagName">
-											<code>oSelf</code> 
-										</td>
-										<td class="tagDescription">
-											{YAHOO.yazaar.widget.DataForm} DataForm instance. 
-										</td>
-									</tr>
-								
-							</table>
-						
-						
-						
-					</div>
-				
-					<div class="method">
-						<table class="summary">
-							<tr>
-								<td class="bullet">&#9674;</td>
-								<td class="tagName">
-									
-									
-									<code> doBeforeLoadData(sRequest, oResponse) </code> 
-								</td>
-								<td class="tagDescription">
-									Overridable method gives implementers a hook to access data before
-it gets added to RecordSet and rendered to the TBODY. 
-								</td>
-							</tr>
-						</table>
-						
-							<table class="tag">
-								<tr>
-									<td class="tagSubheader" colspan="3">
-										parameters 
-									</td>
-								</tr>
-								
-									<tr>
-										<td class="tagType">
-											
-											{}
-										</td>
-										<td class="tagName">
-											<code>sRequest</code> 
-										</td>
-										<td class="tagDescription">
-											{String} Original request. 
-										</td>
-									</tr>
-								
-									<tr>
-										<td class="tagType">
-											
-											{}
-										</td>
-										<td class="tagName">
-											<code>oResponse</code> 
-										</td>
-										<td class="tagDescription">
-											{Object} Response object. 
-										</td>
-									</tr>
-								
-							</table>
-						
-						
-							<table class="tag">
-								<tr>
-									<td class="tagSubheader" colspan="2">
-										returns 
-									</td>
-								</tr>
-								
-									<tr>
-										<td class="tagType">
-											{Boolean}
-										</td>
-										<td class="tagDescription">
-											 Return true to continue loading data into RecordSet and
-updating DataForm with new Records, false to cancel. 
-										</td>
-									</tr>
-								
-							</table>
-						
-						
-					</div>
-				
-					<div class="method">
-						<table class="summary">
-							<tr>
-								<td class="bullet">&#9674;</td>
-								<td class="tagName">
-									
-									
-									<code> getSelectedRecordIds() </code> 
-								</td>
-								<td class="tagDescription">
-									Returns array of selected Record IDs. 
-								</td>
-							</tr>
-						</table>
-						
-						
-							<table class="tag">
-								<tr>
-									<td class="tagSubheader" colspan="2">
-										returns 
-									</td>
-								</tr>
-								
-									<tr>
-										<td class="tagType">
-											{HTMLElement[]}
-										</td>
-										<td class="tagDescription">
-											 Array of selected TR elements. 
-										</td>
-									</tr>
-								
-							</table>
-						
-						
-					</div>
-				
-					<div class="method">
-						<table class="summary">
-							<tr>
-								<td class="bullet">&#9674;</td>
-								<td class="tagName">
-									
-									
-									<code> harvestForm() </code> 
-								</td>
-								<td class="tagDescription">
-									Obtain the value of form input controls into a copy of the original 
-record, so that any record values not shown on the form are retained. 
-								</td>
-							</tr>
-						</table>
-						
-						
-						
-					</div>
-				
-					<div class="method">
-						<table class="summary">
-							<tr>
-								<td class="bullet">&#9674;</td>
-								<td class="tagName">
-									
-									
-									<code> hideTableMessages() </code> 
-								</td>
-								<td class="tagDescription">
-									Hide any placeholder message row. 
-								</td>
-							</tr>
-						</table>
-						
-						
-						
-					</div>
-				
-					<div class="method">
-						<table class="summary">
-							<tr>
-								<td class="bullet">&#9674;</td>
-								<td class="tagName">
-									
-									
 									<code> logRecordEvent(oRecord, oPrevRecord) </code> 
 								</td>
 								<td class="tagDescription">
@@ -1277,80 +1071,6 @@ Additional parameters are ignored.
 									</tr>
 								
 							</table>
-						
-						
-						
-					</div>
-				
-					<div class="method">
-						<table class="summary">
-							<tr>
-								<td class="bullet">&#9674;</td>
-								<td class="tagName">
-									
-									
-									<code> onDataReturnPopulateForm(sRequest, oResponse) </code> 
-								</td>
-								<td class="tagDescription">
-									Handles data return by populating form fields. 
-								</td>
-							</tr>
-						</table>
-						
-							<table class="tag">
-								<tr>
-									<td class="tagSubheader" colspan="3">
-										parameters 
-									</td>
-								</tr>
-								
-									<tr>
-										<td class="tagType">
-											
-											{}
-										</td>
-										<td class="tagName">
-											<code>sRequest</code> 
-										</td>
-										<td class="tagDescription">
-											{String} Original request. 
-										</td>
-									</tr>
-								
-									<tr>
-										<td class="tagType">
-											
-											{}
-										</td>
-										<td class="tagName">
-											<code>oResponse</code> 
-										</td>
-										<td class="tagDescription">
-											{Object} Response object. 
-										</td>
-									</tr>
-								
-							</table>
-						
-						
-						
-					</div>
-				
-					<div class="method">
-						<table class="summary">
-							<tr>
-								<td class="bullet">&#9674;</td>
-								<td class="tagName">
-									
-									
-									<code> populateForm() </code> 
-								</td>
-								<td class="tagDescription">
-									Set the value of form input controls to the corresponding entry of the 
-selected record. 
-								</td>
-							</tr>
-						</table>
 						
 						
 						
@@ -1422,6 +1142,583 @@ Repopulates Recordset, and raises resetEvent.
 								<td class="tagName">
 									
 									
+									<code> toString() </code> 
+								</td>
+								<td class="tagDescription">
+									Public accessor to the unique name of the DataSource instance. 
+								</td>
+							</tr>
+						</table>
+						
+						
+							<table class="tag">
+								<tr>
+									<td class="tagSubheader" colspan="2">
+										returns 
+									</td>
+								</tr>
+								
+									<tr>
+										<td class="tagType">
+											{String}
+										</td>
+										<td class="tagDescription">
+											 Unique name of the DataSource instance. 
+										</td>
+									</tr>
+								
+							</table>
+						
+						
+					</div>
+				
+					<div class="method">
+						<table class="summary">
+							<tr>
+								<td class="bullet">&#9674;</td>
+								<td class="tagName">
+									
+									
+									<code> cancelEvent(oArgs.oRecord) </code> 
+								</td>
+								<td class="tagDescription">
+									Fired when editing is cancelled. 
+								</td>
+							</tr>
+						</table>
+						
+							<table class="tag">
+								<tr>
+									<td class="tagSubheader" colspan="3">
+										parameters 
+									</td>
+								</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{Object}
+										</td>
+										<td class="tagName">
+											<code>oArgs.oRecord</code> 
+										</td>
+										<td class="tagDescription">
+											 Record instance. 
+										</td>
+									</tr>
+								
+							</table>
+						
+						
+						
+					</div>
+				
+					<div class="method">
+						<table class="summary">
+							<tr>
+								<td class="bullet">&#9674;</td>
+								<td class="tagName">
+									
+									
+									<code> cellFormatEvent(oArgs.el) </code> 
+								</td>
+								<td class="tagDescription">
+									Fired when a TD element is formatted. 
+								</td>
+							</tr>
+						</table>
+						
+							<table class="tag">
+								<tr>
+									<td class="tagSubheader" colspan="3">
+										parameters 
+									</td>
+								</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{HTMLElement}
+										</td>
+										<td class="tagName">
+											<code>oArgs.el</code> 
+										</td>
+										<td class="tagDescription">
+											 Reference to the TD element. 
+										</td>
+									</tr>
+								
+							</table>
+						
+						
+						
+					</div>
+				
+					<div class="method">
+						<table class="summary">
+							<tr>
+								<td class="bullet">&#9674;</td>
+								<td class="tagName">
+									
+									
+									<code> checkboxClickEvent(oArgs.event, oArgs.target) </code> 
+								</td>
+								<td class="tagDescription">
+									Fired when a RADIO element is clicked. 
+								</td>
+							</tr>
+						</table>
+						
+							<table class="tag">
+								<tr>
+									<td class="tagSubheader" colspan="3">
+										parameters 
+									</td>
+								</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{HTMLEvent}
+										</td>
+										<td class="tagName">
+											<code>oArgs.event</code> 
+										</td>
+										<td class="tagDescription">
+											 The event object. 
+										</td>
+									</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{HTMLElement}
+										</td>
+										<td class="tagName">
+											<code>oArgs.target</code> 
+										</td>
+										<td class="tagDescription">
+											 The RADIO element. 
+										</td>
+									</tr>
+								
+							</table>
+						
+						
+						
+					</div>
+				
+					<div class="method">
+						<table class="summary">
+							<tr>
+								<td class="bullet">&#9674;</td>
+								<td class="tagName">
+									
+									
+									<code> dataReturnEvent(oArgs.request, oArgs.response) </code> 
+								</td>
+								<td class="tagDescription">
+									Fired when data is returned from DataSource. 
+								</td>
+							</tr>
+						</table>
+						
+							<table class="tag">
+								<tr>
+									<td class="tagSubheader" colspan="3">
+										parameters 
+									</td>
+								</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{String}
+										</td>
+										<td class="tagName">
+											<code>oArgs.request</code> 
+										</td>
+										<td class="tagDescription">
+											 Original request. 
+										</td>
+									</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{Object}
+										</td>
+										<td class="tagName">
+											<code>oArgs.response</code> 
+										</td>
+										<td class="tagDescription">
+											 Response object. 
+										</td>
+									</tr>
+								
+							</table>
+						
+						
+						
+					</div>
+				
+					<div class="method">
+						<table class="summary">
+							<tr>
+								<td class="bullet">&#9674;</td>
+								<td class="tagName">
+									
+									
+									<code> deleteEvent(oArgs.oRecord) </code> 
+								</td>
+								<td class="tagDescription">
+									Fired when a Record is deleted. 
+								</td>
+							</tr>
+						</table>
+						
+							<table class="tag">
+								<tr>
+									<td class="tagSubheader" colspan="3">
+										parameters 
+									</td>
+								</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{Object}
+										</td>
+										<td class="tagName">
+											<code>oArgs.oRecord</code> 
+										</td>
+										<td class="tagDescription">
+											 Deleted Record instance. 
+										</td>
+									</tr>
+								
+							</table>
+						
+						
+						
+					</div>
+				
+					<div class="method">
+						<table class="summary">
+							<tr>
+								<td class="bullet">&#9674;</td>
+								<td class="tagName">
+									
+									
+									<code> doBeforeLoadData(sRequest, oResponse) </code> 
+								</td>
+								<td class="tagDescription">
+									Overridable method gives implementers a hook to access data before
+it gets added to RecordSet and rendered to the TBODY. 
+								</td>
+							</tr>
+						</table>
+						
+							<table class="tag">
+								<tr>
+									<td class="tagSubheader" colspan="3">
+										parameters 
+									</td>
+								</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{String}
+										</td>
+										<td class="tagName">
+											<code>sRequest</code> 
+										</td>
+										<td class="tagDescription">
+											 Original request. 
+										</td>
+									</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{Object}
+										</td>
+										<td class="tagName">
+											<code>oResponse</code> 
+										</td>
+										<td class="tagDescription">
+											 Response object. 
+										</td>
+									</tr>
+								
+							</table>
+						
+						
+							<table class="tag">
+								<tr>
+									<td class="tagSubheader" colspan="2">
+										returns 
+									</td>
+								</tr>
+								
+									<tr>
+										<td class="tagType">
+											{Boolean}
+										</td>
+										<td class="tagDescription">
+											 Return true to continue loading data into RecordSet and
+updating DataForm with new Records, false to cancel. 
+										</td>
+									</tr>
+								
+							</table>
+						
+						
+					</div>
+				
+					<div class="method">
+						<table class="summary">
+							<tr>
+								<td class="bullet">&#9674;</td>
+								<td class="tagName">
+									
+									
+									<code> insertEvent(oArgs.oRecord) </code> 
+								</td>
+								<td class="tagDescription">
+									Fired when Record is inserted. 
+								</td>
+							</tr>
+						</table>
+						
+							<table class="tag">
+								<tr>
+									<td class="tagSubheader" colspan="3">
+										parameters 
+									</td>
+								</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{Object}
+										</td>
+										<td class="tagName">
+											<code>oArgs.oRecord</code> 
+										</td>
+										<td class="tagDescription">
+											 Inserted Record instance. 
+										</td>
+									</tr>
+								
+							</table>
+						
+						
+						
+					</div>
+				
+					<div class="method">
+						<table class="summary">
+							<tr>
+								<td class="bullet">&#9674;</td>
+								<td class="tagName">
+									
+									
+									<code> onDataReturnPopulateForm(sRequest, oResponse) </code> 
+								</td>
+								<td class="tagDescription">
+									Handles data return by populating form fields. 
+								</td>
+							</tr>
+						</table>
+						
+							<table class="tag">
+								<tr>
+									<td class="tagSubheader" colspan="3">
+										parameters 
+									</td>
+								</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{String}
+										</td>
+										<td class="tagName">
+											<code>sRequest</code> 
+										</td>
+										<td class="tagDescription">
+											 Original request. 
+										</td>
+									</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{Object}
+										</td>
+										<td class="tagName">
+											<code>oResponse</code> 
+										</td>
+										<td class="tagDescription">
+											 Response object. 
+										</td>
+									</tr>
+								
+							</table>
+						
+						
+						
+					</div>
+				
+					<div class="method">
+						<table class="summary">
+							<tr>
+								<td class="bullet">&#9674;</td>
+								<td class="tagName">
+									
+									
+									<code> populateEvent(oArgs.oRecord) </code> 
+								</td>
+								<td class="tagDescription">
+									Fired when DataForm is populated. 
+								</td>
+							</tr>
+						</table>
+						
+							<table class="tag">
+								<tr>
+									<td class="tagSubheader" colspan="3">
+										parameters 
+									</td>
+								</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{YAHOO.widget.Record}
+										</td>
+										<td class="tagName">
+											<code>oArgs.oRecord</code> 
+										</td>
+										<td class="tagDescription">
+											 Record instance. 
+										</td>
+									</tr>
+								
+							</table>
+						
+						
+						
+					</div>
+				
+					<div class="method">
+						<table class="summary">
+							<tr>
+								<td class="bullet">&#9674;</td>
+								<td class="tagName">
+									
+									
+									<code> populateForm() </code> 
+								</td>
+								<td class="tagDescription">
+									Set the value of form input controls to the corresponding entry of the 
+selected record. 
+								</td>
+							</tr>
+						</table>
+						
+						
+						
+					</div>
+				
+					<div class="method">
+						<table class="summary">
+							<tr>
+								<td class="bullet">&#9674;</td>
+								<td class="tagName">
+									
+									
+									<code> resetEvent(oArgs.oRecord) </code> 
+								</td>
+								<td class="tagDescription">
+									Fired when editing form is reset. 
+								</td>
+							</tr>
+						</table>
+						
+							<table class="tag">
+								<tr>
+									<td class="tagSubheader" colspan="3">
+										parameters 
+									</td>
+								</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{Object}
+										</td>
+										<td class="tagName">
+											<code>oArgs.oRecord</code> 
+										</td>
+										<td class="tagDescription">
+											 Record instance. 
+										</td>
+									</tr>
+								
+							</table>
+						
+						
+						
+					</div>
+				
+					<div class="method">
+						<table class="summary">
+							<tr>
+								<td class="bullet">&#9674;</td>
+								<td class="tagName">
+									
+									
+									<code> tableFocusEvent() </code> 
+								</td>
+								<td class="tagDescription">
+									Fired when DataForm instance is focused. 
+								</td>
+							</tr>
+						</table>
+						
+						
+						
+					</div>
+				
+					<div class="method">
+						<table class="summary">
+							<tr>
+								<td class="bullet">&#9674;</td>
+								<td class="tagName">
+									
+									
+									<code> tableInitEvent() </code> 
+								</td>
+								<td class="tagDescription">
+									Fired when DataForm instance is first initialized. 
+								</td>
+							</tr>
+						</table>
+						
+						
+						
+					</div>
+				
+					<div class="method">
+						<table class="summary">
+							<tr>
+								<td class="bullet">&#9674;</td>
+								<td class="tagName">
+									
+									
 									<code> update() </code> 
 								</td>
 								<td class="tagDescription">
@@ -1429,6 +1726,73 @@ Repopulates Recordset, and raises resetEvent.
 								</td>
 							</tr>
 						</table>
+						
+						
+						
+					</div>
+				
+					<div class="method">
+						<table class="summary">
+							<tr>
+								<td class="bullet">&#9674;</td>
+								<td class="tagName">
+									
+									
+									<code> updateEvent(oArgs.oRecord, oArgs.oPrevRecord, oArgs.isChanged) </code> 
+								</td>
+								<td class="tagDescription">
+									Fired when Record is updated. 
+								</td>
+							</tr>
+						</table>
+						
+							<table class="tag">
+								<tr>
+									<td class="tagSubheader" colspan="3">
+										parameters 
+									</td>
+								</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{Object}
+										</td>
+										<td class="tagName">
+											<code>oArgs.oRecord</code> 
+										</td>
+										<td class="tagDescription">
+											 Updated Record instance. 
+										</td>
+									</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{Object}
+										</td>
+										<td class="tagName">
+											<code>oArgs.oPrevRecord</code> 
+										</td>
+										<td class="tagDescription">
+											 Prior record data. 
+										</td>
+									</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{Boolean}
+										</td>
+										<td class="tagName">
+											<code>oArgs.isChanged</code> 
+										</td>
+										<td class="tagDescription">
+											 Did any of the field values change? 
+										</td>
+									</tr>
+								
+							</table>
 						
 						
 						
@@ -1446,10 +1810,10 @@ Repopulates Recordset, and raises resetEvent.
 	
 		<div class="global">
 			
-			<a name=""></a>
+			<a name="YAHOO.util.EventProvider"></a>
 			<h3>
 				
-				
+				YAHOO.util.EventProvider
 			</h3> 
 			
 				<div class="description">
@@ -1473,55 +1837,14 @@ Repopulates Recordset, and raises resetEvent.
 	
 		<div class="global">
 			
-			<a name="isInvalid"></a>
+			<a name="yazaar.widget"></a>
 			<h3>
 				
-				isInvalid
+				yazaar.widget
 			</h3> 
 			
 				<div class="description">
-					//check textareas
-	for (i=0;i<f_ta.length;i++) {
-		if (isVisible(f_ta[i])) {
-			var cname = ' '+f_ta[i].className.replace(/^\s*|\s*$/g,'')+' ';
-			cname = cname.toLowerCase();
-			var valid = FIC_checkField(cname,f_ta[i]);
-			
-			if (valid) {
-				removeClassName(f_ta[i],'validation-failed');
-				addClassName(f_ta[i],'validation-passed');
-			} else {
-				removeClassName(f_ta[i],'validation-passed');
-				addClassName(f_ta[i],'validation-failed');
-				//try to get title
-				if (f_ta[i].getAttribute('title')){
-					errs[errs.length] = f_ta[i].getAttribute('title');
-				}
-				all_valid = false;
-			}
-		}
-	} //end for i
-	
-	//check selects
-	for (i=0;i<f_sl.length;i++) {
-		if (isVisible(f_sl[i])) {
-			var cname = ' '+f_sl[i].className.replace(/^\s*|\s*$/g,'')+' ';
-			cname = cname.toLowerCase();
-			var valid = FIC_checkSel(cname,f_sl[i]);
-			if (valid) {
-				removeClassName(f_sl[i],'validation-failed-sel');
-				addClassName(f_sl[i],'validation-passed-sel');
-			} else {
-				removeClassName(f_sl[i],'validation-passed-sel');
-				addClassName(f_sl[i],'validation-failed-sel');
-				//try to get title
-				if (f_sl[i].getAttribute('title')){
-					errs[errs.length] = f_sl[i].getAttribute('title');
-				}
-				all_valid = false;
-			}
-		}
-	} //end for i 
+					Define yazaar.widget namespace. 
 				</div>
 			
 			
@@ -1541,6 +1864,6 @@ Repopulates Recordset, and raises resetEvent.
 	
 
 <hr />
-<em>Generated by JsDoc Toolkit on Mon May 07 2007 20:45:06 GMT-0400 (EDT).</em> 
+<em>Generated by JsDoc Toolkit on Wed May 09 2007 07:51:14 GMT-0400 (EDT).</em> 
 </body>
 </html>

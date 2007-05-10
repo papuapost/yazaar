@@ -13,11 +13,56 @@
 	<div class="overview">
 		
 			<div class="description">
-				The FlevBase object combines a DataForm, DataView, and TabView to create a Find/List/Edit workflow. This object may be instantiated via a "power constructor" so that it can be configured before use.<p />Once configured, the "sub" object will automatically display the dataset on one tab and edit individual rows on another tab.Editing features are derived from the columnset and supports unobstrusive validation via "marker" CSS classes. (See DataForm for more about the validation support.)<p />This object combines the ease of inline editing with the convenience of a full-featured edit form.@see <a href="DataFormWalkThrough">http://code.google.com/p/yazaar/wiki/DataFormWalkThrough</a>@module yazaar.dataform@requires yahoo, dom, event, datasource@title DataForm Widget@alpha 
+				The FlevBase object combines a DataForm, DataView, and TabView to create a Find/List/Edit workflow. This object may be instantiated via a "power constructor" so that it can be configured before use.<p />Once configured, the "sub" object will automatically display the dataset on one tab and edit individual rows on another tab.Editing features are derived from the columnset and supports unobstrusive validation via "marker" CSS classes. (See DataForm for more about the validation support.)<p />This object combines the ease of inline editing with the convenience of a full-featured edit form. 
 			</div>
 		
 		
 			<table class="tag">
+				
+					<tr>
+						<td class="tagType">
+							see 
+						</td>
+						<td class="tagDescription">
+							<a href="DataFormWalkThrough">http://code.google.com/p/yazaar/wiki/DataFormWalkThrough</a> 
+						</td>
+					</tr>
+				
+					<tr>
+						<td class="tagType">
+							module 
+						</td>
+						<td class="tagDescription">
+							 
+						</td>
+					</tr>
+				
+					<tr>
+						<td class="tagType">
+							requires 
+						</td>
+						<td class="tagDescription">
+							yahoo, dom, event, datasource 
+						</td>
+					</tr>
+				
+					<tr>
+						<td class="tagType">
+							title 
+						</td>
+						<td class="tagDescription">
+							DataForm Widget 
+						</td>
+					</tr>
+				
+					<tr>
+						<td class="tagType">
+							alpha 
+						</td>
+						<td class="tagDescription">
+							 
+						</td>
+					</tr>
 				
 			</table>
 		
@@ -39,7 +84,7 @@
 			</h3> 
 			
 				<div class="description">
-					Pseudo constructor.<p />Creates a base FLEV widget that must be configuredby a "power constructor" before use.<p />The properties to be configured are oColumnHeaders, oResponseSchema, sDataTable, oConfigs, sDataForm, sTabView, sListForm, sItemName.The client application must also provide a dataset for the load method. @constructor 
+					Pseudo constructor.<p />Creates a base FLEV widget that must be configuredby a "power constructor" before use.<p />The properties to be configured are oColumnHeaders, oResponseSchema, sDataTable, oConfigs, sDataForm, sTabView, sListForm, sItemName.The client application must also provide a dataset for the load method. 
 				</div>
 			
 			
@@ -307,13 +352,48 @@
 								<td class="tagName">
 									
 									
-									<code> initFilter() </code> 
+									<code> initFilter(oData, oSelf) </code> 
 								</td>
 								<td class="tagDescription">
-									Setup autocomplete filtering. Called automatically.@param {Object} oData@param {Object} oSelf 
+									Setup autocomplete filtering. Called automatically. 
 								</td>
 							</tr>
 						</table>
+						
+							<table class="tag">
+								<tr>
+									<td class="tagSubheader" colspan="3">
+										parameters 
+									</td>
+								</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{Object}
+										</td>
+										<td class="tagName">
+											<code>oData</code> 
+										</td>
+										<td class="tagDescription">
+											 
+										</td>
+									</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{Object}
+										</td>
+										<td class="tagName">
+											<code>oSelf</code> 
+										</td>
+										<td class="tagDescription">
+											 
+										</td>
+									</tr>
+								
+							</table>
 						
 						
 						
@@ -326,13 +406,48 @@
 								<td class="tagName">
 									
 									
-									<code> load() </code> 
+									<code> load(oData, oSelf) </code> 
 								</td>
 								<td class="tagDescription">
-									Initialize object with response data. @param {Object} oData@param {Object} oSelf 
+									Initialize object with response data. 
 								</td>
 							</tr>
 						</table>
+						
+							<table class="tag">
+								<tr>
+									<td class="tagSubheader" colspan="3">
+										parameters 
+									</td>
+								</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{Object}
+										</td>
+										<td class="tagName">
+											<code>oData</code> 
+										</td>
+										<td class="tagDescription">
+											 
+										</td>
+									</tr>
+								
+									<tr>
+										<td class="tagType">
+											
+											{Object}
+										</td>
+										<td class="tagName">
+											<code>oSelf</code> 
+										</td>
+										<td class="tagDescription">
+											 
+										</td>
+									</tr>
+								
+							</table>
 						
 						
 						
@@ -366,6 +481,6 @@
 
 
 <hr />
-<em>Generated by JsDoc Toolkit on Mon May 07 2007 20:45:07 GMT-0400 (EDT).</em> 
+<em>Generated by JsDoc Toolkit on Wed May 09 2007 07:51:14 GMT-0400 (EDT).</em> 
 </body>
 </html>
