@@ -44,6 +44,28 @@ Subversion commit messages are posted to the development group mailing list, for
 || {{{isFoo}}} || boolean || also {{{hasFoo}}}, {{{useFoo}}} ||
 
 
+=== Constants == 
+
+As in Java, predefined values (or "constants") can be expressed as variables in all UPPER_CASE. JavaScript does not prevent these variables from being changed, and so developers must practice constraint (and observe coding conventions!).
+
+When several related constants or default values are being defined, it can be convenient t group the constants into an object. 
+
+{{{
+YAHOO.widget.Module._EVENT_TYPES = {
+    "BEFORE_INIT": "beforeInit",
+    "INIT": "init" }
+}}}
+
+{{{
+YAHOO.widget.Module._DEFAULT_CONFIG = {
+    "VISIBLE": { 
+        key: "visible", 
+        value: true, 
+        validator: YAHOO.lang.isBoolean 
+    }
+}}}
+
+
 == File Format ==
 
 !JavaScript files should include a copyright and license header, and JSDoc Comments. Code may also be organized into a common set of regions.
