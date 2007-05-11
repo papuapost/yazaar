@@ -1,0 +1,69 @@
+#accordiontabs {
+    width: 500px;
+    margin: 2em;
+    overflow: hidden;
+}
+
+#accordiontabs .yui-content {
+    border:1px solid #ccc;
+    border-top: none;
+    padding: 0 1em;
+    overflow: hidden;
+    color: #999;
+}
+
+#accordiontabs .yui-content div {
+    height: 10em;
+    width: 100%;
+}
+
+#accordiontabs h3 {
+    border-bottom: 1px dashed #ccc;
+    padding: .25em;
+    margin-bottom: .25em;
+    font-weight: bold;
+    color: #18397C;
+}
+
+#accordiontabs li {
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    display: block;
+}
+
+#accordiontabs li.selected {
+    font-weight: bold;
+}
+
+#accordiontabs li a {
+    text-decoration: none;
+    color: #18397C;
+    padding: 3px;
+    display: block;
+    border: 1px solid #ccc;
+    font-size: 80%;
+}
+
+#accordiontabs li.selected a {
+    color: #CC6633;
+}
+
+#accordiontabs li a:hover {
+    text-decoration: underline;
+    color: #18397C;
+}
+
+#accordiontabs em {
+    padding: .25em;
+}
+
+#accordiontabs li div {
+    overflow: hidden;
+    color: #999;
+    border-right: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    font-weight: normal;
+    padding: 0 1em;
+    font-size: 100%;
+}

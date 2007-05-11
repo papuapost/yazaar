@@ -1,7 +1,7 @@
 /*
-Remedial JavaScript Functions recommended by Crockford 
+Remedial JavaScript Functions recommended by Crockford
 (http://javascript.crockford.com/remedial.html)
-Plus "object" function from Advanced JavaScript video series 
+Plus "object" function from Advanced JavaScript video series
 (http://developer.yahoo.com/yui/theater/)
 */
 
@@ -107,25 +107,25 @@ String.prototype.supplant = function (o) {
 
 String.prototype.trim = function () {
     return this.replace(/^\s*(\S*(\s+\S+)*)\s*$/, "$1");
-}; 
+};
 
-Object.prototype.later = 
+Object.prototype.later =
         function (msec, method) {
-    var that = this,
+        var that = this,
         args = Array.prototype.slice.
-            apply(arguments, [2]); 
-    if (typeof method === 'string') { 
-        method = that[method]; 
-    } 
-    setTimeout(function () { 
-        method.apply(that, args); 
-    }, msec); 
-    return that; 
-}; 
+            apply(arguments, [2]);
+    if (typeof method === 'string') {
+        method = that[method];
+    }
+    setTimeout(function () {
+        method.apply(that, args);
+    }, msec);
+    return that;
+};
 
-// var newobject = object(oldobject); 
+// var newobject = object(oldobject);
 function object (o) {
- function F() {} 
+ function F() {}
  F.prototype = o;
  return new F()
-}; 
+};

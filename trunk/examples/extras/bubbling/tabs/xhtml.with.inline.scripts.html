@@ -1,0 +1,44 @@
+<div id="dynamic-tab-with-script">
+	<p>Dynamic Tab without cache</p>
+	<p><strong>Facts in this example:</strong><br />
+- The script tags inside the tab will be executed every time the tab get the focus.<br />
+- The dynamic links was created on the fly.<br />
+</p>
+
+<a title="This is the static link number 1" href="http://bubbling.comarq.com/"  target="_top" id="link1">1.  Static link</a><br>
+<br>
+	<a title="This is the static link number 2" href="http://bubbling.comarq.com/"  target="_top" id="link2">2.  Static link</a><br>
+
+	<br>
+	<a title="This is the static link number 3" href="http://bubbling.comarq.com/"  target="_top" id="link3">3.  Static link</a><br>
+	<br>
+	<a title="This is the static link number 4" href="http://bubbling.comarq.com/"  target="_top" id="link4">4.  Static link</a><br>
+	<br>
+	<a title="This is the static link number 5" href="http://bubbling.comarq.com/"  target="_top" id="link5">5.  Static link</a><br>
+	<br>	
+
+	</div>
+
+<script>
+	
+    // Creating dynamic links...
+	function createDynamicLinks() {
+        var p = YAHOO.util.Dom.get ("dynamic-tab-with-script");
+		for (var i=6;i<=10;i++) {
+			var a = document.createElement("a");
+			a.id = "link" + i;
+			a.href = "http://bubbling.comarq.com/";
+			a.title = "This is the dynamic link number " + i;
+			a.innerHTML = i + ".  Dynamic link";
+
+			p.appendChild(a);
+			p.appendChild(document.createElement("br"));
+			p.appendChild(document.createElement("br"));
+
+		}
+	}
+		
+	createDynamicLinks();
+	alert ('Dynamic Script Execution: TAB "Inline Scripts" was executed successful...');
+	
+</script>
