@@ -1,6 +1,6 @@
 #summary Stepping through the YUI documentation (Issue 1)
 
-The trails step through the [http://developer.yahoo.com/yui/ YUI documentation] in a  progressive, tutorial-style order. There are three trails: Backbone, Workhorse, and Special Effects.
+The trails step through the [http://developer.yahoo.com/yui/ YUI documentation] in a  progressive, tutorial-style order. There are three trails: Backbone, Workhorse, and Special Effects. 
 
 First Trail - YUI builds on several "backbone" packages that hold the library together.
 
@@ -31,6 +31,8 @@ Third Trail - Other library controls provides special effects, like sliders, but
  * [http://developer.yahoo.com/yui/history/ history]
  * [http://developer.yahoo.com/yui/reset/ reset], [http://developer.yahoo.com/yui/fonts/ fonts], and [http://developer.yahoo.com/yui/grids/ grids]
 
-The mass of YUI documentation can seem imposing at first, but if follow the trails, you'll be up and running in a New York minute (or three). :) 
+Including "laboratory" time to try some of the examples, each trail can take a full day. (And probably should!) 
+
+Skimming the source code for each module is strongly recommended. YUI is a superb, professional product, and there is much to be learned by studying its example. 
 
  * [Resources]
