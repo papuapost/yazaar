@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>TabView Example - Dynamically Loading Content</title>
+
+<link rel="stylesheet" type="text/css" href="./assets/accordion.css">
+
+<link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/button/assets/button.css">
+<link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/tabview.css">
+<link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/border_tabs.css">
+
+<script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/utilities/utilities.js"></script>
+<script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+<script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/element/element-beta-min.js"></script>
+<script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/tabview/tabview-min.js"></script>
+<script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/button/button-beta-min.js"></script>
+
+<script type="text/javascript" src="../../../build/extras/bubbling/dispatcher.js"></script>
+
+
+
+
+<style type="text/css">
+#demo {
+    width:50em; /* arbitrary width */
+}
+
+#demo .yui-content {
+    padding:1em;
+}
+
+#demo .loading {
+    background-image:url(img/loading.gif);
+    background-position:center center;
+    background-repeat:no-repeat;
+}
+
+#demo .loading * {
+    display:none;
+}
+
+</style>
+<style>
+#accordiontabs {
+    width: 500px;
+    margin: 2em;
+}
+
+#accordiontabs .yui-content {
+    border:1px solid #ccc;
+    border-top: none;
+    padding: 0 1em;
+    overflow: hidden;
+    color: #999;
+}
+
+#accordiontabs .yui-content div {
+    height: 10em;
+    width: 100%;
+}
+
+#accordiontabs h3 {
+    border-bottom: 1px dashed #ccc;
+    padding: .25em;
+    margin-bottom: .25em;
+    font-weight: bold;
+    color: #18397C;
+}
+
+#accordiontabs li {
+    padding: 0;
+    margin: 0;
+    text-align: left;
+}
+
+#accordiontabs li.selected {
+    font-weight: bold;
+}
+
+#accordiontabs li a {
+    background: transparent url(graphics/tabs_back.gif) repeat scroll 0 -22pt;
+    text-decoration: none;
+    color: #18397C;
+    padding: 3px;
+    display: block;
+    border: 1px solid #ccc;
+    font-size: 80%;
+}
+
+#accordiontabs li.selected a {
+    background: transparent url(graphics/tabs_back.gif) repeat scroll 0pt -133pt;
+    color: #CC6633;
+}
+
+#accordiontabs li a:hover {
+    text-decoration: underline;
+    color: #18397C;
+}
+
+#accordiontabs em {
+    padding: .25em;
+}
+
+#accordiontabs li div {
+    overflow: hidden;
+    color: #999;
+    border-right: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    font-weight: normal;
+    padding: 0 1em;
+    font-size: 100%;
+}	
+</style>
+<script type="text/javascript">
+	
+YAHOO.example.init = function() {
+    var tabView = new YAHOO.widget.TabView({id: 'demo'});
+    
+    YAHOO.util.Dispatcher.delegate (new YAHOO.widget.Tab({
+        label: 'Inline Scripts',
+        dataSrc: 'tabs/xhtml.with.inline.scripts.html',
+        active: true
+    }), tabView);
+    
+    YAHOO.util.Dispatcher.delegate (new YAHOO.widget.Tab({
+    	label: 'Remote Scripts',
+        dataSrc: 'tabs/xhtml.with.remote.scripts.html',
+        cacheData: true
+    }), tabView);
+    
+    YAHOO.util.Dispatcher.delegate (new YAHOO.widget.Tab({
+    	label: 'Acoordion Control',
+        dataSrc: 'tabs/xhtml.with.accordion.scripts.html',
+        cacheData: true
+    }), tabView);
+
+    YAHOO.util.Event.onContentReady('doc', function() {
+        tabView.appendTo('doc');
+    });
+
+};
+
+YAHOO.example.init();
+</script>
+
+</head>
+<body>
+<div id="doc">
+    <h1>TabView and Dispatcher Example - Dynamically loading content with script inside</h1>
+    <p>This is an example of the DISPATCHER feature over the YUI tabview component, you can use the dispatcher to managing the content inside the tab. This feature will warranty the execution of the scripts (remote and inline "script" tags) during the dataSrc request.</p>
+
+</div>
+
+</body>
+</html>

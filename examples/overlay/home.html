@@ -105,7 +105,37 @@
 				</div>
 				
 				<div id="elPhonebookView">
-				
+			       <div id="elPhonebookTabView" class="yui-navset">
+			            <ul class="yui-nav">
+			                <li class="selected"><a href="#list"><em>List Entries</em></a></li>
+			                <li><a href="#edit"><em>Edit Entry</em></a></li>
+			            </ul>
+			            <div class="yui-content">
+							<div id="elPhonebookFormList">
+			    	            <div id="elPhonebookDataTable" class="dpu-dt"></div>				
+								<div class="filter">
+			        				<form id="elPhonebookForm">
+			             				<p style="font-weight:bold">Filter Entries by:
+			             				<select id="elPhonebookForm_item" onchange="YAHOO.my.oPhonebookView.oContent.onFilterChange()">
+			                				<option value="last_name" selected="selected">Last Name</option>
+			                				<option value="first_name">First Name</option>
+			                				<option value="username">Username</option>
+			            				</select>
+			             				</p>
+			            				<div class="filterForm">
+										    <p>
+			                				    <input class="filterInput" id="elPhonebookForm_input" />
+										    </p>
+			                				<div class="filterMatch" id="elPhonebookForm_match"></div>
+			            				</div>
+			         				</form>
+			    			    </div>			
+							</div>
+							<div id="elelPhonebookFormEdit">
+					            <div id="elPhonebookDataForm"></div>				
+							</div>
+			            </div>
+			        </div>				
 				</div>
 				
 				<div id="elNotebookView">
@@ -134,26 +164,108 @@
 			<script src="http://yui.yahooapis.com/2.2.2/build/container/container-min.js"></script>
 			<!-- DataTable/DataForm -->
 			<script src="http://www.json.org/json.js"></script>
-			<!-- YUI Source files -->
 			<script src="http://yui.yahooapis.com/2.2.2/build/datasource/datasource-beta-min.js"></script>
-			<script src="http://yui.yahooapis.com/2.2.2/build/datatable/datatable-beta-min.js"></script>
-			<!-- Autocomplete -->
+			<script src="../../build/patched/datatable-beta-debug-patched.js"></script>
+			<script src="../../build/dataform/flevbase-debug-beta.js"></script>
 			<script src="http://yui.yahooapis.com/2.2.2/build/autocomplete/autocomplete-min.js"></script>
 			<!-- Yazaar Source files -->
 			<script src="../../build/dataform/dataform-debug-beta.js"></script>
-			<!-- OPTIONAL: jc21 validator -->
-			<script src="../../build/extras/jc21/validate-min.js"></script>
+			<!-- jc21 validator -->
+			<script src="../../build/extras/jc21/validate-min.js"></script>			
 			<!-- LogReader -->
 			<script src="http://yui.yahooapis.com/2.2.2/build/logger/logger-min.js"></script>
+			<!-- DPU RowFilterTable source (extends YUI version) -->   
+			<script src="../../build/extras/dpu/RowFilterDataTable.js" ></script>
+			<script src="../../build/extras/dpu/RowFilter.js" ></script>
 			<!-- TabView -->
 			<script src="http://yui.yahooapis.com/2.2.2/build/element/element-beta-min.js"></script>
-			<!-- Source file -->
 			<script src="http://yui.yahooapis.com/2.2.2/build/tabview/tabview-min.js"></script>
 			
+			<script src="../../build/extras/crockford/remedial.js" ></script>			
 			<script src="../dataform/tutorial-data.js"></script>
 
 			<script>
 				YAHOO.namespace("my");
+				
+				YAHOO.my.oPhonebookData = { 
+				    result : [
+						{entry_key: 'c5b6bbb1-66d6-49cb-9db6-743af6627828', last_name: 'Beeblebrox ', first_name: 'Zaphod ', extension: '555-123-4565', username: 'zaphie ', hired: '04/01/1978', hours: -1, editor: '1'},
+					    {entry_key: '7c424227-8e19-4fb5-b089-423cfca723e1', last_name: 'Yooden', first_name: 'Vranx', extension: '555-123-4566', username: 'conker', hired: '04/01/1978', hours: 37.5, editor: '1'},
+					    {entry_key: '9320ea40-0c01-43e8-9cec-8fb9b3928c2c', last_name: 'Halfrunt', first_name: 'Gag', extension: '555-123-4567', username: 'ziggy', hired: '04/01/1978', hours: 7, editor: '0'},
+						{entry_key: '3b27c933-c1dc-4d85-9744-c7d9debae196', last_name: 'Android', first_name: 'Marvin', extension: '555-123-4568', username: 'blue', hired: '06/15/1978', hours: 161, editor: '1'},
+				    	{entry_key: '554ff9e7-a6f5-478a-b76b-a666f5c54e40', last_name: 'McMillan', first_name: 'Tricia', extension: '555-123-4569', username: 'trillian', hired: '05/28/1978', hours: 37.5, editor:'0'},
+						]
+					};
+				// 	{entry_key: 'a4065cc1-b59d-4d0d-8210-c3757e686e6c', last_name: 'Prefect', first_name: 'Ford', extension: '555-123-4570', username: 'peanut', hired: '07/26/1978', hours: 35, editor:'1'},
+				// 	{entry_key: '59a5c1da-9750-4b2c-8fcb-833bd16aca26', last_name: 'Dent', first_name: 'Arthur', extension: '555-123-4571', username: 'monk', hired: '07/26/1978', hours: 35, editor:'1'}
+				
+				YAHOO.my.Events = function() {
+				    this.createEvent("phonebookList")
+				    return this;
+				}
+				YAHOO.augment(YAHOO.my.Events, YAHOO.util.EventProvider);
+				YAHOO.my.events = new YAHOO.my.Events();
+				
+				YAHOO.my.events.onPhonebookListReturn = function(oData) {
+				    YAHOO.log("phonebookList Event");
+				    YAHOO.my.events.fireEvent("phonebookList", oData);	
+				}
+				
+				YAHOO.my.events.isLoaded = false;
+				
+				YAHOO.my.events.onPhonebookLoaded = function(oData, oSelf) {
+					var isLoaded = YAHOO.my.events.isLoaded;
+					if (isLoaded) return;
+					isLoaded = true;
+					// Change title when tab changes
+				    var onActiveTabChange = function(e) {
+						YAHOO.my.setTitle(oSelf.sTabView, oSelf.oTabView.get('activeIndex'));
+					}
+					oSelf.oTabView.on('activeTabChange', onActiveTabChange);     
+				}
+								
+				YAHOO.my.Phonebook = function() {
+				    var oSelf = object(FlevBase);                   
+				    oSelf.oColumnHeaders = [
+				        {key:"first_name", text:"First Name", sortable:true, resizeable:true, editor:"textbox", formClassName: "required", formTitle: "Enter employee's first name"},  
+				        {key:"last_name", text:"Last Name", sortable:true, resizeable:true, editor:"textbox", formClassName: "required", formTitle: "Enter employee's last name"},  
+				        {key:"extension", text:"Extension", sortable:true, resizeable:true, editor:"textbox", formClassName: "required", formTitle: "Enter extension or telephone number"},  
+				        {key:"username", text:"Username", sortable:true, resizeable:true, editor:"textbox", formClassName: "required", formTitle: "Enter employee's login name"},  
+				        {key:"hired", text:"Hire Date", sortable:true, resizeable:true, editor:"textbox", formClassName: "required", formTitle: "Enter hire date as MM/DD/YYYY"},  
+				        {key:"hours", text:"Hours", sortable:true, resizeable:true, editor:"textbox", formClassName: "required, validate-number", formTitle: "Enter hours scheduled per work week as a number"},  
+				    ];       
+				
+				    oSelf.oConfigs = {
+				        caption: "EntryList", 
+				        summary: "List of matching entries",
+				        paginator:true,
+				        paginatorOptions: {
+				            rowsPerPage: 2, 
+				            dropdownOptions: [2,20,200]
+				        },
+				        rowSingleSelect: true                
+				    };            
+				
+				    oSelf.oResponseSchema = {
+				        fields: ["entry_key","last_name","first_name","extension","username","hired","hours","editor"]
+				    };            
+				
+				    oSelf.sItemName = "last_name";
+				    
+				    oSelf.sDataTable = "elPhonebookDataTable";
+				    oSelf.sDataForm = "elPhonebookDataForm";
+				    oSelf.sTabView = "elPhonebookTabView";
+				    oSelf.sForm = "elPhonebookForm";
+				
+				    YAHOO.my.events.subscribe("phonebookList", oSelf.load, oSelf);    
+				    // Home.rpc.entryList(YAHOO.my.events.onPhonebookListReturn).call(ANVIL.channel); // livedatabase
+				    YAHOO.my.events.subscribe("phonebookList", YAHOO.my.events.onPhonebookLoaded, oSelf);
+				
+				    YAHOO.my.events.onPhonebookListReturn(YAHOO.my.oPhonebookData); // static data
+				
+				    return oSelf;
+				};
+				YAHOO.augment(YAHOO.my.Phonebook, YAHOO.util.EventProvider);				
 				
 				YAHOO.my.VIEW_CONFIG = {visible:false}; // TODO: Define View and Views classes
 
@@ -225,6 +337,7 @@
 				YAHOO.my.PhonebookView = function(sElement,sTitle) {
 					var oSelf = new YAHOO.widget.Overlay(sElement, YAHOO.my.VIEW_CONFIG);
 					oSelf.sTitle = sTitle;
+					oSelf.oContent = new YAHOO.my.Phonebook();
 					return oSelf;
 				}
 				
