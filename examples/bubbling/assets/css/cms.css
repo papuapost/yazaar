@@ -1,0 +1,175 @@
+/***********************************************/
+/* Common CSS style sheet for CMS Elements     */
+/***********************************************/
+
+/* RSS contextual menu links */
+.cms_rss_bloglines {
+	background-image: url(../images/rss/bloglines.gif);
+	background-position: left;
+	background-repeat: no-repeat;
+}
+.cms_rss_yahoo {
+	background-image: url(../images/rss/yahoo.gif);
+	background-position: left;
+	background-repeat: no-repeat;
+}
+.cms_rss_google {
+	background-image: url(../images/rss/google.gif);
+	background-position: left;
+	background-repeat: no-repeat;
+}
+.cms_rss_netvibes {
+	background-image: url(../images/rss/netvibes.gif);
+	background-position: left;
+	background-repeat: no-repeat;
+}
+.cms_rss_msn {
+	background-image: url(../images/rss/msn.gif);
+	background-position: left;
+	background-repeat: no-repeat;
+}
+.cms_rss_newsgator {
+	background-image: url(../images/rss/newsgator.gif);
+	background-position: left;
+	background-repeat: no-repeat;
+}
+.cms_rss_link {
+	background-image: url(../images/rss/rss.gif);
+	background-position: left;
+	background-repeat: no-repeat;
+}
+
+/* Bookmark contextual menu links */
+.cms_bm_meneame {
+	background-image: url(../images/bookmark/meneame.gif);
+	background-position: left;
+	background-repeat: no-repeat;
+}
+.cms_bm_digg {
+	background-image: url(../images/bookmark/digg.gif);
+	background-position: left;
+	background-repeat: no-repeat;
+}
+.cms_bm_delicious {
+	background-image: url(../images/bookmark/delicious.gif);
+	background-position: left;
+	background-repeat: no-repeat;
+}
+.cms_bm_technorati {
+	background-image: url(../images/bookmark/technorati.gif);
+	background-position: left;
+	background-repeat: no-repeat;
+}
+.cms_bm_yahoo {
+	background-image: url(../images/bookmark/yahoo.gif);
+	background-position: left;
+	background-repeat: no-repeat;
+}
+/* Close element in Context Menus */
+div.yuimenu li.closemenu {
+	padding-right: 5px;
+	text-align: right;
+	font-size: 9px;
+}
+	div.yuimenu li.closemenu a {
+		text-align: right;
+		font-size: 9px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+.cms-player-handle {
+	padding-bottom: 5px;
+	padding-right: 5px;
+	white-space: nowrap;  
+}
+	.cms-player-handle {
+		font-size: 12px;
+	}
+		.cms-player-handle .cms-player-play a, 
+		.cms-player-handle .cms-player-stop a, 
+		.cms-player-handle .cms-player-ff a, 
+		.cms-player-handle .cms-player-rw a, 
+		.cms-player-handle .cms-player-pause a {
+            text-indent:-5em;
+			width: 0px;
+            overflow:hidden;
+            padding:.20em .80em;
+            *margin-left:5em;   /* IE only */
+            _padding:.20em .80em; /* IE < 7 only */
+        }	
+		.cms-player-handle .cms-player-play a {
+            background:url(../images/player/play.gif) center center no-repeat;
+        }
+		.cms-player-handle .cms-player-pause a {
+            background:url(../images/player/play.gif) center center no-repeat;
+        }	
+		.cms-player-handle .cms-player-stop a {
+            background:url(../images/player/stop.gif) center center no-repeat;
+        }	
+		.cms-player-handle .cms-player-ff a {
+            background:url(../images/player/ff.gif) center center no-repeat;
+        }	
+		.cms-player-handle .cms-player-rw a {
+            background:url(../images/player/rw.gif) center center no-repeat;
+        }
+		
+.yui-tt {
+	visibility:hidden;
+	position:absolute;
+	color:#ffffff;
+	background-color:#017CC9;
+	padding:2px;
+	border:1px solid #80BDE4;
+	font-size: 95%;
+	font-family: Arial, Helvetica, sans-serif;
+	width:250px;
+	text-align: left;
+}
+	.yui-tt em {
+		font-weight: bold;
+		font-size: 95%;
+		font-style: normal;
+	}
+	
+/* Resize Panel CSS */
+.resizepanel .resizehandle { 
+	position:absolute; 
+	width:25px; 
+	height:4px; 
+	right:0; 
+	bottom:0; 
+	margin:0; 
+	padding:0; 
+	z-index:1; 
+	background:#666;  
+	cursor:se-resize; 
+	font-size:2px; 
+}
+
+/* Strong and em */
+.undoreset strong, .undoreset th { font-weight: bold; }
+.undoreset em, .undoreset address, .undoreset caption, .undoreset cite { font-style: italic; }
+/* Table */
+.undoreset table { display: table; border-spacing: 2px; border-collapse: separate; }
+.undoreset tr { display: table-row; vertical-align: inherit; }
+.undoreset td { display: table-cell; border-spacing: 2px; padding: 2px; vertical-align: inherit; text-align: inherit; padding: 1px; }
+.undoreset th { display: table-cell; vertical-align: inherit; font-weight: bold; padding: 1px; }
+/* Block Items */
+.undoreset p { display: block; margin: 1em 0; }
+.undoreset blockquote { display: block; margin: 1em 40px; }
+.undoreset address { display: block; font-style: italic; }
+.undoreset center { display: block; text-align: center; }
+/* Headers */
+.undoreset h1 { display: block; font-size: 2em; font-weight: bold; margin: .67em 0; }
+.undoreset h2 { display: block; font-size: 1.5em; font-weight: bold; margin: .83em 0; }
+.undoreset h3 { display: block; font-size: 1.17em; font-weight: bold; margin: 1em 0; }
+.undoreset h4 { display: block; font-weight: bold; margin: 1.33em 0; }
+.undoreset h5 { display: block; font-size: 0.83em; font-weight: bold; margin: 1.67em 0; }
+.undoreset h6 { display: block; font-size: 0.67em; font-weight: bold; margin: 2.33em 0; }
+/* Lists */
+.undoreset ul { display: block; list-style-type: disc; margin: 1em 0; padding-left: 40px; }
+.undoreset ol { display: block; list-style-type: decimal; margin: 1em 0; padding-left: 40px; }
+.undoreset li { display: list-item; }
+/* Pre */
+.undoreset pre, .undoreset code { display: block; font-family: Courier New; white-space: pre; margin: 1em 0; }
