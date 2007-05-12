@@ -1,19 +1,19 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-<title>TabView Example - Nested TabViews</title>
+<title>TabView Example - Dynamically Loading Content</title>
 
 <link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/button/assets/button.css">
 <link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/tabview.css">
 <link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/border_tabs.css">
 
-<script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/utilities/utilities.js"></script>
-<script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-<script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/element/element-beta-min.js"></script>
-<script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/tabview/tabview-min.js"></script>
-<script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/button/button-beta-min.js"></script>
+<script src="http://yui.yahooapis.com/2.2.2/build/utilities/utilities.js"></script>
+<script src="http://yui.yahooapis.com/2.2.2/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+<script src="http://yui.yahooapis.com/2.2.2/build/element/element-beta-min.js"></script>
+<script src="http://yui.yahooapis.com/2.2.2/build/tabview/tabview-min.js"></script>
+<script src="http://yui.yahooapis.com/2.2.2/build/button/button-beta-min.js"></script>
 
-<script type="text/javascript" src="../../../build/extras/bubbling/dispatcher.js"></script>
+<script src="../../build/bubbling/plugins/dispatcher.js"></script>
 <style type="text/css">
 #demo {
     width:50em; /* arbitrary width */
@@ -52,12 +52,6 @@ YAHOO.example.init = function() {
         cacheData: true
     }), tabView);
     
-    YAHOO.util.Dispatcher.delegate (new YAHOO.widget.Tab({
-    	label: 'Nested TabView',
-        dataSrc: 'tabs/xhtml.with.tabview.html',
-        cacheData: true
-    }), tabView);
-
     YAHOO.util.Event.onContentReady('doc', function() {
         tabView.appendTo('doc');
     });
