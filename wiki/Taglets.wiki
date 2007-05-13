@@ -1,4 +1,4 @@
-#Taglet (Issue 17)
+#summary Taglets (Issue 17)
 
 Several systems exist that generate API document based on "tags" embedded in stylized comments. Here we summarize and compares the tagsets being used by various systems. 
 
@@ -53,5 +53,4 @@ Several systems exist that generate API document based on "tags" embedded in sty
 || serialData          ||                     ||                    ||                    ||                   ||                 ||
 || serialField         ||                     ||                    ||                    ||                   ||                 ||
 || value               ||                     ||                    ||                    ||                   ||                 ||
-
 
