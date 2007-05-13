@@ -1,6 +1,6 @@
-#summary Taglets (Issue 17)
+#summary Summary of Documentation Taglets (Issue 17)
 
-Several systems exist that generate API document based on "tags" embedded in stylized comments. Here we summarize and compares the tagsets being used by various systems. 
+Several systems exist that generate API document based on "tags" embedded in stylized comments. 
 
 || [http://java.sun.com/j2se/1.5.0/docs/tooldocs/windows/javadoc.html JavaDoc] || [http://scriptdoc.org/ ScriptDoc]  || [http://jsdoc.sourceforge.net/ JsDoc] || [http://www.jsdoctoolkit.org/ JsDoc Toolkit] || [http://developer.yahoo.com/yui/ YUI] || *JS Combined* ||
 ||                     ||                     || addon              ||                    ||                   || addon           ||
@@ -53,4 +53,3 @@ Several systems exist that generate API document based on "tags" embedded in sty
 || serialData          ||                     ||                    ||                    ||                   ||                 ||
 || serialField         ||                     ||                    ||                    ||                   ||                 ||
 || value               ||                     ||                    ||                    ||                   ||                 ||
-
