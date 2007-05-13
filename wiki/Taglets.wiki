@@ -2,54 +2,56 @@
 
 Several systems exist that generate API document based on "tags" embedded in stylized comments. 
 
-|| [http://java.sun.com/j2se/1.5.0/docs/tooldocs/windows/javadoc.html JavaDoc] || [http://scriptdoc.org/ ScriptDoc]  || [http://jsdoc.sourceforge.net/ JsDoc] || [http://www.jsdoctoolkit.org/ JsDoc Toolkit] || [http://developer.yahoo.com/yui/ YUI] || *JS Combined* ||
-||                     ||                     || addon              ||                    ||                   || addon           ||
-||                     || alias               ||                    ||                    ||                   || alias           ||
-||                     ||                     || argument           ||                    ||                   || argument        ||
-|| author              || author              || author             ||                    ||                   || author          ||
-||                     ||                     || base               ||                    ||                   || base            ||
-||                     ||                     || class              || class              || class             || class           ||
-||                     || classDescription    ||                    ||                    ||                   || classDescription||
-||                     || constructor         || constructor        ||                    || constructor       || constructor     ||
-||                     || copyright           ||                    ||                    ||                   || copyright       ||
-|| deprecated          || deprecated          || deprecated         ||                    || deprecated        || deprecated      ||
-||                     ||                     ||                    ||                    || event             || event           ||
-||                     ||                     || exec               ||                    ||                   || exec            ||
-|| exception           || exception           || exception          ||                    ||                   || exception       ||
-||                     || extends             || extends            ||                    ||                   || extends         ||
-||                     ||                     ||                    || field              ||                   || field           ||
-||                     ||                     || fileOverview       ||                    ||                   || fileOverview    ||
-||                     ||                     || final              ||                    ||                   || final           ||
-||                     ||                     ||                    || function           ||                   || function        ||
-||                     ||                     ||                    || global             ||                   || global          ||
-||                     || id                  ||                    ||                    ||                   || id              ||
-||                     ||                     || ignore             ||                    ||                   || ignore          ||
-||                     || license             ||                    ||                    ||                   || license         ||
-||                     ||                     || link               ||                    ||                   || link            ||
-||                     ||                     || member             ||                    ||                   || member          ||
-||                     || method              ||                    || method             || method            || method          ||
-||                     || namespace           ||                    ||                    || namespace         || namespace       ||
-||                     ||                     ||                    || overview           ||                   || overview        ||
-|| param               || param               || param              || param              ||                   || param           ||
-||                     || projectDescription  ||                    ||                    ||                   || projectDescription ||
-||                     ||                     || private            || private            || private           || private         ||
-||                     ||                     ||                    ||                    || property          || property        ||
-||                     ||                     ||                    ||                    || public            || public          ||
-|| return              || return              || return | returns   || returns            || return            || return | returns||
-||                     || sdoc                ||                    ||                    ||                   || sdoc            ||
-|| see                 || see                 || see                ||                    ||                   || see             ||
-|| since               || since               ||                    ||                    ||                   || since           ||
-||                     ||                     ||                    || static             || static            || static          ||
-|| throws              ||                     || throws             || throws             ||                   || throws          ||
-||                     || type                || type               ||                    || type              || type            ||
-||                     ||                     ||                    ||                    || uses              || uses            ||
-|| version             || version             || version            ||                    ||                   || version         ||
-|| code                ||                     ||                    ||                    ||                   ||                 ||
-|| docRoot             ||                     ||                    ||                    ||                   ||                 ||
-|| inheritDoc          ||                     ||                    ||                    ||                   ||                 ||
-|| linkPlain           ||                     ||                    ||                    ||                   ||                 ||
-|| literal             ||                     ||                    ||                    ||                   ||                 ||
-|| serial              ||                     ||                    ||                    ||                   ||                 ||
-|| serialData          ||                     ||                    ||                    ||                   ||                 ||
-|| serialField         ||                     ||                    ||                    ||                   ||                 ||
-|| value               ||                     ||                    ||                    ||                   ||                 ||
+|| [http://java.sun.com/j2se/1.5.0/docs/tooldocs/windows/javadoc.html JavaDoc]  || [http://scriptdoc.org/ ScriptDoc] || [http://jsdoc.sourceforge.net/ JsDoc] || [http://www.jsdoctoolkit.org/ JsDoc Toolkit] || [http://developer.yahoo.com/yui/ YUI] || [http://helma.org/docs/guide/helmadoc/ Helma] ||*JS Combined* ||
+||                     ||                     ||                   || addon              ||                    ||                    || addon           ||
+||                     || alias               ||                   ||                    ||                    ||                    || alias           ||
+||                     ||                     ||                   || argument           ||                    ||                    || argument        ||
+|| author              || author              || author            || author             ||                    ||                    || author          ||
+||                     ||                     ||                   || base               ||                    ||                    || base            ||
+||                     ||                     ||                   || class              || class              || class              || class           ||
+||                     || classDescription    ||                   ||                    ||                    ||                    || classDescription||
+||                     || constructor         ||                   || constructor        ||                    || constructor        || constructor     ||
+||                     || copyright           ||                   ||                    ||                    ||                    || copyright       ||
+|| deprecated          || deprecated          || deprecated        || deprecated         ||                    || deprecated         || deprecated      ||
+||                     ||                     ||                   ||                    ||                    || event              || event           ||
+||                     ||                     ||                   || exec               ||                    ||                    || exec            ||
+|| exception           || exception           ||                   || exception          ||                    ||                    || exception       ||
+||                     || extends             ||                   || extends            ||                    ||                    || extends         ||
+||                     ||                     ||                   ||                    || field              ||                    || field           ||
+||                     ||                     ||                   || fileOverview       ||                    ||                    || fileOverview    ||
+||                     ||                     ||                   || final              ||                    ||                    || final           ||
+||                     ||                     ||                   ||                    || function           ||                    || function        ||
+||                     ||                     ||                   ||                    || global             ||                    || global          ||
+||                     || id                  ||                   ||                    ||                    ||                    || id              ||
+||                     ||                     ||                   || ignore             ||                    ||                    || ignore          ||
+||                     || license             ||                   ||                    ||                    ||                    || license         ||
+||                     ||                     ||                   || link               ||                    ||                    || link            ||
+||                     ||                     ||                   || member             ||                    ||                    || member          ||
+||                     || method              ||                   ||                    || method             || method             || method          ||
+||                     || namespace           ||                   ||                    ||                    || namespace          || namespace       ||
+||                     ||                     || overrides         ||                    ||                    ||                    || overrides       ||
+||                     ||                     ||                   ||                    || overview           ||                    || overview        ||
+|| param               || param               || param             || param              || param              ||                    || param           ||
+||                     || projectDescription  ||                   ||                    ||                    ||                    || projectDescription ||
+||                     ||                     ||                   || private            || private            || private            || private         ||
+||                     ||                     ||                   ||                    ||                    || property           || property        ||
+||                     ||                     ||                   ||                    ||                    || public             || public          ||
+|| return              || return              || return            || return | returns   || returns            || return             || return | returns||
+||                     || sdoc                ||                   ||                    ||                    ||                    || sdoc            ||
+|| see                 || see                 || see               || see                ||                    ||                    || see             ||
+|| since               || since               ||                   ||                    ||                    ||                    || since           ||
+||                     ||                     ||                   ||                    || static             || static             || static          ||
+|| throws              ||                     ||                   || throws             || throws             ||                    || throws          ||
+||                     || type                ||                   || type               ||                    || type               || type            ||
+||                     ||                     ||                   ||                    ||                    || uses               || uses            ||
+|| version             || version             || version           || version            ||                    ||                    || version         ||
+|| code                ||                     ||                   ||                    ||                    ||                    ||                 ||
+|| docRoot             ||                     ||                   ||                    ||                    ||                    ||                 ||
+|| inheritDoc          ||                     ||                   ||                    ||                    ||                    ||                 ||
+|| linkPlain           ||                     ||                   ||                    ||                    ||                    ||                 ||
+|| literal             ||                     ||                   ||                    ||                    ||                    ||                 ||
+|| serial              ||                     ||                   ||                    ||                    ||                    ||                 ||
+|| serialData          ||                     ||                   ||                    ||                    ||                    ||                 ||
+|| serialField         ||                     ||                   ||                    ||                    ||                    ||                 ||
+|| value               ||                     ||                   ||                    ||                    ||                    ||                 ||
+
