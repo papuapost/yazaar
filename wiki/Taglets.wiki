@@ -8,6 +8,7 @@ Several systems exist that generate API document based on "tags" embedded in sty
 ||                     ||                     ||                   || argument           ||                    ||                    || argument        ||
 || author              || author              || author            || author             ||                    ||                    || author          ||
 ||                     ||                     ||                   || base               ||                    ||                    || base            ||
+||                     ||                     ||                   ||                    || beta               ||                    || beta            ||
 ||                     ||                     ||                   || class              || class              || class              || class           ||
 ||                     || classDescription    ||                   ||                    ||                    ||                    || classDescription||
 ||                     || constructor         ||                   || constructor        ||                    || constructor        || constructor     ||
@@ -17,6 +18,7 @@ Several systems exist that generate API document based on "tags" embedded in sty
 ||                     ||                     ||                   || exec               ||                    ||                    || exec            ||
 || exception           || exception           ||                   || exception          ||                    ||                    || exception       ||
 ||                     || extends             ||                   || extends            ||                    ||                    || extends         ||
+||                     ||                     ||                   ||                    || experimental       ||                    || experimental    ||
 ||                     ||                     ||                   ||                    || field              ||                    || field           ||
 ||                     ||                     ||                   || fileOverview       ||                    ||                    || fileOverview    ||
 ||                     ||                     ||                   || final              ||                    ||                    || final           ||
@@ -28,7 +30,9 @@ Several systems exist that generate API document based on "tags" embedded in sty
 ||                     ||                     ||                   || link               ||                    ||                    || link            ||
 ||                     ||                     ||                   || member             ||                    ||                    || member          ||
 ||                     || method              ||                   ||                    || method             || method             || method          ||
+||                     ||                     ||                   ||                    || module             ||                    || module          ||
 ||                     || namespace           ||                   ||                    ||                    || namespace          || namespace       ||
+||                     ||                     ||                   ||                    || optional           ||                    || optional        ||
 ||                     ||                     || overrides         ||                    ||                    ||                    || overrides       ||
 ||                     ||                     ||                   ||                    || overview           ||                    || overview        ||
 || param               || param               || param             || param              || param              ||                    || param           ||
@@ -37,11 +41,13 @@ Several systems exist that generate API document based on "tags" embedded in sty
 ||                     ||                     ||                   ||                    ||                    || property           || property        ||
 ||                     ||                     ||                   ||                    ||                    || public             || public          ||
 || return              || return              || return            || return | returns   || returns            || return             || return | returns||
+||                     ||                     ||                   ||                    || requires           ||                    || requires        ||
 ||                     || sdoc                ||                   ||                    ||                    ||                    || sdoc            ||
 || see                 || see                 || see               || see                ||                    ||                    || see             ||
 || since               || since               ||                   ||                    ||                    ||                    || since           ||
 ||                     ||                     ||                   ||                    || static             || static             || static          ||
 || throws              ||                     ||                   || throws             || throws             ||                    || throws          ||
+||                     ||                     ||                   ||                    || title              ||                    || title           ||
 ||                     || type                ||                   || type               ||                    || type               || type            ||
 ||                     ||                     ||                   ||                    ||                    || uses               || uses            ||
 || version             || version             || version           || version            ||                    ||                    || version         ||
@@ -54,4 +60,4 @@ Several systems exist that generate API document based on "tags" embedded in sty
 || serialData          ||                     ||                   ||                    ||                    ||                    ||                 ||
 || serialField         ||                     ||                   ||                    ||                    ||                    ||                 ||
 || value               ||                     ||                   ||                    ||                    ||                    ||                 ||
-
+||                     ||                     ||                   ||                    ||                    ||                    ||                 ||
