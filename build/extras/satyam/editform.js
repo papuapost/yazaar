@@ -1,3 +1,79 @@
+
+/**
+Ok, it's done and posted at:
+
+https://sourceforge.net/tracker/index.php?func=detail&aid=1717216&group_id=165715&atid=836479
+
+
+So, this is how you would use it:
+
+Assuming dt is a global reference to an existing DataTable instance,
+first, once in the document, you create the form within a container, in this
+case, with an id of 'editForm'.
+
+ dt.createEditForm('editForm');
+
+Then once for each record to be edited, you make the container visible and
+call showEditFormgiving it the record to be edited (here, the first record).
+Here, I am giving it an extra argument, an object with a property
+idExtraInfo which will be converted to a hidden input element with name
+idExtraInfo and value 123 and inserted into the form
+
+ dt.showEditForm(dt.getRecordSet().getRecord(0),{idExtraInfo:123});
+
+You may subscribe to any or all of the following events. They are all
+triggered in succession by the submit event of the form.  If any of the
+validate event fails (returns false) the rest will not be triggered.
+
+This will be fired for each cell.  It will receive the input element (input,
+textarea, select box), the original value, a reference to the column (for
+whatever information you might need from it) and to the original record.  It
+will trigger only for fields in the form, not for all of the ones on the
+record, nor for the hidden fields.
+
+ dt.subscribe('cellValidateEvent', function(args) {
+  console.log('cellValidateEvent', args);
+  return true;
+ });
+
+
+This one fires once for the whole form.  It receives a reference to the
+form, the old data as an object of name:value  sets, the new data and the
+original record.
+
+ dt.subscribe('formValidateEvent', function(args) {
+  console.log('formValidateEvent', args);
+  return true;
+ });
+
+Finally, if everything validates, the formSubmitEvent fires.  If not
+subscribed, the form will be submitted as forms usually do.  If subscribed
+and returns true, it will also submit, if false, it cancels the submit (as
+per normal DOM standards).   It receives the form, the old data, the new
+data and the record, which is now updated with the new values (which should
+also be reflected in the browser).
+
+As a convenience, the postEditForm method is provided to make it simple to
+submit the form via XHR.  You just set it as the callback function for the
+event and add an extra argument with the callback object, as described for
+the asyncRequest method.
+
+ dt.subscribe('formSubmitEvent', dt.dataTable.postEditForm, {
+  success:function() {
+   console.log('success',this)
+  },
+  failure:function() {
+   console.log('failure',this)
+  }
+ });
+
+
+It still has all the references to DataTypes, which is what I use, but if
+you don't use 'edit:true' in the column descriptions, it should not
+complain, otherwise, let me know.
+
+Satyam  */
+
 /**
 
 https://sourceforge.net/tracker/index.php?func=detail&aid=1717216&group_id=165715&atid=836479
@@ -38,7 +114,7 @@ Another method is provided to load the form with data (see below)
  * @param {Object} arguments
  */
 
-YAHOO.widget.DataTable.prototype.createEditForm = function (elContainer,url,onSubmitCallback,arguments) {
+YAHOO.widget.DataTable.prototype.createEditForm = function (elContainer,url,onSubmitCallback,args) {
 	elContainer = YAHOO.util.Dom.get(elContainer);
 	var elForm = document.createElement('form');
 	YAHOO.util.Dom.addClass(elForm,'yui-dt-edit-form');
@@ -47,42 +123,95 @@ YAHOO.widget.DataTable.prototype.createEditForm = function (elContainer,url,onSu
 	elForm.setAttribute('method','post');
 	elForm.setAttribute('action',url || (this.dataSource.dataType == YAHOO.util.DataSource.TYPE_XHR)?this.dataSource.liveData:'');
 	for (var i = 0;i<this._oColumnSet.keys.length;i++) {
-	var oColumn = this._oColumnSet.keys[i];
-	switch (oColumn.editor) {
-		case 'textbox':
-			var elLabel = document.createElement('label');
-			elLabel.setAttribute('for',oColumn.key);
-			elLabel.innerHTML = oColumn.text || oColumn.key;
-			elForm.appendChild(elLabel);
-
-			var elTextbox = document.createElement("input");
-			elTextbox.setAttribute('name',oColumn.key);
-			elForm.appendChild(elTextbox);
-			break;
-		case 'textarea':
-			var elLabel = document.createElement('label');
-			elLabel.setAttribute('for',oColumn.key);
-			elLabel.innerHTML = oColumn.text || oColumn.key;
-			elForm.appendChild(elLabel);
-
-			var elTextArea = document.createElement("textarea");
-			elTextArea.setAttribute('name',oColumn.key);
-			elForm.appendChild(elTextArea);
-			break;
-		default:
-			if (oColumn.edit) {
-				YAHOO.widget.DataTypes.createFormField(elForm,oColumn);
-			}
-			break;
+		var oColumn = this._oColumnSet.keys[i];
+		switch (oColumn.editor) {
+			case 'textbox':
+				var elLabel = document.createElement('label');
+				elLabel.setAttribute('for',oColumn.key);
+				elLabel.innerHTML = oColumn.text || oColumn.key;
+				elForm.appendChild(elLabel);
+	
+				var elTextbox = document.createElement("input");
+				elTextbox.setAttribute('name',oColumn.key);
+				elForm.appendChild(elTextbox);
+				break;
+			case 'textarea':
+				var elLabel = document.createElement('label');
+				elLabel.setAttribute('for',oColumn.key);
+				elLabel.innerHTML = oColumn.text || oColumn.key;
+				elForm.appendChild(elLabel);
+	
+				var elTextArea = document.createElement("textarea");
+				elTextArea.setAttribute('name',oColumn.key);
+				elForm.appendChild(elTextArea);
+				break;
+			default:
+				if (oColumn.edit) {
+					YAHOO.widget.DataTypes.createFormField(elForm,oColumn);
+				}
+				break;
 		}
 	}
 	var buttonSubmit = document.createElement('input');
 	buttonSubmit.type='submit';
-	buttonSubmit.value= arguments.submitButtonLabel || 'Ok';
+	buttonSubmit.value= 'OK'; // args.submitButtonLabel || 'Ok'; // FIXME: "args has no properties"
 	elForm.appendChild(buttonSubmit);
-	if (onSubmitCallback) {
+	if (onSubmitCallback) {	
+		YAHOO.util.Event.on(elForm,'submit',onSubmitCallback,args,this,true);
+	}
+};
 
-	YAHOO.util.Event.on(elForm,'submit',onSubmitCallback,arguments,this,true);
+
+/**
+
+Notice that the onSubmitCallback function is executed in the scope of the
+DataTable instance.
+
+The following function is called to fill the form with data.
+
+The function takes a reference to a particular record which will be loaded
+into the value of the input elements.
+
+It takes a second argument, which is expected to be an object of name:value
+pairs, which will be converted to <input type=hidden> elements. In each
+call, prior hidden elements are removed.
+
+ * @param {Object} oRecord
+ * @param {Object} extra
+ */
+YAHOO.widget.DataTable.prototype.showEditForm = function(oRecord,extra) {
+	var elForm = this.recordEditForm,i,elHidden;
+	for (var i = 0; i < elForm.childNodes.length;i++) {
+		var el = elForm.childNodes[i];
+		if (el.nodeType === 1 && el.tagName.toUpperCase() === 'INPUT' && el.type === 'hidden') {
+			elForm.removeChild(el);
+		}
+	}
+	if (extra) {
+		for (i in extra) {
+			elHidden = document.createElement('input');
+			elHidden.setAttribute('type','hidden');
+			elHidden.setAttribute('name',i);
+			elHidden.setAttribute('value',extra[i]);
+			elForm.appendChild(elHidden);
+		}
+	}
+	
+	for (i = 0;i<this._oColumnSet.keys.length;i++) {
+		var oColumn = this._oColumnSet.keys[i];
+		switch (oColumn.editor) {
+			case 'textbox':
+				elForm[oColumn.key].setAttribute('value',oRecord[oColumn.key]);
+				break;
+			case 'textarea':
+				elForm[oColumn.key].innerHTML = oRecord[oColumn.key];
+				break;
+			default:
+				if (oColumn.edit) {
+					YAHOO.widget.DataTypes.showFormField(elForm,oRecord,oColumn);
+				}
+				break;
+		}
 	}
 };
 
@@ -141,4 +270,3 @@ my 'feature request' at:
 https://sourceforge.net/tracker/?func=detail&atid=836479&aid=1684188&group_id=165715
  
  */
-
