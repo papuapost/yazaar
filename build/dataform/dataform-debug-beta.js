@@ -64,11 +64,14 @@ YAHOO.namespace("yazaar.widget");
  * <p>
  * To share a RecordSet with a DataTable, include a oDataTable property 
  * in the oConfigs, and pass its ColumnSet and DataSource through the 
- * signature. If a oDataTable property is not passed, then this object 
+ * signature. (Or pass a different ColumnSet, if desired.) If a 
+ * oDataTable property is not passed, then this object 
  * creates it's own RecordSet instance.
  *
  * @event checkboxClickEvent
  * @param elContainer The element name or object to host the widget
+ * @param oColumnSet {YAHOO.widget.ColumnSet} ColumnSet instance.
+ * @param oDataSource {YAHOO.util.DataSource} DataSource instance.
  * @param oConfigs Property settings. May include oDataTable.
 */
 YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
@@ -77,7 +80,7 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
     var i;
     this._nIndex = YAHOO.yazaar.widget.DataForm._nCount;
     this._sName = "instance" + this._nIndex;
-    this.id = "anvil-df"+this._nIndex;
+    this.id = "yazaar-df"+this._nIndex;
 
     // configure
     if(typeof oConfigs == "object") {
@@ -117,18 +120,15 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
 	   var isValid = (oDataTable instanceof YAHOO.widget.DataTable); 
        if (isValid) {
 			this._oRecordSet = oDataTable.getRecordSet();
-			YAHOO.log("DataTable RecordSet will be shared", "info", this.toString()); // debug						
-
+			YAHOO.log("DataTable RecordSet will be shared", "info", this.toString()); // debug
 		}
 		else {
-			YAHOO.log("Invalid DataTable -- RecordSet will not be shared", "warn", this.toString());			
-
+			YAHOO.log("Invalid DataTable -- RecordSet will not be shared", "error", this.toString());			
 		}
     }	
 	if (this._oRecordSet==null) {
 		this._oRecordSet = new YAHOO.widget.RecordSet();
 		YAHOO.log("Creating new RecordSet", "info", this.toString()); // debug
-
 	}
 
 	// enhance markup
@@ -149,7 +149,6 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
 				} else {
 	                // Send out for data in an asynchronous request
 					oDataSource.sendRequest(this.initialRequest, this.onDataReturnPopulateForm, this);
-
 				} 
         }
         // Else there is no data
@@ -198,12 +197,12 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
     /**
      * Fired when a RADIO element is clicked.
      *
-     * @method checkboxClickEvent
+     * @method radioClickEvent
      * @param oArgs.event {HTMLEvent} The event object.
      * @param oArgs.target {HTMLElement} The RADIO element.
      * @event radioClickEvent
      */
-    this.createEvent("checkboxClickEvent");
+    this.createEvent("radioClickEvent");
     	
     /**
      * Fired when DataForm instance is first initialized.
@@ -328,7 +327,7 @@ else {
  * @type String
  * @final
  */
-YAHOO.yazaar.widget.DataForm.CLASS_HEADCONTAINER = "anvil-df-headcontainer";
+YAHOO.yazaar.widget.DataForm.CLASS_HEADCONTAINER = "yazaar-df-headcontainer";
 
 /**
  * Class name assigned to text displayed within THEAD.
@@ -338,9 +337,9 @@ YAHOO.yazaar.widget.DataForm.CLASS_HEADCONTAINER = "anvil-df-headcontainer";
  * @property CLASS_HEADTEXT
  * @type String
  * @final
- * @default anvil-dt-headtext"
+ * @default yazaar-dt-headtext"
  */
-YAHOO.yazaar.widget.DataForm.CLASS_HEADTEXT = "anvil-df-headtext";
+YAHOO.yazaar.widget.DataForm.CLASS_HEADTEXT = "yazaar-df-headtext";
 
 /**
  * Class name assigned to TBODY element that holds buttons.
@@ -350,9 +349,9 @@ YAHOO.yazaar.widget.DataForm.CLASS_HEADTEXT = "anvil-df-headtext";
  * @property MENU_BODY
  * @type String
  * @final
- * @default "anvil-dt-body"
+ * @default "yazaar-dt-body"
  */
-YAHOO.yazaar.widget.DataForm.MENU_BODY = "anvil-df-menu";
+YAHOO.yazaar.widget.DataForm.MENU_BODY = "yazaar-df-menu";
 
 /**
  * Label for Submit button
