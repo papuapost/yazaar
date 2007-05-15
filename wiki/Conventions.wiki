@@ -147,3 +147,18 @@ http://developer.yahoo.net/yui/license.txt
 === Coding Examples === 
 
 (TODO) ...
+
+
+=== HTML pages ===
+
+ * Order YUI scripts in "HappyTrails" order. 
+ * For remote scripts, omit file type references ("type=text/javascript") {{{[Flanagan]}}}
+ * Place scripts as low on page as possible {{{[Venkatesan]}}}
+
+
+
+
+
+
+
+
