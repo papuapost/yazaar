@@ -1,4 +1,5 @@
 #summary Stepping through the YUI documentation (Issue 1)
+#labels Featured
 
 The trails step through the [http://developer.yahoo.com/yui/ YUI documentation] in a  progressive, tutorial-style order. There are three trails: Backbone, Workhorse, and Special Effects. 
 
