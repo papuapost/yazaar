@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/logger/assets/logger.css">
     <link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/datatable/assets/datatable.css">
     <link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/container/assets/container.css">
+    <link rel="stylesheet" href="../../../build/extras/satyam/assets/rowEdit.css">
+	
     <style type="text/css">
       /* custom css*/
       #elDataTable {margin:1em;}
@@ -19,13 +21,16 @@
       #elDataTable .big {font-size:136%;}
       #elDataTable .small {font-size:77%}
     </style>
+	
   </head>
   <body>
 
-      <div id="elDataTable"></div>
+    <div id="elDataTable"></div>
+	
+	<hr />
 
-    <div id="elEditForm"></div>
-
+    <div id="elRowEdit"></div>
+	
     <div id="elScripts">
       <script src="http://yui.yahooapis.com/2.2.2/build/yahoo-dom-event/yahoo-dom-event.js"></script>
       <script src="http://yui.yahooapis.com/2.2.2/build/logger/logger-min.js"></script>
@@ -47,11 +52,11 @@
         my.oLogger = new YAHOO.widget.LogReader();
 
         my.oColumnHeaders = [
-            {key:"id", sortable:true, resizeable:true},
-            {key:"date", type:"date", sortable:true, resizeable:true},
-            {key:"quantity", type:"number", sortable:true, resizeable:true},
-            {key:"amount", type:"currency", sortable:true, resizeable:true},
-            {key:"title", type:"html", sortable:true, resizeable:true}
+            {key:"id", sortable:true, resizeable:true, editor:"textbox"},
+            {key:"date", type:"date", sortable:true, resizeable:true, editor:"textbox"},
+            {key:"quantity", type:"number", sortable:true, resizeable:true, editor:"textbox"},
+            {key:"amount", type:"currency", sortable:true, resizeable:true, editor:"textbox"},
+            {key:"title", type:"html", sortable:true, resizeable:true, editor:"textbox"}
         ];
 
         my.oColumnSet = new YAHOO.widget.ColumnSet(my.oColumnHeaders);
@@ -66,9 +71,7 @@
       </script>
 
       <script type="text/javascript">
-        my.oEditForm = new YAHOO.widget.Overlay("elEditForm");
-        my.oEditForm.render();
-        my.oDataTable.createEditForm("elEditForm");
+        my.oDataTable.createEditForm("elRowEdit");
         my.oDataTable.showEditForm(my.oDataTable.getRecordSet()._records[0]);
       </script>
     </div>

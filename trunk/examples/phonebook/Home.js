@@ -87,7 +87,7 @@ YAHOO.my.Phonebook = function() {
     oPhonebook.sDataTable = "elDataTable";
     oPhonebook.sDataForm = "elDataForm";
     oPhonebook.sTabView = "elTabView";
-    oPhonebook.sForm = "elForm";
+    oPhonebook.sListForm = "elForm";
 
     YAHOO.my.events.subscribe("entryList", oPhonebook.load, oPhonebook);    
     // Home.rpc.entryList(YAHOO.my.events.onEntryListReturn).call(ANVIL.channel); // livedatabase
