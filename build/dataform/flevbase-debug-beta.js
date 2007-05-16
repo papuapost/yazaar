@@ -33,7 +33,7 @@ http://developer.yahoo.net/yui/license.txt
  * by a "power constructor" before use.
  * <p />
  * The properties to be configured are oColumnHeaders, oResponseSchema, 
- * sDataTable, oConfigs, sDataForm, sTabView, sListForm, sItemName.
+ * oConfigs, sDataFind, sDataList, sDataView, sDataForm, sTabView, sListForm, sItemName.
  * The client application must also provide a dataset for the load 
  * method. 
  * 
@@ -57,16 +57,16 @@ var FlevBase = function() {
         oResponseSchema: null,
         
         /**
-         * DOM ID for the DataTable container (div).
-         * Must be configured.
-         */
-        sDataTable: null,
-        
-        /**
          * Array of object literals that define the DataTable configuration.
          * Must be configured.
          */
         oConfigs: null,
+        
+        /**
+         * DOM ID for the DataList container (div).
+         * Must be configured.
+         */
+        sDataList: null,
         
         /**
          * DOM ID for the DataForm container (div).
@@ -105,13 +105,43 @@ var FlevBase = function() {
         /**
          * Instance created by this object.
          */
-        oDataTable: null, 
+        oDataFind: null,
+
+        /**
+         * Instance created by this object.
+         */
+        oDataList: null, 
 
         /**
          * Instance created by this object.
          */
         oDataForm: null,
 
+        /**
+         * Instance created by this object.
+         */
+        oDataView: null,
+        
+        /**
+         * Relative index of DataFind
+         */
+         nDataFind: 0,
+         
+        /**
+         * Relative index of DataList
+         */
+         nDataList: 1,
+         
+        /**
+         * Relative index of DataView
+         */
+         nDataView: 2,
+         
+        /**
+         * Relative index of DataEdit
+         */
+         nDataEdit: 3,
+                 
         /**
          * Instance created by this object.
          */
@@ -136,29 +166,31 @@ var FlevBase = function() {
             // previously defined
             var oColumnHeaders = oSelf.oColumnHeaders;
             var oResponseSchema = oSelf.oResponseSchema;
-            var sDataTable = oSelf.sDataTable;
             var oConfigs = oSelf.oConfigs; 
+            var sDataFind = oSelf.sDataFind;
+            var sDataList = oSelf.sDataList;
+            var sDataView = oSelf.sDataView;
             var sDataForm = oSelf.sDataForm;
             var sTabView = oSelf.sTabView;
             // to be defined
-            var oColumnSet, oDataSource, oDataTable, oFormConfigs, oDataForm, oTabView;
+            var oColumnSet, oDataSource, oDataFind, oDataList, oDataView, oDataForm, oFormConfigs,oTabView;
             
             oColumnSet = new YAHOO.widget.ColumnSet(oColumnHeaders);
             oDataSource = new YAHOO.util.DataSource(oData.result);
                 oDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;            
                 oDataSource.responseSchema = oResponseSchema;
-            oDataTable = new YAHOO.dpu.widget.DataTable(sDataTable, oColumnSet, oDataSource, oConfigs);
+            oDataList = new YAHOO.dpu.widget.DataTable(sDataList, oColumnSet, oDataSource, oConfigs);
             
             // Enable DataTable Row Selection
-            oDataTable.subscribe("cellClickEvent",oDataTable.onEventSelectRow);
-            oDataTable.select(oDataTable.getRow(0));
+            oDataList.subscribe("cellClickEvent",oDataList.onEventSelectRow);
+            oDataList.select(oDataList.getRow(0));
 
             // Create our own event for selecting the record behind a row            
-            oDataTable.createEvent("recordSelectEvent");
+            oDataList.createEvent("recordSelectEvent");
 
             // Raise our event when a row is selected
             var onRowClickEvent = function(oArgs) {
-                var dt = oDataTable;
+                var dt = oDataList;
                 var rs = dt.getRecordSet();
                 var row = dt.getSelectedRecordIds();
                 if (row.length===0) {
@@ -171,32 +203,33 @@ var FlevBase = function() {
               this.fireEvent("recordSelectEvent",{record:oRecord});
               YAHOO.log("Selected Record: " + oRecord.toJSONString());
             };            
-            oDataTable.subscribe("cellClickEvent", onRowClickEvent);
+            oDataList.subscribe("cellClickEvent", onRowClickEvent);
 
             // Setup DataForm
-            oFormConfigs = {oDataTable: oDataTable};
+            oFormConfigs = {oDataList: oDataList};
             oDataForm = new YAHOO.yazaar.widget.DataForm(sDataForm, oColumnSet, oDataSource, oFormConfigs);
-            oDataTable.subscribe("dataReturnEvent",oSelf.initFilter,oSelf);    
+            oDataList.subscribe("dataReturnEvent",oSelf.initFilter,oSelf);    
             
             // Setup tabview
             oTabView = new YAHOO.widget.TabView(sTabView);
 
-            // Goto to DataForm
+            // Goto to DataEdit
             var onRecordSelectEvent = function () {
               oDataForm.populateForm();
-              oTabView.set('activeIndex', 1);
+              oTabView.set('activeIndex', 3); // TODO: nDataEdit - Change to nDataView?
             };
-            oDataTable.subscribe("recordSelectEvent", onRecordSelectEvent);
+            oDataList.subscribe("recordSelectEvent", onRecordSelectEvent);
 
-            // Goto DataTable
+            // Goto DataList
             var onRecordActionEvent = function () {
-              oTabView.set('activeIndex', 0)
+              oTabView.set('activeIndex', 2); // TODO: nDataList - List or View? 
             };
             oDataForm.subscribe("updateEvent", onRecordActionEvent);
             oDataForm.subscribe("cancelEvent", onRecordActionEvent);            
 
             // Prompt before changing tabs
             var onBeforeActiveTabChange = function(e) {
+              if (!oDataForm.isActive) return true;              
               var isChanged = oDataForm.isRecordChanged();
               if (isChanged) {
                 var isExit = confirm("Exit form without saving?");
@@ -212,16 +245,16 @@ var FlevBase = function() {
 
             // Set flag when form is in view
             var onActiveTabChange = function(e) {
-                oDataForm.isActive = (1==oTabView.get('activeIndex'));
+                oDataForm.isActive = (3==oTabView.get('activeIndex')); // TODO: nDataEdit
             };
             oTabView.on('activeTabChange', onActiveTabChange);     
-            YAHOO.util.Event.onAvailable(sDataTable, function(){oSelf.initFilter(null,oSelf)}); 
+            YAHOO.util.Event.onAvailable(sDataFind, function(){oSelf.initFilter(null,oSelf)}); 
             
             // Retain references
             oSelf.oColumnSet = oColumnSet; 
             oSelf.oDataSource = oDataSource; 
-            oSelf.oDataTable = oDataTable; 
             oSelf.oFormConfigs = oFormConfigs;
+            oSelf.oDataList = oDataList; 
             oSelf.oDataForm = oDataForm;
             oSelf.oTabView = oTabView;
         },   
@@ -242,7 +275,7 @@ var FlevBase = function() {
             oSelf.fnFilter.maxCacheEntries = 0;   
             var sInput = oSelf.sListForm + "_input";
             var sMatch = oSelf.sListForm + "_match";
-            var oAutoComp = new YAHOO.dpu.widget.RowFilter(sInput,sMatch,oSelf.oDataTable,oSelf.fnFilter);
+            var oAutoComp = new YAHOO.dpu.widget.RowFilter(sInput,sMatch,oSelf.oDataList,oSelf.fnFilter);
             var ua = navigator.userAgent.toLowerCase();
             if(ua.indexOf('msie') != -1 && ua.indexOf('opera') < 0) {
                 oAutoComp.useIFrame = true;    
