@@ -62,7 +62,7 @@ YAHOO.widget.DataTable = function(elContainer,oColumnSet,oDataSource,oConfigs) {
         YAHOO.log("Could not instantiate DataTable due to an invalid ColumnSet", "error", this.toString());
         return;
     }
-    
+
     // Create RecordSet
     this._oRecordSet = new YAHOO.widget.RecordSet();
 
@@ -108,9 +108,9 @@ YAHOO.widget.DataTable = function(elContainer,oColumnSet,oDataSource,oConfigs) {
                     aRecords.push(oRecord);
                 }
             }
-            
+
             this._initTable();
-            
+
             ok = this.doBeforeLoadData(null,aRecords);
             if(ok) {
                 this._oRecordSet.addRecords(aRecords);
@@ -290,7 +290,7 @@ YAHOO.widget.DataTable = function(elContainer,oColumnSet,oDataSource,oConfigs) {
      * @param oArgs.target {HTMLElement} The RADIO element.
      */
     this.createEvent("radioClickEvent");
-    
+
     /**
      * Fired when a TD element is clicked.
      *
@@ -453,7 +453,7 @@ YAHOO.widget.DataTable = function(elContainer,oColumnSet,oDataSource,oConfigs) {
      * @param oArgs.els {Array} An array of the unhighlighted element(s).
      */
     this.createEvent("unhighlightEvent");
-    
+
     /**
      * Fired when a TR element is selected.
      *
@@ -480,7 +480,7 @@ YAHOO.widget.DataTable = function(elContainer,oColumnSet,oDataSource,oConfigs) {
      */
     this.createEvent("rowDeleteEvent");
     this.subscribe("rowDeleteEvent", this._onRowDelete);
-    
+
     /**
      * Fired when one or more TR elements are appended.
      *
@@ -508,8 +508,8 @@ YAHOO.widget.DataTable = function(elContainer,oColumnSet,oDataSource,oConfigs) {
      */
     this.createEvent("recordSetUpdateEvent");
     this._oRecordSet.subscribe("recordUpdateEvent", this._onRecordUpdate, this, true);
-    
-    
+
+
     YAHOO.widget.DataTable._nCount++;
     YAHOO.log("DataTable initialized", "info", this.toString());
     this.fireEvent("tableInitEvent");
@@ -1281,7 +1281,7 @@ YAHOO.widget.DataTable.prototype._initTable = function() {
  */
 YAHOO.widget.DataTable.prototype._initHead = function() {
     var i,oColumn;
-    
+
     // Create THEAD
     var elHead = document.createElement("thead");
     elHead.tabIndex = -1;
@@ -1302,7 +1302,7 @@ YAHOO.widget.DataTable.prototype._initHead = function() {
     }
 
     this._elHead = this._elTable.appendChild(elHead);
-    
+
     // Add Resizer only after DOM has been updated
     for(i=0; i<this._oColumnSet.keys.length; i++) {
         oColumn = this._oColumnSet.keys[i];
@@ -1634,7 +1634,7 @@ One thing, though: it doesn't work in combination with
         //TODO: pass in a subset for better performance
         this._restripeRows();
     }
-    
+
     return elRow.id;
 };
 
@@ -1758,7 +1758,7 @@ YAHOO.widget.DataTable.prototype._unselect = function(els) {
     if(!YAHOO.lang.isArray(els)) {
         els = [els];
     }
-    
+
     for(var i=0; i<els.length; i++) {
         // Remove the style
         YAHOO.util.Dom.removeClass(YAHOO.util.Dom.get(els[i]),YAHOO.widget.DataTable.CLASS_SELECTED);
@@ -1979,7 +1979,7 @@ YAHOO.widget.DataTable.prototype._onMousedown = function(e, oSelf) {
  */
 YAHOO.widget.DataTable.prototype._onClick = function(e, oSelf) {
     oSelf.cancelEditorData();
-    
+
     var elTarget = YAHOO.util.Event.getTarget(e);
     var elTag = elTarget.tagName.toLowerCase();
     var knownTag = false; // True if event should stop propagating
@@ -2117,7 +2117,7 @@ YAHOO.widget.DataTable.prototype._onKeydown = function(e, oSelf) {
                             }
                             newSelected = oSelf._elBody.rows[oldSelected.sectionRowIndex+1];
                             oSelf.selectRow(newSelected);
-                            
+
                 }
             }
             // cell mode
@@ -2225,7 +2225,7 @@ YAHOO.widget.DataTable.prototype._onDocumentClick = function(e, oSelf) {
  */
 YAHOO.widget.DataTable.prototype._onPagerClick = function(e, oSelf) {
     oSelf.saveEditorData();
-    
+
     var elTarget = YAHOO.util.Event.getTarget(e);
     var elTag = elTarget.tagName.toLowerCase();
     var knownTag = false; // True if event should stop propagating
@@ -2482,7 +2482,7 @@ YAHOO.widget.DataTable.prototype.sortedBy = null;
 /**
  * @deprecated No longer used.
  * @property isEmpty
- * 
+ *
  */
 YAHOO.widget.DataTable.prototype.isEmpty = false;
 
@@ -2662,7 +2662,7 @@ YAHOO.widget.DataTable.prototype.hideTableMessage = function() {
 /**
  * @deprecated Deprecated in favor of showTableMessage().
  * @method showEmptyMessage
- * 
+ *
  */
 YAHOO.widget.DataTable.prototype.showEmptyMessage = function() {
     if(this.isEmpty) {
@@ -2702,7 +2702,7 @@ YAHOO.widget.DataTable.prototype.showLoadingMessage = function() {
 /**
  * @deprecated Deprecated in favor of hideTableMessage().
  * @method hideTableMessages
- * 
+ *
  */
 YAHOO.widget.DataTable.prototype.hideTableMessages = function() {
     if(!this.isEmpty && !this.isLoading) {
@@ -2764,7 +2764,7 @@ YAHOO.widget.DataTable.prototype.appendRows = function(aRecords) {
 
         // Reset last-row tracker
         this._resetLastRow();
-        
+
         this.fireEvent("rowAppendEvent", {rowIds:rowIds});
     }
 };
@@ -2784,7 +2784,7 @@ YAHOO.widget.DataTable.prototype.insertRows = function(aRecords) {
             var rowId = this._addRow(aRecords[i],0);
             rowIds.push(rowId);
         }
-        
+
         // Reset first-row tracker
         this._resetFirstRow();
 
@@ -2800,7 +2800,7 @@ YAHOO.widget.DataTable.prototype.insertRows = function(aRecords) {
  */
 YAHOO.widget.DataTable.prototype.replaceRows = function(aRecords) {
     var i;
-    
+
     if(YAHOO.lang.isArray(aRecords) && (aRecords.length > 0)) {
         this.hideTableMessage();
 
@@ -2830,7 +2830,7 @@ YAHOO.widget.DataTable.prototype.replaceRows = function(aRecords) {
         for(i=elRows.length; i<aRecords.length; i++) {
             rowIds.push(this._addRow(aRecords[i]));
         }
-        
+
         // Select any rows as necessary
         for(i=0; i<selectedRecords.length; i++) {
             var allRows = elBody.rows;
@@ -2840,7 +2840,7 @@ YAHOO.widget.DataTable.prototype.replaceRows = function(aRecords) {
                 }
             }
         }
-        
+
         // Reset first-row and last-row trackers
         this._resetFirstRow();
         this._resetLastRow();
@@ -2905,7 +2905,7 @@ YAHOO.widget.DataTable.prototype.deleteRows = function(elRows) {
         this._deleteRow(rows[i]);
         this.fireEvent("rowDeleteEvent", {rowIndexes:rowIndexes});
     }
-    
+
     //TODO: can be optimized?
     // Reset first-row and last-row trackers
     this._resetFirstRow();
@@ -2923,13 +2923,13 @@ YAHOO.widget.DataTable.prototype.deleteRow = function(elRow) {
         var rowIndex = (elRow.sectionRowIndex !== undefined) ? elRow.sectionRowIndex : null;
         this._deleteRow(elRow);
         this.fireEvent("rowDeleteEvent", {rowIndexes:[rowIndex]});
-        
+
         //TODO: can be optimized?
         // Reset first-row and last-row trackers
         this._resetFirstRow();
         this._resetLastRow();
     }
-    
+
 };
 
 /**
@@ -2964,7 +2964,7 @@ YAHOO.widget.DataTable.prototype.selectRow = function(row) {
 
         // Update UI
         this._select(row);
-        
+
         // Add to the end of internal tracker
         tracker.push(recordId);
         this._aSelectedRecords = tracker;
@@ -3108,7 +3108,7 @@ YAHOO.widget.DataTable.prototype.unselect = function(els) {
         var tracker = this._aSelectedRecords || [];
         for(var i=0; i<els.length; i++) {
             var id = els[i].yuiRecordId;
-        
+
             // Use Array.indexOf if available...
             if(tracker.indexOf && (tracker.indexOf(id) >  -1)) {
                 tracker.splice(tracker.indexOf(id),1);
@@ -3248,11 +3248,11 @@ YAHOO.widget.DataTable.prototype.getPaginator = function() {
  */
 YAHOO.widget.DataTable.prototype.showPage = function(nPage) {
     // Validate input (+) Add null guards [#1703839]
-  	if (!YAHOO.lang.isNumber(nPage)) nPage = 1;
-	if (this._paginator) {
-		if (nPage > this._paginator.totalPages) nPage = 1;
-    	this._paginator.currentPage = nPage;
-	}		
+    if (!YAHOO.lang.isNumber(nPage)) nPage = 1;
+  if (this._paginator) {
+    if (nPage > this._paginator.totalPages) nPage = 1;
+      this._paginator.currentPage = nPage;
+  }
     this.populateTable();
 };
 
@@ -3311,7 +3311,7 @@ YAHOO.widget.DataTable.prototype.paginateRows = function() {
 YAHOO.widget.DataTable.prototype.populateTable = function() {
     // Records with which to populate the table
     var records;
-    
+
     // Paginator is disabled
     if(!this.paginator) {
         // Paginator must be destroyed
@@ -3611,7 +3611,7 @@ YAHOO.widget.DataTable.prototype.onEventSortColumn = function(oArgs) {
     var evt = oArgs.event;
     var target = oArgs.target;
     YAHOO.util.Event.stopEvent(evt);
-    
+
     //TODO: traverse DOM to find a columnIndex, incl safety net if none exists
     if(YAHOO.lang.isNumber(target.columnIndex)) {
         this.sortColumn(this._oColumnSet.keys[target.columnIndex]);
@@ -3701,7 +3701,7 @@ YAHOO.widget.DataTable.prototype.onEventSelectRow = function(oArgs) {
         else {
             // Set anchor
             this._selectRowAnchorId = sTargetId;
-            
+
             // Toggle selection of target
             if(this.isSelected(elTarget)) {
                 this.unselect(elTarget);
@@ -3718,7 +3718,7 @@ YAHOO.widget.DataTable.prototype.onEventSelectRow = function(oArgs) {
         // Validate anchor
         if(anchor) {
             anchorIndex = anchor.sectionRowIndex;
-            
+
             // Select all rows between anchor row and target row inclusive
             if(anchorIndex < targetIndex) {
                 for(i=anchorIndex; i<=targetIndex; i++) {
@@ -3736,7 +3736,7 @@ YAHOO.widget.DataTable.prototype.onEventSelectRow = function(oArgs) {
         else {
             // Set anchor
             this._selectRowAnchorId = sTargetId;
-            
+
             // Select target only
             this.selectRow(elTarget);
         }
@@ -3745,7 +3745,7 @@ YAHOO.widget.DataTable.prototype.onEventSelectRow = function(oArgs) {
     else if(!bSingleSelect && bCTRL) {
         // Set anchor
         this._selectRowAnchorId = sTargetId;
-        
+
         // Toggle selection of target
         if(this.isSelected(elTarget)) {
             this.unselect(elTarget);
@@ -3756,14 +3756,14 @@ YAHOO.widget.DataTable.prototype.onEventSelectRow = function(oArgs) {
     }
     // Neither SHIFT nor CTRL
     else if(bSingleSelect) {
-        this.unselectAllRows(); // this.unselect(this._lastSelectedId); (+) [#1703840]   
+        this.unselectAllRows(); // this.unselect(this._lastSelectedId); (+) [#1703840]
         this.select(elTarget);
     }
     // Neither SHIFT nor CTRL
     else {
         // Set anchor
         this._selectRowAnchorId = sTargetId;
-        
+
         // Select only target
         this.unselectAllRows();
         this.selectRow(elTarget);
@@ -3788,7 +3788,7 @@ YAHOO.widget.DataTable.prototype.onEventSelectCell = function(oArgs) {
         if(elTag == "body") {
             return;
         }
-        
+
         target = target.parentNode;
         elTag = target.tagName.toLowerCase();
     }
@@ -3953,7 +3953,7 @@ YAHOO.widget.DataTable.prototype.onDataReturnPopulateTable = function(sRequest, 
  */
 YAHOO.widget.DataTable.prototype.onDataReturnAppendRows = function(sRequest, oResponse, bError) {
     this.fireEvent("dataReturnEvent", {request:sRequest,response:oResponse});
-    
+
     var ok = this.doBeforeLoadData(sRequest, oResponse, bError);
     if(ok) {
         // Update the RecordSet from the response
@@ -3976,7 +3976,7 @@ YAHOO.widget.DataTable.prototype.onDataReturnAppendRows = function(sRequest, oRe
  */
 YAHOO.widget.DataTable.prototype.onDataReturnInsertRows = function(sRequest, oResponse, bError) {
     this.fireEvent("dataReturnEvent", {request:sRequest,response:oResponse});
-    
+
     var ok = this.doBeforeLoadData(sRequest, oResponse, bError);
     if(ok) {
         // Update the RecordSet from the response
@@ -3999,7 +3999,7 @@ YAHOO.widget.DataTable.prototype.onDataReturnInsertRows = function(sRequest, oRe
  */
 YAHOO.widget.DataTable.prototype.onDataReturnReplaceRows = function(sRequest, oResponse, bError) {
     this.fireEvent("dataReturnEvent", {request:sRequest,response:oResponse});
-    
+
     var ok = this.doBeforeLoadData(sRequest, oResponse, bError);
     if(ok) {
         // Update the RecordSet from the response
@@ -4069,7 +4069,7 @@ YAHOO.widget.ColumnSet = function(aHeaders) {
             // Instantiate a Column for each node
             var oColumn = new YAHOO.widget.Column(nodeList[j]);
             flat.push(oColumn);
-            
+
             // Assign parent, if applicable
             if(parent) {
                 oColumn._parent = parent;
@@ -4083,7 +4083,7 @@ YAHOO.widget.ColumnSet = function(aHeaders) {
             if(nodeList[j].children) {
                 var children = nodeList[j].children;
                 var length = children.length;
-                
+
                 // Cascade certain properties to children if not defined on their own
                 for(var k=0; k<length; k++) {
                     var child = children[k];
@@ -4109,7 +4109,7 @@ YAHOO.widget.ColumnSet = function(aHeaders) {
                         child.width = oColumn.width;
                     }
                 }
-                
+
                 // Children increase colspan of the Column
                 oColumn._colspan = length;
 
@@ -4119,14 +4119,14 @@ YAHOO.widget.ColumnSet = function(aHeaders) {
                     parent._children = [];
                     parent._children.push(oColumn);
                 }
-                
+
                 // Children must also be parsed
                 if(!tree[nodelevel+1]) {
                     tree[nodelevel+1] = [];
                 }
                parseColumns(children, oColumn);
             }
-            
+
             // This Column does not have children,
             // but other Columns at this level do
             else if(nodeLevelMaxChildren > 0) {
@@ -4174,7 +4174,7 @@ YAHOO.widget.ColumnSet = function(aHeaders) {
     this.flat = flat;
     this.keys = keys;
     this.headers = headers;
-    
+
     YAHOO.widget.ColumnSet._nCount++;
     YAHOO.log("ColumnSet initialized", "info", this.toString());
 };
@@ -4277,7 +4277,7 @@ YAHOO.widget.ColumnSet.prototype.toString = function() {
 YAHOO.widget.Column = function(oConfigs) {
     // Internal variables
     this._id = "yui-dtcol"+YAHOO.widget.Column._nCount;
-    
+
     // Object literal defines Column attributes
     if(oConfigs && (oConfigs.constructor == Object)) {
         for(var sConfig in oConfigs) {
@@ -4286,7 +4286,7 @@ YAHOO.widget.Column = function(oConfigs) {
             }
         }
     }
-    
+
     YAHOO.widget.Column._nCount++;
 };
 
@@ -4628,7 +4628,7 @@ YAHOO.widget.Column.prototype.format = function(elCell,oRecord) {
             YAHOO.util.Dom.addClass(elCell, this.className);
         }
     }
-    
+
     if(this.editor) {
         YAHOO.util.Dom.addClass(elCell,YAHOO.widget.DataTable.CLASS_EDITABLE);
     }
@@ -4956,7 +4956,7 @@ YAHOO.widget.ColumnEditor = function(sType) {
     //    elCell = elCell.parentNode;
     //}
     //this.tableContainer = elCell.parentNode;
-    
+
     var container = document.body.appendChild(document.createElement("div"));//this.tableContainer.appendChild(document.createElement("div"));
     container.style.position = "absolute";
     container.style.zIndex = 9000;
@@ -5176,7 +5176,7 @@ YAHOO.widget.ColumnEditor.prototype.showTextboxEditor = function(elCell, oRecord
 YAHOO.widget.ColumnEditor.prototype.showTextareaEditor = function(elCell, oRecord, oColumn) {
     // Position container
     this.moveContainerTo(elCell);
-    
+
     // Update form field
     this.input.style.width = (parseInt(elCell.offsetWidth,10)) + "px";
     this.input.style.height = 4*(parseInt(elCell.offsetHeight,10)) + "px";
@@ -5185,7 +5185,7 @@ YAHOO.widget.ColumnEditor.prototype.showTextareaEditor = function(elCell, oRecor
 
     // Display container
     this.container.style.display = "block";
-    
+
     // Highlight input
     this.input.focus();
     this.input.select();
@@ -5257,7 +5257,7 @@ YAHOO.util.Sort = {
         else if((b === null) || (typeof b == "undefined")) {
             return -1;
         }
-    
+
         if(a.constructor == String) {
             a = a.toLowerCase();
         }
@@ -5475,7 +5475,7 @@ YAHOO.widget.RecordSet = function(data) {
     // Internal variables
     this._nIndex = YAHOO.widget.RecordSet._nCount;
     this._records = [];
-    
+
     if(data) {
         if(YAHOO.lang.isArray(data)) {
             this.addRecords(data);
@@ -5496,8 +5496,8 @@ YAHOO.widget.RecordSet = function(data) {
      *
      */
     this.createEvent("recordUpdateEvent");
-    
-    
+
+
     YAHOO.widget.RecordSet._nCount++;
     YAHOO.log("RecordSet initialized", "info", this.toString());
 };
@@ -5730,7 +5730,7 @@ YAHOO.widget.RecordSet.prototype.append = function(data) {
         for(var i=0; i<data.length; i++) {
             var record = this.addRecord(data[i]);
             newRecords.push(record);
-            
+
        }
        YAHOO.log("RecordSet appended with " + newRecords.length + " Record(s)","info",this.toString());
        return newRecords;
@@ -5742,7 +5742,7 @@ YAHOO.widget.RecordSet.prototype.append = function(data) {
     else {
         return null;
     }
-    
+
 };
 
 /**
