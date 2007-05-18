@@ -5812,7 +5812,9 @@ YAHOO.widget.RecordSet.prototype.deleteRecord = function(i, range) {
         range = 1;
     }
     // TODO: validate for negative values
-    if(!YAHOO.lang.isNumber(i)) {
+    // if(!YAHOO.lang.isNumber(i)) {
+    // (+) Change polarity of test per #1699200
+    if(YAHOO.lang.isNumber(i)) {
         this._records.splice(i, range);
         this._length = this._length - range;
     }
