@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!--
+Copyright (c) 2007, Husted dot Com, Inc. All rights reserved.
+Code licensed under the BSD License: http://developer.yahoo.net/yui/license.txt
+-->
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>PhoneBook Home</title>
+<!-- DPU RowFilterTable source (extends YUI version) -->
+<style type="text/css">
+    /* custom css*/
+    body {font-family:arial}
+	
+    /* CSS FOR DataTable */	
+    .dpu-dt {margin:1em;}
+    .dpu-dt table {border-collapse:collapse;}
+    .dpu-dt th, .dpu-dt td {border:1px solid #000;padding:.25em;}
+    .dpu-dt th {background-color:#BEDAFF}
+    .dpu-dt.yui-dt-odd {background-color:#eee;} /*light gray*/
+    .dpu-dt em {font-style:italic;}
+    .dpu-dt strong {font-weight:bold;}
+    .dpu-dt .big {font-size:136%;}
+    .dpu-dt .small {font-size:77%}
+    .dpu-dt .yui-dt-selected {background-color:#000;color:#FFF;} /*white on black*/
+    .dpu-dt .yui-dt-editable.yui-dt-highlight {background-color:#BEDAFF;} /*light blue*/
+  
+    /*CSS For Auto Complete*/
+    .filter {position:relative;padding:1em;}
+    .filterForm {position:relative;margin:1em;width:15em;}/* set width of widget here*/
+    .filterInput {position:absolute;width:100%;height:1.4em;}
+    .filterMatch {position:absolute;top:1.7em;width:100%;}
+    .filterMatch .yui-ac-content {position:absolute;width:100%;height:11em;border:1px solid #404040;background:#fff;overflow:auto;overflow-x:hidden;z-index:9050;}
+    .filterMatch .yui-ac-shadow {position:absolute;margin:.3em;width:100%;background:#a0a0a0;z-index:9049;}
+    .filterMatch ul {padding:5px 0;width:100%;}
+    .filterMatch li {padding:0 5px;cursor:default;white-space:nowrap; font-size:small}
+    .filterMatch li.yui-ac-highlight {background:#ff0;}
+</style>           
+<!-- DataTable/DataForm -->
+<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/datatable/assets/datatable.css">
+<!-- TabView -->
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/tabview.css">
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/border_tabs.css">
+<!-- LogReader -->
+<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/logger/assets/logger.css">
+
+</head>
+  <body>
+    <table cellspacing="16">
+      <tr><td valign="top" width="98%">
+        <div id="elTabView" class="yui-navset">
+            <ul class="yui-nav">
+                <li class="selected"><a href="#list"><em>List Entries</em></a></li>
+                <li><a href="#edit"><em>Edit Entry</em></a></li>
+            </ul>
+            <div class="yui-content">
+				<div id="elList">
+    	            <div id="elDataTable" class="dpu-dt"></div>				
+					<div class="filter">
+        				<form id="elForm">
+             				<p style="font-weight:bold">Filter Entries by:
+             				<select id="elForm_item" onchange="YAHOO.my.oPhonebook.onFilterChange()">
+                				<option value="last_name" selected="selected">Last Name</option>
+                				<option value="first_name">First Name</option>
+                				<option value="username">Username</option>
+            				</select>
+             				</p>
+            				<div class="filterForm">
+							    <p>
+                				    <input class="filterInput" id="elForm_input" />
+							    </p>
+                				<div class="filterMatch" id="elForm_match"></div>
+            				</div>
+         				</form>
+    			    </div>			
+				</div>
+				<div id="elEdit">
+		            <div id="elDataForm"></div>				
+				</div>
+            </div>
+        </div>
+      </td><td>
+        <div id="elLogReader"></div>
+      </td></tr>
+    </table>
+    <div id="footer">
+        <hr />
+    </div>  
+  </body>
+
+<!-- Patch for IE setAttribute issue [http://delete.me.uk/2004/09/ieproto.html] -->
+<!--[if IE]>  
+    <script type="text/javascript" src="../../build/extras/ieproto/attributes.js"></script>
+    <style type="text/css">
+        * { behavior: url(../../build/extras/ieproto/attributes.htc); }
+    </style>
+<![endif]-->  
+
+<!-- DOM/Events -->
+<script src="http://yui.yahooapis.com/2.2.2/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+<!-- DataTable/DataForm -->
+<script src="http://yui.yahooapis.com/2.2.2/build/datasource/datasource-beta-min.js"></script>
+<script src="../../build/patched/datatable-beta-debug-patched.js"></script>
+<script src="../../build/dataform/flevbase-debug-beta.js"></script>
+<!-- Autocomplete -->
+<script src="http://yui.yahooapis.com/2.2.2/build/autocomplete/autocomplete-min.js"></script>
+<!-- Yazaar Source files -->
+<script src="../../build/dataform/dataform-debug-beta.js"></script>
+<!-- jc21 validator -->
+<script src="../../build/extras/jc21/validate-min.js"></script>
+<!-- LogReader -->
+<script src="http://yui.yahooapis.com/2.2.2/build/logger/logger-min.js"></script>
+
+<!-- DPU RowFilterTable source (extends YUI version) -->   
+<script src="../../build/extras/dpu/RowFilterDataTable.js" ></script>
+<script src="../../build/extras/dpu/RowFilter.js" ></script>
+
+<!-- TabView -->
+<script src="http://yui.yahooapis.com/2.2.2/build/element/element-beta-min.js"></script>
+<!-- Source file -->
+<script src="http://yui.yahooapis.com/2.2.2/build/tabview/tabview-min.js"></script>
+
+<!-- home -->
+<script src="../../build/extras/crockford/remedial.js" ></script>
+<script src="http://www.json.org/json.js"></script>
+<script src="Home.js"></script>
+
+</html>
