@@ -13,6 +13,8 @@ See also [http://code.google.com/p/anvil/wiki/CommonProblems Anvil Common Proble
 === JavaScript ===
 || (!) || *{whatever} is not a constructor.* ||
 || (/) || Ensure that the the script that defines {whatever} is being imported. ||
+|| (!) || *Object doesn't support this property or method* ||
+|| (/) || If the object does indeed support the member, check to see if *new* is being used with the constructor ||
 
 === IE ===
 || (!) || *Children is null or not an object* ||
