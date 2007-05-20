@@ -45,6 +45,12 @@
  * [http://www.hedgerwow.com/360/mwd/accordion/demo.php Accordion Menu]
  * [http://gopalarathnam.com/examples/javascript/dynscriptex.html Dynamic Script Loading Example]
 
+= Specifications = 
+
+ * [http://www.w3.org/TR/html4/strict.dtd HTML 4 DTD]
+ * [http://www.ecma-international.org/publications/files/ecma-st/ECMA-262.pdf ECMAScript Language Specification - 3rd edition (pdf)]
+
+
 = Development Resources =
 
  * [http://www.aptana.com/documentation.php Aptana CSS and HTML References]
@@ -55,7 +61,6 @@
  * [http://developer.yahoo.net/javascript/ Yahoo! JavaScript Developer Center]
  * [http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Guide Core JavaScript Guide (1.5)]
  * [http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference Core JavaScript  * Reference [1.5]]
- * [http://www.ecma-international.org/publications/files/ecma-st/ECMA-262.pdf ECMAScript Language Specification - 3rd edition (pdf)]
  * [http://www.quirksmode.org/ QuirksMode by PPK]
  ** [http://www.quirksmode.org/js/events_compinfo.html Event Compatibility Tables]
 
