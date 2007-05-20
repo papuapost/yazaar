@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!-- 
+Copyright (c) 2007, Husted dot Com, Inc. All rights reserved.
+Code licensed under the BSD License: http://developer.yahoo.net/yui/license.txt
+-->
+<html>
+  <head>
+  <title>Menu</title>
+  <link href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/tabview.css" rel="stylesheet" />
+  <link href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/border_tabs.css" rel="stylesheet" />
+  <link href="my.css" rel="stylesheet" type="text/css" >
+  <style type="text/css">
+    #Phonebook, #Notepad, #Log {display: none}
+  </style>
+  <script src="http://yui.yahooapis.com/2.2.2/build/yahoo-dom-event/yahoo-dom-event.js" type="text/javascript"></script>
+  <script src="http://yui.yahooapis.com/2.2.2/build/element/element-beta-min.js" type="text/javascript"></script>
+  <script src="http://yui.yahooapis.com/2.2.2/build/container/container-min.js" type="text/javascript"></script>        
+  <script src="http://yui.yahooapis.com/2.2.2/build/tabview/tabview-min.js"type="text/javascript"></script>
+  <script src="../js/yazaar/extras/crockford/remedial.js" type="text/javascript"></script>
+  <script src="my.js" type="text/javascript"></script>
+  <script src="Menu.js" type="text/javascript"></script>
+  </head>
+<body>
+    <div id="elHeader" class="hd">
+        <div id="elMenu" class="yui-navset">
+          <ul class="yui-nav">
+            <li class="selected"><a href="Welcome.html" target="Home"><em>Welcome</em></a></li>
+            <li><a href="Phonebook.html" target="Phonebook" ><em>Facilities</em></a></li>
+            <li><a href="Notepad.html" target="Notepad" ><em>Lists</em></a></li>
+            <li><a href="Log.html" target="Log" ><em>Log</em></a></li>
+          </ul>
+       </div>
+       <div id="ANVIL.message"><p>Loading ...</p></div>
+    </div>
+    <div id="elBody" class="bd">
+        <iframe src="Welcome.html" name="Welcome" id="Welcome" frameborder="0" marginheight="0" width="1000" height="500" ></iframe>        
+        <iframe src="blank.html" name="Phonebook" id="Phonebook" frameborder="0" marginheight="0" width="1000" height="500" ></iframe> 
+        <iframe src="blank.html" name="Notepad" id="Notepad" frameborder="0" marginheight="0" width="1000" height="500" ></iframe> 
+        <iframe src="Log.html" name="Log" id="Log" frameborder="0" marginheight="0" width="1000" height="500" ></iframe> 
+     </div>
+     <div id="elScript" class="js">
+        <script type="text/javascript">
+            my.oMenu = new MY.Menu("elMenu", "{sTitle} - Yazaar PIM Example");
+            var fnReady = function() {
+                my.aFrames = window.frames; // FIXME: Use it or lose it!       
+                my.oMenu.setTitle(0);	
+            };
+            YAHOO.util.Event.onContentReady("elBody",fnReady);        
+        </script>
+     </div>
+    </body>
+</html>
