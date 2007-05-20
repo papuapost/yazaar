@@ -3,17 +3,25 @@
 <head>
 <title>TabView Example - Nested TabViews</title>
 
+<link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/logger/assets/logger.css">
 <link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/button/assets/button.css">
 <link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/tabview.css">
 <link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/border_tabs.css">
 
+<script src="http://www.json.org/json.js"></script>
 <script src="http://yui.yahooapis.com/2.2.2/build/utilities/utilities.js"></script>
 <script src="http://yui.yahooapis.com/2.2.2/build/yahoo-dom-event/yahoo-dom-event.js"></script>
 <script src="http://yui.yahooapis.com/2.2.2/build/element/element-beta-min.js"></script>
+<script src="http://yui.yahooapis.com/2.2.2/build/logger/logger-min.js"></script>
 <script src="http://yui.yahooapis.com/2.2.2/build/tabview/tabview-min.js"></script>
+<script src="http://yui.yahooapis.com/2.2.2/build/datasource/datasource-beta-min.js"></script>
+<script src="http://yui.yahooapis.com/2.2.2/build/datatable/datatable-beta-min.js"></script>
+<script src="http://yui.yahooapis.com/2.2.2/build/autocomplete/autocomplete-min.js"></script>
 <script src="http://yui.yahooapis.com/2.2.2/build/button/button-beta-min.js"></script>
-
+<script src="../../build/extras/jc21/validate-min.js"></script>
+<script src="../../build/dataform/dataform-debug-beta.js"></script>
 <script src="../../build/bubbling/plugins/dispatcher.js"></script>
+
 <style type="text/css">
 #demo {
     width:50em; /* arbitrary width */
@@ -57,6 +65,13 @@ YAHOO.example.init = function() {
         dataSrc: 'tabs/xhtml.with.tabview.html',
         cacheData: true
     }), tabView);
+
+    YAHOO.util.Dispatcher.delegate (new YAHOO.widget.Tab({
+    	label: 'TabView with DataForm',
+        dataSrc: 'tabs/xhtml.with.dataform.html',
+        cacheData: true
+    }), tabView);
+
 
     YAHOO.util.Event.onContentReady('doc', function() {
         tabView.appendTo('doc');

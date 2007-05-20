@@ -3,6 +3,11 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <title>DataForm</title>
+		<link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/logger/assets/logger.css">
+		<link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/tabview.css">
+		<link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/border_tabs.css">
+		<link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/datatable/assets/datatable.css">
+
 <style type="text/css">
     /* custom css*/
     body {font-family:arial}
@@ -20,13 +25,6 @@
     #elDataTable .yui-dt-selected {background-color:#000;color:#FFF;} /*white on black*/
     #elDataTable .yui-dt-editable.yui-dt-highlight {background-color:#BEDAFF;} /*light blue*/
   </style>
-<!-- DataTable/DataForm -->
-<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/datatable/assets/datatable.css">
-<!-- TabView -->
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/tabview.css">
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/border_tabs.css">
-<!-- LogReader -->
-<link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/logger/assets/logger.css">
   
   </head>
   <body>
@@ -70,24 +68,16 @@
     </style>
 <![endif]-->  
 
-<!-- DataTable/DataForm -->
-<script src="http://yui.yahooapis.com/2.2.2/build/yahoo-dom-event/yahoo-dom-event.js"></script>
 <script src="http://www.json.org/json.js"></script>
-<!-- YUI Source files -->
+<script src="http://yui.yahooapis.com/2.2.2/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+<script src="http://yui.yahooapis.com/2.2.2/build/element/element-beta-min.js"></script>
+<script src="http://yui.yahooapis.com/2.2.2/build/logger/logger-min.js"></script>
+<script src="http://yui.yahooapis.com/2.2.2/build/tabview/tabview-min.js"></script>
 <script src="http://yui.yahooapis.com/2.2.2/build/datasource/datasource-beta-min.js"></script>
 <script src="http://yui.yahooapis.com/2.2.2/build/datatable/datatable-beta-min.js"></script>
-<!-- Autocomplete -->
 <script src="http://yui.yahooapis.com/2.2.2/build/autocomplete/autocomplete-min.js"></script>
-<!-- Yazaar Source files -->
-<script src="../../build/dataform/dataform-debug-beta.js"></script>
-<!-- OPTIONAL: jc21 validator -->
 <script src="../../build/extras/jc21/validate-min.js"></script>
-<!-- LogReader -->
-<script src="http://yui.yahooapis.com/2.2.2/build/logger/logger-min.js"></script>
-<!-- TabView -->
-<script src="http://yui.yahooapis.com/2.2.2/build/element/element-beta-min.js"></script>
-<!-- Source file -->
-<script src="http://yui.yahooapis.com/2.2.2/build/tabview/tabview-min.js"></script>
+<script src="../../build/dataform/dataform-debug-beta.js"></script>
 
 <!-- tutorial -->
 <script src="tutorial-data.js"></script>
@@ -95,7 +85,6 @@
 var oDataTable = new YAHOO.widget.DataTable("elDataTable", oColumnSet, oDataSource, {rowSingleSelect: true});
 </script>
 <script src="tutorial.js"></script>
-
 
 <script type="text/javascript">
 // populate form
