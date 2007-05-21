@@ -13,8 +13,7 @@ if (typeof parent.MY != "undefined") {
     var my = {};
 
     MY.Events = function() {
-        this.createEvent("facilityList");
-        this.createEvent("staffList");
+        this.createEvent("phonebookList")
         return this;
     };
     YAHOO.augment(MY.Events, YAHOO.util.EventProvider);
@@ -42,14 +41,9 @@ if (typeof parent.MY != "undefined") {
 
     my.oEvents = new MY.Events();
 
-    my.oEvents.onFacilityListReturn = function(oData) {
-        YAHOO.log("facilityList Event");
-        my.oEvents.fireEvent("facilityList", oData);
-    };
-
-    my.oEvents.onStaffListReturn = function(oData) {
-        YAHOO.log("staffList Event");
-        my.oEvents.fireEvent("staffList", oData);
+    my.oEvents.onPhonebookListReturn = function(oData) {
+        YAHOO.log("phonebookList Event");
+        my.oEvents.fireEvent("phonebookList", oData);
     };
 
     my.oViewConfig = {
