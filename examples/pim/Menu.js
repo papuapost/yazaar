@@ -46,7 +46,7 @@ MY.Menu.prototype.setTitle = function(nIndex) {
     document.title = this.sTitleTemplate.supplant({sTitle: sTitle}); 
     // YAHOO.util.Dom.setStyle(this.aFrameTitles, 'display', 'non'); // FIXME: Why doesn't an array property work?
     // TODO: Extend ViewManager from OverlayManager and add the iFrame hide/show code
-    YAHOO.util.Dom.setStyle(['Home', 'Facilities', 'Lists', 'Regions', 'Log'], 'display', 'none'); 
+    YAHOO.util.Dom.setStyle(['Welcome', 'Phonebook', 'Notepad', 'Log'], 'display', 'none'); 
     YAHOO.util.Dom.setStyle(sTitle, 'display', 'block');
     var oView = my.oViewManager.oViews[sTitle];
     if (oView) oView.focus();    
@@ -58,7 +58,7 @@ MY.Menu.prototype.init = function () {
     // so that tokens like "Home" are in the same file. 
     this.initTab(0,"Welcome","Welcome.html",true);
     this.initTab(1,"Phonebook","Phonebook.html",false);
-    this.initTab(2,"Notes","Notes.html",false);
+    this.initTab(2,"Notepad","Notepad.html",false);
     this.initTab(3,"Log","Log.html",true);
     var onActiveTabChange = function(e) {
         var nIndex = this.get('activeIndex');
