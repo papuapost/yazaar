@@ -6,8 +6,8 @@ Code licensed under the BSD License: http://developer.yahoo.net/yui/license.txt
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-        <title>Phonebook</title>
-        <link href="Phonebook.css" rel="stylesheet" type="text/css" />
+        <title>Contacts</title>
+        <link href="Contacts.css" rel="stylesheet" type="text/css" />
         <link href="http://yui.yahooapis.com/2.2.2/build/datatable/assets/datatable.css" rel="stylesheet" />
         <link href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/tabview.css" rel="stylesheet" />
         <link href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/border_tabs.css" rel="stylesheet" />
@@ -31,6 +31,7 @@ Code licensed under the BSD License: http://developer.yahoo.net/yui/license.txt
         <script src="http://yui.yahooapis.com/2.2.2/build/logger/logger-min.js" type="text/javascript"></script>
 
         <script src="http://www.json.org/json.js" type="text/javascript"></script>
+        <script src="../../build/extras/crockford/remedial.js" type="text/javascript"></script>
 
         <script src="../../build/dataform/dataform-debug-beta.js" type="text/javascript"></script>
         <script src="../../build/extras/jc21/validate-min.js" type="text/javascript"></script>
@@ -39,7 +40,7 @@ Code licensed under the BSD License: http://developer.yahoo.net/yui/license.txt
         <script src="../../build/extras/dpu/RowFilter.js" type="text/javascript"></script>
 
         <script src="my.js" type="text/javascript"></script>
-        <script src="Phonebook.js" type="text/javascript"></script>
+        <script src="Contacts.js" type="text/javascript"></script>
     </head>
     <body>
         <div id="elBody" class="bd">
@@ -52,9 +53,9 @@ Code licensed under the BSD License: http://developer.yahoo.net/yui/license.txt
                     <div id="elList">
                         <div id="elDataTable" class="dpu-dt"></div>				
                         <div class="filter">
-                            <form id="elForm">
+                            <form id="elListForm">
                                 <p style="font-weight:bold">Filter Entries by:
-                                    <select id="elForm_item" onchange="_Self.onFilterChange()">
+                                    <select id="elListForm_item" onchange="_Self.onFilterChange()">
                                         <option value="last_name" selected="selected">Last Name</option>
                                         <option value="first_name">First Name</option>
                                         <option value="username">Username</option>
@@ -62,9 +63,9 @@ Code licensed under the BSD License: http://developer.yahoo.net/yui/license.txt
                                 </p>
                                 <div class="filterForm">
                                     <p>
-                                        <input class="filterInput" id="elForm_input" />
+                                        <input class="filterInput" id="elListForm_input" />
                                     </p>
-                                    <div class="filterMatch" id="elForm_match"></div>
+                                    <div class="filterMatch" id="elListForm_match"></div>
                                 </div>
                             </form>
                         </div>			
@@ -78,13 +79,12 @@ Code licensed under the BSD License: http://developer.yahoo.net/yui/license.txt
         <div id="elScript" class="js">
             <script type="text/javascript">
                 var fnReady = function() {
-                    var oView = new MY.View("elBody","Phonebook");
-                    var oContent = new MY.Phonebook();
+                    var oView = new MY.View("elBody","Contacts");
+                    var oContent = new MY.Contacts();
                     oView.oContent = oContent;
-                    my.oEvents.subscribe("phonebookList", oContent.load, oContent);   
+                    my.oEvents.subscribe("contactsList", oContent.load, oContent);   
                     // Phonebook.rpc.phonebookList(my.oEvents.onPhonebookListReturn).call(ANVIL.channel);
-                     my.oEvents.subscribe("phonebookList", my.oEvents.onPhonebookLoaded, oPhonebook);
-                    YAHOO.my.events.onPhonebookListReturn(oContent.LOCAL_DATA); // static data
+                    my.oEvents.onContactsListReturn(oContent.LOCAL_DATA); // static data
                     _Self = oContent; // Convenience "global" for this page.
                 };
                 YAHOO.util.Event.onContentReady("elBody",fnReady);
