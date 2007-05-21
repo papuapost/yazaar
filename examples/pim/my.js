@@ -13,7 +13,7 @@ if (typeof parent.MY != "undefined") {
     var my = {};
 
     MY.Events = function() {
-        this.createEvent("phonebookList")
+        this.createEvent("contactsList")
         return this;
     };
     YAHOO.augment(MY.Events, YAHOO.util.EventProvider);
@@ -41,9 +41,9 @@ if (typeof parent.MY != "undefined") {
 
     my.oEvents = new MY.Events();
 
-    my.oEvents.onPhonebookListReturn = function(oData) {
-        YAHOO.log("phonebookList Event");
-        my.oEvents.fireEvent("phonebookList", oData);
+    my.oEvents.onContactsListReturn = function(oData) {
+        YAHOO.log("contactsList Event");
+        my.oEvents.fireEvent("contactsList", oData);
     };
 
     my.oViewConfig = {
