@@ -1,0 +1,195 @@
+#SIM Application Architecture (Issue 25)
+
+=Singleton iFrame Mashup (SIM) Architecture=
+
+Most information workers use some type of Personal Information Management application. It may be something like Yahoo! Mail, with "applets" for Messaging, Contacts, Appointments, and Notes, or may just be a cell phone with the same sort of components. We even see the same array in the software we use to manage writing software. Most successful software products make good use of a Mailing List, Repository, Issue Tracker, and Website. Each component can be used alone, but using the components together creates synergistic added-value.
+
+Many of the business applications we write also utilize an "applet suite" approach. The components might represent Vendors and Purchase Orders instead of Contacts and Messaging, but the underlying "divide and conquer" paradigm remains useful.  
+
+An Ajax application is usually composed of various user interface widgets, like !TabViews and Dialogs. We often combine these widgets into our own composite widgets, to represent entities like Vendors and Purchase Orders. Once we learn to create and extend widgets, the next challenge Ajax developers face is using various widgets together, so that we can create the same type of synergy in our business applications that we find in PIMs and PDAs.
+
+To use various widgets together, a common approach is to load each widget into its own iframe. Of course, as with anything, the devil is in the details, and there are many details to address when it comes to widget/iframe management. 
+
+The "Singleton iFrame Mashup (SIM) Architecture" describes one way to create and manage an Ajax application architecture that allows several standalone widgets be used in concert. The widgets can be tailored to share information through the "singleton", or the widgets can be loaded standalone, without knowledge of the greater application, like a "mashup". Underlying it all is a set of iframes that can "lazy load" widgets when needed and/or preload widgets at application startup.
+
+Architectural Goals 
+
+ * Avoid conflicts when utilizing multiple widgets in non-trivial applications
+ * Utilize standalone widgets with synergistic features
+ * Allow intelligent management of client-state resources
+ * Allow widgets to share state as needed
+
+These goals are met utilizing 
+
+ * An application singleton, 
+ * A Menu page, and 
+ * Inline frames
+
+All of the example code shown here is taken from the [http://yazaar.org/examples/pim/ Yazaar PIM example application]. All Yazaar code is available through the [http://yazaar.googlecode.com/svn/trunk/examples/pim/ source repository]. 
+
+_This is "Alpha code" that includes "FIXME" and "TODO" items._
+
+==The Application Singleton==
+
+To share state and minimize use of global variables, it is common practice to create a global singleton object that can be used by any component within the application. At runtime, application components can utilize and extend the application singleton as needed. To allow pages to utilize a singleton as an inframe or as a top-level page, we need to include a check for a parent singleton. Any arbitrary name can be used for the singleton so long as it does not conflict with any other global variables defined by libraries or standalone pages. In this example, we use two global idenifiers "MY" and "my". The "MY" space is used to define object constructors, and the "my" space (lowercase) is used to create shared methods and properties. 
+{{{
+if (typeof parent.MY != "undefined") {
+    var MY = parent.MY; // Application Class namespace
+    var my = parent.my; // Application singleton
+} else {
+    
+    var MY = {};
+    var my = {};
+
+ // ... 
+}
+}}}
+If a page is loaded standalone, it is its own parent, and creates the application singletons. If a page is loaded as an iframe, it creates an alias to its parent's singletons. 
+
+Pages that are written for the SIM Archteciture can define constructors ("classes") in the MY namespace. If there is a constructor that needs to be used by multiple pages, it can be defined in the bootstrap my.js script. Here's an example of a View constructor that creates and augments a YUI Overlay. 
+{{{
+    MY.View = function(sName,sTitle) {
+        var oView = new YAHOO.widget.Overlay(sName);
+        oView.oContent = null;
+        my.oViewManager.register(oView);
+        my.oViewManager.oViews[sTitle] = oView;
+        oView.render();
+        return oView;
+    };
+}}}
+Properties and methods that can be shared between pages can also be defined in the my.js script, for example logging methods or standard configuration objects. 
+{{{
+    my.info = function(sMessage) {
+        YAHOO.log(sMessage,"info");
+    };
+
+
+    my.oViewConfig = {
+        width:"800px",
+        fixedcenter: false,
+        constraintoviewport: true,
+        underlay:"shadow",
+        close:true,
+        visible:true,
+        draggable:true
+    };
+
+    my.oViewManager = new YAHOO.widget.OverlayManager();
+    my.oViewManager.oViews = {};
+}}}
+Any page that knows about "my" can use these members, regardless of whether it is loaded into an inline frame or loaded standalone. The my.js script can also define top-level events that widgets can use to create synergistic workflows. 
+{{{
+    MY.Events = function() {
+        this.createEvent("contactsList")
+	// ...
+    };
+    YAHOO.augment(MY.Events, YAHOO.util.EventProvider);
+
+    my.oEvents = new MY.Events();
+
+    my.oEvents.onContactsListReturn = function(oData) {
+        my.info("Firing contactsList Event");
+        my.oEvents.fireEvent("contactsList", oData);
+    };
+}}}
+==The Menu Page==
+
+To switch between the iFrame widgets (or iWidgets), some type of menu system is needed. All that is required is that the system be able to detect when a top-level menu item is selected, When an item is selected, the extended Menu widget can hide and show the iWidgets as needed. In this example, we extend the menu items (tabs) to store meta-information about the iWidget, and then use the extended properties to lazy-load the iWidget and set the document title. 
+{{{
+    MY.Menu.prototype.init = function () {    
+        // TODO: Post tab/iframe settings from constructure using a config object, 
+        // so that tokens like "Home" are in the same file. 
+        this.initTab(0,"Welcome","Welcome.html",true);
+        this.initTab(1,"Contacts","Contacts.html",false);
+        this.initTab(2,"Notes","Notes.html",false);
+        this.initTab(3,"Log","Log.html",true);
+        var onActiveTabChange = function(e) {
+            var nIndex = this.get('activeIndex');
+            this.oMenu.setTitle(nIndex);
+        };
+        this.oTabView.on('activeTabChange', onActiveTabChange);     
+    };
+
+    MY.Menu.prototype.setTitle = function(nIndex) {
+        var oTab = this.oTabView.getTab(nIndex);
+        if (YAHOO.lang.isUndefined(oTab)) {
+            my.error("setTitle: No such tab " + n);
+            return false;
+        }
+        if (!oTab.isLoaded) {
+            window.frames[oTab.sTitle].location = oTab.sLocation;
+            oTab.isLoaded = true;
+        }
+        var sTitle = oTab.sTitle;
+        document.title = this.sTitleTemplate.supplant({sTitle: sTitle}); 
+        // YAHOO.util.Dom.setStyle(this.aFrameTitles, 'display', 'non'); // FIXME: Why doesn't an array property work?
+        // TODO: Extend ViewManager from OverlayManager and add the iFrame hide/show code
+        YAHOO.util.Dom.setStyle(['Welcome', 'Contacts', 'Notes', 'Log'], 'display', 'none'); 
+        YAHOO.util.Dom.setStyle(sTitle, 'display', 'block');
+        var oView = my.oViewManager.oViews[sTitle];
+        if (oView) oView.focus();    
+        return true;
+    };
+
+
+    MY.Menu.prototype.initTab = function(nTab, sTitle, sLocation, isLoaded) {
+        if (arguments<4) {
+            my.error("initTab: All parameters are required!");
+            return;
+        }
+        var oTab = this.oTabView.getTab(nTab); 
+        // Extend via expando
+        oTab.sTitle = sTitle;
+        oTab.sLocation = sLocation;
+        oTab.isLoaded = isLoaded;
+        this.aFrameTitles.push(sTitle); // FIXME: Should be [nTab]
+    };
+}}}
+The source for this script is loaded by the Menu.html page, which is the application's entry page. The Menu page defines the top-level menu layout as well as the inline frames.
+{{{
+    <!-- ... ->
+
+            <script src="my.js" type="text/javascript"></script>
+            <script src="Menu.js" type="text/javascript"></script>
+        </head>
+    <body>
+        <div id="elHeader" class="hd">
+            <div id="elMenu" class="yui-navset">
+              <ul class="yui-nav">
+                <li class="selected"><a href="Welcome.html" target="Welcome"><em>Welcome</em></a></li>
+                <li><a href="Contacts.html" target="Contacts" ><em>Contacts</em></a></li>
+                <li><a href="Notes.html" target="Notes" ><em>Notes</em></a></li>
+                <li><a href="Log.html" target="Log" ><em>Log</em></a></li>
+              </ul>
+           </div>
+        </div>
+        <div id="elBody" class="bd">
+            <!-- FIXME: Need an overall iframe stylesheet -->
+            <iframe src="Welcome.html" name="Welcome" id="Welcome" frameborder="0" marginheight="0" width="1000" height="500" 
+
+></iframe>        
+            <iframe src="blank.html" name="Contacts" id="Contacts" frameborder="0" marginheight="0" width="1000" height="500" 
+
+></iframe> 
+            <iframe src="blank.html" name="Notes" id="Notes" frameborder="0" marginheight="0" width="1000" height="500" 
+
+></iframe> 
+            <iframe src="Log.html" name="Log" id="Log" frameborder="0" marginheight="0" width="1000" height="500" ></iframe> 
+         </div>
+         <div id="elScript" class="js">
+            <script type="text/javascript">
+                my.oMenu = new MY.Menu("elMenu", "{sTitle} - Yazaar PIM Example");
+                var fnReady = function() {
+                    my.aFrames = window.frames; // FIXME: Use it or lose it!       
+                    my.oMenu.setTitle(0);	
+                };
+                YAHOO.util.Event.onContentReady("elBody",fnReady);        
+            </script>
+         </div>
+        </body>
+    </html>
+}}}
+Note that two iWidgets are preloaded ("Welcome" and "Log") and two others ("Contacts" and "Notes") are "lazy-loaded" the first time the tab is accessed. The iframes are not actually on the "tab". The !TabView is being used as a disconnected menu, and we hide and show the iframes in the Menu setTitle method (supra). 
+
+The implementation and design of the SIM architecture (including its name!) is "Alpha" and under active development. Suggestions and patches are welcome! 
+
