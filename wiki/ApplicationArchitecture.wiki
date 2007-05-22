@@ -1,4 +1,4 @@
-#SIM Application Architecture (Issue 25)
+#comment SIM Application Architecture (Issue 25)
 
 =Singleton iFrame Mashup (SIM) Architecture=
 
