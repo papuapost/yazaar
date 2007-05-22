@@ -1,0 +1,32 @@
+#summary Client Use Case Template (Issue #)
+#labels Phase-Requirements
+
+=== Narrative ===
+
+(How would a client use this feature in a specific instance? What kind of data would appear on the screen?)
+
+=== Goal ===
+
+|| *Goal*    || (What problem does this use case solve?) ||
+|| *Level*   ||                      || (User Goal, Summary, Subfunction) ||
+|| *Trigger* ||   || 
+
+=== Main Success Scenario (MSS) ===
+
+|| *Step* || *Action* || 
+|| 1    || ||
+
+=== Extensions ===
+
+|| *Step* || *Extension Action*        ||
+||        ||                           ||
+|| 1a     || _Extension Action_        ||
+|| .1     ||   ||
+
+=== Test Plans ===
+
+_Action_ (#)
+ * 
+
+|| [http://code.google.com/p/yazaar/issues/detail?id=# Issue #] ||
+
