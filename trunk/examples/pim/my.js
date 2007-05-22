@@ -6,8 +6,7 @@ if (typeof parent.MY != "undefined") {
     var MY = parent.MY; // Application Class namespace
     var my = parent.my; // Application singleton
 } else {
-    var $ = YAHOO.util.Dom.get;
-
+    
     var MY = {};
 
     var my = {};
@@ -42,7 +41,7 @@ if (typeof parent.MY != "undefined") {
     my.oEvents = new MY.Events();
 
     my.oEvents.onContactsListReturn = function(oData) {
-        YAHOO.log("contactsList Event");
+        my.info("Firing contactsList Event");
         my.oEvents.fireEvent("contactsList", oData);
     };
 

@@ -6,8 +6,8 @@ Code licensed under the BSD License: http://developer.yahoo.net/yui/license.txt
 <html>
     <head>
         <title>Menu</title>
-        <link href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/tabview.css" rel="stylesheet" />
-        <link href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/border_tabs.css" rel="stylesheet" />
+        <link href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/tabview.css" rel="stylesheet" type="text/css" />
+        <link href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/border_tabs.css" rel="stylesheet" type="text/css" />
         <link href="my.css" rel="stylesheet" type="text/css" >
         <style type="text/css">
           #Phonebook, #Notepad, #Log {display: none}
@@ -26,12 +26,13 @@ Code licensed under the BSD License: http://developer.yahoo.net/yui/license.txt
           <ul class="yui-nav">
             <li class="selected"><a href="Welcome.html" target="Welcome"><em>Welcome</em></a></li>
             <li><a href="Contacts.html" target="Contacts" ><em>Contacts</em></a></li>
-            <li><a href="Notes.html" target="Notes" ><em>Notes</em></a></li>
+            <li><a href="../jsnotes/index.html" target="Notes" ><em>Notes</em></a></li>
             <li><a href="Log.html" target="Log" ><em>Log</em></a></li>
           </ul>
        </div>
     </div>
     <div id="elBody" class="bd">
+        <!-- FIXME: Need an overall iframe stylesheet -->
         <iframe src="Welcome.html" name="Welcome" id="Welcome" frameborder="0" marginheight="0" width="1000" height="500" ></iframe>        
         <iframe src="blank.html" name="Contacts" id="Contacts" frameborder="0" marginheight="0" width="1000" height="500" ></iframe> 
         <iframe src="blank.html" name="Notes" id="Notes" frameborder="0" marginheight="0" width="1000" height="500" ></iframe> 
