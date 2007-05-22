@@ -101,7 +101,7 @@ To switch between the iFrame widgets (or iWidgets), some type of menu system is 
         // so that tokens like "Home" are in the same file. 
         this.initTab(0,"Welcome","Welcome.html",true);
         this.initTab(1,"Contacts","Contacts.html",false);
-        this.initTab(2,"Notes","Notes.html",false);
+        this.initTab(2,"Notes","../jsnotes/index.html",false);
         this.initTab(3,"Log","Log.html",true);
         var onActiveTabChange = function(e) {
             var nIndex = this.get('activeIndex');
@@ -158,7 +158,7 @@ The source for this script is loaded by the Menu.html page, which is the applica
               <ul class="yui-nav">
                 <li class="selected"><a href="Welcome.html" target="Welcome"><em>Welcome</em></a></li>
                 <li><a href="Contacts.html" target="Contacts" ><em>Contacts</em></a></li>
-                <li><a href="Notes.html" target="Notes" ><em>Notes</em></a></li>
+                <li><a href="../jsnotes/index.html" target="Notes" ><em>Notes</em></a></li>
                 <li><a href="Log.html" target="Log" ><em>Log</em></a></li>
               </ul>
            </div>
@@ -189,6 +189,6 @@ The source for this script is loaded by the Menu.html page, which is the applica
         </body>
     </html>
 }}}
-Note that two iWidgets are preloaded ("Welcome" and "Log") and two others ("Contacts" and "Notes") are "lazy-loaded" the first time the tab is accessed. The iframes are not actually on the "tab". The !TabView is being used as a disconnected menu, and we hide and show the iframes in the Menu setTitle method (supra). 
+Note that two iWidgets are preloaded ("Welcome" and "Log") and two others ("Contacts" and "Notes") are "lazy-loaded" the first time the tab is accessed. The Notes page hasn't been recoded for the PIM example (yet), and it is being loaded "as-is". The iframes are not actually on the "tab". The !TabView is being used as a disconnected menu, and we hide and show the iframes in the Menu setTitle method (supra). 
 
 The implementation and design of the SIM architecture (including its name!) is "Alpha" and under active development. Suggestions and patches are welcome! 
