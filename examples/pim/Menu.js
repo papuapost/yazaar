@@ -58,7 +58,7 @@ MY.Menu.prototype.init = function () {
     // so that tokens like "Home" are in the same file. 
     this.initTab(0,"Welcome","Welcome.html",true);
     this.initTab(1,"Contacts","Contacts.html",false);
-    this.initTab(2,"Notes","Notes.html",false);
+    this.initTab(2,"Notes","../jsnotes/index.html",false);
     this.initTab(3,"Log","Log.html",true);
     var onActiveTabChange = function(e) {
         var nIndex = this.get('activeIndex');
