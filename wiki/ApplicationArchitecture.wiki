@@ -1,4 +1,4 @@
-#comment SIM Application Architecture (Issue 25)
+#summary SIM Application Architecture (Issue 25)
 
 =Singleton iFrame Mashup (SIM) Architecture=
 
@@ -192,4 +192,3 @@ The source for this script is loaded by the Menu.html page, which is the applica
 Note that two iWidgets are preloaded ("Welcome" and "Log") and two others ("Contacts" and "Notes") are "lazy-loaded" the first time the tab is accessed. The iframes are not actually on the "tab". The !TabView is being used as a disconnected menu, and we hide and show the iframes in the Menu setTitle method (supra). 
 
 The implementation and design of the SIM architecture (including its name!) is "Alpha" and under active development. Suggestions and patches are welcome! 
-
