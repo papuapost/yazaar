@@ -1,0 +1,36 @@
+#summary System UseCase Template (Issue #)
+#labels Phase-Requirements
+
+==Narrative==
+
+(How would a developer use this component in a specific instance?)
+
+
+==Goal==
+
+(Why does the component exist? What problem does it solve?)
+
+|| *Level* || System Component || 
+|| *Trigger* ||   || 
+|| *Primary Actor* || Developer ||
+
+==Main Success Scenario (MSS)==
+
+|| *Step* || *Action* ||
+|| *1* ||   ||
+
+==Extensions==
+
+|| *1a* || ||
+
+==Sample Code==
+
+|| *Step* || Code ||
+|| *1* ||{{{file reference}}} ||
+
+{{{
+ // code
+}}}
+
+
+|| [http://code.google.com/p/yazaar/issues/detail?id=# Issue #] ||
