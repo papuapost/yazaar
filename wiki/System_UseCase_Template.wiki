@@ -21,7 +21,10 @@
 
 ==Extensions==
 
-|| *1a* || ||
+|| *Step* || *Extension Action*        ||
+||        ||                           ||
+|| 1a     || _Extension Action_        ||
+|| .1     ||   ||
 
 ==Sample Code==
 
@@ -32,5 +35,9 @@
  // code
 }}}
 
+=== Test Plans ===
+
+_Action_ (#)
+ * 
 
 || [http://code.google.com/p/yazaar/issues/detail?id=# Issue #] ||
