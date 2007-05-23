@@ -12,6 +12,9 @@
   <style type="text/css">
     #doc3 {font-family:verdana;}
     #doc3 h2 {font-size:110%}
+    #elTabView div.yui-content div {
+    display: none;
+  }    
   </style>
   </head>
   <body>
@@ -30,7 +33,7 @@
             <li><a href="#extras"><em>Extras</em></a></li>
             <li><a href="#resources"><em>Resources</em></a></li>
           </ul>
-          <div class="yui-content">
+          <div id="elContent" class="yui-content">
             <div id="elAbout">
             <blockquote>
               <p>
@@ -117,44 +120,60 @@
             </p>
         </div>
         <div id="elExamples">
-        <h2>PhoneBook Example Application</h2>
+        <h2>PIM Example</h2>
         <p>
-                &nbsp;<em>Under Construction!</em>
-        Ultimately, PhoneBook will be a working phonebook application
-        utilizing a variety of widgets with a simple service layer.
-        Today, PhoneBook demonstrates combining Unobtrusive Validation,
-        DataForm, DataView, and TabView into a Find/List/Edit workflow,
-        using static data.
-              </p>
-              <ul>
+            &nbsp;<em>Under Construction!</em>
+            Ultimately, the PIM will be a working personal information manager
+            utilizing a variety of widgets with a simple service layer.
+            Today, PIM demonstrates hosting a Contacts widget (PhoneBook)
+            and a Notes widget in the same application.
+            Each widget is contained on its own inline frame.
+            View swapping and lazy loading are handled by a detached menubar.
+        </p>        
+            <ul>
                 <li>
-                  <a href="examples/phonebook/Home.html">
-                    Try the PhoneBook!
-                  </a>
+                    <a href="examples/pim/index.html">
+                      Try the PIM Example!
+                    </a>
                 </li>
                 <li>
-                  <a href="examples/phonebook/Home2.html">
-                    ... scriptological version
-                  </a>
+                    <a href="http://code.google.com/p/yazaar/wiki/ApplicationArchitecture">
+                      About the Application Architecture ...
+                    </a>
                 </li>
-                <li>
-                   <a href="http://www.openqa.org/selenium/">
-            Selenium
-          </a> Test Suite for PhoneBook Application
-          <ul>
+            </ul>
+        
+        <h2>PhoneBook Example Application</h2>
+        <ul>
             <li>
-            Copy and paste this long, strange link into the location bar:
-            chrome://selenium-ide/content/selenium/TestRunner.html?baseURL=http://yazaar.org&test=http://yazaar.org/examples/phonebook/test/index.html&auto=true
-          </li>
+              <a href="examples/phonebook/Home.html">
+                Try the PhoneBook!
+              </a>
+            </li>
             <li>
-            Note! Must be run from FireFox with
-            <a href="https://addons.mozilla.org/en-US/firefox/addon/2079">
-              Selenium IDE
-            </a> installed.
+              <a href="examples/phonebook/Home2.html">
+                ... scriptological version
+              </a>
+            </li>
+          <li>
+             <a href="http://www.openqa.org/selenium/">
+                Selenium
+            </a> Test Suite for PhoneBook Application
+            <ul>
+                <li>
+                Copy and paste this long, strange link into the location bar:
+                chrome://selenium-ide/content/selenium/TestRunner.html?baseURL=http://yazaar.org&test=http://yazaar.org/examples/phonebook/test/index.html&auto=true
+              </li>
+                <li>
+                Note! Must be run from FireFox with
+                <a href="https://addons.mozilla.org/en-US/firefox/addon/2079">
+                  Selenium IDE
+                </a> installed.
+              </li>
+            </ul>
           </li>
-          </ul>
-                </li>
-              </ul>
+        </ul>
+              
         <h2>Enhanced Examples</h2>
               <ul>
 			   <!-- 

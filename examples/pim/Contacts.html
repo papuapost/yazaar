@@ -52,7 +52,7 @@ Code licensed under the BSD License: http://developer.yahoo.net/yui/license.txt
                 </ul>
                 <div class="yui-content">
                     <div id="elList">
-                        <div id="elDataTable" class="dpu-dt"></div>				
+                        <div id="elDataList" class="dpu-dt"></div>				
                         <div id="elListFilter" class="filter">
                             <label for="elListForm_item">Filter Entries by:</label>
                             <select id="elListForm_item" onchange="_Self.onFilterChange()">
@@ -60,7 +60,7 @@ Code licensed under the BSD License: http://developer.yahoo.net/yui/license.txt
                                 <option value="first_name">First Name</option>
                                 <option value="username">Username</option>
                             </select>
-                            <div class="filterForm">
+                            <div id="elListForm" class="filterForm">
                                 <p>
                                     <input class="filterInput" id="elListForm_input" />
                                 </p>

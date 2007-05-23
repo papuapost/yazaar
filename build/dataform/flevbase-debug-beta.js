@@ -27,14 +27,6 @@ http://developer.yahoo.net/yui/license.txt
  */
 
 
-var FlevBaseConfig = function() {
-
-    return
-
-
-}
-
-
 /**
  * Pseudo constructor.
  * <p />
@@ -87,7 +79,7 @@ var FlevBase = function() {
          * DOM ID for the DataTable container (div).
          * ["elDataTable"]
          */
-        sDataTable: "elDataTable",
+        sDataList: "elDataList",
 
         /**
          * DOM ID for the DataForm container (div).
@@ -276,7 +268,7 @@ var FlevBase = function() {
                 oDataForm.isActive = (3==oTabView.get('activeIndex')); // TODO: nDataEdit
             };
             oTabView.on('activeTabChange', onActiveTabChange);
-            YAHOO.util.Event.onAvailable(sDataTable, function(){oSelf.initFilter(null,oSelf)});
+            YAHOO.util.Event.onAvailable(sDataList, function(){oSelf.initFilter(null,oSelf)});
             // FIXME: // YAHOO.util.Event.onAvailable(sDataFind, function(){oSelf.initFilter(null,oSelf)});
 
             // Retain references
