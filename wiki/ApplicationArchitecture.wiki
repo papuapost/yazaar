@@ -1,6 +1,6 @@
 #summary SIM Application Architecture (Issue 25)
 
-=Singleton iFrame Mashup (SIM) Architecture=
+=Singleton iframe Mashup (SiM) Architecture=
 
 Most information workers use some type of Personal Information Management application. It may be something like Yahoo! Mail, with "applets" for Messaging, Contacts, Appointments, and Notes, or may just be a cell phone with the same sort of components. We even see the same array in the software we use to manage writing software. Most successful software products make good use of a Mailing List, Repository, Issue Tracker, and Website. Each component can be used alone, but using the components together creates synergistic added-value.
 
@@ -10,7 +10,7 @@ An Ajax application is usually composed of various user interface widgets, like 
 
 To use various widgets together, a common approach is to load each widget into its own iframe. Of course, as with anything, the devil is in the details, and there are many details to address when it comes to widget/iframe management. 
 
-The "Singleton iFrame Mashup (SIM) Architecture" describes one way to create and manage an Ajax application architecture that allows several standalone widgets be used in concert. The widgets can be tailored to share information through the "singleton", or the widgets can be loaded standalone, without knowledge of the greater application, like a "mashup". Underlying it all is a set of iframes that can "lazy load" widgets when needed and/or preload widgets at application startup.
+The "Singleton iframe Mashup (SiM) Architecture" describes one way to create and manage an Ajax application architecture that allows several standalone widgets be used in concert. The widgets can be tailored to share information through the "singleton", or the widgets can be loaded standalone, without knowledge of the greater application, like a "mashup". Underlying it all is a set of iframes that can "lazy load" widgets when needed and/or preload widgets at application startup.
 
 Architectural Goals 
 
@@ -31,7 +31,7 @@ _This is "Alpha code" that includes "FIXME" and "TODO" items._
 
 ==The Application Singleton==
 
-To share state and minimize use of global variables, it is common practice to create a global singleton object that can be used by any component within the application. At runtime, application components can utilize and extend the application singleton as needed. To allow pages to utilize a singleton as an inframe or as a top-level page, we need to include a check for a parent singleton. Any arbitrary name can be used for the singleton so long as it does not conflict with any other global variables defined by libraries or standalone pages. In this example, we use two global idenifiers "MY" and "my". The "MY" space is used to define object constructors, and the "my" space (lowercase) is used to create shared methods and properties. 
+To share state and minimize use of global variables, it is common practice to create a global singleton object that can be used by any component within the application. At runtime, application components can utilize and extend the application singleton as needed. To allow pages to utilize a singleton as an iframe or as a top-level page, we need to include a check for a parent singleton. Any arbitrary name can be used for the singleton so long as it does not conflict with any other global variables defined by libraries or standalone pages. In this example, we use two global identifiers "MY" and "my". The "MY" space is used to define object constructors, and the "my" space (lowercase) is used to create shared methods and properties. 
 {{{
 if (typeof parent.MY != "undefined") {
     var MY = parent.MY; // Application Class namespace
@@ -46,7 +46,7 @@ if (typeof parent.MY != "undefined") {
 }}}
 If a page is loaded standalone, it is its own parent, and creates the application singletons. If a page is loaded as an iframe, it creates an alias to its parent's singletons. 
 
-Pages that are written for the SIM Archteciture can define constructors ("classes") in the MY namespace. If there is a constructor that needs to be used by multiple pages, it can be defined in the bootstrap my.js script. Here's an example of a View constructor that creates and augments a YUI Overlay. 
+Pages that are written for the SIM Architecture can define constructors ("classes") in the MY namespace. If there is a constructor that needs to be used by multiple pages, it can be defined in the bootstrap my.js script. Here's an example of a View constructor that creates and augments a YUI Overlay. 
 {{{
     MY.View = function(sName,sTitle) {
         var oView = new YAHOO.widget.Overlay(sName);
@@ -63,6 +63,16 @@ Properties and methods that can be shared between pages can also be defined in t
         YAHOO.log(sMessage,"info");
     };
 
+    // ...
+
+    MY.Events = function() {
+	// ...
+    };
+    YAHOO.augment(MY.Events, YAHOO.util.EventProvider);
+
+    // ...
+
+    my.oEvents = new MY.Events();
 
     my.oViewConfig = {
         width:"800px",
@@ -77,24 +87,19 @@ Properties and methods that can be shared between pages can also be defined in t
     my.oViewManager = new YAHOO.widget.OverlayManager();
     my.oViewManager.oViews = {};
 }}}
-Any page that knows about "my" can use these members, regardless of whether it is loaded into an inline frame or loaded standalone. The my.js script can also define top-level events that widgets can use to create synergistic workflows. 
+Any page that knows about "my" can use these members, regardless of whether it is loaded into an inline frame or loaded standalone. Another script can also define top-level events that widgets can use to create synergistic workflows. 
 {{{
-    MY.Events = function() {
-        this.createEvent("contactsList")
-	// ...
-    };
-    YAHOO.augment(MY.Events, YAHOO.util.EventProvider);
+    my.oEvents.createEvent("contactsLoad")
 
-    my.oEvents = new MY.Events();
-
-    my.oEvents.onContactsListReturn = function(oData) {
-        my.info("Firing contactsList Event");
-        my.oEvents.fireEvent("contactsList", oData);
+    my.oEvents.onContactsLoadReturn = function(oData) {
+        my.info("Firing contactsLoad Event");
+        my.oEvents.fireEvent("contactsLoad", oData);
     };
 }}}
+
 ==The Menu Page==
 
-To switch between the iFrame widgets (or iWidgets), some type of menu system is needed. All that is required is that the system be able to detect when a top-level menu item is selected, When an item is selected, the extended Menu widget can hide and show the iWidgets as needed. In this example, we extend the menu items (tabs) to store meta-information about the iWidget, and then use the extended properties to lazy-load the iWidget and set the document title. 
+To switch between the iframe widgets (or iwidgets), some type of menu system is needed. All that is required is that the system be able to detect when a top-level menu item is selected, When an item is selected, the extended Menu widget can hide and show the iwidgets as needed. In this example, we extend the menu items (tabs) to store meta-information about the iwidget, and then use the extended properties to lazy-load the iWidget and set the document title. 
 {{{
     MY.Menu.prototype.init = function () {    
         // TODO: Post tab/iframe settings from constructure using a config object, 
@@ -130,7 +135,6 @@ To switch between the iFrame widgets (or iWidgets), some type of menu system is 
         if (oView) oView.focus();    
         return true;
     };
-
 
     MY.Menu.prototype.initTab = function(nTab, sTitle, sLocation, isLoaded) {
         if (arguments<4) {
@@ -189,6 +193,6 @@ The source for this script is loaded by the Menu.html page, which is the applica
         </body>
     </html>
 }}}
-Note that two iWidgets are preloaded ("Welcome" and "Log") and two others ("Contacts" and "Notes") are "lazy-loaded" the first time the tab is accessed. The Notes page hasn't been recoded for the PIM example (yet), and it is being loaded "as-is". The iframes are not actually on the "tab". The !TabView is being used as a disconnected menu, and we hide and show the iframes in the Menu setTitle method (supra). 
+Note that two iwidgets are preloaded ("Welcome" and "Log") and two others ("Contacts" and "Notes") are "lazy-loaded" the first time the tab is accessed. The Notes page hasn't been recoded for the PIM example (yet), and it is being loaded "as-is". The iframes are not actually on the "tab". The !TabView is being used as a disconnected menu, and we hide and show the iframes in the Menu setTitle method (supra). 
 
-The implementation and design of the SIM architecture (including its name!) is "Alpha" and under active development. Suggestions and patches are welcome! 
+The implementation and design of the SiM architecture (including its name!) is "Alpha" and under active development. Suggestions and patches are welcome! 
