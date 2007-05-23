@@ -22,7 +22,7 @@ But before trying the RPC method, Miranda configures the page to use the static 
 {{{> Enter criteria to list entries}}}
 
 || (A) (B) (C) (O) (T) (W) ||
-|| Filter Entries by (Facility Name)v ||
+|| Filter Entries by (Last Name)v ||
 || {{{(_______________________)}}} ||
 
 Once she is sure everything else is working, Miranda comments out the static data, and comments in the RPC method.
@@ -53,6 +53,7 @@ The most common workflow in any business application is Finder / Lister / Editor
 || 3a     || _Configure oConfigs_    ||
 || .1     || Edit a copy of the default oConfigs object, retaining the {{{rowSingleSelect: true}}} setting ||
 || .2     || Set the new copy to {{{oSelf.oConfigs}} ||
+||        ||                           ||
 || 3b     || _Configure Test Data_    ||
 || .1     || Add a sample data set to the object ||
 || .2     || In Step #3, use the data set to bypass RPC ||
@@ -150,8 +151,8 @@ MY.Contacts = function() {
             var oView = new MY.View("elBody","Contacts");
             _Self = new MY.Contacts(); // Convenience "global" for this page.
             oView.oContent = _Self;
-            my.oEvents.subscribe("contactsLoad", _Self.load, _Self);                           Contacts.rpc.contactsList(
-              my.oEvents.onContactsLoadReturn).call(ANVIL.channel);
+            my.oEvents.subscribe("contactsLoad", _Self.load, _Self);                           
+            Contacts.rpc.contactsList(my.oEvents.onContactsLoadReturn).call(ANVIL.channel);
 };
         YAHOO.util.Event.onContentReady("elBody",fnReady);
     </script>
@@ -160,12 +161,12 @@ MY.Contacts = function() {
 || *Step* || Code ||
 || *7a* || ||
 {{{
-   // Contacts.rpc.contactsList(
-   // my.oEvents.onContactsLoadReturn).call(ANVIL.channel);
+   // Contacts.rpc.contactsList(my.oEvents.onContactsLoadReturn).call(ANVIL.channel);0
    my.oEvents.onContactsLoadReturn(_Self.LOCAL_DATA); // static data
 }}}
 
 || [http://code.google.com/p/yazaar/issues/detail?id=4 Issue 4] ||
+
 
 
 
