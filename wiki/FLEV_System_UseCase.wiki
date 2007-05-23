@@ -42,8 +42,8 @@ The most common workflow in any business application is Finder / Lister / Editor
 || *2*    || Add constructor for widget, using FlevBase as the initial object instance. ||
 || *3*    || Configure oColumnHeaders, oResponseSchema, and sItemName. ||
 || *4*    || Open corresponding HTML file ($Page.html). ||
-|| *5*    || Edit example markup to reference to list relevent fields names in the "elListForm" ||
-|| *6*    || Extend application script to defined a load event and callback handler for this widget ||
+|| *5*    || Edit example markup to reference to list relevent fields names in the "elListForm". ||
+|| *6*    ||Define a load event and callback handler for this widget. ||
 || *7*    || Edit example page script to reference relevent objects and RPC methods. ||
 
 ==Extensions==
@@ -135,13 +135,11 @@ MY.Contacts = function() {
 }}}
 
 || *Step* || Code ||
-|| *6* ||{{{my.js}}} ||
+|| *6* ||{{$Page.js}}} ||
 
 {{{
-    this.createEvent("contactsLoad");
+    my.oEvents.createEvent("contactsLoad");
     
-    // ...
-
     my.oEvents.onContactsLoadReturn = function(oData) {
         YAHOO.log("contactsLoad Event");
         my.oEvents.fireEvent("contactsLoad", oData);
@@ -173,4 +171,3 @@ MY.Contacts = function() {
 }}}
 
 || [http://code.google.com/p/yazaar/issues/detail?id=4 Issue 4] ||
-
