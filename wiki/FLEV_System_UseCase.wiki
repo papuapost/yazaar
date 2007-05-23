@@ -7,10 +7,66 @@ Miranda signs up for a use case that involves maintaining the set of people who 
 
 The Contacts script constructs a working instance from the FlevBase object, and then configures the instance to edit Contact entries. Per the application architecture, she adds the Contacts constructor to the singleton MY namespace. 
 
+Miranda configures the oColumnHeaders, oResponseSchema, oConfigs, and sItemName to match the client use case. Since this will be the only flev widget on the page, she can use the default element names, and so those items do not need to be configured. To make it easy to test the widget, Miranda also adds a test dataset. 
+
+Miranda creates the Contacts.html page by referring to one of the flev example pages. For the autocomplete filter, she adds her own list of field names. 
+
+To bootstrap the initial dataset, Miranda extends the my.js script to create a ContactsLoad event and provide onContactLoadReturn callback handler.
+
+Miranda subscribes the flev's load method to the contactLoad event. When the RPC call returns, it will fire the contactsLoad event, which will trigger the load method, bootstrapping the widget. 
+
+But before trying the RPC method, Miranda configures the page to use the static test data first. 
+
+Once she is sure everything else is working, Miranda comments out the static data, and comments in the RPC method.
+
+==Goal==
+
+The most common workflow in any business application is Finder / Lister / Editor / Viewer or "FLEV". A FLEV widget would allow us to define a columnset and datasource once and use it to generate all four presentations.
+
+|| *Level* || System Component || 
+|| *Trigger* || Find matching entity to view or edit details  || 
+|| *Primary Actor* || Developer ||
+
+==Main Success Scenario (MSS)==
+
+|| *Step* || *Action* ||
+|| *1*    || Open script file named for file that will be using the widget ($Page.js). ||
+|| *2*    || Add constructor for widget, using FlevBase as the initial object instance. ||
+|| *3*    || Configure ColumnHeaders, oResponseSchema, and sItemName. ||
+|| *4*    || Open corresponding HTML file ($Page.html). ||
+|| *5*    || Edit example markup to reference to list relevent fields names in the "elListForm" ||
+|| *6*    || Extend application script to defined a load event and callback handler for this widget ||
+|| *7*    || Edit example page script to reference relevent objects and RPC methods. ||
+
+==Extensions==
+
+|| *Step* || *Extension Action*      ||
+||        ||                         ||
+|| 3a     || _Configure oConfigs_    ||
+|| .1     || Edit a copy of the default oConfigs object, retaining the {{rowSingleSelect: true}} setting ||
+|| .2     || Set the new copy to {{{oSelf.oConfigs}} ||
+|| 3b     || _Configure Test Data_    ||
+|| .1     || Add a sample data set to the object ||
+|| .2     || In Step #3, use the data set to bypass RPC ||
+||        ||                           ||
+|| 3c     || _Configure Element Names_ ||
+|| .1     || Set sDataTable, sDataForm, sTabView, sListForm to custom element IDs, as needed. ||
+||        ||                           ||
+|| 5a     || Revise example markup to better meet specific needs. 
+||        ||                           ||
+
+==Sample Code==
+
+|| *Step* || Code ||
+|| *2* ||{{{$Page.js}}} ||
 {{{
 MY.Contacts = function() {
     var oSelf = object(FlevBase);
+}}}
 
+|| *Step* || Code ||
+|| *3* ||{{{$Page.js}}} ||
+{{{
    oSelf.COLUMN_HEADERS = [
         {key:"first_name", text:"First Name", sortable:true, resizeable:true, editor:"textbox", formClassName: "required", formTitle: "Enter employee's first name"},  
         {key:"last_name", text:"Last Name", sortable:true, resizeable:true, editor:"textbox", formClassName: "required", formTitle: "Enter employee's last name"},  
@@ -41,10 +97,8 @@ MY.Contacts = function() {
     oSelf.sItemName = "last_name";
 }}}
 
-Since this will be the only flev widget on the page, she can use the default element names, and so those items do not need to be configured. 
-
-To make it easy to test the widget, Miranda also adds a test dataset. 
-
+|| *Step* || Code ||
+|| *3b* || ||
 {{{
     oSelf.LOCAL_DATA = { 
         result : [
@@ -56,19 +110,18 @@ To make it easy to test the widget, Miranda also adds a test dataset.
         ]
     };  
 }}}
-
-Miranda creates the Contacts.html page by referring to one of the flev example pages. For the autocomplete filter, she adds her own list of field names. 
-
+|| *5* ||{{{$Page.html}}} ||
 {{{
     <select id="elListForm_item" onchange="_Self.onFilterChange()">
         <option value="last_name" selected="selected">Last Name</option>
         <option value="first_name">First Name</option>
         <option value="username">Username</option>
     </select>
-}}}}
+}}}
 
-To bootstrap the initial dataset, Miranda extends the my.js script to creates a ContactsLoad event and provide onContactLoadReturn call back handler.
-
+|| *Step* || Code ||
+|| *6* ||{{{my.js}}} ||
+{{{
     this.createEvent("contactsLoad");
     
     // ...
@@ -77,59 +130,31 @@ To bootstrap the initial dataset, Miranda extends the my.js script to creates a 
         YAHOO.log("contactsLoad Event");
         my.oEvents.fireEvent("contactsLoad", oData);
     };
+}}}
 
-Miranda subscribes the flev's load method to the contactLoad event. When the RPC call returns, it will fire the contactsLoad event, which will trigger the load method, bootstrapping the widget. 
-
+|| *Step* || Code ||
+|| *7* ||{{{$Page.html}}} ||
 {{{
     <script type="text/javascript">
         var fnReady = function() {
             var oView = new MY.View("elBody","Contacts");
             _Self = new MY.Contacts(); // Convenience "global" for this page.
             oView.oContent = _Self;
-            my.oEvents.subscribe("contactsLoad", _Self.load, _Self);                       };
+            my.oEvents.subscribe("contactsLoad", _Self.load, _Self);                           Contacts.rpc.contactList(
+              my.oEvents.onContactListReturn).call(ANVIL.channel);
+};
         YAHOO.util.Event.onContentReady("elBody",fnReady);
     </script>
 }}}
 
-But before trying the RPC method, Miranda configures the page to use the static test data first. 
-
-   // Contacts.rpc.contactList(my.oEvents.onContactListReturn).call(ANVIL.channel);
-   my.oEvents.onContactsLoadReturn(_Self.LOCAL_DATA); // static data
-
-Once she is sure everything else is working, Miranda comments out the static data, and comments in the RPC method.
-
-==Goal==
-
-The most common workflow in any business application is Finder / Lister / Editor / Viewer or "FLEV". A FLEV widget would allow us to define a columnset and datasource once and use it to generate all four presentations.
-
-|| *Level* || System Component || 
-|| *Trigger* || Find matching entity to view or edit details  || 
-|| *Primary Actor* || Developer ||
-
-==Main Success Scenario (MSS)==
-
-|| *Step* || *Action* ||
-|| *1* ||   ||
-
-==Extensions==
-
-|| *Step* || *Extension Action*        ||
-||        ||                           ||
-|| 1a     || _Extension Action_        ||
-|| .1     ||   ||
-
-==Sample Code==
-
 || *Step* || Code ||
-|| *1* ||{{{file reference}}} ||
-
+|| *7a* || ||
 {{{
- // code
+   // Contacts.rpc.contactList(
+   // my.oEvents.onContactListReturn).call(ANVIL.channel);
+   my.oEvents.onContactsLoadReturn(_Self.LOCAL_DATA); // static data
 }}}
 
-=== Test Plans ===
+|| [http://code.google.com/p/yazaar/issues/detail?id=4 Issue 4] ||
 
-_Action_ (#)
- * 
 
-|| [http://code.google.com/p/yazaar/issues/detail?id=# Issue #] ||
