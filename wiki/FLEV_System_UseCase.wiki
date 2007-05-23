@@ -67,7 +67,7 @@ Miranda creates the Contacts.html page by referring to one of the flev example p
     </select>
 }}}}
 
-To bootstrap the initial dataset, Miranda extends the my.js script to creates a ContactsLoad event and provide onContactLoadReturn event handler.
+To bootstrap the initial dataset, Miranda extends the my.js script to creates a ContactsLoad event and provide onContactLoadReturn call back handler.
 
     this.createEvent("contactsLoad");
     
@@ -78,9 +78,7 @@ To bootstrap the initial dataset, Miranda extends the my.js script to creates a 
         my.oEvents.fireEvent("contactsLoad", oData);
     };
 
-Miranda subscribes the flev's load method to the contactsLoad event.
-
-Before trying a RPC call, Miranda configures the page to use the static test data. 
+Miranda subscribes the flev's load method to the contactLoad event. When the RPC call returns, it will fire the contactsLoad event, which will trigger the load method, bootstrapping the widget. 
 
 {{{
     <script type="text/javascript">
@@ -88,30 +86,24 @@ Before trying a RPC call, Miranda configures the page to use the static test dat
             var oView = new MY.View("elBody","Contacts");
             _Self = new MY.Contacts(); // Convenience "global" for this page.
             oView.oContent = _Self;
-            my.oEvents.subscribe("contactsLoad", _Self.load, _Self);               Contacts.rpc.contactList(my.oEvents.onContactListReturn).call(ANVIL.channel);
-            // my.oEvents.onContactsLoadReturn(_Self.LOCAL_DATA); // static data
-        };
+            my.oEvents.subscribe("contactsLoad", _Self.load, _Self);                       };
         YAHOO.util.Event.onContentReady("elBody",fnReady);
     </script>
 }}}
 
+But before trying the RPC method, Miranda configures the page to use the static test data first. 
 
+   // Contacts.rpc.contactList(my.oEvents.onContactListReturn).call(ANVIL.channel);
+   my.oEvents.onContactsLoadReturn(_Self.LOCAL_DATA); // static data
 
-Once she is sure everything else is working, Miranda adds a RPC method to the business facade, and configures the page to make a RPC call instead. 
-{{{
-            // my.oEvents.onContactsListReturn(_Self.LOCAL_DATA); // static data            
-
-                    my.oEvents.subscribe("facilityList", _Self.load, _Self);
-                    
-
-She configures the template page by adding a reference to her own field entries for the au
+Once she is sure everything else is working, Miranda comments out the static data, and comments in the RPC method.
 
 ==Goal==
 
-(Why does the component exist? What problem does it solve?)
+The most common workflow in any business application is Finder / Lister / Editor / Viewer or "FLEV". A FLEV widget would allow us to define a columnset and datasource once and use it to generate all four presentations.
 
 || *Level* || System Component || 
-|| *Trigger* ||   || 
+|| *Trigger* || Find matching entity to view or edit details  || 
 || *Primary Actor* || Developer ||
 
 ==Main Success Scenario (MSS)==
