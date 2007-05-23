@@ -48,3 +48,10 @@ MY.Contacts = function() {
 	
 YAHOO.augment(MY.Contacts, YAHOO.util.EventProvider);
 
+my.oEvents.createEvent("contactsLoad")
+
+my.oEvents.onContactsLoadReturn = function(oData) {
+    my.info("Firing contactsLoad Event");
+    my.oEvents.fireEvent("contactsLoad", oData);
+};
+
