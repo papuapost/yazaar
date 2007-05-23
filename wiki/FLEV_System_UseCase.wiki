@@ -3,7 +3,7 @@
 
 ==Narrative==
 
-Athena signs up for a use case that involves maintaining the set of people who particpate in an application workflow. Since it's a basic CRUD operation, she decided to use the FLEV widget. Athena creates a "Contacts.html" page and a "Contacts.js" script page. 
+Miranda signs up for a use case that involves maintaining the set of people who particpate in an application workflow. Since it's a basic CRUD operation, she decided to use the FLEV widget. Miranda creates a "Contacts.html" page and a "Contacts.js" script page. 
 
 The Contacts script constructs a working instance from the FlevBase object, and then configures the instance to edit Contact entries. Per the application architecture, she adds the Contacts constructor to the singleton MY namespace. 
 
@@ -43,7 +43,7 @@ MY.Contacts = function() {
 
 Since this will be the only flev widget on the page, she can use the default element names, and so those items do not need to be configured. 
 
-To make it easy to test the widget, Athena also adds a test dataset. 
+To make it easy to test the widget, Miranda also adds a test dataset. 
 
 {{{
     oSelf.LOCAL_DATA = { 
@@ -57,7 +57,54 @@ To make it easy to test the widget, Athena also adds a test dataset.
     };  
 }}}
 
-Athena creates the Contacts.html page by referring to the flev template page. She configures the template page by adding a reference to 
+Miranda creates the Contacts.html page by referring to one of the flev example pages. For the autocomplete filter, she adds her own list of field names. 
+
+{{{
+    <select id="elListForm_item" onchange="_Self.onFilterChange()">
+        <option value="last_name" selected="selected">Last Name</option>
+        <option value="first_name">First Name</option>
+        <option value="username">Username</option>
+    </select>
+}}}}
+
+To bootstrap the initial dataset, Miranda extends the my.js script to creates a ContactsLoad event and provide onContactLoadReturn event handler.
+
+    this.createEvent("contactsLoad");
+    
+    // ...
+
+    my.oEvents.onContactsLoadReturn = function(oData) {
+        YAHOO.log("contactsLoad Event");
+        my.oEvents.fireEvent("contactsLoad", oData);
+    };
+
+Miranda subscribes the flev's load method to the contactsLoad event.
+
+Before trying a RPC call, Miranda configures the page to use the static test data. 
+
+{{{
+    <script type="text/javascript">
+        var fnReady = function() {
+            var oView = new MY.View("elBody","Contacts");
+            _Self = new MY.Contacts(); // Convenience "global" for this page.
+            oView.oContent = _Self;
+            my.oEvents.subscribe("contactsLoad", _Self.load, _Self);               Contacts.rpc.contactList(my.oEvents.onContactListReturn).call(ANVIL.channel);
+            // my.oEvents.onContactsLoadReturn(_Self.LOCAL_DATA); // static data
+        };
+        YAHOO.util.Event.onContentReady("elBody",fnReady);
+    </script>
+}}}
+
+
+
+Once she is sure everything else is working, Miranda adds a RPC method to the business facade, and configures the page to make a RPC call instead. 
+{{{
+            // my.oEvents.onContactsListReturn(_Self.LOCAL_DATA); // static data            
+
+                    my.oEvents.subscribe("facilityList", _Self.load, _Self);
+                    
+
+She configures the template page by adding a reference to her own field entries for the au
 
 ==Goal==
 
