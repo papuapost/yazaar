@@ -12,7 +12,7 @@ if (typeof parent.MY != "undefined") {
     var my = {};
 
     MY.Events = function() {
-        this.createEvent("contactsList")
+        this.createEvent("contactsLoad")
         return this;
     };
     YAHOO.augment(MY.Events, YAHOO.util.EventProvider);
@@ -40,9 +40,9 @@ if (typeof parent.MY != "undefined") {
 
     my.oEvents = new MY.Events();
 
-    my.oEvents.onContactsListReturn = function(oData) {
-        my.info("Firing contactsList Event");
-        my.oEvents.fireEvent("contactsList", oData);
+    my.oEvents.onContactsLoadReturn = function(oData) {
+        my.info("Firing contactsLoad Event");
+        my.oEvents.fireEvent("contactsLoad", oData);
     };
 
     my.oViewConfig = {

@@ -23,6 +23,7 @@ Code licensed under the BSD License: http://developer.yahoo.net/yui/license.txt
         <script src="http://yui.yahooapis.com/2.2.2/build/yahoo-dom-event/yahoo-dom-event.js" type="text/javascript"></script>
         <script src="http://yui.yahooapis.com/2.2.2/build/element/element-beta-min.js" type="text/javascript"></script>     
 
+        <script src="http://yui.yahooapis.com/2.2.2/build/container/container-min.js" type="text/javascript"></script>
         <script src="http://yui.yahooapis.com/2.2.2/build/tabview/tabview-min.js" type="text/javascript"></script>
         <script src="http://yui.yahooapis.com/2.2.2/build/datasource/datasource-beta-min.js" type="text/javascript"></script>
         <script src="../../build/patched/datatable-beta-debug-patched.js" type="text/javascript"></script>
@@ -52,22 +53,19 @@ Code licensed under the BSD License: http://developer.yahoo.net/yui/license.txt
                 <div class="yui-content">
                     <div id="elList">
                         <div id="elDataTable" class="dpu-dt"></div>				
-                        <div class="filter">
-                            <form id="elListForm">
-                                <p style="font-weight:bold">Filter Entries by:
-                                    <select id="elListForm_item" onchange="_Self.onFilterChange()">
-                                        <option value="last_name" selected="selected">Last Name</option>
-                                        <option value="first_name">First Name</option>
-                                        <option value="username">Username</option>
-                                    </select>
+                        <div id="elListFilter" class="filter">
+                            <label for="elListForm_item">Filter Entries by:</label>
+                            <select id="elListForm_item" onchange="_Self.onFilterChange()">
+                                <option value="last_name" selected="selected">Last Name</option>
+                                <option value="first_name">First Name</option>
+                                <option value="username">Username</option>
+                            </select>
+                            <div class="filterForm">
+                                <p>
+                                    <input class="filterInput" id="elListForm_input" />
                                 </p>
-                                <div class="filterForm">
-                                    <p>
-                                        <input class="filterInput" id="elListForm_input" />
-                                    </p>
-                                    <div class="filterMatch" id="elListForm_match"></div>
-                                </div>
-                            </form>
+                                <div class="filterMatch" id="elListForm_match"></div>
+                            </div>
                         </div>			
                     </div>
                     <div id="elEdit">
@@ -80,12 +78,11 @@ Code licensed under the BSD License: http://developer.yahoo.net/yui/license.txt
             <script type="text/javascript">
                 var fnReady = function() {
                     var oView = new MY.View("elBody","Contacts");
-                    var oContent = new MY.Contacts();
-                    oView.oContent = oContent;
-                    my.oEvents.subscribe("contactsList", oContent.load, oContent);   
-                    // Phonebook.rpc.phonebookList(my.oEvents.onPhonebookListReturn).call(ANVIL.channel);
-                    my.oEvents.onContactsListReturn(oContent.LOCAL_DATA); // static data
-                    _Self = oContent; // Convenience "global" for this page.
+                    _Self = new MY.Contacts(); // Convenience "global" for this page.
+                    oView.oContent = _Self;
+                    my.oEvents.subscribe("contactsLoad", _Self.load, _Self);   
+                    // Contacts.rpc.contactsList(my.oEvents.onContactsLoadReturn).call(ANVIL.channel);
+                    my.oEvents.onContactsLoadReturn(_Self.LOCAL_DATA); // static data
                 };
                 YAHOO.util.Event.onContentReady("elBody",fnReady);
             </script>
