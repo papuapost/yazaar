@@ -46,6 +46,5 @@ MY.Contacts = function() {
     return oSelf;
 }	
 	
-
 YAHOO.augment(MY.Contacts, YAHOO.util.EventProvider);
 
