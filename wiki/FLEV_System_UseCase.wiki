@@ -60,7 +60,7 @@ The most common workflow in any business application is Finder / Lister / Editor
 || 3c     || _Configure Element Names_ ||
 || .1     || Set sDataTable, sDataForm, sTabView, sListForm to custom element IDs, as needed. ||
 ||        ||                           ||
-|| 5a     || Revise example markup to better meet specific needs. 
+|| 5a     || Revise example markup to better meet specific needs. ||
 ||        ||                           ||
 
 ==Sample Code==
@@ -166,7 +166,6 @@ MY.Contacts = function() {
 }}}
 
 || [http://code.google.com/p/yazaar/issues/detail?id=4 Issue 4] ||
-
 
 
 
