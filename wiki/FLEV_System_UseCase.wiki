@@ -17,6 +17,10 @@ Miranda subscribes the flev's load method to the contactLoad event. When the RPC
 
 But before trying the RPC method, Miranda configures the page to use the static test data first. 
 
+|| *Find* || List || View || Edit || 
+
+|| 
+
 Once she is sure everything else is working, Miranda comments out the static data, and comments in the RPC method.
 
 ==Goal==
@@ -156,5 +160,4 @@ MY.Contacts = function() {
 }}}
 
 || [http://code.google.com/p/yazaar/issues/detail?id=4 Issue 4] ||
-
 
