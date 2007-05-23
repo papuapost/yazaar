@@ -5,21 +5,25 @@
 
 Miranda signs up for a use case that involves maintaining the set of people who particpate in an application workflow. Since it's a basic CRUD operation, she decided to use the FLEV widget. Miranda creates a "Contacts.html" page and a "Contacts.js" script page. 
 
-The Contacts script constructs a working instance from the FlevBase object, and then configures the instance to edit Contact entries. Per the application architecture, she adds the Contacts constructor to the singleton MY namespace. 
+The Contacts script constructs a working instance from the !FlevBase object, and then configures the instance to edit Contact entries. Per the application architecture, she adds the Contacts constructor to the singleton MY namespace. 
 
 Miranda configures the oColumnHeaders, oResponseSchema, oConfigs, and sItemName to match the client use case. Since this will be the only flev widget on the page, she can use the default element names, and so those items do not need to be configured. To make it easy to test the widget, Miranda also adds a test dataset. 
 
 Miranda creates the Contacts.html page by referring to one of the flev example pages. For the autocomplete filter, she adds her own list of field names. 
 
-To bootstrap the initial dataset, Miranda extends the my.js script to create a ContactsLoad event and provide onContactLoadReturn callback handler.
+To bootstrap the initial dataset, Miranda extends the my.js script to create a !ContactsLoad event and provide onContactsLoadReturn callback handler.
 
-Miranda subscribes the flev's load method to the contactLoad event. When the RPC call returns, it will fire the contactsLoad event, which will trigger the load method, bootstrapping the widget. 
+Miranda subscribes the flev's load method to the contactsLoad event. When the RPC call returns, it will fire the contactsLoad event, which will trigger the load method, bootstrapping the widget. 
 
 But before trying the RPC method, Miranda configures the page to use the static test data first. 
 
 || *Find* || List || View || Edit || 
 
-|| 
+{{{> Enter criteria to list entries}}}
+
+|| (A) (B) (C) (O) (T) (W) ||
+|| Filter Entries by (Facility Name)v ||
+|| {{{(_______________________)}}} ||
 
 Once she is sure everything else is working, Miranda comments out the static data, and comments in the RPC method.
 
@@ -36,7 +40,7 @@ The most common workflow in any business application is Finder / Lister / Editor
 || *Step* || *Action* ||
 || *1*    || Open script file named for file that will be using the widget ($Page.js). ||
 || *2*    || Add constructor for widget, using FlevBase as the initial object instance. ||
-|| *3*    || Configure ColumnHeaders, oResponseSchema, and sItemName. ||
+|| *3*    || Configure oColumnHeaders, oResponseSchema, and sItemName. ||
 || *4*    || Open corresponding HTML file ($Page.html). ||
 || *5*    || Edit example markup to reference to list relevent fields names in the "elListForm" ||
 || *6*    || Extend application script to defined a load event and callback handler for this widget ||
@@ -47,7 +51,7 @@ The most common workflow in any business application is Finder / Lister / Editor
 || *Step* || *Extension Action*      ||
 ||        ||                         ||
 || 3a     || _Configure oConfigs_    ||
-|| .1     || Edit a copy of the default oConfigs object, retaining the {{rowSingleSelect: true}} setting ||
+|| .1     || Edit a copy of the default oConfigs object, retaining the {{{rowSingleSelect: true}}} setting ||
 || .2     || Set the new copy to {{{oSelf.oConfigs}} ||
 || 3b     || _Configure Test Data_    ||
 || .1     || Add a sample data set to the object ||
@@ -114,6 +118,8 @@ MY.Contacts = function() {
         ]
     };  
 }}}
+
+|| *Step* || Code ||
 || *5* ||{{{$Page.html}}} ||
 {{{
     <select id="elListForm_item" onchange="_Self.onFilterChange()">
@@ -144,8 +150,8 @@ MY.Contacts = function() {
             var oView = new MY.View("elBody","Contacts");
             _Self = new MY.Contacts(); // Convenience "global" for this page.
             oView.oContent = _Self;
-            my.oEvents.subscribe("contactsLoad", _Self.load, _Self);                           Contacts.rpc.contactList(
-              my.oEvents.onContactListReturn).call(ANVIL.channel);
+            my.oEvents.subscribe("contactsLoad", _Self.load, _Self);                           Contacts.rpc.contactsList(
+              my.oEvents.onContactsLoadReturn).call(ANVIL.channel);
 };
         YAHOO.util.Event.onContentReady("elBody",fnReady);
     </script>
@@ -154,10 +160,14 @@ MY.Contacts = function() {
 || *Step* || Code ||
 || *7a* || ||
 {{{
-   // Contacts.rpc.contactList(
-   // my.oEvents.onContactListReturn).call(ANVIL.channel);
+   // Contacts.rpc.contactsList(
+   // my.oEvents.onContactsLoadReturn).call(ANVIL.channel);
    my.oEvents.onContactsLoadReturn(_Self.LOCAL_DATA); // static data
 }}}
 
 || [http://code.google.com/p/yazaar/issues/detail?id=4 Issue 4] ||
+
+
+
+
 
