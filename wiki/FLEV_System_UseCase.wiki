@@ -68,6 +68,7 @@ The most common workflow in any business application is Finder / Lister / Editor
 
 || *Step* || Code ||
 || *2* ||{{{$Page.js}}} ||
+
 {{{
 MY.Contacts = function() {
     var oSelf = object(FlevBase);
@@ -75,6 +76,7 @@ MY.Contacts = function() {
 
 || *Step* || Code ||
 || *3* ||{{{$Page.js}}} ||
+
 {{{
    oSelf.COLUMN_HEADERS = [
         {key:"first_name", text:"First Name", sortable:true, resizeable:true, editor:"textbox", formClassName: "required", formTitle: "Enter employee's first name"},  
@@ -108,6 +110,7 @@ MY.Contacts = function() {
 
 || *Step* || Code ||
 || *3b* || ||
+
 {{{
     oSelf.LOCAL_DATA = { 
         result : [
@@ -122,6 +125,7 @@ MY.Contacts = function() {
 
 || *Step* || Code ||
 || *5* ||{{{$Page.html}}} ||
+
 {{{
     <select id="elListForm_item" onchange="_Self.onFilterChange()">
         <option value="last_name" selected="selected">Last Name</option>
@@ -132,6 +136,7 @@ MY.Contacts = function() {
 
 || *Step* || Code ||
 || *6* ||{{{my.js}}} ||
+
 {{{
     this.createEvent("contactsLoad");
     
@@ -144,7 +149,8 @@ MY.Contacts = function() {
 }}}
 
 || *Step* || Code ||
-|| *7* ||{{{$Page.html}}} ||
+|| *7*    || {{{$Page.html}}} ||
+
 {{{
     <script type="text/javascript">
         var fnReady = function() {
@@ -153,21 +159,18 @@ MY.Contacts = function() {
             oView.oContent = _Self;
             my.oEvents.subscribe("contactsLoad", _Self.load, _Self);                           
             Contacts.rpc.contactsList(my.oEvents.onContactsLoadReturn).call(ANVIL.channel);
-};
+        };
         YAHOO.util.Event.onContentReady("elBody",fnReady);
     </script>
 }}}
 
 || *Step* || Code ||
-|| *7a* || ||
+|| *7a*   ||      ||
+
 {{{
-   // Contacts.rpc.contactsList(my.oEvents.onContactsLoadReturn).call(ANVIL.channel);0
+   // Contacts.rpc.contactsList(my.oEvents.onContactsLoadReturn).call(ANVIL.channel);
    my.oEvents.onContactsLoadReturn(_Self.LOCAL_DATA); // static data
 }}}
 
 || [http://code.google.com/p/yazaar/issues/detail?id=4 Issue 4] ||
-
-
-
-
 
