@@ -6,7 +6,7 @@ http://developer.yahoo.net/yui/license.txt
 */
 /**
  * @overview
- * The FlevBase object combines a DataForm, DataView, and TabView to create
+ * The FlevBase object combines a DataForm, DataTable, and TabView to create
  * a Find/List/Edit workflow. This object may be instantiated via a
  * "power constructor" so that it can be configured before use.
  * <p />
@@ -20,186 +20,232 @@ http://developer.yahoo.net/yui/license.txt
  * convenience of a full-featured edit form.
  *
  * @see <a href="DataFormWalkThrough">http://code.google.com/p/yazaar/wiki/DataFormWalkThrough</a>
- * @module yazaar.dataform
+ * @module yazaar.flevbase
  * @requires yahoo, dom, event, datasource
- * @title DataForm Widget
+ * @title FLEV Widget
  * @alpha
  */
 
+/**
+ * Declares the yazaar namespace for use by Constructors.
+ */
+YAHOO.namespace("yazaar");
 
 /**
- * Pseudo constructor.
+ * Constructs a base FLEV widget with a default configuration.
+ * Custom setings may be passed through the oConfig parameter.
  * <p />
- * Creates a base FLEV widget that must be configured
- * by a "power constructor" before use.
+ * The client application must provide a dataset for the load
+ * method, which may be a RPC result object, or another
+ * object designed to resemble a RPC result object.
+ * All property changes must be made before load is called.
  * <p />
- * The properties to be configured are oColumnHeaders, oResponseSchema,
- * oConfigs, sDataFind, sDataList, sDataView, sDataForm, sTabView, sListForm, sItemName.
- * The client application must also provide a dataset for the load
- * method.
+ * Properties that must be configured are oColumnHeaders and oResponseSchema.
+ * Properites that may be configured oListConfigs, sDataFind, sDataList, sDataView,
+ * sDataEdit, sTabView, sListForm, sItemName.
+ * Methods that may be configured are onInsert, onUpdate, onDelete, onCancel, and onReset.
  *
  * @constructor
+ * @param oConfigs {object} (optional) Object literal of configuration values.
  */
-var FlevBase = function() {
-    // return public members
-    // TODO: Create a configuration class for the "must be configured" properties.
-    return {
+YAHOO.yazaar.FlevBase = function(oConfigs) {
+    // Validate and apply any configuration settings
+    if(oConfigs && (oConfigs.constructor == Object)) {
+        for(var sConfig in oConfigs) {
+            this[sConfig] = oConfigs[sConfig];
+        }
+    }
+    return this;
+};
 
+/**
+ * Augments FlevBase constructor with event provider members.
+ */
+YAHOO.augment(YAHOO.yazaar.FlevBase, YAHOO.util.EventProvider);
 
-        /**
-         * Array of object literals that define header cells for the ColumnSet.
-         * At a minimum, each object should contain a key and a text property.
-         * Must be configured.
-         */
-        oColumnHeaders: null,
+/**
+ * Array of object literals that define header cells for the ColumnSet.
+ * At a minimum, each object should contain a key and a text property.
+ * Must be configured.
+ */
+YAHOO.yazaar.FlevBase.prototype.oColumnHeaders = null;
 
-        /**
-         * Description of how data is formatted in the response.
-         * Must be configured.
-         */
-        oResponseSchema: null,
+/**
+ * Object literal that describes how data is formatted in the response.
+ * Must be configured.
+ */
+YAHOO.yazaar.FlevBase.prototype.oResponseSchema = null;
 
-        /**
-         * Array of object literals that define the DataTable configuration.
-         * If specified, must set rowSingleSelect to true.
-         * [{paginator:true,
-         * paginatorOptions: {rowsPerPage: 10, dropdownOptions: [10,100,1000]},
-         * rowSingleSelect: true}]
-         */
-        oConfigs: {
+/**
+ * An Array of object literals that define the DataTable configuration.
+ * If specified, must set rowSingleSelect to true.
+ * [{paginator:true,
+ * paginatorOptions: {rowsPerPage: 10, dropdownOptions: [10,100,1000]},
+ * rowSingleSelect: true}]
+ */
+YAHOO.yazaar.FlevBase.prototype.oListConfigs = {
         paginator:true,
         paginatorOptions: {
           rowsPerPage: 10,
           dropdownOptions: [10,100,1000]
             },
             rowSingleSelect: true
-        },
+        };
 
-        /**
-         * DOM ID for the DataTable container (div).
-         * ["elDataTable"]
-         */
-        sDataList: "elDataList",
+/**
+ * DOM ID for the DataFind container (div).
+ * ["elDataFind"]
+ */
+YAHOO.yazaar.FlevBase.prototype.sDataFind = "elDataFind";
 
-        /**
-         * DOM ID for the DataForm container (div).
-         * ["elDataForm"]
-         */
-        sDataForm: "elDataForm",
+/**
+ * DOM ID for the DataTable container (div).
+ * ["elDataList"]
+ */
+YAHOO.yazaar.FlevBase.prototype.sDataList = "elDataList";
 
-        /**
-         * DOM ID for the TabView container (div).
-         * ["elTabView"]
-         */
-        sTabView: "elTabView",
+/**
+ * DOM ID for the DataForm container (div).
+ * ["elDataEdit"]
+ */
+YAHOO.yazaar.FlevBase.prototype.sDataEdit = "elDataEdit";
 
-        /**
-         * DOM ID for the autocomplete control (filters list entries).
-         * [elListFilter]
-         */
-        sListFilter: "elListFilter",
+/**
+ * DOM ID for the TabView container (div).
+ * ["elTabView"]
+ */
+YAHOO.yazaar.FlevBase.prototype.sTabView = "elTabView";
+
+/**
+ * DOM ID for the autocomplete control (filters list entries).
+ * [elListFilter]
+ */
+YAHOO.yazaar.FlevBase.prototype.sListFilter = "elListFilter";
 
 
-        /**
-         * DOM ID for the List Form control (filters list entries).
-         * [elListForm]
-         */
-        sListForm: "elListForm",
+/**
+ * DOM ID for the List Form control (filters list entries).
+ * [elListForm]
+ */
+YAHOO.yazaar.FlevBase.prototype.sListForm = "elListForm";
 
-        /**
-         * Initial autocomplete field name.
-         * Must be configured.
-         */
-        sItemName: null,
+/**
+ * Initial autocomplete field name.
+ * Must be configured.
+ */
+YAHOO.yazaar.FlevBase.prototype.sItemName = null;
 
-        /**
-         * Instance created by load method.
-         */
-        oColumnSet: null,
+/**
+ * ColumnSet instance created by load method.
+ */
+YAHOO.yazaar.FlevBase.prototype.oColumnSet = null;
 
-        /**
-         * Instance created by load method.
-         */
-        oDataSource: null,
+/**
+ * DataSource instance created by load method.
+ */
+YAHOO.yazaar.FlevBase.prototype.oDataSource = null;
 
-        /**
-         * Instance created by load method.
-         */
-        oDataFind: null,
+/**
+ * DataFind widget instance created by load method.
+ */
+YAHOO.yazaar.FlevBase.prototype.oDataFind = null;
 
-        /**
-         * Instance created by load method.
-         */
-        oDataList: null,
+/**
+ * DataList widget instance created by load method.
+ */
+YAHOO.yazaar.FlevBase.prototype.oDataList = null;
 
-        /**
-         * Instance created by this object.
-         */
-        oDataForm: null,
+/**
+ * DataEdit instance created by this object.
+ */
+YAHOO.yazaar.FlevBase.prototype.oDataEdit = null;
 
-        /**
-         * Instance created by load method.
-         */
-        oDataView: null,
+/**
+ * Instance created by load method.
+ */
+YAHOO.yazaar.FlevBase.prototype.oDataView = null;
 
-        /**
-         * Relative index of DataFind
-         */
-         nDataFind: 0,
+/**
+ * Relative menu index of DataFind
+ */
+YAHOO.yazaar.FlevBase.prototype.nDataFind = 0;
 
-        /**
-         * Relative index of DataList
-         */
-         nDataList: 1,
+/**
+ * Relative menu index of DataList
+ */
+YAHOO.yazaar.FlevBase.prototype.nDataList = 1;
 
-        /**
-         * Relative index of DataView
-         */
-         nDataView: 2,
+/**
+ * Relative menu index of DataView
+ */
+YAHOO.yazaar.FlevBase.prototype.nDataView = 2;
 
-        /**
-         * Relative index of DataEdit
-         */
-         nDataEdit: 3,
+/**
+ * Relative menu index of DataEdit
+ */
+YAHOO.yazaar.FlevBase.prototype.nDataEdit = 3;
 
-        /**
-         * Instance created by this object.
-         */
-        oTabView: null,
+/**
+ * TabView instance created by this object.
+ */
+YAHOO.yazaar.FlevBase.prototype.oTabView = null;
 
-        /**
-         * Instance created by load method.
-         */
-        fnFilter: null,
+/**
+ * Autocomplete filter instance created by load method.
+ */
+YAHOO.yazaar.FlevBase.prototype.fnFilter = null;
 
-        /**
-         * Instance created by load method.
-         */
-        oFormConfigs: null,
+/**
+ * Form configuration instance created by load method.
+ */
+YAHOO.yazaar.FlevBase.prototype.oFormConfigs = null;
 
-        /**
-         * Initialize object with response data.
-         * @param {Object} oData
-         * @param {Object} oSelf
-         */
-        load: function(oData,oSelf) {
+/**
+ * Exits Edit and activates View.
+ */
+YAHOO.yazaar.FlevBase.prototype.exitEdit = function() {
+    this.oTabView.set('activeIndex', this.nDataView); // TODO: List or View?
+};
+
+/**
+ * Handles updateEvent raised by Edit.
+ * To persist changes, override or replace this method.
+ */
+YAHOO.yazaar.FlevBase.prototype.onUpdate = function (oData,oSelf) {
+    oSelf.exitEdit();
+};
+
+/**
+ * Handles updateEvent raised by Edit.
+ * To persist changes, override or replace this method.
+ */
+YAHOO.yazaar.FlevBase.prototype.onCancel = function (oData,oSelf) {
+    oSelf.exitEdit();
+};
+
+/**
+ * Initializes object with response data.
+ * @param {Object} oData
+ * @param {Object} oSelf
+ */
+YAHOO.yazaar.FlevBase.prototype.load = function(oData,oSelf) {
             // previously defined
             var oColumnHeaders = oSelf.oColumnHeaders;
             var oResponseSchema = oSelf.oResponseSchema;
-            var oConfigs = oSelf.oConfigs;
+            var oListConfigs = oSelf.oListConfigs;
             var sDataFind = oSelf.sDataFind;
             var sDataList = oSelf.sDataList;
             var sDataView = oSelf.sDataView;
-            var sDataForm = oSelf.sDataForm;
+            var sDataEdit = oSelf.sDataEdit;
             var sTabView = oSelf.sTabView;
             // to be defined
-            var oColumnSet, oDataSource, oDataFind, oDataList, oDataView, oDataForm, oFormConfigs,oTabView;
+            var oColumnSet, oDataSource, oDataFind, oDataList, oDataView, oDataEdit, oFormConfigs,oTabView;
 
             oColumnSet = new YAHOO.widget.ColumnSet(oColumnHeaders);
             oDataSource = new YAHOO.util.DataSource(oData.result);
                 oDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
                 oDataSource.responseSchema = oResponseSchema;
-            oDataList = new YAHOO.dpu.widget.DataTable(sDataList, oColumnSet, oDataSource, oConfigs);
+            oDataList = new YAHOO.dpu.widget.DataTable(sDataList, oColumnSet, oDataSource, oListConfigs);
 
             // Enable DataTable Row Selection
             oDataList.subscribe("cellClickEvent",oDataList.onEventSelectRow);
@@ -227,7 +273,7 @@ var FlevBase = function() {
 
             // Setup DataForm
             oFormConfigs = {oDataList: oDataList};
-            oDataForm = new YAHOO.yazaar.widget.DataForm(sDataForm, oColumnSet, oDataSource, oFormConfigs);
+            oDataEdit = new YAHOO.yazaar.DataForm(sDataEdit, oColumnSet, oDataSource, oFormConfigs);
             oDataList.subscribe("dataReturnEvent",oSelf.initFilter,oSelf);
 
             // Setup tabview
@@ -235,26 +281,22 @@ var FlevBase = function() {
 
             // Goto to DataEdit
             var onRecordSelectEvent = function () {
-              oDataForm.populateForm();
-              oTabView.set('activeIndex', 3); // TODO: nDataEdit - Change to nDataView?
+              oDataEdit.populateForm();
+              oTabView.set('activeIndex', oSelf.nDataEdit); // TODO: Change to nDataView?
             };
             oDataList.subscribe("recordSelectEvent", onRecordSelectEvent);
 
-            // Goto DataList
-            var onRecordActionEvent = function () {
-              oTabView.set('activeIndex', 2); // TODO: nDataList - List or View?
-            };
-            oDataForm.subscribe("updateEvent", onRecordActionEvent);
-            oDataForm.subscribe("cancelEvent", onRecordActionEvent);
+            oDataEdit.subscribe("updateEvent", oSelf.onUpdate, oSelf);
+            oDataEdit.subscribe("cancelEvent", oSelf.onCancel, oSelf);
 
             // Prompt before changing tabs
             var onBeforeActiveTabChange = function(e) {
-              if (!oDataForm.isActive) return true;
-              var isChanged = oDataForm.isRecordChanged();
+              if (!oDataEdit.isActive) return true;
+              var isChanged = oDataEdit.isRecordChanged();
               if (isChanged) {
                 var isExit = confirm("Exit form without saving?");
                 if (isExit) {
-                    oDataForm.reset();
+                    oDataEdit.reset();
                 }
                 return isExit;
               } else {
@@ -265,27 +307,27 @@ var FlevBase = function() {
 
             // Set flag when form is in view
             var onActiveTabChange = function(e) {
-                oDataForm.isActive = (3==oTabView.get('activeIndex')); // TODO: nDataEdit
+                oDataEdit.isActive = (3==oTabView.get('activeIndex')); // TODO: nDataEdit
             };
             oTabView.on('activeTabChange', onActiveTabChange);
-            YAHOO.util.Event.onAvailable(sDataList, function(){oSelf.initFilter(null,oSelf)});
-            // FIXME: // YAHOO.util.Event.onAvailable(sDataFind, function(){oSelf.initFilter(null,oSelf)});
+
+            YAHOO.util.Event.onAvailable(sDataFind, function(){oSelf.initFilter(null,oSelf)});
 
             // Retain references
             oSelf.oColumnSet = oColumnSet;
             oSelf.oDataSource = oDataSource;
             oSelf.oFormConfigs = oFormConfigs;
             oSelf.oDataList = oDataList;
-            oSelf.oDataForm = oDataForm;
+            oSelf.oDataEdit = oDataEdit;
             oSelf.oTabView = oTabView;
-        },
+        };
 
         /**
          * Setup autocomplete filtering. Called automatically.
          * @param {Object} oData
          * @param {Object} oSelf
          */
-        initFilter: function (oData,oSelf) {
+YAHOO.yazaar.FlevBase.prototype.initFilter = function (oData,oSelf) {
 
             oSelf.oFilter = new YAHOO.widget.Overlay(oSelf.sListFilter);
             oSelf.oFilter.render();
@@ -295,8 +337,8 @@ var FlevBase = function() {
                 list = oData.response;
             } else {
                 list = oSelf.oDataSource.liveData;
-            };
-            oSelf.fnFilter= new YAHOO.dpu.util.StringFilter(list,oSelf.sItemName)
+            }
+            oSelf.fnFilter= new YAHOO.dpu.util.StringFilter(list,oSelf.sItemName);
             oSelf.fnFilter.maxCacheEntries = 0;
             var sInput = oSelf.sListForm + "_input";
             var sMatch = oSelf.sListForm + "_match";
@@ -305,17 +347,15 @@ var FlevBase = function() {
             if(ua.indexOf('msie') != -1 && ua.indexOf('opera') < 0) {
                 oAutoComp.useIFrame = true;
             }
-        },
+        };
 
         /**
          * Change the autocomplete field.
          * Must be wired to an input control via an onChange handler.
          */
-        onFilterChange: function () {
+YAHOO.yazaar.FlevBase.prototype.onFilterChange = function () {
             var sItem = this.sListForm + "_item";
             var el = document.getElementById(sItem);
             var item = el.options[el.selectedIndex].value;
             this.fnFilter.schemaItem = item;
-        }
-    }; // end return
-}();
+        };
