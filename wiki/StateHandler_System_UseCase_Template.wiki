@@ -1,0 +1,61 @@
+#summary State Handler System UseCase Template (Issue 26)
+#labels Phase-Requirements
+
+==Narrative==
+
+Miranda configured a [FLEV_System_UseCase FLEV widget] to manage a Contacts entity. The widget obtains data from a RPC service and uses it to create a client-side recordset. The widget's DataForm component raises an insertEvent, updateEvent, or deleteEvent whenever the recordset is changed. But, the widget cannot update the original datasource without additional configuration.
+
+To complete the DataForm configuration, Miranda updates the FLEV subclass constructor (MY.Contacts) to replace the onInsert, onUpdate, and onDelete methods with new functions that make RPC calls to update the database. Each function references a "onChangeReturn" method that displays a confirmation message and changes from the edit screen to the view screen.
+
+If the RPC method fails, an internal handler automatically displays the failure message instead. 
+
+==Goal==
+
+(Why does the component exist? What problem does it solve?)
+
+|| *Level* || System Component || 
+|| *Trigger* || FLEV widget must conform changes to a remote service  || 
+|| *Primary Actor* || Developer ||
+
+==Main Success Scenario (MSS)==
+
+|| *Step* || *Action* ||
+|| *1* || Configure [Flev_System_UseCase FLEV widget]      ||
+|| *2* || Set new onInsert, onUpdate, and onDelete methods to make RPC ||
+|| *4* || Provide a callback method that displays return message and changes view ||
+
+==Sample Code==
+
+|| *Step* || Code ||
+|| *1*    ||{{{Contacts.js}}} ||
+
+{{{
+MY.Contact = function() {
+    MY.Contact.superclass.constructor.call(this);
+    this.oColumnHeaders = [ // ...    
+    this.oConfigs = { // ...
+    this.oResponseSchema = { // ...
+    this.sItemName = "last_name";
+}}}
+
+|| *Step* || Code ||
+|| *2*    || ||
+
+{{{
+    this.onUpdate = function (oData,oSelf) {
+        oValues = oData.oRecord;
+        Facilities.rpc.update(oValues,oSelf.onChangeReturn).call(ANVIL.channel);
+    };
+}}}
+
+|| *Step* || Code ||
+|| *3*    || ||
+
+{{{
+    this.onChangeReturn = function(oData) {
+        my.message(oData.result);
+        _Self.exitEdit(); // Set by Contacts.html 
+    };
+}}}
+
+|| [http://code.google.com/p/yazaar/issues/detail?id=# Issue 26] ||

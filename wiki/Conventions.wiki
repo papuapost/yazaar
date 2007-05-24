@@ -153,6 +153,8 @@ http://developer.yahoo.net/yui/license.txt
 */
 }}}
 
+ * When documenting a field with a default value, the default value may be given in square brackets are part of the documentation comment.
+
 The !JsDoc tool can be used with the YUI tags, but not to the same effect as achieved by [http://tech.groups.yahoo.com/group/ydn-javascript/message/13086 YUI's internal tool]. The !JsDoc Toolkit can also be used if certain required tags and include. [http://code.google.com/p/yazaar/wiki/Taglets Other tools and taglets may be used.]
 
 
