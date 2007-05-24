@@ -1,4 +1,5 @@
 #summary Coding Conventions (Issue 1)
+#labels Featured
 
 This document may be superceded by the [http://tech.groups.yahoo.com/group/ydn-javascript/message/13648 Y! JavaScript Conventions], should they be published.
 
