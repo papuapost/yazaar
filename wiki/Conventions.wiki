@@ -59,7 +59,7 @@ This documented may be superceded by the Y! !JavaScript Conventions, should they
 
 === Constants == 
 
-As in Java, predefined values (or "constants") can be expressed as variables in all UPPER_CASE. JavaScript does not prevent these variables from being changed, and so developers must practice constraint (and observe coding conventions!).
+As in Java, predefined values (or "constants") can be expressed as variables in all UPPER_CASE. !JavaScript does not prevent these variables from being changed, and so developers must practice constraint (and observe coding conventions!).
 
 When several related constants or default values are being defined, it can be convenient to group the constants into an object. `(y)`
 
@@ -95,7 +95,7 @@ Utilize either "new" Construtors or "object" Constructors as convenient to the c
 
 == File Format ==
 
-!JavaScript files should include a copyright and license header, and JSDoc style comments. Code may also be organized into a common set of regions. `(y)`
+!JavaScript files should include a copyright and license header, and !JSDoc style comments. Code may also be organized into a common set of regions. `(y)`
 
 === Copyright/License Header ===
 
