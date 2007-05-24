@@ -1,54 +1,70 @@
 #summary Coding Conventions (Issue 1)
 
- * Follow the same conventions observed by the YUI team. 
- * The Yazaar add-ons should look and feel like YUI components.
+ * Planet Yazaar add-ons should look and feel like YUI components.
+ * Follow the conventions observed by the YUI team. 
  * Conventions observed in code created for later releases of YUI are preferred to conventions of earlier releases.
+ * Conventions documented by Crockford are preferred to conventions observed in YUI code.
+ * Conventions are tagged `(c)`, `(y)`, or `(z)` to indicate whether the source is Crockford, YUI, or Yazzar.
+ * This documented may be superceded by the Y! JavaScript Conventions, should they be published.
 
 == Commit style ==
 
-All Subversion commits must reference an issue ticket. (So open the ticket first!) 
+All Subversion commits must reference an issue ticket. (So open the ticket first!). `(z)`
 
-Subversion commit messages are posted to the development group mailing list, for both the code and the wiki. Verbose logs are recommended so as to encourage other developers to peer-review code and documentation.
+Subversion commit messages are posted to the development group mailing list, for both the code and the wiki. Verbose logs are recommended so as to encourage other developers to peer-review code and documentation. `(z)`
 
 == Coding Style ==
  
- * Observe Crockford's [http://javascript.crockford.com/code.html Code Conventions for the JavaScript Programming Language].
-   ** Exception: A leading underscore may be used to indicate methods intended as private.
- * In general, observe Java coding conventions, as described by Sun and Elements of Java Style
-
+ * Observe Crockford's [http://javascript.crockford.com/code.html Code Conventions for the JavaScript Programming Language `(c)`, unless otherwise noted.
+   ** Conventions mentioned in [http://developer.yahoo.com/yui/theater/ Crockford's videos] are also observed unless otherwise noted.
+   ** Exception: A leading underscore may be used to indicate methods intended as private. `(y)`
+ * In general, observe Java coding conventions, as described by [http://java.sun.com/docs/codeconv/ Sun] and [http://www.ambysoft.com/books/elementsJavaStyle.html The Elements of Java Style].`(z)`
+ 
 === Notes ===
  
- * Mark any known issues or feature requests with TODO comments
- * File issue tickets for significant TODOs
- * Do not use version designations, since Yazaar does not do releases per se (only distributions)
+ * Insert a space after a `if` or `else` statement. Do not insert a space between a function name and the parameter list, but insert a space if the function is anonymous. `(c)`
+ ** `if (condition)`
+ ** `var t = that(something);`
+ ** `function outer(c, ) {`
+ ** `method: function () {`
+ * Observe [http://www.w3.org/TR/html4/strict.dtd HTML 4.01 Strict], and include TYPE attributes in SCRIPT tags, as it is required by the DTD. `(z)`
+ * Place TYPE and REL attributes after the SRC or HREF attributes. `(z)`
+ * To improve legibility and coordination with LINK tags, SCRIPT tags may be specified in the HEAD. Inline scripts may be placed in a DIV at the foot of the body. `(z)`
+ * Use Yahoo hosted scripts. Place LINK and SCRIPT tags in [HappyTrails] order. `(z)`
+ * If a scripts requires a stylesheet, keep the LINK and SCRIPT tags together. `(z)`
+ * Mark any known issue or feature request with a TODO comment. `(z)`
+ * Mark any code or markup segment that must be finished before release with a FIXME comment. `(z)`
+ * File issue tickets for significant TODOs, and cross reference the inline comment. `(z)`
+ * Do not use version designations, since Yazaar does not issue versioned releases (only distributions).`(z)`
 
 == Coding Tools ==
 
- * Validate submissions and revisions with [http://www.javascriptlint.com/ JavaScript Lint].
- * Do not use HTML Tidy to format test pages, since it upsets the script formatting. 
- ** *Do* validate all test pages with HTML Tidy or the !FireFox HTML validator plugin before committing
+ * Validate submissions and revisions with [http://www.javascriptlint.com/ JavaScript Lint]. `(c)`
+ * Do not use HTML Tidy to format test pages, since it upsets the script formatting. `(z)`
+ ** *Do* validate all test pages with HTML Tidy or the !FireFox HTML validator plugin before committing. `(z)`
 
-=== Variable Type Prefix ===
+=== Yazaar Variable Type Prefixes ===
 
-|| {{{aFoo}}}  || array ||
-|| {{{dtFoo}}} || date   ||
-|| {{{eFoo}}}  || error  || 
-|| {{{elFoo}}} || HTML element || 
-|| {{{fnFoo}}} || function ||
-|| {{{nFoo}}}  || number ||
-|| {{{oFoo}}}  || object ||
-|| {{{onFoo}}}}|| function to handle foo event ||
-|| {{{sFoo}}}  || string ||
-||             || regular expression ||
+ * Variable type prefixes should be applied consistently and conscientiously. `(z)`
+ ** YUI code does utilize some prefixes, but not consistently.
 
-|| {{{isFoo}}} || boolean || also {{{hasFoo}}}, {{{useFoo}}} ||
-
+|| `aFoo`  || array        ||  ||
+|| `dtFoo` || date         ||  ||
+|| `eFoo`  || error        ||  ||
+|| `elFoo` || HTML element ||  ||
+|| `fnFoo` || function     ||  ||
+|| `nFoo`  || number       ||  ||
+|| `oFoo`  || object       ||  ||
+|| `onFoo` || function to handle `foo` event ||  ||
+|| `sFoo`  || string       ||  ||
+|| 'xFoo`  || regular expression ||  ||
+|| `isFoo` || boolean || also {{{hasFoo}}}, {{{useFoo}}}, or {{bFoo}}} ||
 
 === Constants == 
 
 As in Java, predefined values (or "constants") can be expressed as variables in all UPPER_CASE. JavaScript does not prevent these variables from being changed, and so developers must practice constraint (and observe coding conventions!).
 
-When several related constants or default values are being defined, it can be convenient t group the constants into an object. 
+When several related constants or default values are being defined, it can be convenient to group the constants into an object. `(y)`
 
 {{{
 YAHOO.widget.Module._EVENT_TYPES = {
@@ -65,10 +81,24 @@ YAHOO.widget.Module._DEFAULT_CONFIG = {
     }
 }}}
 
+When a constant is being declared for Constructor (or "Class"), assign the constant directly to the Constructor. `(y)`
+
+{{{
+YAHOO.widget.DataTable.CLASS_BODY = "yui-dt-body";
+}}}
+
+When a property is assigned a default value that may be changed by instances of the Constructor, then assign the property to the prototype. `(y)`
+
+{{{
+YAHOO.widget.DataTable._nCount = 0;
+}}}
+
+Utilize either "new" Construtors or "object" Constructors as convenient to the circumstances. `(c)`,`(y)`
+
 
 == File Format ==
 
-!JavaScript files should include a copyright and license header, and JSDoc Comments. Code may also be organized into a common set of regions.
+!JavaScript files should include a copyright and license header, and JSDoc style comments. Code may also be organized into a common set of regions. `(y)`
 
 === Copyright/License Header ===
 
@@ -81,10 +111,15 @@ http://developer.yahoo.net/yui/license.txt
 */
 }}}
 
-=== JSDoc Comments ===
+ * Use your entity for the primary copyright. 
+ * Cite Yahoo! if the code is derived from a YUI class. 
+   ** There is not need to cite Yahoo! as a copyright holder if the code is original and merely uses YUI components.
 
- * All code submissions must be fully documented, in the YUI style.
- * As suggested by JS Doc, observe the Sun JavaDoc conventions
+=== JavaDoc Style Comments ===
+
+ * All code submissions must be fully documented, in the YUI style. `(y)`
+ * In general observe the [http://java.sun.com/j2se/javadoc/writingdoccomments/index.html Sun JavaDoc conventions].
+ * Prefer the YUI tags (as follows).
 
 {{{
 /**
@@ -120,7 +155,12 @@ http://developer.yahoo.net/yui/license.txt
 */
 }}}
 
+The JsDoc tool can be used with the YUI tags, but not to the same effect as achived by YUI's internal tool. [http://code.google.com/p/yazaar/wiki/Taglets Other tools and taglets may be used.]
+
+
 === Common Code Regions ===
+
+If code regions are utilized, prefer the common YUI regions. (`y`)
 
  * Constructor
  * DOM Events
@@ -142,18 +182,6 @@ http://developer.yahoo.net/yui/license.txt
 //
 /////////////////////////////////////////////////////////////////////////////
 }}}
-
-
-=== Coding Examples === 
-
-(TODO) ...
-
-
-=== HTML pages ===
-
- * Order YUI scripts in "HappyTrails" order. 
- * For remote scripts, omit file type references ("type=text/javascript") {{{[Flanagan]}}}
- * Place scripts as low on page as possible {{{[Venkatesan]}}}
 
 
 
