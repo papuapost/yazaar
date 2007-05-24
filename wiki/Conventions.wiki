@@ -6,7 +6,7 @@ This documented may be superceded by the Y! !JavaScript Conventions, should they
    ** Follow the conventions observed by the YUI team. 
    ** Conventions observed in code created for later releases of YUI are preferred to conventions of earlier releases.
  * Conventions documented by Douglas Crockford are preferred to conventions observed in YUI code.
- * Conventions are tagged `(c)`, `(y)`, or `(z)` to indicate whether the source is Crockford, YUI, or Yazzar.
+ * Conventions noted here are either additions or clarifications. Items are tagged `(c)`, `(y)`, or `(z)` to indicate whether the source is Crockford, YUI, or Yazzar.
 
 == Coding Style ==
  
