@@ -48,10 +48,10 @@ http://developer.yahoo.net/yui/license.txt
 /****************************************************************************/
 
 /**
- * Define yazaar.widget namespace.
- * @global yazaar.widget
+ * Define yazaar namespace.
+ * @global yazaar
  */
-YAHOO.namespace("yazaar.widget");
+YAHOO.namespace("yazaar");
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -71,11 +71,11 @@ YAHOO.namespace("yazaar.widget");
  * @param oColumnSet {YAHOO.widget.ColumnSet} ColumnSet instance.
  * @param oDataSource {YAHOO.util.DataSource} DataSource instance.
 */
-YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
+YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
 
     // identify
     var i;
-    this._nIndex = YAHOO.yazaar.widget.DataForm._nCount;
+    this._nIndex = YAHOO.yazaar.DataForm._nCount;
     this._sName = "instance" + this._nIndex;
     this.id = "yazaar-df"+this._nIndex;
 
@@ -292,7 +292,7 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
      */
     this.createEvent("resetEvent");
 
-    YAHOO.yazaar.widget.DataForm._nCount++;
+    YAHOO.yazaar.DataForm._nCount++;
     YAHOO.log("DataForm initialized", "info", this.toString());
     this.fireEvent("tableInitEvent");
 
@@ -303,7 +303,7 @@ YAHOO.yazaar.widget.DataForm = function(elContainer,oColumnSet,oDataSource,oConf
  * @global YAHOO.util.EventProvider
  */
 if(YAHOO.util.EventProvider) {
-    YAHOO.augment(YAHOO.yazaar.widget.DataForm, YAHOO.util.EventProvider);
+    YAHOO.augment(YAHOO.yazaar.DataForm, YAHOO.util.EventProvider);
 }
 else {
     YAHOO.log("Missing dependency: YAHOO.util.EventProvider","error",this.toString());
@@ -324,7 +324,7 @@ else {
  * @type String
  * @final
  */
-YAHOO.yazaar.widget.DataForm.CLASS_HEADCONTAINER = "yazaar-df-headcontainer";
+YAHOO.yazaar.DataForm.CLASS_HEADCONTAINER = "yazaar-df-headcontainer";
 
 /**
  * Class name assigned to text displayed within THEAD.
@@ -336,7 +336,7 @@ YAHOO.yazaar.widget.DataForm.CLASS_HEADCONTAINER = "yazaar-df-headcontainer";
  * @final
  * @default yazaar-dt-headtext"
  */
-YAHOO.yazaar.widget.DataForm.CLASS_HEADTEXT = "yazaar-df-headtext";
+YAHOO.yazaar.DataForm.CLASS_HEADTEXT = "yazaar-df-headtext";
 
 /**
  * Class name assigned to TBODY element that holds buttons.
@@ -348,7 +348,7 @@ YAHOO.yazaar.widget.DataForm.CLASS_HEADTEXT = "yazaar-df-headtext";
  * @final
  * @default "yazaar-dt-body"
  */
-YAHOO.yazaar.widget.DataForm.MENU_BODY = "yazaar-df-menu";
+YAHOO.yazaar.DataForm.MENU_BODY = "yazaar-df-menu";
 
 /**
  * Label for Submit button
@@ -360,7 +360,7 @@ YAHOO.yazaar.widget.DataForm.MENU_BODY = "yazaar-df-menu";
  * @final
  * @default "SUBMIT"
  */
-YAHOO.yazaar.widget.DataForm.MSG_SUBMIT = "SUBMIT";
+YAHOO.yazaar.DataForm.MSG_SUBMIT = "SUBMIT";
 
 /**
  * Label for Reset button
@@ -372,7 +372,7 @@ YAHOO.yazaar.widget.DataForm.MSG_SUBMIT = "SUBMIT";
  * @final
  * @default "RESET"
  */
-YAHOO.yazaar.widget.DataForm.MSG_RESET = "RESET";
+YAHOO.yazaar.DataForm.MSG_RESET = "RESET";
 
 /**
  * Label for Cancel button
@@ -384,7 +384,7 @@ YAHOO.yazaar.widget.DataForm.MSG_RESET = "RESET";
  * @final
  * @default "CANCEL"
  */
-YAHOO.yazaar.widget.DataForm.MSG_CANCEL = "CANCEL";
+YAHOO.yazaar.DataForm.MSG_CANCEL = "CANCEL";
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -398,7 +398,7 @@ YAHOO.yazaar.widget.DataForm.MSG_CANCEL = "CANCEL";
  * @property fields
  * @type HTMLElement[]
  */
-YAHOO.yazaar.widget.DataForm.prototype._aFields = null;
+YAHOO.yazaar.DataForm.prototype._aFields = null;
 
 /**
  * Internal class variable to index multiple DataForm instances.
@@ -407,7 +407,7 @@ YAHOO.yazaar.widget.DataForm.prototype._aFields = null;
  * @type Number
  * @private
  */
-YAHOO.yazaar.widget.DataForm._nCount = 0;
+YAHOO.yazaar.DataForm._nCount = 0;
 
 /**
  * Instance index.
@@ -416,7 +416,7 @@ YAHOO.yazaar.widget.DataForm._nCount = 0;
  * @type Number
  * @private
  */
-YAHOO.yazaar.widget.DataForm.prototype._nIndex = null;
+YAHOO.yazaar.DataForm.prototype._nIndex = null;
 
 /**
  * Unique instance name.
@@ -425,7 +425,7 @@ YAHOO.yazaar.widget.DataForm.prototype._nIndex = null;
  * @type String
  * @private
  */
-YAHOO.yazaar.widget.DataForm.prototype._sName = null;
+YAHOO.yazaar.DataForm.prototype._sName = null;
 
 // TODO: convert these to public members (Y!)
 
@@ -437,7 +437,7 @@ YAHOO.yazaar.widget.DataForm.prototype._sName = null;
  * @type HTMLElement
  * @private
  */
-YAHOO.yazaar.widget.DataForm.prototype._elContainer = null;
+YAHOO.yazaar.DataForm.prototype._elContainer = null;
 
 /**
  * FORM element reference.
@@ -446,7 +446,7 @@ YAHOO.yazaar.widget.DataForm.prototype._elContainer = null;
  * @type HTMLElement
  * @private
  */
-YAHOO.yazaar.widget.DataForm.prototype._elForm = null;
+YAHOO.yazaar.DataForm.prototype._elForm = null;
 
 /**
  * TABLE element reference.
@@ -455,7 +455,7 @@ YAHOO.yazaar.widget.DataForm.prototype._elForm = null;
  * @type HTMLElement
  * @private
  */
-YAHOO.yazaar.widget.DataForm.prototype._elTable = null;
+YAHOO.yazaar.DataForm.prototype._elTable = null;
 
 /**
  * TBODY element reference.
@@ -464,7 +464,7 @@ YAHOO.yazaar.widget.DataForm.prototype._elTable = null;
  * @type HTMLElement
  * @private
  */
-YAHOO.yazaar.widget.DataForm.prototype._elBody = null;
+YAHOO.yazaar.DataForm.prototype._elBody = null;
 
 /**
  * Submit control reference.
@@ -473,7 +473,7 @@ YAHOO.yazaar.widget.DataForm.prototype._elBody = null;
  * @type HTMLElement
  * @private
  */
-YAHOO.yazaar.widget.DataForm.prototype._elSubmit = null;
+YAHOO.yazaar.DataForm.prototype._elSubmit = null;
 
 /**
  * Reset control reference.
@@ -482,7 +482,7 @@ YAHOO.yazaar.widget.DataForm.prototype._elSubmit = null;
  * @type HTMLElement
  * @private
  */
-YAHOO.yazaar.widget.DataForm.prototype._elReset = null;
+YAHOO.yazaar.DataForm.prototype._elReset = null;
 
 /**
  * Cancel control reference.
@@ -491,7 +491,7 @@ YAHOO.yazaar.widget.DataForm.prototype._elReset = null;
  * @type HTMLElement
  * @private
  */
-YAHOO.yazaar.widget.DataForm.prototype._elCancel = null;
+YAHOO.yazaar.DataForm.prototype._elCancel = null;
 
 /**
  * ColumnSet instance.
@@ -500,7 +500,7 @@ YAHOO.yazaar.widget.DataForm.prototype._elCancel = null;
  * @type YAHOO.widget.ColumnSet
  * @private
  */
-YAHOO.yazaar.widget.DataForm.prototype._oColumnSet = null;
+YAHOO.yazaar.DataForm.prototype._oColumnSet = null;
 
 /**
  * RecordSet instance.
@@ -509,7 +509,7 @@ YAHOO.yazaar.widget.DataForm.prototype._oColumnSet = null;
  * @type YAHOO.widget.RecordSet
  * @private
  */
-YAHOO.yazaar.widget.DataForm.prototype._oRecordSet = null;
+YAHOO.yazaar.DataForm.prototype._oRecordSet = null;
 
 /**
  * Record instance most recently edited.
@@ -518,7 +518,7 @@ YAHOO.yazaar.widget.DataForm.prototype._oRecordSet = null;
  * @type YAHOO.widget.Record
  * @private
  */
-YAHOO.yazaar.widget.DataForm.prototype._oRecord = null;
+YAHOO.yazaar.DataForm.prototype._oRecord = null;
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -531,7 +531,7 @@ YAHOO.yazaar.widget.DataForm.prototype._oRecord = null;
  *
  * @private
  */
-YAHOO.yazaar.widget.DataForm.prototype._initButton = function(name,parent,id,s) {
+YAHOO.yazaar.DataForm.prototype._initButton = function(name,parent,id,s) {
   var el;
   try {
     el = document.createElement("<input type='button' />"); // IE idiom
@@ -553,7 +553,7 @@ YAHOO.yazaar.widget.DataForm.prototype._initButton = function(name,parent,id,s) 
  *
  * @private
  */
-YAHOO.yazaar.widget.DataForm.prototype._initForm = function() {
+YAHOO.yazaar.DataForm.prototype._initForm = function() {
     // Clear the container
     this._elContainer.innerHTML = "";
   var id = this.id;
@@ -607,15 +607,15 @@ YAHOO.yazaar.widget.DataForm.prototype._initForm = function() {
   elMenuCell.colSpan = nColSpan;
 
   // Submit
-  var elSubmit = initButton("elSubmit", elMenuCell, sForm_id, YAHOO.yazaar.widget.DataForm.MSG_SUBMIT);
+  var elSubmit = initButton("elSubmit", elMenuCell, sForm_id, YAHOO.yazaar.DataForm.MSG_SUBMIT);
   YAHOO.util.Event.addListener(elSubmit, "click", this._onSubmit, this);
 
   // Reset
-  var elReset = initButton("elReset", elMenuCell, sForm_id, YAHOO.yazaar.widget.DataForm.MSG_RESET);
+  var elReset = initButton("elReset", elMenuCell, sForm_id, YAHOO.yazaar.DataForm.MSG_RESET);
   YAHOO.util.Event.addListener(elReset, "click", this._onReset, this);
 
   // Cancel
-  var elCancel = initButton("elCancel", elMenuCell, sForm_id, YAHOO.yazaar.widget.DataForm.MSG_CANCEL);
+  var elCancel = initButton("elCancel", elMenuCell, sForm_id, YAHOO.yazaar.DataForm.MSG_CANCEL);
   YAHOO.util.Event.addListener(elCancel, "click", this._onCancel, this);
 
   // Note elements for future reference
@@ -630,7 +630,7 @@ YAHOO.yazaar.widget.DataForm.prototype._initForm = function() {
  *
  * @private
  */
-YAHOO.yazaar.widget.DataForm.prototype._initHead = function(elTable, sForm_id) {
+YAHOO.yazaar.DataForm.prototype._initHead = function(elTable, sForm_id) {
     var i,oColumn;
 
     // Create THEAD
@@ -692,7 +692,7 @@ YAHOO.yazaar.widget.DataForm.prototype._initHead = function(elTable, sForm_id) {
  * @param col {number} Column index.
  * @private
  */
-YAHOO.yazaar.widget.DataForm.prototype._initHeadCell = function(elHeadCell,oColumn,row,col) {
+YAHOO.yazaar.DataForm.prototype._initHeadCell = function(elHeadCell,oColumn,row,col) {
     // Clear out the cell of prior content
     // TODO: purgeListeners and other validation-related things (Y!)
     var index = this._nIndex;
@@ -730,16 +730,16 @@ YAHOO.yazaar.widget.DataForm.prototype._initHeadCell = function(elHeadCell,oColu
  * Raises cancelEvent.
  *
  * @param e {HTMLEvent} The click event.
- * @param oSelf {YAHOO.yazaar.widget.DataForm} DataForm instance.
+ * @param oSelf {YAHOO.yazaar.DataForm} DataForm instance.
  * @private
  */
-YAHOO.yazaar.widget.DataForm.prototype._onCancel = function(e, oSelf) {
+YAHOO.yazaar.DataForm.prototype._onCancel = function(e, oSelf) {
       var oRecord = oSelf._oRecord; // Restore this reference
     oSelf.fireEvent("cancelEvent", {oRecord: oRecord});
     oSelf.logRecordEvent("cancelEvent", oRecord); // debug
 };
 
-YAHOO.yazaar.widget.DataForm.prototype._onDocumentKeyup = function(e, oSelf) {
+YAHOO.yazaar.DataForm.prototype._onDocumentKeyup = function(e, oSelf) {
     if (!oSelf.isActive) return;
     // escape ?
     if (e.keyCode == 27)  {
@@ -754,11 +754,11 @@ YAHOO.yazaar.widget.DataForm.prototype._onDocumentKeyup = function(e, oSelf) {
  * Handles form reset event by invoking reset method.
  *
  * @param e {HTMLEvent} The click event.
- * @param oSelf {YAHOO.yazaar.widget.DataForm} DataForm instance.
+ * @param oSelf {YAHOO.yazaar.DataForm} DataForm instance.
  * @see reset
  * @private
  */
-YAHOO.yazaar.widget.DataForm.prototype._onReset = function(e, oSelf) {
+YAHOO.yazaar.DataForm.prototype._onReset = function(e, oSelf) {
     oSelf.reset();
 };
 
@@ -770,10 +770,10 @@ YAHOO.yazaar.widget.DataForm.prototype._onReset = function(e, oSelf) {
  * boolean property, so that listeners can update external records.
  *
  * @param e {HTMLEvent} The click event.
- * @param oSelf {YAHOO.yazaar.widget.DataForm} DataForm instance.
+ * @param oSelf {YAHOO.yazaar.DataForm} DataForm instance.
  * @private
  */
-YAHOO.yazaar.widget.DataForm.prototype._onSubmit = function(e, oSelf) {
+YAHOO.yazaar.DataForm.prototype._onSubmit = function(e, oSelf) {
   oSelf.update();
 };
 
@@ -789,7 +789,7 @@ YAHOO.yazaar.widget.DataForm.prototype._onSubmit = function(e, oSelf) {
  * @property isActive
  * @type Boolean
  */
-YAHOO.yazaar.widget.DataForm.prototype.isActive = false;
+YAHOO.yazaar.DataForm.prototype.isActive = false;
 
 /**
  * True if the DataForm is empty of data. False if DataForm is populated with
@@ -798,7 +798,7 @@ YAHOO.yazaar.widget.DataForm.prototype.isActive = false;
  * @property isEmpty
  * @type Boolean
  */
-YAHOO.yazaar.widget.DataForm.prototype.isEmpty = false;
+YAHOO.yazaar.DataForm.prototype.isEmpty = false;
 
 /**
  * DataTable instance.
@@ -807,7 +807,7 @@ YAHOO.yazaar.widget.DataForm.prototype.isEmpty = false;
  * @type YAHOO.widget.DataTable
  * @optional
   */
- YAHOO.yazaar.widget.DataForm.prototype.oDataList = null;
+ YAHOO.yazaar.DataForm.prototype.oDataList = null;
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -818,7 +818,7 @@ YAHOO.yazaar.widget.DataForm.prototype.isEmpty = false;
 /**
  * Create and return a copy of the original record.
  */
-YAHOO.yazaar.widget.DataForm.prototype.copyRecord = function() {
+YAHOO.yazaar.DataForm.prototype.copyRecord = function() {
   var oRecord = this._oRecord;
   var oCopy = {};
   for (var prop in oRecord) {
@@ -838,7 +838,7 @@ YAHOO.yazaar.widget.DataForm.prototype.copyRecord = function() {
  * @return {Boolean} Return true to continue loading data into RecordSet and
  * updating DataForm with new Records, false to cancel.
  */
-YAHOO.yazaar.widget.DataForm.prototype.doBeforeLoadData = function(sRequest, oResponse) {
+YAHOO.yazaar.DataForm.prototype.doBeforeLoadData = function(sRequest, oResponse) {
     return true;
 };
 
@@ -847,7 +847,7 @@ YAHOO.yazaar.widget.DataForm.prototype.doBeforeLoadData = function(sRequest, oRe
  *
  * @return {HTMLElement[]} Array of selected TR elements.
  */
-YAHOO.yazaar.widget.DataForm.prototype.getSelectedRecordIds = function() {
+YAHOO.yazaar.DataForm.prototype.getSelectedRecordIds = function() {
     return this._aSelectedRecords || [];
 };
 
@@ -855,7 +855,7 @@ YAHOO.yazaar.widget.DataForm.prototype.getSelectedRecordIds = function() {
  * Obtain the value of form input controls into a copy of the original
  * record, so that any record values not shown on the form are retained.
  */
-YAHOO.yazaar.widget.DataForm.prototype.harvestForm = function() {
+YAHOO.yazaar.DataForm.prototype.harvestForm = function() {
   var oRecord = this.copyRecord();
   var aFields = this._aFields;
   var nFields = aFields.length;
@@ -869,7 +869,7 @@ YAHOO.yazaar.widget.DataForm.prototype.harvestForm = function() {
 /**
  * Hide any placeholder message row.
  */
-YAHOO.yazaar.widget.DataForm.prototype.hideTableMessages = function() {
+YAHOO.yazaar.DataForm.prototype.hideTableMessages = function() {
     if(!this.isEmpty && !this.isLoading) {
         return;
     }
@@ -886,7 +886,7 @@ YAHOO.yazaar.widget.DataForm.prototype.hideTableMessages = function() {
  *
  * @param {Object} oNewRecord Record for comparion or the form is harvested.
  */
-YAHOO.yazaar.widget.DataForm.prototype.isRecordChanged = function(oNewRecord) {
+YAHOO.yazaar.DataForm.prototype.isRecordChanged = function(oNewRecord) {
   if (arguments.length==0) {
     oNewRecord = this.harvestForm();
   }
@@ -925,7 +925,7 @@ YAHOO.yazaar.widget.DataForm.prototype.isRecordChanged = function(oNewRecord) {
  * <p>
  * This implementation depends on Jamie Curnow's validate script.
  */
-YAHOO.yazaar.widget.DataForm.prototype.isInvalidInput = function() {
+YAHOO.yazaar.DataForm.prototype.isInvalidInput = function() {
   var errs = new Array();
   var all_valid = true;
 
@@ -1040,7 +1040,7 @@ YAHOO.yazaar.widget.DataForm.prototype.isInvalidInput = function() {
  * @param oPrevRecord The prior state of record under edit
  * @debug
  */
-YAHOO.yazaar.widget.DataForm.prototype.logRecordEvent = function(sEventName, oRecord, oPrevRecord) {
+YAHOO.yazaar.DataForm.prototype.logRecordEvent = function(sEventName, oRecord, oPrevRecord) {
   var nArgs, sMessage, sRecord, sPrevRecord;
   nArgs = arguments.length;
   switch (nArgs) {
@@ -1070,7 +1070,7 @@ YAHOO.yazaar.widget.DataForm.prototype.logRecordEvent = function(sEventName, oRe
  *
  * @method populateForm
  */
-YAHOO.yazaar.widget.DataForm.prototype.populateForm = function() {
+YAHOO.yazaar.DataForm.prototype.populateForm = function() {
     this.hideTableMessages();
   var oDataList = this.oDataList;
   var isShared = !!(oDataList);
@@ -1101,7 +1101,7 @@ YAHOO.yazaar.widget.DataForm.prototype.populateForm = function() {
 /**
  * Placeholder row to indicate table data is empty.
  */
-YAHOO.yazaar.widget.DataForm.prototype.showEmptyMessage = function() {
+YAHOO.yazaar.DataForm.prototype.showEmptyMessage = function() {
     if(this.isEmpty) {
         return;
     }
@@ -1119,7 +1119,7 @@ YAHOO.yazaar.widget.DataForm.prototype.showEmptyMessage = function() {
 /**
  * Placeholder row to indicate table data is loading.
  */
-YAHOO.yazaar.widget.DataForm.prototype.showLoadingMessage = function() {
+YAHOO.yazaar.DataForm.prototype.showLoadingMessage = function() {
     if(this.isLoading) {
         return;
     }
@@ -1139,7 +1139,7 @@ YAHOO.yazaar.widget.DataForm.prototype.showLoadingMessage = function() {
  *
  * @return {String} Unique name of the DataSource instance.
  */
-YAHOO.yazaar.widget.DataForm.prototype.toString = function() {
+YAHOO.yazaar.DataForm.prototype.toString = function() {
     return "DataForm " + this._sName;
 };
 
@@ -1148,7 +1148,7 @@ YAHOO.yazaar.widget.DataForm.prototype.toString = function() {
  * <p>
  * Repopulates Recordset, and raises resetEvent.
  */
-YAHOO.yazaar.widget.DataForm.prototype.reset = function() {
+YAHOO.yazaar.DataForm.prototype.reset = function() {
     var oRecord = this._oRecord; // Restore this reference
   var aFields = this._aFields;
   var nFields = aFields.length;
@@ -1166,7 +1166,7 @@ YAHOO.yazaar.widget.DataForm.prototype.reset = function() {
  *
  * @method update
  */
-YAHOO.yazaar.widget.DataForm.prototype.update = function() {
+YAHOO.yazaar.DataForm.prototype.update = function() {
 
   if (this.isInvalidInput()) return;
 
@@ -1209,7 +1209,7 @@ YAHOO.yazaar.widget.DataForm.prototype.update = function() {
  * @param sRequest {String} Original request.
  * @param oResponse {Object} Response object.
  */
-YAHOO.yazaar.widget.DataForm.prototype.onDataReturnPopulateForm = function(sRequest, oResponse) {
+YAHOO.yazaar.DataForm.prototype.onDataReturnPopulateForm = function(sRequest, oResponse) {
     this.fireEvent("dataReturnEvent", {request:sRequest,response:oResponse});
 
     var ok = this.doBeforeLoadData(sRequest, oResponse);
