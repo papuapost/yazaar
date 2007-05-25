@@ -43,3 +43,8 @@ See also [http://code.google.com/p/anvil/wiki/CommonProblems Anvil Common Proble
 || || ||
 || (!) || *: 'undefined' is null or not an object* ||
 || (/) || If data is being input from a static array, there may be an extra comma after the last array item. || 
+
+=== Yazaar ===
+
+|| (?) || FLEV: *Changing from List to Edit exposes the "Exit without saving changes" prompt before the edit screen is presented, but only for some entries.* ||
+|| (/) || If Edit uses a select control, confirm that the data for the entry matches an select option. ||
