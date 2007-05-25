@@ -671,7 +671,7 @@ YAHOO.yazaar.DataForm.prototype._initHead = function(elTable, sForm_id) {
 };
 
 YAHOO.yazaar.DataForm.prototype._initControl = function(elCell,oColumn,sForm_id) {
-    var type = oColumn.type;
+    var type = oColumn.formType || oColumn.type;
     var markup = "";
     var classname = "";
     var elInput = null;
@@ -747,7 +747,7 @@ YAHOO.yazaar.DataForm.prototype._initTextControl = function(elCell,oColumn) {
 
 YAHOO.yazaar.DataForm.prototype._initSelectControl = function(elCell,oColumn) {
     var isCompliant = true;
-    var aOptions = oColumn.selectOptions;
+    var aOptions = oColumn.formSelectOptions || oColumn.selectOptions ;
     var elInput = elCell.appendChild(document.createElement("select"));
     var elOption;
     var nOption = aOptions.length;
