@@ -107,46 +107,45 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
 
     // validate HTML Element
     elContainer = YAHOO.util.Dom.get(elContainer);
-  var isContainer = elContainer && elContainer.tagName && (elContainer.tagName.toLowerCase() == "div");
+    var isContainer = elContainer && elContainer.tagName && (elContainer.tagName.toLowerCase() == "div");
     if (isContainer) {
         this._elContainer = elContainer;
 
-    // adopt or create RecordSet
-  var oDataList = this.oDataList;
-  if (oDataList) {
-     var isValid = (oDataList instanceof YAHOO.widget.DataTable);
-       if (isValid) {
-      this._oRecordSet = oDataList.getRecordSet();
-      YAHOO.log("DataTable RecordSet will be shared", "info", this.toString()); // debug
-    }
-    else {
-      YAHOO.log("Invalid DataTable -- RecordSet will not be shared", "error", this.toString());
-    }
-    }
-  if (this._oRecordSet==null) {
-    this._oRecordSet = new YAHOO.widget.RecordSet();
-    YAHOO.log("Creating new RecordSet", "info", this.toString()); // debug
-  }
+        // adopt or create RecordSet
+        var oDataList = this.oDataList;
+        if (oDataList) {
+           var isValid = (oDataList instanceof YAHOO.widget.DataTable);
+             if (isValid) {
+            this._oRecordSet = oDataList.getRecordSet();
+            YAHOO.log("DataTable RecordSet will be shared", "info", this.toString()); // debug
+          }
+          else {
+            YAHOO.log("Invalid DataTable -- RecordSet will not be shared", "error", this.toString());
+            }
+        }
+        if (this._oRecordSet==null) {
+          this._oRecordSet = new YAHOO.widget.RecordSet();
+          YAHOO.log("Creating new RecordSet", "info", this.toString()); // debug
+        }
 
-  // enhance markup
+        // enhance markup
 
         // TODO: Peek in container child nodes to see if TABLE already exists
 
-    // TODO: Progressively enhance an existing form from markup...
+        // TODO: Progressively enhance an existing form from markup...
 
-            var elForm = null;
-
+        var elForm = null;
+    
         // Create markup from scratch using the provided DataSource
         if(this.dataSource) {
-                this._initForm();
-        if (oDataList) {
-          // Already have data
-          this.populateForm();
-
-        } else {
-                  // Send out for data in an asynchronous request
-          oDataSource.sendRequest(this.initialRequest, this.onDataReturnPopulateForm, this);
-        }
+            this._initForm();
+            if (oDataList) {
+              // Already have data
+              this.populateForm();
+            } else {
+                // Send out for data in an asynchronous request
+                oDataSource.sendRequest(this.initialRequest, this.onDataReturnPopulateForm, this);
+            }
         }
         // Else there is no data
         else {
@@ -154,7 +153,6 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
             this.showEmptyMessage();
         }
     }
-
     // Container element not found in document
     else {
         YAHOO.log("Could not instantiate DataForm due to an invalid container element", "error", this.toString());
@@ -172,7 +170,7 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
 
     //YAHOO.util.Event.addListener(elForm, "focus", this._onFocus, this);
     //YAHOO.util.Event.addListener(elForm, "blur", this._onBlur, this);
-  YAHOO.util.Event.addListener(document, "keyup", this._onDocumentKeyup, this);
+    YAHOO.util.Event.addListener(document, "keyup", this._onDocumentKeyup, this);
 
     /////////////////////////////////////////////////////////////////////////////
     //
@@ -556,73 +554,73 @@ YAHOO.yazaar.DataForm.prototype._initButton = function(name,parent,id,s) {
 YAHOO.yazaar.DataForm.prototype._initForm = function() {
     // Clear the container
     this._elContainer.innerHTML = "";
-  var id = this.id;
-
+    var id = this.id;
+    
     // Create FORM
     var elForm = this._elContainer.appendChild(document.createElement("form"));
-  var sForm_id = id + "-form"
-  elForm.id = sForm_id;
-
+    var sForm_id = id + "-form"
+    elForm.id = sForm_id;
+    
     // Create TABLE
-  var elTable =  elForm.appendChild(document.createElement("table"));
+    var elTable =  elForm.appendChild(document.createElement("table"));
     elTable.tabIndex = 0;
-
+    
     // Create SUMMARY, if applicable
     if(this.summary) {
         elTable.summary = this.summary;
     }
-
+    
     // Create CAPTION, if applicable
     if(this.caption) {
         this._elCaption = elTable.appendChild(document.createElement("caption"));
         this._elCaption.innerHTML = this.caption;
     }
-
+    
     // Create THEAD
-  this._elForm = elForm;
+    this._elForm = elForm;
     this._elTable = elTable;
     this._initHead(elTable, sForm_id, this._oColumnSet);
-
+    
     // Create TBODY for messages
     var elMsgBody = document.createElement("tbody");
     elMsgBody.tabIndex = -1;
-  var elMsgRow = elMsgBody.appendChild(document.createElement("tr"));
+    var elMsgRow = elMsgBody.appendChild(document.createElement("tr"));
     var elMsgCell = elMsgRow.appendChild(document.createElement("td"));
-  var nColSpan = this._oColumnSet.tree.length+1;
-  elMsgCell.colSpan =  nColSpan;
+    var nColSpan = this._oColumnSet.tree.length+1;
+    elMsgCell.colSpan =  nColSpan;
     this._elMsgBody = elTable.appendChild(elMsgBody);
-  this._elBody = elBody;
+    this._elBody = elBody;
     this._elMsgRow = elMsgRow;
     this._elMsgCell = elMsgCell;
     this.showLoadingMessage();
-
+    
     // Create TBODY for data-entry controls
-  var elBody = elTable.appendChild(document.createElement("tbody"))
+    var elBody = elTable.appendChild(document.createElement("tbody"))
     elBody.tabIndex = -1;
     YAHOO.util.Dom.addClass(elBody,YAHOO.widget.DataTable.MENU_BODY);
-
-  var initButton = this._initButton;
-  var elMenuRow = elBody.appendChild(document.createElement("tr"));
+    
+    var initButton = this._initButton;
+    var elMenuRow = elBody.appendChild(document.createElement("tr"));
     var elMenuCell = elMenuRow.appendChild(document.createElement("td"));
-  elMenuCell.colSpan = nColSpan;
-
-  // Submit
-  var elSubmit = initButton("elSubmit", elMenuCell, sForm_id, YAHOO.yazaar.DataForm.MSG_SUBMIT);
-  YAHOO.util.Event.addListener(elSubmit, "click", this._onSubmit, this);
-
-  // Reset
-  var elReset = initButton("elReset", elMenuCell, sForm_id, YAHOO.yazaar.DataForm.MSG_RESET);
-  YAHOO.util.Event.addListener(elReset, "click", this._onReset, this);
-
-  // Cancel
-  var elCancel = initButton("elCancel", elMenuCell, sForm_id, YAHOO.yazaar.DataForm.MSG_CANCEL);
-  YAHOO.util.Event.addListener(elCancel, "click", this._onCancel, this);
-
-  // Note elements for future reference
-  this._elMenuRow = elMenuRow;
-  this._elSubmit = elSubmit;
-  this._elReset = elReset;
-  this._elCancel = elCancel;
+    elMenuCell.colSpan = nColSpan;
+    
+    // Submit
+    var elSubmit = initButton("elSubmit", elMenuCell, sForm_id, YAHOO.yazaar.DataForm.MSG_SUBMIT);
+    YAHOO.util.Event.addListener(elSubmit, "click", this._onSubmit, this);
+    
+    // Reset
+    var elReset = initButton("elReset", elMenuCell, sForm_id, YAHOO.yazaar.DataForm.MSG_RESET);
+    YAHOO.util.Event.addListener(elReset, "click", this._onReset, this);
+    
+    // Cancel
+    var elCancel = initButton("elCancel", elMenuCell, sForm_id, YAHOO.yazaar.DataForm.MSG_CANCEL);
+    YAHOO.util.Event.addListener(elCancel, "click", this._onCancel, this);
+    
+    // Note elements for future reference
+    this._elMenuRow = elMenuRow;
+    this._elSubmit = elSubmit;
+    this._elReset = elReset;
+    this._elCancel = elCancel;
 }
 
 /**
@@ -632,52 +630,52 @@ YAHOO.yazaar.DataForm.prototype._initForm = function() {
  */
 YAHOO.yazaar.DataForm.prototype._initHead = function(elTable, sForm_id) {
     var i,oColumn;
-
+    
     // Create THEAD
     var elHead = document.createElement("thead");
     elHead.tabIndex = -1;
-
+    
     // Iterate through each row of Column headers...
-  // TODO: Try with nested column headers
-  // TODO: Can the loop be a method that invokes a call back method,
-  // so it can also be used by PopulateForm
+    // TODO: Try with nested column headers
+    // TODO: Can the loop be a method that invokes a call back method,
+    // so it can also be used by PopulateForm
     var colTree = this._oColumnSet.tree;
-  var aFields = new Array(colTree.length);
-  var n = 0;
+    var aFields = new Array(colTree.length);
+    var n = 0;
     for(i=0; i<colTree.length; i++) {
         // ...and create THEAD cells
         for(var j=0; j<colTree[i].length; j++) {
-          var elHeadRow = elHead.appendChild(document.createElement("tr"));
-          elHeadRow.id = this.id+"-hdrow"+i;
+            var elHeadRow = elHead.appendChild(document.createElement("tr"));
+            elHeadRow.id = this.id+"-hdrow"+i;
             oColumn = colTree[i][j];
             var elHeadCell = elHeadRow.appendChild(document.createElement("th"));
-      var id = oColumn.getId()
+            var id = oColumn.getId()
             elHeadCell.id = id +"-label";
             this._initHeadCell(elHeadCell,oColumn,i,j);
             var elDataCell = elHeadRow.appendChild(document.createElement("td"));
-      elDataCell.id = id + "-data";
-      var elInput = elDataCell.appendChild(document.createElement("input"));
-      elInput.name = oColumn.key;
-      elInput.id = sForm_id + "_" + elInput.name;
-      elInput.type = "text"; // TODO: change for columnEditor type
-        if(oColumn.formMinLength) {
-        elInput.minLength = oColumn.formMinLength;
-        }
-        if(oColumn.formMaxLength) {
-        elInput.maxLength = oColumn.formMaxLength;
-        }
-        if(oColumn.formClassName) {
-            YAHOO.util.Dom.addClass(elInput,oColumn.formClassName);
-        }
-        if(oColumn.formTitle) {
-        elInput.title = oColumn.formTitle;
-        }
-      aFields[n++] = elInput;
-        YAHOO.util.Dom.addClass(elInput,YAHOO.widget.DataTable.CLASS_EDITABLE);
+            elDataCell.id = id + "-data";
+            var elInput = elDataCell.appendChild(document.createElement("input"));
+            elInput.name = oColumn.key;
+            elInput.id = sForm_id + "_" + elInput.name;
+            elInput.type = "text"; // TODO: change for columnEditor type
+            if(oColumn.formMinLength) {
+                elInput.minLength = oColumn.formMinLength;
+            }
+            if(oColumn.formMaxLength) {
+                elInput.maxLength = oColumn.formMaxLength;
+            }
+            if(oColumn.formClassName) {
+                YAHOO.util.Dom.addClass(elInput,oColumn.formClassName);
+            }
+            if(oColumn.formTitle) {
+                elInput.title = oColumn.formTitle;
+            }
+            aFields[n++] = elInput;
+            YAHOO.util.Dom.addClass(elInput,YAHOO.widget.DataTable.CLASS_EDITABLE);
         }
     }
-
-  this._aFields = aFields;
+    
+    this._aFields = aFields;
     this._elHead = elTable.appendChild(elHead);
     YAHOO.log("THEAD with " + this._oColumnSet.keys.length + " field labels and input controls created","info",this.toString());
 
@@ -856,14 +854,14 @@ YAHOO.yazaar.DataForm.prototype.getSelectedRecordIds = function() {
  * record, so that any record values not shown on the form are retained.
  */
 YAHOO.yazaar.DataForm.prototype.harvestForm = function() {
-  var oRecord = this.copyRecord();
-  var aFields = this._aFields;
-  var nFields = aFields.length;
-  for (var i=0; i<nFields; i++) {
-    var elInput = aFields[i];
-    oRecord[elInput.name] = elInput.value;
-  }
-  return oRecord;
+    var oRecord = this.copyRecord();
+    var aFields = this._aFields;
+    var nFields = aFields.length;
+    for (var i=0; i<nFields; i++) {
+      var elInput = aFields[i];
+      oRecord[elInput.name] = elInput.value;
+    }
+    return oRecord;
 }
 
 /**
@@ -887,16 +885,16 @@ YAHOO.yazaar.DataForm.prototype.hideTableMessages = function() {
  * @param {Object} oNewRecord Record for comparion or the form is harvested.
  */
 YAHOO.yazaar.DataForm.prototype.isRecordChanged = function(oNewRecord) {
-  if (arguments.length==0) {
-    oNewRecord = this.harvestForm();
-  }
-  var oPrevRecord = this._oRecord;
-  var same = true;
-  for (var prop in oPrevRecord) {
-    // TODO: Subclass fields only?
-    same = same && (oPrevRecord[prop] == oNewRecord[prop]);
-  }
-  return !same;
+    if (arguments.length==0) {
+      oNewRecord = this.harvestForm();
+    }
+    var oPrevRecord = this._oRecord;
+    var same = true;
+    for (var prop in oPrevRecord) {
+      // TODO: Subclass fields only?
+      same = same && (oPrevRecord[prop] == oNewRecord[prop]);
+    }
+    return !same;
 }
 
 /**
@@ -926,108 +924,106 @@ YAHOO.yazaar.DataForm.prototype.isRecordChanged = function(oNewRecord) {
  * This implementation depends on Jamie Curnow's validate script.
  */
 YAHOO.yazaar.DataForm.prototype.isInvalidInput = function() {
-  var errs = new Array();
-  var all_valid = true;
-
-  //access form elements
-  //inputs
-  var f_in = this._aFields;
-  // TODO selects
-  // var f_sl = elm.getElementsByTagName('select');
-  // TODO textareas
-  // var f_ta = elm.getElementsByTagName('textarea');
-
-  //check inputs
-  for (i=0;i<f_in.length;i++) {
-    if (f_in[i].type.toLowerCase() != 'submit' && f_in[i].type.toLowerCase() != 'button' && f_in[i].type.toLowerCase() != 'hidden') {
-      if (isVisible(f_in[i])) {
-
-        var cname = ' '+f_in[i].className.replace(/^\s*|\s*$/g,'')+' ';
-        cname = cname.toLowerCase();
-        var inv = f_in[i].value.trim();
-        var t = f_in[i].type.toLowerCase();
-        var cext = '';
-        if (t == 'text' || t == 'password') {
-          //text box
-          var valid = FIC_checkField(cname,f_in[i]);
-        } else if(t == 'radio' || t == 'checkbox'){
-          // radio or checkbox
-          var valid = FIC_checkRadCbx(cname,f_in[i],f_in);
-          cext = '-cr';
-        } else {
-          var valid = true;
+    var errs = new Array();
+    var all_valid = true;
+    
+    //access form elements
+    //inputs
+    var f_in = this._aFields;
+    // TODO selects
+    // var f_sl = elm.getElementsByTagName('select');
+    // TODO textareas
+    // var f_ta = elm.getElementsByTagName('textarea');
+    
+    //check inputs
+    for (i=0;i<f_in.length;i++) {
+        if (f_in[i].type.toLowerCase() != 'submit' && f_in[i].type.toLowerCase() != 'button' && f_in[i].type.toLowerCase() != 'hidden') {
+            if (isVisible(f_in[i])) {    
+                var cname = ' '+f_in[i].className.replace(/^\s*|\s*$/g,'')+' ';
+                cname = cname.toLowerCase();
+                var inv = f_in[i].value.trim();
+                var t = f_in[i].type.toLowerCase();
+                var cext = '';
+                if (t == 'text' || t == 'password') {
+                    //text box
+                    var valid = FIC_checkField(cname,f_in[i]);
+                } else if(t == 'radio' || t == 'checkbox'){
+                    // radio or checkbox
+                    var valid = FIC_checkRadCbx(cname,f_in[i],f_in);
+                    cext = '-cr';
+                } else {
+                    var valid = true;
+                }    
+                if (valid) {
+                    removeClassName(f_in[i],'validation-failed'+cext);
+                    addClassName(f_in[i],'validation-passed'+cext);
+                } else {
+                    removeClassName(f_in[i],'validation-passed'+cext);
+                    addClassName(f_in[i],'validation-failed'+cext);
+                    //try to get title
+                    if (f_in[i].getAttribute('title')){
+                      errs[errs.length] = f_in[i].getAttribute('title');
+                    }
+                    all_valid = false;
+                }
+            }
         }
+    } //end for i
 
+    /*
+    //check textareas
+    for (i=0;i<f_ta.length;i++) {
+      if (isVisible(f_ta[i])) {
+        var cname = ' '+f_ta[i].className.replace(/^\s*|\s*$/g,'')+' ';
+        cname = cname.toLowerCase();
+        var valid = FIC_checkField(cname,f_ta[i]);
+    
         if (valid) {
-          removeClassName(f_in[i],'validation-failed'+cext);
-          addClassName(f_in[i],'validation-passed'+cext);
+          removeClassName(f_ta[i],'validation-failed');
+          addClassName(f_ta[i],'validation-passed');
         } else {
-          removeClassName(f_in[i],'validation-passed'+cext);
-          addClassName(f_in[i],'validation-failed'+cext);
+          removeClassName(f_ta[i],'validation-passed');
+          addClassName(f_ta[i],'validation-failed');
           //try to get title
-          if (f_in[i].getAttribute('title')){
-            errs[errs.length] = f_in[i].getAttribute('title');
+          if (f_ta[i].getAttribute('title')){
+            errs[errs.length] = f_ta[i].getAttribute('title');
           }
           all_valid = false;
         }
       }
-    }
-  } //end for i
+    } //end for i
 
-  /*
-  //check textareas
-  for (i=0;i<f_ta.length;i++) {
-    if (isVisible(f_ta[i])) {
-      var cname = ' '+f_ta[i].className.replace(/^\s*|\s*$/g,'')+' ';
-      cname = cname.toLowerCase();
-      var valid = FIC_checkField(cname,f_ta[i]);
-
-      if (valid) {
-        removeClassName(f_ta[i],'validation-failed');
-        addClassName(f_ta[i],'validation-passed');
-      } else {
-        removeClassName(f_ta[i],'validation-passed');
-        addClassName(f_ta[i],'validation-failed');
-        //try to get title
-        if (f_ta[i].getAttribute('title')){
-          errs[errs.length] = f_ta[i].getAttribute('title');
+    //check selects
+    for (i=0;i<f_sl.length;i++) {
+      if (isVisible(f_sl[i])) {
+        var cname = ' '+f_sl[i].className.replace(/^\s*|\s*$/g,'')+' ';
+        cname = cname.toLowerCase();
+        var valid = FIC_checkSel(cname,f_sl[i]);
+        if (valid) {
+          removeClassName(f_sl[i],'validation-failed-sel');
+          addClassName(f_sl[i],'validation-passed-sel');
+        } else {
+          removeClassName(f_sl[i],'validation-passed-sel');
+          addClassName(f_sl[i],'validation-failed-sel');
+          //try to get title
+          if (f_sl[i].getAttribute('title')){
+            errs[errs.length] = f_sl[i].getAttribute('title');
+          }
+          all_valid = false;
         }
-        all_valid = false;
       }
-    }
-  } //end for i
+    } //end for i
+    */
 
-  //check selects
-  for (i=0;i<f_sl.length;i++) {
-    if (isVisible(f_sl[i])) {
-      var cname = ' '+f_sl[i].className.replace(/^\s*|\s*$/g,'')+' ';
-      cname = cname.toLowerCase();
-      var valid = FIC_checkSel(cname,f_sl[i]);
-      if (valid) {
-        removeClassName(f_sl[i],'validation-failed-sel');
-        addClassName(f_sl[i],'validation-passed-sel');
-      } else {
-        removeClassName(f_sl[i],'validation-passed-sel');
-        addClassName(f_sl[i],'validation-failed-sel');
-        //try to get title
-        if (f_sl[i].getAttribute('title')){
-          errs[errs.length] = f_sl[i].getAttribute('title');
+    var isInvalid = !all_valid;
+    if (isInvalid) {
+        if (errs.length > 0){
+            alert("We have found the following error(s):\n\n  * "+errs.join("\n  * ")+"\n\nPlease check the fields and try again");
+        } else {
+            alert('Some required values are not correct. Please check the items in red.');
         }
-        all_valid = false;
-      }
     }
-  } //end for i
-  */
-
-  var isInvalid = !all_valid;
-  if (isInvalid) {
-    if (errs.length > 0){
-      alert("We have found the following error(s):\n\n  * "+errs.join("\n  * ")+"\n\nPlease check the fields and try again");
-    } else {
-      alert('Some required values are not correct. Please check the items in red.');
-    }
-  }
-  return isInvalid;
+    return isInvalid;
 } // end isInvalidInput
 
 /**
@@ -1041,27 +1037,27 @@ YAHOO.yazaar.DataForm.prototype.isInvalidInput = function() {
  * @debug
  */
 YAHOO.yazaar.DataForm.prototype.logRecordEvent = function(sEventName, oRecord, oPrevRecord) {
-  var nArgs, sMessage, sRecord, sPrevRecord;
-  nArgs = arguments.length;
-  switch (nArgs) {
-    case 0:
-      sMessage = "Event details not specified!";
-      break;
-    case 1:
-      sMessage = sEventName;
-      break;
-    case 2:
-        sRecord = (oRecord) ? oRecord.toJSONString() : "undefined";
-      sMessage = sEventName + "{oRecord: " + sRecord + "}";
-      break;
-    default:
-      // 3 args or more
-        sRecord = (oRecord) ? oRecord.toJSONString() : "undefined";
-      sPrevRecord = (oPrevRecord) ? oPrevRecord.toJSONString() : "undefined";
-      sMessage = sEventName + "{oRecord: " + sRecord + ", " + "oPrevRecord: " + sPrevRecord + "}";
-      break;
-  }
-  YAHOO.log(sMessage, "info", this.toString());
+    var nArgs, sMessage, sRecord, sPrevRecord;
+    nArgs = arguments.length;
+    switch (nArgs) {
+        case 0:
+            sMessage = "Event details not specified!";
+            break;
+        case 1:
+            sMessage = sEventName;
+            break;
+        case 2:
+            sRecord = (oRecord) ? oRecord.toJSONString() : "undefined";
+            sMessage = sEventName + "{oRecord: " + sRecord + "}";
+            break;
+        default:
+             // 3 args or more
+            sRecord = (oRecord) ? oRecord.toJSONString() : "undefined";
+            sPrevRecord = (oPrevRecord) ? oPrevRecord.toJSONString() : "undefined";
+            sMessage = sEventName + "{oRecord: " + sRecord + ", " + "oPrevRecord: " + sPrevRecord + "}";
+             break;
+    }
+    YAHOO.log(sMessage, "info", this.toString());
 }
 
 /**
@@ -1072,30 +1068,30 @@ YAHOO.yazaar.DataForm.prototype.logRecordEvent = function(sEventName, oRecord, o
  */
 YAHOO.yazaar.DataForm.prototype.populateForm = function() {
     this.hideTableMessages();
-  var oDataList = this.oDataList;
-  var isShared = !!(oDataList);
-  var oRecordSet =  (isShared) ? oDataList._oRecordSet : this._oRecordSet;
+    var oDataList = this.oDataList;
+    var isShared = !!(oDataList);
+    var oRecordSet =  (isShared) ? oDataList._oRecordSet : this._oRecordSet;
     var oSelectedRecords =  (isShared) ? oDataList.getSelectedRecordIds() : this.getSelectedRecordIds();
-  var nLength = oSelectedRecords.length;
-  // TODO: For YUI 2.2.4, confirm that single select only selects one row (1703840)
+    var nLength = oSelectedRecords.length;
+    // TODO: For YUI 2.2.4, confirm that single select only selects one row (1703840)
     var oRecord = (nLength > 0) ? oRecordSet.getRecord(oSelectedRecords[nLength-1]) : oRecordSet.getRecord(0);
     var oTree = this._oColumnSet.tree;
-  var aFields = this._aFields;
-  var n = 0;
-  var elInput = aFields[0];
-  // FIXME: Breaks in IE - elInput.focus();
-  // If the Record is empty, there's nothing to populate
-  if (oRecord) for(i=0; i<oTree.length; i++) {
+    var aFields = this._aFields;
+    var n = 0;
+    var elInput = aFields[0];
+    // FIXME: Breaks in IE - elInput.focus();
+    // If the Record is empty, there's nothing to populate
+    if (oRecord) for(i=0; i<oTree.length; i++) {
         for(var j=0; j<oTree[i].length; j++) {
-        var oColumn = oTree[i][j];
-        var sKey = oColumn.key;
-        elInput = aFields[n++];
-        elInput.value = oRecord[sKey];
+            var oColumn = oTree[i][j];
+            var sKey = oColumn.key;
+            elInput = aFields[n++];
+            elInput.value = oRecord[sKey];
+        }
     }
-  }
-  this._oRecord = oRecord;
+    this._oRecord = oRecord;
     this.fireEvent("populateEvent", {newRecord:oRecord});
-  this.logRecordEvent("populateEvent", oRecord); // debug
+    this.logRecordEvent("populateEvent", oRecord); // debug
 };
 
 /**
@@ -1150,15 +1146,15 @@ YAHOO.yazaar.DataForm.prototype.toString = function() {
  */
 YAHOO.yazaar.DataForm.prototype.reset = function() {
     var oRecord = this._oRecord; // Restore this reference
-  var aFields = this._aFields;
-  var nFields = aFields.length;
-  for (var i=0; i<nFields; i++) {
-      // TODO: Subclass fields only?
-    var elInput = aFields[i];
-    elInput.value = oRecord[elInput.name];
-  }
+    var aFields = this._aFields;
+    var nFields = aFields.length;
+    for (var i=0; i<nFields; i++) {
+        // TODO: Subclass fields only?
+        var elInput = aFields[i];
+        elInput.value = oRecord[elInput.name];
+    }
     this.fireEvent("resetEvent", {oRecord:oRecord});
-  this.logRecordEvent("resetEvent", oRecord); // debug
+    this.logRecordEvent("resetEvent", oRecord); // debug
 }
 
 /**
@@ -1168,31 +1164,31 @@ YAHOO.yazaar.DataForm.prototype.reset = function() {
  */
 YAHOO.yazaar.DataForm.prototype.update = function() {
 
-  if (this.isInvalidInput()) return;
-
-  // Gather the usual suspects
-  var oRecord = this._oRecord;
-  var oPrevRecord = this.copyRecord();
-  var oNewRecord = this.harvestForm();
-  // Check to see if anything changed
-  var isChanged = this.isRecordChanged(oNewRecord);
-  if (isChanged) {
-    for (var prop in oRecord) {
-      oRecord[prop] = oNewRecord[prop]
+    if (this.isInvalidInput()) return;
+    
+    // Gather the usual suspects
+    var oRecord = this._oRecord;
+    var oPrevRecord = this.copyRecord();
+    var oNewRecord = this.harvestForm();
+    // Check to see if anything changed
+    var isChanged = this.isRecordChanged(oNewRecord);
+    if (isChanged) {
+        for (var prop in oRecord) {
+            oRecord[prop] = oNewRecord[prop]
+        }
     }
-  }
-  // Raise updateEvent
-  var context = {oRecord: oNewRecord, oPrevRecord: oPrevRecord, isChanged: isChanged};
+    // Raise updateEvent
+    var context = {oRecord: oNewRecord, oPrevRecord: oPrevRecord, isChanged: isChanged};
     this.fireEvent("updateEvent", context);
-  var sLog = (isChanged) ? "updateEvent" : "updateEvent (no change)";
-  this.logRecordEvent(sLog, oNewRecord, oPrevRecord); // debug
-  if (isChanged) {
-    // Refresh the table
-    var oDataList = this.oDataList;
-    if (oDataList) {
-      oDataList.showPage(oDataList.pageCurrent);
+    var sLog = (isChanged) ? "updateEvent" : "updateEvent (no change)";
+    this.logRecordEvent(sLog, oNewRecord, oPrevRecord); // debug
+    if (isChanged) {
+        // Refresh the table
+        var oDataList = this.oDataList;
+        if (oDataList) {
+          oDataList.showPage(oDataList.pageCurrent);
+        }
     }
-  }
 };
 
 
