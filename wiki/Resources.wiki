@@ -48,6 +48,7 @@
 = Specifications = 
 
  * [http://www.w3.org/TR/html4/strict.dtd HTML 4 DTD]
+ * [http://www.w3.org/TR/REC-DOM-Level-1/ DOM Level 1]
  * [http://www.ecma-international.org/publications/files/ecma-st/ECMA-262.pdf ECMAScript Language Specification - 3rd edition (pdf)]
 
 
