@@ -22,8 +22,13 @@ var onRowClickEvent = function(oArgs) {
 }
 oDataTable.subscribe("cellClickEvent", onRowClickEvent);
 
+// Inject selectOptions
+var oSession = {};
+oSession ["breed_selectOptions"] = ["Cocker Spaniel","English Bulldog","German Shepherd","Golden Retriever","Greyhound","Labrador Retriever","Norwich Terrier","Poodle","Yorkshire Terrier"];
+
+
 // Setup DataForm
-var oConfigs = {oDataList: oDataTable};
+var oConfigs = {oDataList: oDataTable, oSession: oSession};
 var oDataForm = new YAHOO.yazaar.DataForm("elDataForm", oColumnSet, oDataSource, oConfigs);
 
 // Setup Logger

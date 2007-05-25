@@ -675,37 +675,38 @@ YAHOO.yazaar.DataForm.prototype._initControl = function(elCell,oColumn,sForm_id)
     var markup = "";
     var classname = "";
     var elInput = null;
+    
     switch(type) {
         case "checkbox":
-            elInput = this._initTextControl(elCell,oColumn);
+            elInput = this.checkbox(elCell,oColumn);
             classname = YAHOO.widget.DataTable.CLASS_CHECKBOX;
             break;
         case "currency":
-            elInput = this._initTextControl(elCell,oColumn);
+            elInput = this.text(elCell,oColumn);
             classname = YAHOO.widget.DataTable.CLASS_CURRENCY;
             break;
         case "date":
-            elInput = this._initTextControl(elCell,oColumn);
+            elInput = this.text(elCell,oColumn);
             classname = YAHOO.widget.DataTable.CLASS_DATE;
             break;
         case "email":
-            elInput = this._initTextControl(elCell,oColumn);
+            elInput = this.text(elCell,oColumn);
             classname = YAHOO.widget.DataTable.CLASS_EMAIL;
             break;
         case "link":
-            elInput = this._initTextControl(elCell,oColumn);
+            elInput = this.text(elCell,oColumn);
             classname = YAHOO.widget.DataTable.CLASS_LINK;
             break;
         case "number":
-            elInput = this._initTextControl(elCell,oColumn);
+            elInput = this.text(elCell,oColumn);
             classname = YAHOO.widget.DataTable.CLASS_NUMBER;
             break;
         case "select":
-            elInput = this._initSelectControl(elCell,oColumn);
+            elInput = this.select(elCell,oColumn);
             classname = YAHOO.widget.DataTable.CLASS_SELECT;
             break;
        default:
-            elInput = this._initTextControl(elCell,oColumn);
+            elInput = this.text(elCell,oColumn);
             classname = YAHOO.widget.DataTable.CLASS_STRING;
         break;
     }
@@ -738,16 +739,22 @@ YAHOO.yazaar.DataForm.prototype._initControl = function(elCell,oColumn,sForm_id)
         
 };
 
-// FIXME: This could be a Controls object ( var control = controls[type]; control(...) );
-YAHOO.yazaar.DataForm.prototype._initTextControl = function(elCell,oColumn) {
+/**
+ * Generic "state" object that can be used to store select lists obtained from
+ * a database call, and other objects as convenient.
+ * Select options can be stored here in the format oColumn.key + "_selectOptions".
+ */
+YAHOO.yazaar.DataForm.prototype.oSession = {};
+   
+YAHOO.yazaar.DataForm.prototype.checkbox = function(elCell,oColumn) {
     var elInput = elCell.appendChild(document.createElement("input"));
-    elInput.type = "text";
+    elInput.type = "checkbox";
     return elInput;
 }
 
-YAHOO.yazaar.DataForm.prototype._initSelectControl = function(elCell,oColumn) {
-    var isCompliant = true;
-    var aOptions = oColumn.formSelectOptions || oColumn.selectOptions ;
+YAHOO.yazaar.DataForm.prototype.select = function(elCell,oColumn) {
+    var sKey = oColumn.key + "_selectOptions";
+    var aOptions = this.oSession[sKey] || oColumn.formSelectOptions || oColumn.selectOptions ;
     var elInput = elCell.appendChild(document.createElement("select"));
     var elOption;
     var nOption = aOptions.length;
@@ -761,6 +768,12 @@ YAHOO.yazaar.DataForm.prototype._initSelectControl = function(elCell,oColumn) {
             elInput.add(elOption); // IE only
         }
     }
+    return elInput;
+}
+   
+YAHOO.yazaar.DataForm.prototype.text = function(elCell,oColumn) {
+    var elInput = elCell.appendChild(document.createElement("input"));
+    elInput.type = "text";
     return elInput;
 }
    
@@ -969,7 +982,11 @@ YAHOO.yazaar.DataForm.prototype.harvestForm = function() {
     var nFields = aFields.length;
     for (var i=0; i<nFields; i++) {
       var elInput = aFields[i];
-      oRecord[elInput.name] = elInput.value;
+      if (elInput.type == "checkbox") {
+        oRecord[elInput.name] = (elInput.value == "checked") ? 1 : 0;
+      } else {
+          oRecord[elInput.name] = elInput.value;
+      }
     }
     return oRecord;
 }
@@ -1002,7 +1019,7 @@ YAHOO.yazaar.DataForm.prototype.isRecordChanged = function(oNewRecord) {
     var same = true;
     for (var prop in oPrevRecord) {
       // TODO: Subclass fields only?
-      same = same && (oPrevRecord[prop] == oNewRecord[prop]);
+      same = same && (oPrevRecord[prop] == oNewRecord[prop]); // allow type conversions
     }
     return !same;
 }
@@ -1196,7 +1213,12 @@ YAHOO.yazaar.DataForm.prototype.populateForm = function() {
             var oColumn = oTree[i][j];
             var sKey = oColumn.key;
             elInput = aFields[n++];
-            elInput.value = oRecord[sKey];
+            if (elInput.type == "checkbox") {
+                elInput.value = (elInput.value) ? "checked" : "";
+            }
+            else {
+                elInput.value = oRecord[sKey];
+            }
         }
     }
     this._oRecord = oRecord;
