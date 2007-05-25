@@ -645,31 +645,20 @@ YAHOO.yazaar.DataForm.prototype._initHead = function(elTable, sForm_id) {
     for(i=0; i<colTree.length; i++) {
         // ...and create THEAD cells
         for(var j=0; j<colTree[i].length; j++) {
+
             var elHeadRow = elHead.appendChild(document.createElement("tr"));
             elHeadRow.id = this.id+"-hdrow"+i;
             oColumn = colTree[i][j];
+
             var elHeadCell = elHeadRow.appendChild(document.createElement("th"));
             var id = oColumn.getId()
             elHeadCell.id = id +"-label";
             this._initHeadCell(elHeadCell,oColumn,i,j);
+
             var elDataCell = elHeadRow.appendChild(document.createElement("td"));
             elDataCell.id = id + "-data";
-            var elInput = elDataCell.appendChild(document.createElement("input"));
-            elInput.name = oColumn.key;
-            elInput.id = sForm_id + "_" + elInput.name;
-            elInput.type = "text"; // TODO: change for columnEditor type
-            if(oColumn.formMinLength) {
-                elInput.minLength = oColumn.formMinLength;
-            }
-            if(oColumn.formMaxLength) {
-                elInput.maxLength = oColumn.formMaxLength;
-            }
-            if(oColumn.formClassName) {
-                YAHOO.util.Dom.addClass(elInput,oColumn.formClassName);
-            }
-            if(oColumn.formTitle) {
-                elInput.title = oColumn.formTitle;
-            }
+            
+            var elInput = this._initControl(elDataCell,oColumn,sForm_id);            
             aFields[n++] = elInput;
             YAHOO.util.Dom.addClass(elInput,YAHOO.widget.DataTable.CLASS_EDITABLE);
         }
@@ -680,6 +669,127 @@ YAHOO.yazaar.DataForm.prototype._initHead = function(elTable, sForm_id) {
     YAHOO.log("THEAD with " + this._oColumnSet.keys.length + " field labels and input controls created","info",this.toString());
 
 };
+
+YAHOO.yazaar.DataForm.prototype._initControl = function(elCell,oColumn,sForm_id) {
+    var type = oColumn.type;
+    var markup = "";
+    var classname = "";
+    var elInput = null;
+    switch(type) {
+        case "checkbox":
+            elInput = this._initTextControl(elCell,oColumn);
+            classname = YAHOO.widget.DataTable.CLASS_CHECKBOX;
+            break;
+        case "currency":
+            elInput = this._initTextControl(elCell,oColumn);
+            classname = YAHOO.widget.DataTable.CLASS_CURRENCY;
+            break;
+        case "date":
+            elInput = this._initTextControl(elCell,oColumn);
+            classname = YAHOO.widget.DataTable.CLASS_DATE;
+            break;
+        case "email":
+            elInput = this._initTextControl(elCell,oColumn);
+            classname = YAHOO.widget.DataTable.CLASS_EMAIL;
+            break;
+        case "link":
+            elInput = this._initTextControl(elCell,oColumn);
+            classname = YAHOO.widget.DataTable.CLASS_LINK;
+            break;
+        case "number":
+            elInput = this._initTextControl(elCell,oColumn);
+            classname = YAHOO.widget.DataTable.CLASS_NUMBER;
+            break;
+        case "select":
+            elInput = this._initSelectControl(elCell,oColumn);
+            classname = YAHOO.widget.DataTable.CLASS_SELECT;
+            break;
+       default:
+            elInput = this._initTextControl(elCell,oColumn);
+            classname = YAHOO.widget.DataTable.CLASS_STRING;
+        break;
+    }
+
+    elInput.name = oColumn.key;
+    elInput.id = sForm_id + "_" + elInput.name;
+
+    YAHOO.util.Dom.addClass(elCell, classname);
+    if(oColumn.className) {
+        YAHOO.util.Dom.addClass(elCell, this.className);
+    };
+        
+    if(oColumn.formMinLength) {
+        elInput.minLength = oColumn.formMinLength;
+    };
+
+    if(oColumn.formMaxLength) {
+        elInput.maxLength = oColumn.formMaxLength;
+    };
+
+    if(oColumn.formClassName) {
+        YAHOO.util.Dom.addClass(elInput,oColumn.formClassName);
+    };
+
+    if(oColumn.formTitle) {
+        elInput.title = oColumn.formTitle;
+    };
+    
+    return elInput;
+        
+};
+
+// FIXME: This could be a Controls object ( var control = controls[type]; control(...) );
+YAHOO.yazaar.DataForm.prototype._initTextControl = function(elCell,oColumn) {
+    var elInput = elCell.appendChild(document.createElement("input"));
+    elInput.type = "text";
+    return elInput;
+}
+
+YAHOO.yazaar.DataForm.prototype._initSelectControl = function(elCell,oColumn) {
+    var isCompliant = true;
+    var aOptions = oColumn.selectOptions;
+    var elInput = elCell.appendChild(document.createElement("select"));
+    var elOption;
+    var nOption = aOptions.length;
+    for (var n=0; n<nOption; n++) {
+        elOption = document.createElement('option');
+        elOption.text = aOptions[n];
+        elOption.value = aOptions[n];
+        try {
+            elInput.add(elOption,null);
+        } catch(e) {
+            elInput.add(elOption); // IE only
+        }
+    }
+    return elInput;
+}
+   
+/*
+YAHOO.widget.Column.formatSelect = function(elCell, oRecord, oColumn, oData) {
+    var selectedValue = oData;
+    var options = oColumn.selectOptions;
+
+    var markup = "<select>";
+    if(options) {
+        for(var i=0; i<options.length; i++) {
+            var option = options[i];
+            markup += "<option value=\"" + option + "\"";
+            if(selectedValue === option) {
+                markup += " selected";
+            }
+            markup += ">" + option + "</option>";
+        }
+    }
+    else {
+        if(selectedValue) {
+            markup += "<option value=\"" + selectedValue + "\" selected>" + selectedValue + "</option>";
+        }
+    }
+    markup += "</select>";
+    elCell.innerHTML = markup;
+};
+*/
+
 
 /**
  * Populates TH cell as defined by Column.

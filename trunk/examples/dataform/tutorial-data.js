@@ -1,7 +1,7 @@
 // Setup DataTable
 var oColumnHeaders = [
     {key:"name", text:"Dog's Name", formClassName: "required", formTitle: "Dog's Name is required"},
-    {key:"breed", text:"Dog's Breed", formClassName: "required", formTitle: "Dog's Breed is required"},
+    {key:"breed", text:"Dog's Breed", type:"select", selectOptions: ["German Shepard", "Norwich Terrier", "Labrador Retriever", "Yorkshire Terrier", "Golden Retriever", "Greyhound", "English Bulldog"], formClassName: "required", formTitle: "Dog's Breed is required"},
     {key:"age", text:"Dog's Age (in Weeks)", type:"number", formClassName: "validate-number", formTitle: "Enter Dog's Age in number of weeks"}
 ];
 var oColumnSet = new YAHOO.widget.ColumnSet(oColumnHeaders);
