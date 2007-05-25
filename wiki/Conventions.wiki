@@ -20,10 +20,10 @@ This document may be superceded by the [http://tech.groups.yahoo.com/group/ydn-j
 === HTML tags ===
  
  * Observe [http://www.w3.org/TR/html4/strict.dtd HTML 4.01 Strict], and include TYPE attributes in SCRIPT tags, as it is required by the DTD. `(z)`
- * Place TYPE and REL attributes after the SRC or HREF attributes. `(z)`
- * To improve legibility and coordination with LINK tags, SCRIPT tags may be specified in the HEAD. Inline scripts may be placed in a DIV at the foot of the body. `(z)`
- * Use Yahoo hosted scripts. Place LINK and SCRIPT tags in [HappyTrails] order. `(z)`
+ * Place REL and TYPE attributes after the SRC or HREF attributes. `(z)`
  * If a scripts requires a stylesheet, keep the LINK and SCRIPT tags together. `(z)`
+ * To improve legibility and coordination with LINK tags, SCRIPT tags should be specified in the HEAD. Inline scripts may be placed in a DIV at the foot of the body. `(z)`
+ * Use Yahoo! hosted scripts. Place LINK and SCRIPT tags in [HappyTrails] order. `(z)`
 
 === Constants == 
 
