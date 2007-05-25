@@ -3,60 +3,27 @@
 
 This document may be superceded by the [http://tech.groups.yahoo.com/group/ydn-javascript/message/13648 Y! JavaScript Conventions], should they be published.
 
+== Prime Directive ==
  * Planet Yazaar add-ons should look and feel like YUI components.
-   ** Follow the conventions observed by the YUI team. 
    ** Conventions observed in code created for later releases of YUI are preferred to conventions of earlier releases.
- * Conventions documented by Douglas Crockford are preferred to conventions observed in YUI code.
- * Conventions noted here are either additions or clarifications. Items are tagged `(c)`, `(y)`, or `(z)` to indicate whether the source is Crockford, YUI, or Yazzar.
+   ** Conventions documented by Douglas Crockford are preferred to conventions observed in YUI code or standard Java conventions.
+   ** Items are tagged `(c)`, `(y)`, or `(z)` to indicate whether the source of the convention is Crockford, YUI, or Yazaar.
 
 == Coding Style ==
  
- * Observe Crockford's [http://javascript.crockford.com/code.html Code Conventions for the JavaScript Programming Language] `(c)`, unless otherwise noted. (Read me first!)
+ * Observe Crockford's [http://javascript.crockford.com/code.html Code Conventions for the JavaScript Programming Language], unless otherwise noted. (Read me first!)
    ** Conventions mentioned in [http://developer.yahoo.com/yui/theater/ Crockford's videos] are also observed unless otherwise noted.
    ** Exception: A leading underscore may be used to indicate methods intended as private. `(y)`
- * In general, observe Java coding conventions, as described by [http://java.sun.com/docs/codeconv/ Sun] and [http://www.ambysoft.com/books/elementsJavaStyle.html The Elements of Java Style].`(z)`
- 
-=== Meta Comments ==
+ * Otherwise, observe typical Java coding conventions, as described by [http://java.sun.com/docs/codeconv/ Sun] and [http://www.ambysoft.com/books/elementsJavaStyle.html The Elements of Java Style].
+ * The Crockford and Java conventions are incorporated by reference. Noted here are exceptions, additions, and clarifications.
 
- * Mark any known issue or feature request with a TODO comment. `(z)`
- * Mark any code or markup segment that must be finished before release with a FIXME comment. `(z)`
- * File issue tickets for significant TODOs, and cross reference the inline comment. `(z)`
- * Do not use version designations, since Yazaar does not issue versioned releases (only distributions). `(z)`
-
-=== Notes ===
+=== HTML tags ===
  
  * Observe [http://www.w3.org/TR/html4/strict.dtd HTML 4.01 Strict], and include TYPE attributes in SCRIPT tags, as it is required by the DTD. `(z)`
  * Place TYPE and REL attributes after the SRC or HREF attributes. `(z)`
  * To improve legibility and coordination with LINK tags, SCRIPT tags may be specified in the HEAD. Inline scripts may be placed in a DIV at the foot of the body. `(z)`
  * Use Yahoo hosted scripts. Place LINK and SCRIPT tags in [HappyTrails] order. `(z)`
  * If a scripts requires a stylesheet, keep the LINK and SCRIPT tags together. `(z)`
- * Insert a space after a `if` or `else` statement. Do not insert a space between a function name and the parameter list, but insert a space if the function is anonymous. `(c)`
-   ** `if (condition)`
-   ** `var t = that(something);`
-   ** `function outer(c, ) {`
-   ** `method: function () {`
-
-== Coding Tools ==
-
- * Validate submissions and revisions with [http://www.javascriptlint.com/ JavaScript Lint] or equivalent. `(c)`
- * Do not use HTML Tidy to format test pages, since it upsets the script formatting. `(z)`
- ** *Do* validate all test pages with HTML Tidy or the !FireFox HTML validator plugin before committing. `(z)`
-
-=== Yazaar Variable Type Prefixes ===
-
- * Variable type prefixes should be applied consistently and conscientiously. `(z)`
-
-|| `aFoo`  || array        ||  ||
-|| `dtFoo` || date         ||  ||
-|| `eFoo`  || error        ||  ||
-|| `elFoo` || HTML element ||  ||
-|| `fnFoo` || function     ||  ||
-|| `nFoo`  || number       ||  ||
-|| `oFoo`  || object       ||  ||
-|| `onFoo` || function to handle `foo` event ||  ||
-|| `sFoo`  || string       ||  ||
-|| 'xFoo`  || regular expression ||  ||
-|| `isFoo` || boolean || also `hasFoo`, `useFoo`, or `bFoo` ||
 
 === Constants == 
 
@@ -91,12 +58,34 @@ When a property is assigned a default value that may be changed by instances of 
 YAHOO.widget.DataTable._nCount = 0;
 }}}
 
-Utilize either "new" Construtors or "object" Constructors as convenient to the circumstances. `(c)`,`(y)`
+=== Variable Type Prefixes ===
 
+ * Variable type prefixes should be applied consistently and conscientiously. `(z)`
+
+|| `aFoo`  || array        ||  ||
+|| `dtFoo` || date         ||  ||
+|| `eFoo`  || error        ||  ||
+|| `elFoo` || HTML element ||  ||
+|| `fnFoo` || function     ||  ||
+|| `nFoo`  || number       ||  ||
+|| `oFoo`  || object       ||  ||
+|| `onFoo` || function to handle `foo` event ||  ||
+|| `sFoo`  || string       ||  ||
+|| 'xFoo`  || regular expression ||  ||
+|| `isFoo` || boolean || also `hasFoo`, `useFoo`, or `bFoo` ||
+
+=== Other Clarifications ===
+
+ * Utilize either "new" Constructors or "object" Constructors as convenient to the circumstances. `(c)`,`(y)`
+ * Insert a space after a `if` or `else` statement. Do not insert a space between a function name and the parameter list, but insert a space if the function is anonymous. `(c)`
+   ** `if (condition)`
+   ** `var t = that(something);`
+   ** `function outer(c, ) {`
+   ** `method: function () {`
 
 == File Format ==
 
-!JavaScript files should include a copyright and license header, and !JSDoc style comments. Code may also be organized into a common set of regions. `(y)`
+!JavaScript files should include a copyright and license header, and documentation comments using !JavaDoc style tags. Code may also be organized into a common set of regions. `(y)`
 
 === Copyright/License Header ===
 
@@ -115,7 +104,7 @@ http://developer.yahoo.net/yui/license.txt
 
 === JavaDoc Style Comments ===
 
- * All code submissions must be fully documented, in the YUI style. `(y)`
+ * All code contributions should be fully documented, in the YUI style. `(y)`
  * In general observe the [http://java.sun.com/j2se/javadoc/writingdoccomments/index.html Sun JavaDoc conventions].
  * Prefer the YUI tags (as follows).
 
@@ -182,6 +171,19 @@ If code regions are utilized, prefer the common YUI regions. (`y`)
 //
 /////////////////////////////////////////////////////////////////////////////
 }}}
+
+=== Inline Comments ===
+
+ * Mark any known issue or feature request with a TODO comment. `(z)`
+ * Mark any code or markup segment that must be finished before release with a FIXME comment. `(z)`
+ * File issue tickets for significant TODOs, and cross reference the inline comment. `(z)`
+ * Do not use version designations, since Yazaar does not issue versioned releases (only distributions). `(z)`
+
+== Coding Tools ==
+
+ * Validate submissions and revisions with [http://www.javascriptlint.com/ JavaScript Lint] or equivalent. `(c)`
+ * Do not use HTML Tidy to format test pages, since it upsets the script formatting. `(z)`
+ ** *Do* validate all test pages with HTML Tidy or the !FireFox HTML validator plugin before committing. `(z)`
 
 == Commit style ==
 
