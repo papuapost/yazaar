@@ -23,8 +23,8 @@ var onRowClickEvent = function(oArgs) {
 oDataTable.subscribe("cellClickEvent", onRowClickEvent);
 
 // Setup DataForm
-var oConfigs = {oDataTable: oDataTable};
-var oDataForm = new YAHOO.yazaar.widget.DataForm("elDataForm", oColumnSet, oDataSource, oConfigs);
+var oConfigs = {oDataList: oDataTable};
+var oDataForm = new YAHOO.yazaar.DataForm("elDataForm", oColumnSet, oDataSource, oConfigs);
 
 // Setup Logger
 var oLogReader = new YAHOO.widget.LogReader("elLogReader");

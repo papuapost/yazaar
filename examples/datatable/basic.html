@@ -32,10 +32,10 @@
 			<script type="text/javascript">
 				YAHOO.example.Data = {};
 				YAHOO.example.Data.bookorders = [
-				    {id:"po-0167", date:new Date(1980, 2, 24), quantity:1, amount:4, title:"A Book About Nothing"},
-				    {id:"po-0297", date:new Date("January 3, 1983"), quantity:null, amount:12.12345, title:"The Meaning of Life"},
-				    {id:"po-0783", date:new Date(1978, 11, 12), quantity:12, amount:1.25, title:"This Book Was Meant to Be Read Aloud"},
-				    {id:"po-1482", date:new Date("March 11, 1985"), quantity:6, amount:3.5, title:"Read Me Twice"}
+				    {id:"po-0167", date:new Date(1980, 2, 24), quantity:1, amount:4, title:"A Book About Nothing", genre:"one", in_stock: 0},
+				    {id:"po-0297", date:new Date("January 3, 1983"), quantity:null, amount:12.12345, title:"The Meaning of Life", genre:"two", in_stock: 1},
+				    {id:"po-0783", date:new Date(1978, 11, 12), quantity:12, amount:1.25, title:"This Book Was Meant to Be Read Aloud", genre:"three"},
+				    {id:"po-1482", date:new Date("March 11, 1985"), quantity:6, amount:3.5, title:"Read Me Twice", genre:"one", in_stock: true}
 				];      
 				
 				var my = {};			
@@ -47,7 +47,9 @@
 				    {key:"date", type:"date", sortable:true, resizeable:true},
 				    {key:"quantity", type:"number", sortable:true, resizeable:true},
 				    {key:"amount", type:"currency", sortable:true, resizeable:true},
-				    {key:"title", type:"html", sortable:true, resizeable:true}
+				    {key:"title", type:"html", sortable:true, resizeable:true},
+				    {key:"genre", type:"select", selectOptions: ["one", "two", "three"], editor:"textbox"},
+				    {key:"in_stock", type:"checkbox", editor:"textbox"}
 				];		
 
 				my.oColumnSet = new YAHOO.widget.ColumnSet(my.oColumnHeaders);
@@ -59,6 +61,18 @@
 				};
 				
 				my.oDataTable = new YAHOO.widget.DataTable("elDataTable", my.oColumnSet, my.oDataSource,{caption:"Example: Basic Table"});
+                
+                my.oDataTable.subscribe("cellClickEvent",my.oDataTable.onEventEditCell);
+                my.oDataTable.subscribe("cellMouseoverEvent",my.oDataTable.onEventHighlightCell);
+                my.oDataTable.subscribe("cellMouseoutEvent",my.oDataTable.onEventUnhighlightCell);
+                
+                var onCellEdit = function(oArgs) {
+                    YAHOO.log("Cell \"" + oArgs.target.id +
+                            "\" was updated from \"" + oArgs.oldData + "\" to \"" +
+                            oArgs.newData + "\"", "info", this.toString());
+                }
+                my.oDataTable.subscribe("cellEditEvent",onCellEdit);
+                
 			</script>
 		</div>
 	</body>
