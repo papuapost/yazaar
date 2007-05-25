@@ -53,6 +53,7 @@
 
 = Development Resources =
 
+ * [http://www.w3schools.com/htmldom/default.asp W3Schools HTML DOM Reference]
  * [http://www.aptana.com/documentation.php Aptana CSS and HTML References]
  * [http://domscripting.webstandards.org/ DOM Scripting Task Force]
  * [http://developer.yahoo.net/common/json.html Using JSON (JavaScript Object Notation)]
