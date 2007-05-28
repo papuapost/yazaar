@@ -1,287 +1,310 @@
 <!doctype html public "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-  <head>
-  <title>
-    Planet Yazaar - Additions to the Yahoo! User Interface (YUI) Library
-  </title>
-  <link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/tabview.css">
-  <link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/border_tabs.css">
-  <script src="http://yui.yahooapis.com/2.2.2/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-  <script src="http://yui.yahooapis.com/2.2.2/build/element/element-beta-min.js"></script>
-  <script src="http://yui.yahooapis.com/2.2.2/build/tabview/tabview-min.js"></script>
-  <style type="text/css">
-    #doc3 {font-family:verdana;}
-    #doc3 h2 {font-size:110%}
-    #elTabView div.yui-content div {
-    display: none;
-  }    
-  </style>
-  </head>
-  <body>
-    <div id="doc3">
-       <div id="hd">
-          <h2>
+    <head>
+        <title>
             Planet Yazaar - Additions to the Yahoo! User Interface (YUI) Library
-          </h2>
-       </div>
-       <div id="bd">
-        <div id="elTabView" class="yui-navset">
-          <ul class="yui-nav">
-            <li class="selected"><a href="#about"><em>About</em></a></li>
-            <li><a href="#widgets"><em>Yazaar Widgets</em></a></li>
-            <li><a href="#examples"><em>Examples</em></a></li>
-            <li><a href="#extras"><em>Extras</em></a></li>
-            <li><a href="#resources"><em>Resources</em></a></li>
-          </ul>
-          <div id="elContent" class="yui-content">
-            <div id="elAbout">
-            <blockquote>
-              <p>
-                Planet Yazaar creates and maintains community-supported additions to the
-                <a href="http://developer.yahoo.com/yui/">
-                  Yahoo User Interface (YUI) Library
-                </a>
-                (Yahoo + Bazaar = Yazaar).
-              </p>
-              <p>
-                Yazaar offers three key services to the YUI community:
-              </p>
-              <ul>
-                <li>
-                  A vehicle for accepting and maintaining contributor extensions in a common location, either in the form of code or documentation
-                </li>
-                <li>
-                  "Soup to nuts" project documentation, including coding style guidelines and build systems
-                </li>
-                <li>
-                  A public repository with version to version change logs
-                </li>
-              </ul>
-              <p>
-                Our wish is for the Yazaar community to enjoy the best of both worlds:
-                <a href="http://www.catb.org/~esr/writings/cathedral-bazaar/">
-                  the cathedral and the bazaar</a>!
-              </p>
-            </blockquote>
+        </title>
+        <link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/tabview.css">
+        <link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/border_tabs.css">
+        <script src="http://yui.yahooapis.com/2.2.2/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+        <script src="http://yui.yahooapis.com/2.2.2/build/element/element-beta-min.js"></script>
+        <script src="http://yui.yahooapis.com/2.2.2/build/tabview/tabview-min.js"></script>
+        <style type="text/css">
+          #doc3 {font-family:verdana;}
+          #doc3 h2 {font-size:110%}
+          #elTabView div.yui-content div {
+          display: none;
+        }
+        </style>
+    </head>
+    <body>
+        <div id="doc3">
+           <div id="hd">
+                <h2>
+                  Planet Yazaar - Additions to the Yahoo! User Interface (YUI) Library
+                </h2>
+           </div>
+           <div id="bd">
+                <div id="elTabView" class="yui-navset">
+                    <ul class="yui-nav">
+                        <li class="selected"><a href="#about"><em>About</em></a></li>
+                        <li><a href="#widgets"><em>Yazaar Widgets</em></a></li>
+                        <li><a href="#examples"><em>Examples</em></a></li>
+                        <li><a href="#extras"><em>Extras</em></a></li>
+                        <li><a href="#resources"><em>Resources</em></a></li>
+                    </ul>
+                    <div id="elContent" class="yui-content">
+                        <div id="elAbout">
+                        <blockquote>
+                            <p>
+                                Planet Yazaar creates and maintains community-supported additions to the
+                                <a href="http://developer.yahoo.com/yui/">
+                                    Yahoo User Interface (YUI) Library
+                                </a>
+                                (Yahoo + Bazaar = Yazaar).
+                            </p>
+                            <p>
+                                Yazaar offers three key services to the YUI community:
+                            </p>
+                            <ul>
+                                <li>
+                                    A vehicle for accepting and maintaining contributor extensions in a common location, either in the form of code or documentation
+                                </li>
+                                <li>
+                                    "Soup to nuts" project documentation, including coding style guidelines and build systems
+                                </li>
+                                <li>
+                                    A public repository with version to version change logs
+                                </li>
+                            </ul>
+                            <p>
+                                Our wish is for the Yazaar community to enjoy the best of both worlds:
+                                <a href="http://www.catb.org/~esr/writings/cathedral-bazaar/">
+                                    the cathedral and the bazaar</a>!
+                            </p>
+                        </blockquote>
+                        </div>
+                        <div id="elYazaarWidgets">                    
+                            <ul>
+                                <li>Dispatcher Plugin
+                                    <ul>
+                                      <li>
+                                        <a href="examples/bubbling/plugin-dispatcher-dynamic-tabs.html">
+                                         Dynamically Loading Content in a TabView
+                                        </a>
+                                      </li>
+                                        <li>
+                                        <a href="examples/bubbling/plugin-dispatcher-dynamic-tabs-with-accordian-inside.html">
+                                          TabView with Accordian Widget
+                                        </a>
+                                      </li>
+                                        <li>
+                                        <a href="examples/bubbling/plugin-dispatcher-nested-tabviews.html">
+                                          Dispatcher Plugin - Nested TabViews
+                                        </a>
+                                      </li>
+                                      <li>
+                                          For more about the Dispatcher plugin,
+                                          see the <a href="http://bubbling.comarq.com/">Bubbling Library site</a>.
+                                      </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <ul>
+                                <li>
+                                    <a href="examples/jsnotes/index.html">
+                                        JS Notes Widget
+                                    </a>
+                            </ul>                    
+                            <ul>
+                                <li>DataForm Widget
+                                    <ul>
+                                        <li>
+                                            <a href="examples/dataform/tutorial.html">
+                                                Side-by-Side
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="examples/dataform/tutorial-tabview.html">
+                                              TabView
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <p>
+                              &nbsp;<em>Yazaar Widgets are maintained by project members.</em>
+                            </p>
+                        </div>
+                        <div id="elExamples">
+                            <h2>PIM Example</h2>
+                            <p>
+                              &nbsp;<em>Under Construction!</em>
+                              Ultimately, the PIM will be a working personal information manager
+                              utilizing a variety of widgets with a simple service layer.
+                              Today, PIM demonstrates hosting a Contacts widget (PhoneBook)
+                              and a Notes widget in the same application.
+                              Each widget is contained on its own inline frame.
+                              View swapping and lazy loading are handled by a detached menubar.
+                            </p>
+                            <ul>
+                                <li>
+                                    <a href="examples/pim/index.html">
+                                      Try the PIM Example!
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="http://code.google.com/p/yazaar/wiki/ApplicationArchitecture">
+                                      About the Application Architecture ...
+                                    </a>
+                                </li>
+                            </ul>                    
+                            <h2>PhoneBook Example Application</h2>
+                                <ul>
+                                    <li>
+                                        <a href="examples/phonebook/Home.html">
+                                            Try the PhoneBook!
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="examples/phonebook/Home2.html">
+                                            ... scriptological version
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="http://www.openqa.org/selenium/">
+                                            Selenium
+                                        </a> Test Suite for PhoneBook Application
+                                        <ul>
+                                            <li>
+                                                Copy and paste this long, strange link into the location bar:
+                                                chrome://selenium-ide/content/selenium/TestRunner.html?baseURL=http://yazaar.org&amp;test=http://yazaar.org/examples/phonebook/test/index.html&amp;auto=true
+                                            </li>
+                                            <li>
+                                              Note! Must be run from FireFox with
+                                              <a href="https://addons.mozilla.org/en-US/firefox/addon/2079">
+                                                Selenium IDE
+                                              </a> installed.
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            <h2>Enhanced Examples</h2>
+                            <ul>
+                        <!--
+                              <li>
+                                <a href="examples/overlay/home.html">
+                                  Tabbed MenuBar that uses Overlay Manager
+                                </a>
+                              </li>
+                              <li>
+                                <a href="examples/datatable/tabView-dialog.html">
+                                  TabView that uses dialogs for tabs.
+                                </a>
+                              </li>
+                        -->
+                                <li>
+                                  <a href="examples/datatable/basic-tabview.html">
+                                    TabView with DataTable that is loaded on-demand.
+                                  </a>
+                                </li>                    
+                        </div>
+                        <div id="elExtras">
+                            <ul>
+                              <li>
+                                <a href="examples/extras/dpu/rowfilterdatatable.html">
+                                    DataView - An enhanced Datatable with Row Filtering and Column Hiding
+                                </a>
+                                by Victor Morales
+                                <ul>
+                                    <li>
+                                        <a href="http://yuiblog.com/blog/2007/04/23/dataview/">
+                                                YUI Tutorial: Subclassing DataTable to Create DataView</a>
+                                    </li>
+                                </ul>
+                                </li>
+                                <li>
+                                  <a href="examples/extras/jc21/validate.html">
+                                    JavaScript Validator
+                                  </a>
+                                  by Jamie Curnow
+                                </li>
+                            </ul>
+                            <p>
+                                &nbsp;<em>Extras are third-party products distributed under <a href="http://www.opensource.org/licenses/bsd-license.php">
+                                the BSD license</a>.</em>
+                            </p>
+                        </div>
+                        <div id="elResources">
+                            <ul>
+                                <li>Yazaar
+                                    <ul>
+                                        <li>
+                                            <a href="http://geocities.com/planetyazaar/blog.html">
+                                              Blog
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="http://groups.google.com/group/yazaar-dev">
+                                                Discussion Group
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="http://code.google.com/p/yazaar/">
+                                              Development Site
+                                            </a>
+                                            <ul>
+                                                <li><a href="http://code.google.com/p/yazaar/w/list">
+                                                    Wiki</a>
+                                                    <ul>
+                                                        <li><a href="http://code.google.com/p/yazaar/wiki/Charter">
+                                                          Charter</a></li>
+                                                        <li><a href="http://code.google.com/p/yazaar/wiki/CommonProblems">
+                                                          Common Problems</a></li>
+                                                        <li><a href="http://code.google.com/p/yazaar/wiki/Conventions">
+                                                          Conventions</a></li>
+                                                        <li><a href="http://code.google.com/p/yazaar/wiki/HappyTrails">
+                                                          Happy Trails</a></li>
+                                                        <li><a href="http://code.google.com/p/yazaar/wiki/Resources">
+                                                          Resources</a></li>
+                                                      </ul>
+                                                </li>
+                                                <li><a href="http://code.google.com/p/yazaar/issues/list">
+                                                  Issues</a>
+                                                </li>
+                                                <li><a href="http://code.google.com/p/yazaar/source">
+                                                  Source</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="docs/index.html">
+                                                API Documentation
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <ul>
+                                <li> YUI
+                                    <ul>
+                                        <li>
+                                            <a href="http://yuiblog.com/">
+                                                Blog
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="http://tech.groups.yahoo.com/group/ydn-javascript/">
+                                                Discussion Group
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="http://developer.yahoo.com/yui/">
+                                               Development Site
+                                             </a>
+                                        </li>
+                                        <li>
+                                            <a href="http://yuiblog.com/sandbox/yui/v222/examples/datatable/filterRows.php">
+                                                Sandbox
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div id="elYazaarWidgets">
-
-			<ul>
-				<li>Dispatcher Plugin
-					<ul>
-						<li>
-							<a href="examples/bubbling/plugin-dispatcher-dynamic-tabs.html">
-							 Dynamically Loading Content in a TabView
-							</a>
-						</li>
-					  	<li>
-							<a href="examples/bubbling/plugin-dispatcher-dynamic-tabs-with-accordian-inside.html">
-								TabView with Accordian Widget
-							</a>
-						</li>
-							<li>
-							<a href="examples/bubbling/plugin-dispatcher-nested-tabviews.html">
-								Dispatcher Plugin - Nested TabViews
-							</a>
-						</li>				
-						<li>
-					  		For more about the Dispatcher plugin, 
-								see the <a href="http://bubbling.comarq.com/">Bubbling Library site</a>.					
-						</li>
-					</ul>
-				</li>
-			</ul>
-			
-			<ul>
-				<li>
-				<a href="examples/jsnotes/index.html">
-					JS Notes Widget
-				</a>
-			</ul>
-
-			<ul>			  
-				<li>DataForm Widget
-					<ul>
-						<li>
-				  			<a href="examples/dataform/tutorial.html">
-				    			Side-by-Side
-				  			</a>
-						</li>
-						<li>
-				  		<a href="examples/dataform/tutorial-tabview.html">
-				    		TabView
-				          </a>
-				        </li>
-				    </ul>
-				</li>
-			</ul>			   
+        </div>
+        <div align="center">
             <p>
-                &nbsp;<em>Yazaar Widgets are maintained by project members.</em>
-            </p>
+            Planet Yazaar is powered by <a href="http://yuiblog.com/blog/2007/04/18/yui-2-2-2-released/">YUI 2.2.2</a>!
+            <br />
+              <em>Yazaar is an independent, volunteer project. Yazaar is not affiliated with Yahoo! or the Yahoo! User Interface (YUI) Library.</em>
+          </p>
         </div>
-        <div id="elExamples">
-        <h2>PIM Example</h2>
-        <p>
-            &nbsp;<em>Under Construction!</em>
-            Ultimately, the PIM will be a working personal information manager
-            utilizing a variety of widgets with a simple service layer.
-            Today, PIM demonstrates hosting a Contacts widget (PhoneBook)
-            and a Notes widget in the same application.
-            Each widget is contained on its own inline frame.
-            View swapping and lazy loading are handled by a detached menubar.
-        </p>        
-            <ul>
-                <li>
-                    <a href="examples/pim/index.html">
-                      Try the PIM Example!
-                    </a>
-                </li>
-                <li>
-                    <a href="http://code.google.com/p/yazaar/wiki/ApplicationArchitecture">
-                      About the Application Architecture ...
-                    </a>
-                </li>
-            </ul>
-        
-        <h2>PhoneBook Example Application</h2>
-        <ul>
-            <li>
-              <a href="examples/phonebook/Home.html">
-                Try the PhoneBook!
-              </a>
-            </li>
-            <li>
-              <a href="examples/phonebook/Home2.html">
-                ... scriptological version
-              </a>
-            </li>
-          <li>
-             <a href="http://www.openqa.org/selenium/">
-                Selenium
-            </a> Test Suite for PhoneBook Application
-            <ul>
-                <li>
-                Copy and paste this long, strange link into the location bar:
-                chrome://selenium-ide/content/selenium/TestRunner.html?baseURL=http://yazaar.org&test=http://yazaar.org/examples/phonebook/test/index.html&auto=true
-              </li>
-                <li>
-                Note! Must be run from FireFox with
-                <a href="https://addons.mozilla.org/en-US/firefox/addon/2079">
-                  Selenium IDE
-                </a> installed.
-              </li>
-            </ul>
-          </li>
-        </ul>
-              
-        <h2>Enhanced Examples</h2>
-              <ul>
-			   <!-- 
-                <li>
-                  <a href="examples/overlay/home.html">
-                    Tabbed MenuBar that uses Overlay Manager
-                  </a>
-                </li>
-                <li>
-                  <a href="examples/datatable/tabView-dialog.html">
-                    TabView that uses dialogs for tabs.
-                  </a>
-                </li>
-				-->
-                <li>
-                  <a href="examples/datatable/basic-tabview.html">
-                    TabView with DataTable that is loaded on-demand.
-                  </a>
-                </li>
-
-            </div>
-            <div id="elExtras">
-              <ul>
-                <li>
-                  <a href="examples/extras/dpu/rowfilterdatatable.html">
-                    DataView - An enhanced Datatable with Row Filtering and Column Hiding
-                  </a>
-                  by Victor Morales
-          <ul>
-            <li>
-            <a href="http://yuiblog.com/blog/2007/04/23/dataview/">YUI Tutorial: Subclassing DataTable to Create DataView</a>
-          </li>
-          </ul>
-                </li>
-                <li>
-                  <a href="examples/extras/jc21/validate.html">
-                    JavaScript Validator
-                  </a>
-                  by Jamie Curnow
-                </li>
-              </ul>
-              <p>
-                &nbsp;<em>Extras are third-party products distributed under <a href="http://www.opensource.org/licenses/bsd-license.php">
-                  the BSD license</a>.</em>
-              </p>
-            </div>
-            <div id="elResources">
-              <ul>
-          <li> Yazaar
-          <ul>
-                    <li>
-                      <a href="http://geocities.com/planetyazaar/blog.html">
-                        Blog
-                      </a>
-                  </li>
-                  <li>
-                    <a href="http://groups.google.com/group/yazaar-dev">
-                      Discussion Group
-                    </a>
-                  </li>
-                   <li>
-                      <a href="http://code.google.com/p/yazaar/">
-                        Development Site
-                      </a>
-                    </li>
-                   <li>
-                      <a href="docs/index.html">
-                        API Documentation
-                      </a>
-                    </li>
-        </ul>
-        </li>
-              </ul>
-              <ul>
-          <li> YUI
-          <ul>
-                    <li>
-                      <a href="http://yuiblog.com/">
-                        Blog
-                      </a>
-                  </li>
-                  <li>
-                    <a href="http://tech.groups.yahoo.com/group/ydn-javascript/">
-                      Discussion Group
-                    </a>
-                  </li>
-                   <li>
-                      <a href="http://developer.yahoo.com/yui/">
-                        Development Site
-                      </a>
-                    </li>
-        </ul>
-        </li>
-              </ul>
-            </div>
-        </div>
-        </div>
-      </div>
-    </div>
-  <div align="center">
-      <p>
-      Planet Yazaar is powered by <a href="http://yuiblog.com/blog/2007/04/18/yui-2-2-2-released/">YUI 2.2.2</a>!
-      <br />
-        <em>Yazaar is an independent, volunteer project. Yazaar is not affiliated with Yahoo! or the Yahoo! User Interface (YUI) Library.</em>
-    </p>
-  </blockquote>
-    <script type="text/javascript">
-      var oTabView = new YAHOO.widget.TabView("elTabView");
-    </script>
-  </body>
+        <script type="text/javascript">
+          var oTabView = new YAHOO.widget.TabView("elTabView");
+        </script>
+    </body>
 </html>
