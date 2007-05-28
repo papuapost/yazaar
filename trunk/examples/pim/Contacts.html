@@ -69,7 +69,7 @@ Code licensed under the BSD License: http://developer.yahoo.net/yui/license.txt
                         </div>			
                     </div>
                     <div id="elEdit">
-                        <div id="elDataForm"></div>				
+                        <div id="elDataEdit"></div>				
                     </div>
                 </div>
             </div>
@@ -77,6 +77,7 @@ Code licensed under the BSD License: http://developer.yahoo.net/yui/license.txt
         <div id="elScript" class="js">
             <script type="text/javascript">
                 var fnReady = function() {
+                    YAHOO.widget.Logger = my.Logger;                    
                     var oView = new MY.View("elBody","Contacts");
                     _Self = new MY.Contacts(); // Convenience "global" for this page.
                     oView.oContent = _Self;

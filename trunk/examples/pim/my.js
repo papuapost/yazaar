@@ -25,16 +25,27 @@ if (typeof parent.MY != "undefined") {
         return oView;
     };
 
+    my.Logger = null;
+    
+    my.log = function(msg, cat, src) {
+        var l=my.Logger;
+        if(l && l.log) {
+            return l.log(msg, cat, src);
+        } else { 
+            return YAHOO.log(msg, cat, src);
+        }
+    };
+
     my.info = function(sMessage) {
-        YAHOO.log(sMessage,"info");
+        if (my.oLogger) YAHOO.log(sMessage,"info");
     };
 
     my.error = function(sMessage) {
-        YAHOO.log(sMessage,"error");
+        if (my.oLogger) YAHOO.log(sMessage,"error");
     };
 
     my.warn = function(sMessage) {
-        YAHOO.log(sMessage,"warn");
+        if (my.oLogger) YAHOO.log(sMessage,"warn");
     };
     
     my.oEvents = new MY.Events();

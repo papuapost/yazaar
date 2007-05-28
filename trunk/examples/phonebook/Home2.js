@@ -28,8 +28,8 @@ YAHOO.my.events.onEntryListReturn = function(oData) {
 }
 
 YAHOO.my.Phonebook = function() {
-    var oPhonebook = object(FlevBase);                   
-    oPhonebook.oColumnHeaders = [
+    var oSelf = new YAHOO.yazaar.FlevBase();                   
+    oSelf.oColumnHeaders = [
         {key:"first_name", text:"First Name", sortable:true, resizeable:true, editor:"textbox", formClassName: "required", formTitle: "Enter employee's first name"},  
         {key:"last_name", text:"Last Name", sortable:true, resizeable:true, editor:"textbox", formClassName: "required", formTitle: "Enter employee's last name"},  
         {key:"extension", text:"Extension", sortable:true, resizeable:true, editor:"textbox", formClassName: "required", formTitle: "Enter extension or telephone number"},  
@@ -38,7 +38,7 @@ YAHOO.my.Phonebook = function() {
         {key:"hours", text:"Hours", sortable:true, resizeable:true, editor:"textbox", formClassName: "required, validate-number", formTitle: "Enter hours scheduled per work week as a number"}  
     ];       
 
-    oPhonebook.oConfigs = {
+    oSelf.oListConfigs = {
         caption: "EntryList", 
         summary: "List of matching entries",
         paginator:true,
@@ -49,24 +49,24 @@ YAHOO.my.Phonebook = function() {
         rowSingleSelect: true                
     };            
 
-    oPhonebook.oResponseSchema = {
+    oSelf.oResponseSchema = {
         fields: ["entry_key","last_name","first_name","extension","username","hired","hours","editor"]
     };            
 
-    oPhonebook.sItemName = "last_name";
+    oSelf.sItemName = "last_name";
+    oSelf.sDataFind = "elList";
+    oSelf.sTabView = "elPhonebook";
+    oSelf.nDataList = 0;
+    oSelf.nDataEdit = 1;
+    oSelf.nDataView = 0;
     
-    oPhonebook.sDataTable = "elDataTable";
-    oPhonebook.sDataForm = "elDataForm";
-    oPhonebook.sTabView = "elPhonebook";
-    oPhonebook.sListForm = "elForm";
-
-    YAHOO.my.events.subscribe("entryList", oPhonebook.load, oPhonebook);    
+    YAHOO.my.events.subscribe("entryList", oSelf.load, oSelf);    
     // Home.rpc.entryList(YAHOO.my.events.onEntryListReturn).call(ANVIL.channel); // livedatabase
-    YAHOO.my.events.subscribe("entryList", YAHOO.my.events.onPhonebookLoaded, oPhonebook);
+    YAHOO.my.events.subscribe("entryList", YAHOO.my.events.onPhonebookLoaded, oSelf);
 
     YAHOO.my.events.onEntryListReturn(YAHOO.my.oLocalData); // static data
 
-    return oPhonebook;
+    return oSelf;
 };
 YAHOO.augment(YAHOO.my.Phonebook, YAHOO.util.EventProvider);
 
@@ -74,9 +74,6 @@ YAHOO.my.events.onPhonebookLoaded = function(oData, oSelf) {
 	var isLoaded = YAHOO.my.events.onPhonebookLoaded.isLoaded; 
 	if (isLoaded) return;
 	isLoaded = true;
-	
-	oSelf.filter = new YAHOO.widget.Overlay("elFilter"); 
-	oSelf.filter.render();
 	
 	oSelf.setTitle = function(nIndex) {
 		var sTitle;
@@ -144,7 +141,7 @@ YAHOO.my.oBody.TabView = function() {
     }));
 
     YAHOO.util.Event.onContentReady("elBody", function() {
-        oTabView.appendTo(this); // #elBody
+    oTabView.appendTo(this); // #elBody
 	YAHOO.my.oLogReader = new YAHOO.widget.LogReader("elLogReader");
 	// <div id="elList"><div id="elFilter" class="filter"><form id="elForm"><p style="font-weight:bold">Filter Entries by:<select id="elForm_item" onchange="YAHOO.my.oPhonebook.onFilterChange()"><option value="last_name" selected="selected">Last Name</option><option value="first_name">First Name</option><option value="username">Username</option></select></p>
 	// <div class="filterForm"><p><input class="filterInput" id="elForm_input" /></p><div class="filterMatch" id="elForm_match"></div></div></form></div><div id="elDataTable" class="dpu-dt"></div></div><div id="elEdit"><div id="elDataForm"></div></div></div>
@@ -161,22 +158,22 @@ YAHOO.my.oBody.TabView = function() {
 			elNav2Link.href = '#'; 
 			elNav2Link.innerHTML = 'Edit';
 		// Content
-		var elContent = newDiv(elPhonebook,"elContent","yui-content");
+		var elContent = newDiv(elNavset,"elContent","yui-content");
 			var elList = newDiv(elContent,"elList");
-				var elFilter = newDiv(elList,"elFilter","filter"); 
-					var elForm = newForm(elFilter,"elForm");					
+				var elFilter = newDiv(elList,"elListFilter","filter"); 
+					var elForm = newForm(elFilter,"elListForm");					
 						var elP = elForm.appendChild(document.createElement("P"));
 							elP.innerHTML = "Filter Entries by: &nbsp;";
-						var elForm_item = newEl("SELECT",elP,"elForm_item");
+						var elForm_item = newEl("SELECT",elP,"elListForm_item");
 							elForm_item.options[0] = new Option("Last Name","last_name",true,true);
 							elForm_item.options[1] = new Option("First Name","first_name",false,false);
 							elForm_item.options[2] = new Option("UserName","username",false,false);
 						elFilterForm = newEl("DIV",elP,"elFilterForm","filterForm");
-							var elForm_input = newInputText(elFilterForm,"elForm_input", "filterInput");
-							var elForm_match = newDiv(elFilterForm,"elForm_match","filterMatch");				
-					var elDataTable = newDiv(elFilter,"elDataTable", "dpu-dt");
-			var elEdit = newDiv(elContent,"elEdit");
-				var elDataForm = newDiv(elEdit,"elDataForm");
+							var elForm_input = newInputText(elFilterForm,"elListForm_input", "filterInput");
+							var elForm_match = newDiv(elFilterForm,"elListForm_match","filterMatch");				
+					var elDataTable = newDiv(elList,"elDataList", "dpu-dt");
+			var elEdit = newDiv(elNavset,"elEdit");
+				var elDataForm = newDiv(elEdit,"elDataEdit");
     });
 	
 	return oTabView;
@@ -193,7 +190,7 @@ YAHOO.my.oBody.setTitle = function(nIndex) {
 			sTitle = "PhoneBook";
 			if (!YAHOO.my.oPhonebook) {
 				YAHOO.my.oPhonebook = new YAHOO.my.Phonebook();
-				var elForm_item = document.getElementById("elForm_item");				
+				var elForm_item = document.getElementById("elListForm_item");				
 				elForm_item.onchange = YAHOO.my.oPhonebook.onFilterChange();
 				var oTabView =YAHOO.my.oPhonebook.oTabView; 
 				oTabView.set('activeIndex',0);

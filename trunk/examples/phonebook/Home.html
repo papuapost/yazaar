@@ -50,29 +50,24 @@
                 <li><a href="#edit"><em>Edit Entry</em></a></li>
             </ul>
             <div class="yui-content">
-				<div id="elList">
-    	            <div id="elDataTable" class="dpu-dt"></div>				
-					<div class="filter">
-        				<form id="elForm">
-             				<p style="font-weight:bold">Filter Entries by:
-             				<select id="elForm_item" onchange="YAHOO.my.oPhonebook.onFilterChange()">
-                				<option value="last_name" selected="selected">Last Name</option>
-                				<option value="first_name">First Name</option>
-                				<option value="username">Username</option>
-            				</select>
-             				</p>
-            				<div class="filterForm">
-							    <p>
-                				    <input class="filterInput" id="elForm_input" />
-							    </p>
-                				<div class="filterMatch" id="elForm_match"></div>
-            				</div>
-         				</form>
-    			    </div>			
-				</div>
-				<div id="elEdit">
-		            <div id="elDataForm"></div>				
-				</div>
+		<div id="elList">
+    	            <div id="elDataList" class="dpu-dt"></div>
+                    <div id="elListFilter" class="filter">
+                        <label for="elListForm_item">Filter Entries by:</label>
+                        <select id="elListForm_item" onchange="_Self.onFilterChange()">
+                            <option value="last_name" selected="selected">Last Name</option>
+                            <option value="first_name">First Name</option>
+                            <option value="username">Username</option>
+                        </select>
+                        <div id="elListForm" class="filterForm">
+                            <input class="filterInput" id="elListForm_input" />
+                            <div class="filterMatch" id="elListForm_match" ></div>
+                        </div>
+                    </div>
+                </div>				                
+                <div id="elEdit">
+                    <div id="elDataEdit"></div>				
+                </div>
             </div>
         </div>
       </td><td>
@@ -95,6 +90,7 @@
 <!-- DOM/Events -->
 <script src="http://yui.yahooapis.com/2.2.2/build/yahoo-dom-event/yahoo-dom-event.js"></script>
 <!-- DataTable/DataForm -->
+<script src="http://yui.yahooapis.com/2.2.2/build/container/container-min.js"></script>
 <script src="http://yui.yahooapis.com/2.2.2/build/datasource/datasource-beta-min.js"></script>
 <script src="../../build/patched/datatable-beta-debug-patched.js"></script>
 <script src="../../build/dataform/flevbase-debug-beta.js"></script>
