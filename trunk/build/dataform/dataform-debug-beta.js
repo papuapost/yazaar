@@ -983,7 +983,7 @@ YAHOO.yazaar.DataForm.prototype.harvestForm = function() {
     for (var i=0; i<nFields; i++) {
       var elInput = aFields[i];
       if (elInput.type == "checkbox") {
-        oRecord[elInput.name] = (elInput.value == "checked") ? 1 : 0;
+        oRecord[elInput.name] = (elInput.checked) ? 1 : 0;
       } else {
           oRecord[elInput.name] = elInput.value;
       }
@@ -1214,7 +1214,7 @@ YAHOO.yazaar.DataForm.prototype.populateForm = function() {
             var sKey = oColumn.key;
             elInput = aFields[n++];
             if (elInput.type == "checkbox") {
-                elInput.value = (elInput.value) ? "checked" : "";
+                elInput.checked = oRecord[sKey];
             }
             else {
                 elInput.value = oRecord[sKey];
