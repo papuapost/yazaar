@@ -84,6 +84,10 @@ YAHOO.my.Phonebook = function() {
 
     oSelf.sItemName = "last_name";
     oSelf.sDataFind = "elListFilter";
+    oSelf.nDataList = 0;
+    oSelf.nDataEdit = 1;
+    oSelf.nDataView = 0;
+
     
     YAHOO.my.events.subscribe("entryList", oSelf.load, oSelf);    
     // Home.rpc.entryList(YAHOO.my.events.onEntryListReturn).call(ANVIL.channel); // livedatabase
