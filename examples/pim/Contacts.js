@@ -1,5 +1,5 @@
 MY.Contacts = function() {
-    var oSelf = object(FlevBase);
+    var oSelf = new YAHOO.yazaar.FlevBase();
 
     oSelf.COLUMN_HEADERS = [
         {key:"first_name", text:"First Name", sortable:true, resizeable:true, editor:"textbox", formClassName: "required", formTitle: "Enter employee's first name"},  
@@ -14,7 +14,7 @@ MY.Contacts = function() {
         fields: ["entry_key","last_name","first_name","extension","username","hired","hours","editor"]
     };            
 
-    oSelf.CONFIGS = {
+    oSelf.LIST_CONFIGS = {
         caption: "Contact List", 
 		summary: "List of matching contacts",
 		paginator:true,
@@ -27,8 +27,12 @@ MY.Contacts = function() {
     
     oSelf.oColumnHeaders = oSelf.COLUMN_HEADERS;
     oSelf.oResponseSchema = oSelf.RESPONSE_SCHEMA;
-    oSelf.oConfigs = oSelf.CONFIGS;
+    oSelf.oListConfigs = oSelf.LIST_CONFIGS;
     oSelf.sItemName = "last_name";
+    oSelf.sDataFind = "elList";
+    oSelf.nDataList = 0;
+    oSelf.nDataEdit = 1;
+    oSelf.nDataView = 0;
     
     oSelf.LOCAL_DATA = { 
         result : [

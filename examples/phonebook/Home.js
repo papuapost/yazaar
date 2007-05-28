@@ -57,8 +57,8 @@ YAHOO.my.events.onPhonebookLoaded = function(oData, oPhonebook) {
 }
 
 YAHOO.my.Phonebook = function() {
-    var oPhonebook = object(FlevBase);                   
-    oPhonebook.oColumnHeaders = [
+    var oSelf = new YAHOO.yazaar.FlevBase();
+    oSelf.oColumnHeaders = [
         {key:"first_name", text:"First Name", sortable:true, resizeable:true, editor:"textbox", formClassName: "required", formTitle: "Enter employee's first name"},  
         {key:"last_name", text:"Last Name", sortable:true, resizeable:true, editor:"textbox", formClassName: "required", formTitle: "Enter employee's last name"},  
         {key:"extension", text:"Extension", sortable:true, resizeable:true, editor:"textbox", formClassName: "required", formTitle: "Enter extension or telephone number"},  
@@ -67,7 +67,7 @@ YAHOO.my.Phonebook = function() {
         {key:"hours", text:"Hours", sortable:true, resizeable:true, editor:"textbox", formClassName: "required, validate-number", formTitle: "Enter hours scheduled per work week as a number"},  
     ];       
 
-    oPhonebook.oConfigs = {
+    oSelf.oListConfigs = {
         caption: "EntryList", 
         summary: "List of matching entries",
         paginator:true,
@@ -78,27 +78,23 @@ YAHOO.my.Phonebook = function() {
         rowSingleSelect: true                
     };            
 
-    oPhonebook.oResponseSchema = {
+    oSelf.oResponseSchema = {
         fields: ["entry_key","last_name","first_name","extension","username","hired","hours","editor"]
     };            
 
-    oPhonebook.sItemName = "last_name";
+    oSelf.sItemName = "last_name";
+    oSelf.sDataFind = "elListFilter";
     
-    oPhonebook.sDataTable = "elDataTable";
-    oPhonebook.sDataForm = "elDataForm";
-    oPhonebook.sTabView = "elTabView";
-    oPhonebook.sListForm = "elForm";
-
-    YAHOO.my.events.subscribe("entryList", oPhonebook.load, oPhonebook);    
+    YAHOO.my.events.subscribe("entryList", oSelf.load, oSelf);    
     // Home.rpc.entryList(YAHOO.my.events.onEntryListReturn).call(ANVIL.channel); // livedatabase
-    YAHOO.my.events.subscribe("entryList", YAHOO.my.events.onPhonebookLoaded, oPhonebook);
+    YAHOO.my.events.subscribe("entryList", YAHOO.my.events.onPhonebookLoaded, oSelf);
 
     YAHOO.my.events.onEntryListReturn(YAHOO.my.oLocalData); // static data
 
-    return oPhonebook;
+    return oSelf;
 };
-YAHOO.augment(YAHOO.my.Phonebook, YAHOO.util.EventProvider);
 YAHOO.my.oPhonebook = new YAHOO.my.Phonebook();
 YAHOO.my.setTitle(YAHOO.my.oPhonebook.sTabView, 0);
+_Self = YAHOO.my.oPhonebook;
 
 

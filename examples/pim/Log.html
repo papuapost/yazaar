@@ -24,6 +24,7 @@ Code licensed under the BSD License: http://developer.yahoo.net/yui/license.txt
                 var fnReady = function() {
                    var oView = new MY.View("elBody","Log");
                    oView.oContent = new YAHOO.widget.LogReader("elContent");   
+                   my.Logger = YAHOO.widget.Logger;
                 };
                 YAHOO.util.Event.onContentReady("elBody",fnReady);
             </script>
