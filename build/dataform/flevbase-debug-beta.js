@@ -224,9 +224,10 @@ YAHOO.yazaar.FlevBase.prototype.onCancel = function (oData,oSelf) {
 };
 
 /**
- * Initializes object with response data.
- * @param {Object} oData
- * @param {Object} oSelf
+ * Create DataTable and DataForm widgets, initialize objects with response data.
+ * Intended for use at initial load only. 
+ * @param {Object} oData Incoming data in RPC response format
+ * @param {Object} oSelf Runtme reference to object instance
  */
 YAHOO.yazaar.FlevBase.prototype.load = function(oData,oSelf) {
         // previously defined
