@@ -198,7 +198,7 @@ YAHOO.yazaar.FlevBase.prototype.fnFilter = null;
 /**
  * Form configuration instance created by load method.
  */
-YAHOO.yazaar.FlevBase.prototype.oFormConfigs = null;
+YAHOO.yazaar.FlevBase.prototype.oFormConfigs = {};
 
 /**
  * Exits Edit and activates View.
@@ -272,8 +272,8 @@ YAHOO.yazaar.FlevBase.prototype.load = function(oData,oSelf) {
             oDataList.subscribe("cellClickEvent", onRowClickEvent);
 
             // Setup DataForm
-            oFormConfigs = {oDataList: oDataList};
-            oDataEdit = new YAHOO.yazaar.DataForm(sDataEdit, oColumnSet, oDataSource, oFormConfigs);
+            oSelf.oFormConfigs["oDataList"] = oDataList;
+            oDataEdit = new YAHOO.yazaar.DataForm(sDataEdit, oColumnSet, oDataSource, oSelf.oFormConfigs);
             oDataList.subscribe("dataReturnEvent",oSelf.initFilter,oSelf);
 
             // Setup tabview
