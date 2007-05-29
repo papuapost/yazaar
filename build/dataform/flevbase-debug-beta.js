@@ -196,6 +196,11 @@ YAHOO.yazaar.FlevBase.prototype.oTabView = null;
 YAHOO.yazaar.FlevBase.prototype.fnFilter = null;
 
 /**
+ * AutoComplete (RowFilter instance. 
+ */
+YAHOO.yazaar.FlevBase.prototype.oAutoComplete = null;
+
+/**
  * Form configuration instance created by load method.
  */
 YAHOO.yazaar.FlevBase.prototype.oFormConfigs = {};
@@ -324,7 +329,7 @@ YAHOO.yazaar.FlevBase.prototype.load = function(oData,oSelf) {
     };
 
 /**
- * Setup autocomplete filtering. Called automatically.
+ * Setup autocomplete filtering. Called in response to DataReturnEvent.
  * @param {Object} oData
  * @param {Object} oSelf
  */
@@ -343,11 +348,21 @@ YAHOO.yazaar.FlevBase.prototype.initFilter = function (oData,oSelf) {
     oSelf.fnFilter.maxCacheEntries = 0;
     var sInput = oSelf.sListForm + "_input";
     var sMatch = oSelf.sListForm + "_match";
-    var oAutoComp = new YAHOO.dpu.widget.RowFilter(sInput,sMatch,oSelf.oDataList,oSelf.fnFilter);
+    var oAutoComplete = new YAHOO.dpu.widget.RowFilter(sInput,sMatch,oSelf.oDataList,oSelf.fnFilter);
     var ua = navigator.userAgent.toLowerCase();
     if(ua.indexOf('msie') != -1 && ua.indexOf('opera') < 0) {
-        oAutoComp.useIFrame = true;
+        oAutoComplete.useIFrame = true;
     }
+    
+    // Goto to DataList
+    var onItemSelectEvent = function (sType,aArgs,oSelf) {
+        var oFlev = oSelf;
+        var oTabView = oFlev.oTabView;
+        oTabView.set('activeIndex', oSelf.nDataList); 
+    };
+    oAutoComplete.itemSelectEvent.subscribe(onItemSelectEvent,oSelf); 
+
+    oSelf.oAutoComplete = oAutoComplete;    
 };
 
 /**
