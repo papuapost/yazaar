@@ -544,7 +544,7 @@ YAHOO.yazaar.DataForm.prototype._initButton = function(name,parent,id,s) {
   el.setAttribute("alt", s);
   parent.appendChild(el);
   return el;
-}
+};
 
 /**
  * Creates HTML markup for FORM, TABLE, THEAD, TBODY.
@@ -558,7 +558,7 @@ YAHOO.yazaar.DataForm.prototype._initForm = function() {
     
     // Create FORM
     var elForm = this._elContainer.appendChild(document.createElement("form"));
-    var sForm_id = id + "-form"
+    var sForm_id = id + "-form";
     elForm.id = sForm_id;
     
     // Create TABLE
@@ -595,7 +595,7 @@ YAHOO.yazaar.DataForm.prototype._initForm = function() {
     this.showLoadingMessage();
     
     // Create TBODY for data-entry controls
-    var elBody = elTable.appendChild(document.createElement("tbody"))
+    var elBody = elTable.appendChild(document.createElement("tbody"));
     elBody.tabIndex = -1;
     YAHOO.util.Dom.addClass(elBody,YAHOO.widget.DataTable.MENU_BODY);
     
@@ -621,7 +621,7 @@ YAHOO.yazaar.DataForm.prototype._initForm = function() {
     this._elSubmit = elSubmit;
     this._elReset = elReset;
     this._elCancel = elCancel;
-}
+};
 
 /**
  * Populates THEAD element with TH cells as defined by ColumnSet.
@@ -651,7 +651,7 @@ YAHOO.yazaar.DataForm.prototype._initHead = function(elTable, sForm_id) {
             oColumn = colTree[i][j];
 
             var elHeadCell = elHeadRow.appendChild(document.createElement("th"));
-            var id = oColumn.getId()
+            var id = oColumn.getId();
             elHeadCell.id = id +"-label";
             this._initHeadCell(elHeadCell,oColumn,i,j);
 
@@ -717,19 +717,19 @@ YAHOO.yazaar.DataForm.prototype._initControl = function(elCell,oColumn,sForm_id)
     YAHOO.util.Dom.addClass(elCell, classname);
     if(oColumn.className) {
         YAHOO.util.Dom.addClass(elCell, this.className);
-    };
+    }
         
     if(oColumn.formMinLength) {
-        elInput.minLength = oColumn.formMinLength;
-    };
+       elInput.minLength = oColumn.formMinLength;
+    }
 
     if(oColumn.formMaxLength) {
         elInput.maxLength = oColumn.formMaxLength;
-    };
+    }
 
     if(oColumn.formClassName) {
         YAHOO.util.Dom.addClass(elInput,oColumn.formClassName);
-    };
+    }
 
     if(oColumn.formTitle) {
         elInput.title = oColumn.formTitle;
@@ -750,11 +750,11 @@ YAHOO.yazaar.DataForm.prototype.checkbox = function(elCell,oColumn) {
     var elInput = elCell.appendChild(document.createElement("input"));
     elInput.type = "checkbox";
     return elInput;
-}
+};
 
 YAHOO.yazaar.DataForm.prototype.select = function(elCell,oColumn) {
     var sKey = oColumn.key + "_selectOptions";
-    var aOptions = this.oSession[sKey] || oColumn.formSelectOptions || oColumn.selectOptions ;
+    var aOptions = this.oSession[sKey] || oColumn.formSelectOptions || oColumn.selectOptions || [];
     var elInput = elCell.appendChild(document.createElement("select"));
     var elOption;
     var nOption = aOptions.length;
@@ -769,13 +769,13 @@ YAHOO.yazaar.DataForm.prototype.select = function(elCell,oColumn) {
         }
     }
     return elInput;
-}
+};
    
 YAHOO.yazaar.DataForm.prototype.text = function(elCell,oColumn) {
     var elInput = elCell.appendChild(document.createElement("input"));
     elInput.type = "text";
     return elInput;
-}
+};
    
 /*
 YAHOO.widget.Column.formatSelect = function(elCell, oRecord, oColumn, oData) {
@@ -862,14 +862,14 @@ YAHOO.yazaar.DataForm.prototype._onCancel = function(e, oSelf) {
 
 YAHOO.yazaar.DataForm.prototype._onDocumentKeyup = function(e, oSelf) {
     if (!oSelf.isActive) return;
-    // escape ?
     if (e.keyCode == 27)  {
+        // escape ?
     }
     // enter Saves active editor data
     if (e.keyCode == 13) {
-    oSelf.update();
+        oSelf.update();
     }
-}
+};
 
 /**
  * Handles form reset event by invoking reset method.
@@ -944,10 +944,10 @@ YAHOO.yazaar.DataForm.prototype.copyRecord = function() {
   var oCopy = {};
   for (var prop in oRecord) {
     // TODO: Subclass fields only?
-    oCopy[prop] = oRecord[prop]
+    oCopy[prop] = oRecord[prop];
   }
   return oCopy;
-}
+};
 
 /**
  * Overridable method gives implementers a hook to access data before
@@ -989,7 +989,7 @@ YAHOO.yazaar.DataForm.prototype.harvestForm = function() {
       }
     }
     return oRecord;
-}
+};
 
 /**
  * Hide any placeholder message row.
@@ -1022,7 +1022,7 @@ YAHOO.yazaar.DataForm.prototype.isRecordChanged = function(oNewRecord) {
       same = same && (oPrevRecord[prop] == oNewRecord[prop]); // allow type conversions
     }
     return !same;
-}
+};
 
 /**
  * Validate form data according to the CSS class names set on the input elements.
@@ -1071,15 +1071,16 @@ YAHOO.yazaar.DataForm.prototype.isInvalidInput = function() {
                 var inv = f_in[i].value.trim();
                 var t = f_in[i].type.toLowerCase();
                 var cext = '';
+                var valid = false;
                 if (t == 'text' || t == 'password') {
                     //text box
-                    var valid = FIC_checkField(cname,f_in[i]);
+                    valid = FIC_checkField(cname,f_in[i]);
                 } else if(t == 'radio' || t == 'checkbox'){
                     // radio or checkbox
-                    var valid = FIC_checkRadCbx(cname,f_in[i],f_in);
+                    valid = FIC_checkRadCbx(cname,f_in[i],f_in);
                     cext = '-cr';
                 } else {
-                    var valid = true;
+                    valid = true;
                 }    
                 if (valid) {
                     removeClassName(f_in[i],'validation-failed'+cext);
@@ -1151,7 +1152,7 @@ YAHOO.yazaar.DataForm.prototype.isInvalidInput = function() {
         }
     }
     return isInvalid;
-} // end isInvalidInput
+}; // end isInvalidInput
 
 /**
  * Log that an event is raised, including the record and old record data as JSON strings.
@@ -1185,7 +1186,7 @@ YAHOO.yazaar.DataForm.prototype.logRecordEvent = function(sEventName, oRecord, o
              break;
     }
     YAHOO.log(sMessage, "info", this.toString());
-}
+};
 
 /**
  * Set the value of form input controls to the corresponding entry of the
@@ -1287,7 +1288,7 @@ YAHOO.yazaar.DataForm.prototype.reset = function() {
     }
     this.fireEvent("resetEvent", {oRecord:oRecord});
     this.logRecordEvent("resetEvent", oRecord); // debug
-}
+};
 
 /**
  * Harvest data from form and raise UpdateEvent.
@@ -1304,10 +1305,8 @@ YAHOO.yazaar.DataForm.prototype.update = function() {
     var oNewRecord = this.harvestForm();
     // Check to see if anything changed
     var isChanged = this.isRecordChanged(oNewRecord);
-    if (isChanged) {
-        for (var prop in oRecord) {
-            oRecord[prop] = oNewRecord[prop]
-        }
+    if (isChanged) for (var prop in oRecord) {
+        oRecord[prop] = oNewRecord[prop];
     }
     // Raise updateEvent
     var context = {oRecord: oNewRecord, oPrevRecord: oPrevRecord, isChanged: isChanged};
