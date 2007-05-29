@@ -13,6 +13,7 @@ Several systems exist that generate API document based on "tags" embedded in sty
 ||                     || classDescription    ||                   ||                    ||                    ||                    || classDescription||
 ||                     || constructor         ||                   || constructor        ||                    || constructor        || constructor     ||
 ||                     || copyright           ||                   ||                    ||                    ||                    || copyright       ||
+||                     ||                     ||                   ||                    || default            ||                    || default         ||
 || deprecated          || deprecated          || deprecated        || deprecated         ||                    || deprecated         || deprecated      ||
 ||                     ||                     ||                   ||                    ||                    || event              || event           ||
 ||                     ||                     ||                   || exec               ||                    ||                    || exec            ||
