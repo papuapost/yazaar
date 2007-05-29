@@ -84,13 +84,13 @@ YAHOO.yazaar.FlevBase.prototype.oResponseSchema = null;
  * rowSingleSelect: true}]
  */
 YAHOO.yazaar.FlevBase.prototype.oListConfigs = {
-        paginator:true,
-        paginatorOptions: {
-          rowsPerPage: 10,
-          dropdownOptions: [10,100,1000]
-            },
-            rowSingleSelect: true
-        };
+    paginator:true,
+    paginatorOptions: {
+      rowsPerPage: 10,
+      dropdownOptions: [10,100,1000]
+        },
+        rowSingleSelect: true
+};
 
 /**
  * DOM ID for the DataFind container (div).
@@ -229,133 +229,133 @@ YAHOO.yazaar.FlevBase.prototype.onCancel = function (oData,oSelf) {
  * @param {Object} oSelf
  */
 YAHOO.yazaar.FlevBase.prototype.load = function(oData,oSelf) {
-            // previously defined
-            var oColumnHeaders = oSelf.oColumnHeaders;
-            var oResponseSchema = oSelf.oResponseSchema;
-            var oListConfigs = oSelf.oListConfigs;
-            var sDataFind = oSelf.sDataFind;
-            var sDataList = oSelf.sDataList;
-            var sDataView = oSelf.sDataView;
-            var sDataEdit = oSelf.sDataEdit;
-            var sTabView = oSelf.sTabView;
-            // to be defined
-            var oColumnSet, oDataSource, oDataFind, oDataList, oDataView, oDataEdit, oFormConfigs,oTabView;
+        // previously defined
+        var oColumnHeaders = oSelf.oColumnHeaders;
+        var oResponseSchema = oSelf.oResponseSchema;
+        var oListConfigs = oSelf.oListConfigs;
+        var sDataFind = oSelf.sDataFind;
+        var sDataList = oSelf.sDataList;
+        var sDataView = oSelf.sDataView;
+        var sDataEdit = oSelf.sDataEdit;
+        var sTabView = oSelf.sTabView;
+        // to be defined
+        var oColumnSet, oDataSource, oDataFind, oDataList, oDataView, oDataEdit, oFormConfigs,oTabView;
 
-            oColumnSet = new YAHOO.widget.ColumnSet(oColumnHeaders);
-            oDataSource = new YAHOO.util.DataSource(oData.result);
-                oDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-                oDataSource.responseSchema = oResponseSchema;
-            oDataList = new YAHOO.dpu.widget.DataTable(sDataList, oColumnSet, oDataSource, oListConfigs);
+        oColumnSet = new YAHOO.widget.ColumnSet(oColumnHeaders);
+        oDataSource = new YAHOO.util.DataSource(oData.result);
+            oDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+            oDataSource.responseSchema = oResponseSchema;
+        oDataList = new YAHOO.dpu.widget.DataTable(sDataList, oColumnSet, oDataSource, oListConfigs);
 
-            // Enable DataTable Row Selection
-            oDataList.subscribe("cellClickEvent",oDataList.onEventSelectRow);
-            oDataList.select(oDataList.getRow(0));
+        // Enable DataTable Row Selection
+        oDataList.subscribe("cellClickEvent",oDataList.onEventSelectRow);
+        oDataList.select(oDataList.getRow(0));
 
-            // Create our own event for selecting the record behind a row
-            oDataList.createEvent("recordSelectEvent");
+        // Create our own event for selecting the record behind a row
+        oDataList.createEvent("recordSelectEvent");
 
-            // Raise our event when a row is selected
-            var onRowClickEvent = function(oArgs) {
-                var dt = oDataList;
-                var rs = dt.getRecordSet();
-                var row = dt.getSelectedRecordIds();
-                if (row.length===0) {
-                    dt.getRow(0); // No row was selected
-                    row = dt.getSelectedRecordIds();
-                }
-                var oRecord = rs.getRecord(row[row.length-1]); // ISSUE: Returns row selected on each page
+        // Raise our event when a row is selected
+        var onRowClickEvent = function(oArgs) {
+            var dt = oDataList;
+            var rs = dt.getRecordSet();
+            var row = dt.getSelectedRecordIds();
+            if (row.length===0) {
+                dt.getRow(0); // No row was selected
+                row = dt.getSelectedRecordIds();
+            }
+            var oRecord = rs.getRecord(row[row.length-1]); // ISSUE: Returns row selected on each page
 
-              // Raise RecordSelectEvent with payload
-              this.fireEvent("recordSelectEvent",{record:oRecord});
-              YAHOO.log("Selected Record: " + oRecord.toJSONString());
-            };
-            oDataList.subscribe("cellClickEvent", onRowClickEvent);
-
-            // Setup DataForm
-            oSelf.oFormConfigs["oDataList"] = oDataList;
-            oDataEdit = new YAHOO.yazaar.DataForm(sDataEdit, oColumnSet, oDataSource, oSelf.oFormConfigs);
-            oDataList.subscribe("dataReturnEvent",oSelf.initFilter,oSelf);
-
-            // Setup tabview
-            oTabView = new YAHOO.widget.TabView(sTabView);
-
-            // Goto to DataEdit
-            var onRecordSelectEvent = function () {
-              oDataEdit.populateForm();
-              oTabView.set('activeIndex', oSelf.nDataEdit); // TODO: Change to nDataView?
-            };
-            oDataList.subscribe("recordSelectEvent", onRecordSelectEvent);
-
-            oDataEdit.subscribe("updateEvent", oSelf.onUpdate, oSelf);
-            oDataEdit.subscribe("cancelEvent", oSelf.onCancel, oSelf);
-
-            // Prompt before changing tabs
-            var onBeforeActiveTabChange = function(e) {
-              if (!oDataEdit.isActive) return true;
-              var isChanged = oDataEdit.isRecordChanged();
-              if (isChanged) {
-                var isExit = confirm("Exit form without saving?");
-                if (isExit) {
-                    oDataEdit.reset();
-                }
-                return isExit;
-              } else {
-                return true;
-              }
-            };
-            oTabView.on('beforeActiveTabChange', onBeforeActiveTabChange);
-
-            // Set flag when form is in view
-            var onActiveTabChange = function(e) {
-                oDataEdit.isActive = (3==oTabView.get('activeIndex')); // TODO: nDataEdit
-            };
-            oTabView.on('activeTabChange', onActiveTabChange);
-
-            YAHOO.util.Event.onAvailable(sDataFind, function(){oSelf.initFilter(null,oSelf)});
-
-            // Retain references
-            oSelf.oColumnSet = oColumnSet;
-            oSelf.oDataSource = oDataSource;
-            oSelf.oFormConfigs = oFormConfigs;
-            oSelf.oDataList = oDataList;
-            oSelf.oDataEdit = oDataEdit;
-            oSelf.oTabView = oTabView;
+          // Raise RecordSelectEvent with payload
+          this.fireEvent("recordSelectEvent",{record:oRecord});
+          YAHOO.log("Selected Record: " + oRecord.toJSONString());
         };
+        oDataList.subscribe("cellClickEvent", onRowClickEvent);
 
-        /**
-         * Setup autocomplete filtering. Called automatically.
-         * @param {Object} oData
-         * @param {Object} oSelf
-         */
+        // Setup DataForm
+        oSelf.oFormConfigs["oDataList"] = oDataList;
+        oDataEdit = new YAHOO.yazaar.DataForm(sDataEdit, oColumnSet, oDataSource, oSelf.oFormConfigs);
+        oDataList.subscribe("dataReturnEvent",oSelf.initFilter,oSelf);
+
+        // Setup tabview
+        oTabView = new YAHOO.widget.TabView(sTabView);
+
+        // Goto to DataEdit
+        var onRecordSelectEvent = function () {
+          oDataEdit.populateForm();
+          oTabView.set('activeIndex', oSelf.nDataEdit); // TODO: Change to nDataView?
+        };
+        oDataList.subscribe("recordSelectEvent", onRecordSelectEvent);
+
+        oDataEdit.subscribe("updateEvent", oSelf.onUpdate, oSelf);
+        oDataEdit.subscribe("cancelEvent", oSelf.onCancel, oSelf);
+
+        // Prompt before changing tabs
+        var onBeforeActiveTabChange = function(e) {
+          if (!oDataEdit.isActive) return true;
+          var isChanged = oDataEdit.isRecordChanged();
+          if (isChanged) {
+            var isExit = confirm("Exit form without saving?");
+            if (isExit) {
+                oDataEdit.reset();
+            }
+            return isExit;
+          } else {
+            return true;
+          }
+        };
+        oTabView.on('beforeActiveTabChange', onBeforeActiveTabChange);
+
+        // Set flag when form is in view
+        var onActiveTabChange = function(e) {
+            oDataEdit.isActive = (3==oTabView.get('activeIndex')); // TODO: nDataEdit
+        };
+        oTabView.on('activeTabChange', onActiveTabChange);
+
+        YAHOO.util.Event.onAvailable(sDataFind, function(){oSelf.initFilter(null,oSelf)});
+
+        // Retain references
+        oSelf.oColumnSet = oColumnSet;
+        oSelf.oDataSource = oDataSource;
+        oSelf.oFormConfigs = oFormConfigs;
+        oSelf.oDataList = oDataList;
+        oSelf.oDataEdit = oDataEdit;
+        oSelf.oTabView = oTabView;
+    };
+
+/**
+ * Setup autocomplete filtering. Called automatically.
+ * @param {Object} oData
+ * @param {Object} oSelf
+ */
 YAHOO.yazaar.FlevBase.prototype.initFilter = function (oData,oSelf) {
 
-            oSelf.oFilter = new YAHOO.widget.Overlay(oSelf.sListFilter);
-            oSelf.oFilter.render();
+    oSelf.oFilter = new YAHOO.widget.Overlay(oSelf.sListFilter);
+    oSelf.oFilter.render();
 
-            var list = null;
-            if ((oData) && (oData.response)) {
-                list = oData.response;
-            } else {
-                list = oSelf.oDataSource.liveData;
-            }
-            oSelf.fnFilter= new YAHOO.dpu.util.StringFilter(list,oSelf.sItemName);
-            oSelf.fnFilter.maxCacheEntries = 0;
-            var sInput = oSelf.sListForm + "_input";
-            var sMatch = oSelf.sListForm + "_match";
-            var oAutoComp = new YAHOO.dpu.widget.RowFilter(sInput,sMatch,oSelf.oDataList,oSelf.fnFilter);
-            var ua = navigator.userAgent.toLowerCase();
-            if(ua.indexOf('msie') != -1 && ua.indexOf('opera') < 0) {
-                oAutoComp.useIFrame = true;
-            }
-        };
+    var list = null;
+    if ((oData) && (oData.response)) {
+        list = oData.response;
+    } else {
+        list = oSelf.oDataSource.liveData;
+    }
+    oSelf.fnFilter= new YAHOO.dpu.util.StringFilter(list,oSelf.sItemName);
+    oSelf.fnFilter.maxCacheEntries = 0;
+    var sInput = oSelf.sListForm + "_input";
+    var sMatch = oSelf.sListForm + "_match";
+    var oAutoComp = new YAHOO.dpu.widget.RowFilter(sInput,sMatch,oSelf.oDataList,oSelf.fnFilter);
+    var ua = navigator.userAgent.toLowerCase();
+    if(ua.indexOf('msie') != -1 && ua.indexOf('opera') < 0) {
+        oAutoComp.useIFrame = true;
+    }
+};
 
-        /**
-         * Change the autocomplete field.
-         * Must be wired to an input control via an onChange handler.
-         */
+/**
+ * Change the autocomplete field.
+ * Must be wired to an input control via an onChange handler.
+ */
 YAHOO.yazaar.FlevBase.prototype.onFilterChange = function () {
-            var sItem = this.sListForm + "_item";
-            var el = document.getElementById(sItem);
-            var item = el.options[el.selectedIndex].value;
-            this.fnFilter.schemaItem = item;
-        };
+    var sItem = this.sListForm + "_item";
+    var el = document.getElementById(sItem);
+    var item = el.options[el.selectedIndex].value;
+    this.fnFilter.schemaItem = item;
+};
