@@ -33,20 +33,20 @@ http://developer.yahoo.net/yui/license.txt
  * module. To enabled inserting a new record with default values,
  * the <code>formValue</code> property is provided.
  * <p />
- * The DataForm supports select and checkbox field types, based on experimental code 
- * provided by the DataTable beta. 
- * The entries for the select type may be provided in the ColumnSet for the field, 
- * in a "selectOptions" property. The property is an array of the text values to 
- * list in the control. If the text of the list represents a database entity that 
- * uses a key, look the key up from the text on the server-side. 
+ * The DataForm supports select and checkbox field types, based on experimental code
+ * provided by the DataTable beta.
+ * The entries for the select type may be provided in the ColumnSet for the field,
+ * in a "selectOptions" property. The property is an array of the text values to
+ * list in the control. If the text of the list represents a database entity that
+ * uses a key, look the key up from the text on the server-side.
  * <p />
- * Both the column type and the selectOptions may be provided with a "form" prefix, 
- * or without, to provided for desired degree of overlap with the DataTable settings. 
+ * Both the column type and the selectOptions may be provided with a "form" prefix,
+ * or without, to provided for desired degree of overlap with the DataTable settings.
  * <p />
- * A "oSession" property is provided so selectOptions can be retrieved independantly 
- * of a hardcoded ColumnSet. The key format for the oSession property is 
+ * A "oSession" property is provided so selectOptions can be retrieved independantly
+ * of a hardcoded ColumnSet. The key format for the oSession property is
  * fieldname_selectOptions. The oSession property may be set via the oViewConfig object.
- * 
+ *
  * (TODO: Log events for bulk updates, perhaps after reconnecting?) <br />
  * (TODO: Batch or bulk edit selected rows?)
  * @overview
@@ -149,7 +149,7 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
         // TODO: Progressively enhance an existing form from markup...
 
         var elForm = null;
-    
+
         // Create markup from scratch using the provided DataSource
         if(this.dataSource) {
             this._initForm();
@@ -606,32 +606,32 @@ YAHOO.yazaar.DataForm.prototype._initForm = function() {
     // Clear the container
     this._elContainer.innerHTML = "";
     var id = this.id;
-    
+
     // Create FORM
     var elForm = this._elContainer.appendChild(document.createElement("form"));
     var sForm_id = id + "-form";
     elForm.id = sForm_id;
-    
+
     // Create TABLE
     var elTable =  elForm.appendChild(document.createElement("table"));
     elTable.tabIndex = 0;
-    
+
     // Create SUMMARY, if applicable
     if(this.summary) {
         elTable.summary = this.summary;
     }
-    
+
     // Create CAPTION, if applicable
     if(this.caption) {
         this._elCaption = elTable.appendChild(document.createElement("caption"));
         this._elCaption.innerHTML = this.caption;
     }
-    
+
     // Create THEAD
     this._elForm = elForm;
     this._elTable = elTable;
     this._initHead(elTable, sForm_id, this._oColumnSet);
-    
+
     // Create TBODY for messages
     var elMsgBody = document.createElement("tbody");
     elMsgBody.tabIndex = -1;
@@ -644,17 +644,17 @@ YAHOO.yazaar.DataForm.prototype._initForm = function() {
     this._elMsgRow = elMsgRow;
     this._elMsgCell = elMsgCell;
     this.showLoadingMessage();
-    
+
     // Create TBODY for data-entry controls
     var elBody = elTable.appendChild(document.createElement("tbody"));
     elBody.tabIndex = -1;
     YAHOO.util.Dom.addClass(elBody,YAHOO.widget.DataTable.MENU_BODY);
-    
+
     var initButton = this._initButton;
     var elMenuRow = elBody.appendChild(document.createElement("tr"));
     var elMenuCell = elMenuRow.appendChild(document.createElement("td"));
     elMenuCell.colSpan = nColSpan;
-    
+
     var elCancel, elSubmit, elReset;
     if (this.isDisabled) {
         // Update
@@ -673,16 +673,16 @@ YAHOO.yazaar.DataForm.prototype._initForm = function() {
         // Submit
         elSubmit = initButton("elSubmit", elMenuCell, sForm_id, YAHOO.yazaar.DataForm.MSG_SUBMIT);
         YAHOO.util.Event.addListener(elSubmit, "click", this._onSubmit, this);
-        
+
         // Reset
         elReset = initButton("elReset", elMenuCell, sForm_id, YAHOO.yazaar.DataForm.MSG_RESET);
         YAHOO.util.Event.addListener(elReset, "click", this._onReset, this);
-        
+
         // Cancel
         elCancel = initButton("elCancel", elMenuCell, sForm_id, YAHOO.yazaar.DataForm.MSG_CANCEL);
         YAHOO.util.Event.addListener(elCancel, "click", this._onCancel, this);
     }
-    
+
     // Note elements for future reference
     this._elMenuRow = elMenuRow;
     this._elSubmit = elSubmit;
@@ -697,11 +697,11 @@ YAHOO.yazaar.DataForm.prototype._initForm = function() {
  */
 YAHOO.yazaar.DataForm.prototype._initHead = function(elTable, sForm_id) {
     var i,oColumn;
-    
+
     // Create THEAD
     var elHead = document.createElement("thead");
     elHead.tabIndex = -1;
-    
+
     // Iterate through each row of Column headers...
     // TODO: Try with nested column headers
     // TODO: Can the loop be a method that invokes a call back method,
@@ -724,13 +724,13 @@ YAHOO.yazaar.DataForm.prototype._initHead = function(elTable, sForm_id) {
 
             var elDataCell = elHeadRow.appendChild(document.createElement("td"));
             elDataCell.id = id + "-data";
-            
-            var elInput = this._initControl(elDataCell,oColumn,sForm_id);            
+
+            var elInput = this._initControl(elDataCell,oColumn,sForm_id);
             aFields[n++] = elInput;
             YAHOO.util.Dom.addClass(elInput,YAHOO.widget.DataTable.CLASS_EDITABLE);
         }
     }
-    
+
     this._aFields = aFields;
     this._elHead = elTable.appendChild(elHead);
     YAHOO.log("THEAD with " + this._oColumnSet.keys.length + " field labels and input controls created","info",this.toString());
@@ -742,7 +742,7 @@ YAHOO.yazaar.DataForm.prototype._initControl = function(elCell,oColumn,sForm_id)
     var markup = "";
     var classname = "";
     var elInput = null;
-    
+
     switch(type) {
         case "checkbox":
             elInput = this.checkbox(elCell,oColumn);
@@ -786,7 +786,7 @@ YAHOO.yazaar.DataForm.prototype._initControl = function(elCell,oColumn,sForm_id)
     if(oColumn.className) {
         YAHOO.util.Dom.addClass(elCell, this.className);
     }
-        
+
     if(oColumn.formMinLength) {
        elInput.minLength = oColumn.formMinLength;
     }
@@ -802,9 +802,9 @@ YAHOO.yazaar.DataForm.prototype._initControl = function(elCell,oColumn,sForm_id)
     if(oColumn.formTitle) {
         elInput.title = oColumn.formTitle;
     }
-    
+
     return elInput;
-        
+
 };
 
 YAHOO.yazaar.DataForm.prototype.checkbox = function(elCell,oColumn) {
@@ -817,12 +817,19 @@ YAHOO.yazaar.DataForm.prototype.select = function(elCell,oColumn) {
     var sKey = oColumn.key + "_selectOptions";
     var aOptions = this.oSession[sKey] || oColumn.formSelectOptions || oColumn.selectOptions || [];
     var elInput = elCell.appendChild(document.createElement("select"));
-    var elOption;
     var nOption = aOptions.length;
+    if (nOption==0) return elInput;
+    var isTextValue = !YAHOO.lang.isUndefined(aOptions[0].text);
+    var elOption;
     for (var n=0; n<nOption; n++) {
         elOption = document.createElement('option');
-        elOption.text = aOptions[n];
-        elOption.value = aOptions[n];
+        if (isTextValue) {
+            elOption.text = aOptions[n].text;
+            elOption.value = aOptions[n].value;
+        } else {
+            elOption.text = aOptions[n];
+            elOption.value = aOptions[n];
+        }
         try {
             elInput.add(elOption,null);
         } catch(e) {
@@ -831,13 +838,13 @@ YAHOO.yazaar.DataForm.prototype.select = function(elCell,oColumn) {
     }
     return elInput;
 };
-   
+
 YAHOO.yazaar.DataForm.prototype.text = function(elCell,oColumn) {
     var elInput = elCell.appendChild(document.createElement("input"));
     elInput.type = "text";
     return elInput;
 };
-   
+
 /*
 YAHOO.widget.Column.formatSelect = function(elCell, oRecord, oColumn, oData) {
     var selectedValue = oData;
@@ -906,7 +913,7 @@ YAHOO.yazaar.DataForm.prototype._initHeadCell = function(elHeadCell,oColumn,row,
 };
 
 YAHOO.yazaar.DataForm.prototype._onRecord = function(e, oSelf, sEvent) {
-    var oRecord = oSelf._oRecord; 
+    var oRecord = oSelf._oRecord;
     oSelf.fireEvent(sEvent, {oRecord: oRecord});
     oSelf.logRecordEvent(sEvent, oRecord); // debug
 };
@@ -1000,7 +1007,7 @@ YAHOO.yazaar.DataForm.prototype.isActive = false;
 YAHOO.yazaar.DataForm.prototype.isEmpty = false;
 
 /**
- * True if the DataForm is being used as a readonly view 
+ * True if the DataForm is being used as a readonly view
  * with disabled input controls.
  *
  * @property isDisabled
@@ -1027,7 +1034,7 @@ YAHOO.yazaar.DataForm.prototype.isDisabled = false;
  * @optional
  */
 YAHOO.yazaar.DataForm.prototype.oSession = {};
-   
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Public methods
@@ -1151,7 +1158,7 @@ YAHOO.yazaar.DataForm.prototype.isRecordChanged = function(oNewRecord) {
 YAHOO.yazaar.DataForm.prototype.isInvalidInput = function() {
     var errs = new Array();
     var all_valid = true;
-    
+
     //access form elements
     //inputs
     var f_in = this._aFields;
@@ -1159,11 +1166,11 @@ YAHOO.yazaar.DataForm.prototype.isInvalidInput = function() {
     // var f_sl = elm.getElementsByTagName('select');
     // TODO textareas
     // var f_ta = elm.getElementsByTagName('textarea');
-    
+
     //check inputs
     for (i=0;i<f_in.length;i++) {
         if (f_in[i].type.toLowerCase() != 'submit' && f_in[i].type.toLowerCase() != 'button' && f_in[i].type.toLowerCase() != 'hidden') {
-            if (isVisible(f_in[i])) {    
+            if (isVisible(f_in[i])) {
                 var cname = ' '+f_in[i].className.replace(/^\s*|\s*$/g,'')+' ';
                 cname = cname.toLowerCase();
                 var inv = f_in[i].value.trim();
@@ -1179,7 +1186,7 @@ YAHOO.yazaar.DataForm.prototype.isInvalidInput = function() {
                     cext = '-cr';
                 } else {
                     valid = true;
-                }    
+                }
                 if (valid) {
                     removeClassName(f_in[i],'validation-failed'+cext);
                     addClassName(f_in[i],'validation-passed'+cext);
@@ -1203,7 +1210,7 @@ YAHOO.yazaar.DataForm.prototype.isInvalidInput = function() {
         var cname = ' '+f_ta[i].className.replace(/^\s*|\s*$/g,'')+' ';
         cname = cname.toLowerCase();
         var valid = FIC_checkField(cname,f_ta[i]);
-    
+
         if (valid) {
           removeClassName(f_ta[i],'validation-failed');
           addClassName(f_ta[i],'validation-passed');
@@ -1290,17 +1297,20 @@ YAHOO.yazaar.DataForm.prototype.logRecordEvent = function(sEventName, oRecord, o
  * Set the value of form input controls to the corresponding entry of the
  * selected record.
  *
+ * @param oRecord The record to populate the form, or the selected record if omitted
  * @method populateForm
  */
-YAHOO.yazaar.DataForm.prototype.populateForm = function() {
-    this.hideTableMessages();
-    var oDataList = this.oDataList;
-    var isShared = !!(oDataList);
-    var oRecordSet =  (isShared) ? oDataList._oRecordSet : this._oRecordSet;
-    var oSelectedRecords =  (isShared) ? oDataList.getSelectedRecordIds() : this.getSelectedRecordIds();
-    var nLength = oSelectedRecords.length;
-    // TODO: For YUI 2.2.4, confirm that single select only selects one row (1703840)
-    var oRecord = (nLength > 0) ? oRecordSet.getRecord(oSelectedRecords[nLength-1]) : oRecordSet.getRecord(0);
+YAHOO.yazaar.DataForm.prototype.populateForm = function(oRecord) {
+    if (!oRecord) {
+        this.hideTableMessages();
+        var oDataList = this.oDataList;
+        var isShared = !!(oDataList);
+        var oRecordSet =  (isShared) ? oDataList._oRecordSet : this._oRecordSet;
+        var oSelectedRecords =  (isShared) ? oDataList.getSelectedRecordIds() : this.getSelectedRecordIds();
+        var nLength = oSelectedRecords.length;
+        // TODO: For YUI 2.2.4, confirm that single select only selects one row (1703840)
+        oRecord = (nLength > 0) ? oRecordSet.getRecord(oSelectedRecords[nLength-1]) : oRecordSet.getRecord(0);
+    }
     var oTree = this._oColumnSet.tree;
     var aFields = this._aFields;
     var n = 0;
@@ -1324,6 +1334,27 @@ YAHOO.yazaar.DataForm.prototype.populateForm = function() {
     this.fireEvent("populateEvent", {newRecord:oRecord});
     this.logRecordEvent("populateEvent", oRecord); // debug
 };
+
+
+YAHOO.yazaar.DataForm.prototype.insertForm = function() {
+    var oFields = {};
+    var oSet = this._oColumnSet;
+    var aKeys = oSet.keys;
+    var nLength = aKeys.length;
+    for (i=0; i<nLength; i++) {
+        var oColumn = aKeys[i];
+        var type = oColumn.formType || oColumn.type;
+        switch(type) {
+            case "select":
+                var oOptions = oColumn.selectOptions || oColumn.formSelectOptions || [];
+                if (YAHOO.lang.isUndefined(oColumn.initial)) oColumn.initial = oOptions[0];
+                break;
+        }
+        oFields[oColumn.key] = oColumn.initial || "";
+    }
+    var oRecord = new YAHOO.widget.Record(oFields);
+    this.populateForm(oRecord);
+}
 
 /**
  * Placeholder row to indicate table data is empty.
@@ -1396,7 +1427,7 @@ YAHOO.yazaar.DataForm.prototype.reset = function() {
 YAHOO.yazaar.DataForm.prototype.update = function() {
 
     if (this.isInvalidInput()) return;
-    
+
     // Gather the usual suspects
     var oRecord = this._oRecord;
     var oPrevRecord = this.copyRecord();
