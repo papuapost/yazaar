@@ -33,17 +33,17 @@
 = Similar Projects and Extensions =
 
  * [http://yuiblog.com/sandbox/yui/v222/examples/datatable/filterRows.php YUI Sandbox]
- * [http://www.openjsan.org/index.html JSAN]
+ * [http://blog.davglass.com/2006/06/yui-code-samples/ YUI Code Samples @ Davs Rants and Random Thoughts]
  * [http://www.yui-ext.com/deploy/yui-ext/docs/ Ext (formerly YUI Ext)]
  * [http://bubbling.comarq.com/ Bubbling Library]
  * [http://blog.mozmonkey.com/2007/classanim-hoverhijax-keeping-presentation-out-of-your-javascript/ ClassAnim and HoverHijax]
  * [http://ajaxian.com/archives/y-ui-carousel-component Carousel Component]
  * [http://stubblog.wordpress.com/2006/12/19/yui-div-swap-with-fade/ Div Swap with Fade]
- * [http://blog.davglass.com/2006/06/yui-code-samples/ Davs Rants and Random Thoughts]
  * [http://www.hedgerwow.com/360/dhtml/yui-connection-watcher/demo.php Connection Manager Watcher]
  * [http://www.whenpenguinsattack.com/2006/12/12/how-to-create-a-php-upload-progress-meter/ PHP Upload Progress Meter]
  * [http://www.hedgerwow.com/360/mwd/accordion/demo.php Accordion Menu]
  * [http://gopalarathnam.com/examples/javascript/dynscriptex.html Dynamic Script Loading Example]
+ * [http://www.openjsan.org/index.html JSAN]
 
 = Specifications = 
 
