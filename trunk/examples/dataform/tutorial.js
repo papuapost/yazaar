@@ -44,6 +44,23 @@ var onRowDelete = function(oArgs) {
 };
 oDataTable.subscribe("rowDeleteEvent", onRowDelete);
 
+// Setup DataForm
+var oConfigs = {oDataList: oDataTable, oSession: oSession};
+var oDataForm = new YAHOO.yazaar.DataForm("elDataForm", oColumnSet, oDataSource, oConfigs);
+
+// Setup Logger
+var oLogReader = new YAHOO.widget.LogReader("elLogReader");
+
+
+// Create our own event for signaling an insert request
+oDataTable.createEvent("insertEvent");
+
+// Raise our event when insert item is selected
+oDataTable.onInsertEvent = function(oArgs) {
+  // Raise RecordSelectEvent with payload
+  oDataTable.fireEvent("insertEvent");
+}
+
 var onContextMenuClick = function(p_sType, p_aArgs, p_oMenu) {
     var task = p_aArgs[1];
     if(task) {
@@ -69,7 +86,7 @@ var onContextMenuClick = function(p_sType, p_aArgs, p_oMenu) {
                     break;
                 case 2:     // Insert Item
                     YAHOO.log("Inserting item: " + row.cells[2].innerHTML);
-                    oDataTable.onRowClickEvent();
+                    oDataTable.onInsertEvent();
                     break;
             }
         }
@@ -83,9 +100,3 @@ oContextMenu.addItem("Insert Item");
 oContextMenu.render(document.body);
 oContextMenu.clickEvent.subscribe(onContextMenuClick);
 
-// Setup DataForm
-var oConfigs = {oDataList: oDataTable, oSession: oSession};
-var oDataForm = new YAHOO.yazaar.DataForm("elDataForm", oColumnSet, oDataSource, oConfigs);
-
-// Setup Logger
-var oLogReader = new YAHOO.widget.LogReader("elLogReader");

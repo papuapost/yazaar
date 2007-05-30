@@ -159,9 +159,16 @@ var oTabView = new YAHOO.widget.TabView("elTabView");
 // Goto to DataForm
 var onRecordSelectEvent = function () {
   oDataForm.populateForm();
-    oTabView.set('activeIndex', 1);
+  oTabView.set('activeIndex', 1);
 }
 oDataTable.subscribe("recordSelectEvent", onRecordSelectEvent);
+
+// Goto to DataForm
+var doInsertEvent = function () {
+  oDataForm.insertForm();
+  oTabView.set('activeIndex', 1);
+}
+oDataTable.subscribe("insertEvent", doInsertEvent);
 
 // Goto DataTable
 var onRecordActionEvent = function () {
