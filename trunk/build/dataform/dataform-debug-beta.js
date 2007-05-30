@@ -15,7 +15,7 @@ http://developer.yahoo.net/yui/license.txt
  * The DataForm can be used with an independant RecordSet,
  * or it can share a RecordSet with a companion DataTable.
  * <p />
- * This control is being created as the first step toward a
+ * This control is being created as part of a
  * Find/List/Edit/View (FLEV) composite control. This control uses the
  * DataTable control as a starting point, adding and substracting code as needed.
  * <p />
@@ -33,6 +33,20 @@ http://developer.yahoo.net/yui/license.txt
  * module. To enabled inserting a new record with default values,
  * the <code>formValue</code> property is provided.
  * <p />
+ * The DataForm supports select and checkbox field types, based on experimental code 
+ * provided by the DataTable beta. 
+ * The entries for the select type may be provided in the ColumnSet for the field, 
+ * in a "selectOptions" property. The property is an array of the text values to 
+ * list in the control. If the text of the list represents a database entity that 
+ * uses a key, look the key up from the text on the server-side. 
+ * <p />
+ * Both the column type and the selectOptions may be provided with a "form" prefix, 
+ * or without, to provided for desired degree of overlap with the DataTable settings. 
+ * <p />
+ * A "oSession" property is provided so selectOptions can be retrieved independantly 
+ * of a hardcoded ColumnSet. The key format for the oSession property is 
+ * fieldname_selectOptions. The oSession property may be set via the oViewConfig object.
+ * 
  * (TODO: Log events for bulk updates, perhaps after reconnecting?) <br />
  * (TODO: Batch or bulk edit selected rows?)
  * @overview
@@ -40,7 +54,7 @@ http://developer.yahoo.net/yui/license.txt
  * @module yazaar.dataform
  * @requires yahoo, dom, event, datasource
  * @title DataForm Widget
- * @alpha
+ * @beta
  */
 
 /****************************************************************************/
@@ -200,20 +214,20 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
     this.createEvent("radioClickEvent");
 
     /**
-     * Fired when DataForm instance is first initialized.
+     * Fired when DataView instance is first initialized.
      *
-     * @method tableInitEvent
-     * @event tableInitEvent
+     * @method formInitEvent
+     * @event formInitEvent
      */
-    this.createEvent("tableInitEvent");
+    this.createEvent("formInitEvent");
 
     /**
      * Fired when DataForm instance is focused.
      *
-     * @method tableFocusEvent
-     * @event tableFocusEvent
+     * @method formFocusEvent
+     * @event formFocusEvent
      */
-    this.createEvent("tableFocusEvent");
+    this.createEvent("formFocusEvent");
 
     /**
      * Fired when data is returned from DataSource.
@@ -239,7 +253,7 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
      *
      * @method populateEvent
      * @param oArgs.oRecord {YAHOO.widget.Record} Record instance.
-     * @event formPopulateEvent
+     * @event populateEvent
      */
     this.createEvent("populateEvent");
 
@@ -383,6 +397,43 @@ YAHOO.yazaar.DataForm.MSG_RESET = "RESET";
  * @default "CANCEL"
  */
 YAHOO.yazaar.DataForm.MSG_CANCEL = "CANCEL";
+
+/**
+ * Label for Update button
+ *
+ * @static
+ * @field
+ * @property MSG_UPDATE
+ * @type String
+ * @final
+ * @default "EDIT"
+ */
+YAHOO.yazaar.DataForm.MSG_UPDATE = "EDIT";
+
+/**
+ * Label for Insert button
+ *
+ * @static
+ * @field
+ * @property MSG_INSERT
+ * @type String
+ * @final
+ * @default "ADD"
+ */
+YAHOO.yazaar.DataForm.MSG_INSERT = "ADD";
+
+/**
+ * Label for Delete button
+ *
+ * @static
+ * @field
+ * @property MSG_DELETE
+ * @type String
+ * @final
+ * @default "DELETE"
+ */
+YAHOO.yazaar.DataForm.MSG_DELETE = "DELETE";
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -604,17 +655,33 @@ YAHOO.yazaar.DataForm.prototype._initForm = function() {
     var elMenuCell = elMenuRow.appendChild(document.createElement("td"));
     elMenuCell.colSpan = nColSpan;
     
-    // Submit
-    var elSubmit = initButton("elSubmit", elMenuCell, sForm_id, YAHOO.yazaar.DataForm.MSG_SUBMIT);
-    YAHOO.util.Event.addListener(elSubmit, "click", this._onSubmit, this);
-    
-    // Reset
-    var elReset = initButton("elReset", elMenuCell, sForm_id, YAHOO.yazaar.DataForm.MSG_RESET);
-    YAHOO.util.Event.addListener(elReset, "click", this._onReset, this);
-    
-    // Cancel
-    var elCancel = initButton("elCancel", elMenuCell, sForm_id, YAHOO.yazaar.DataForm.MSG_CANCEL);
-    YAHOO.util.Event.addListener(elCancel, "click", this._onCancel, this);
+    var elCancel, elSubmit, elReset;
+    if (this.isDisabled) {
+        // Update
+        elUpdate = initButton("elUpdate", elMenuCell, sForm_id, YAHOO.yazaar.DataForm.MSG_UPDATE);
+        YAHOO.util.Event.addListener(elUpdate, "click", this._onUpdate, this);
+        // Insert
+        elInsert = initButton("elInsert", elMenuCell, sForm_id, YAHOO.yazaar.DataForm.MSG_INSERT);
+        YAHOO.util.Event.addListener(elInsert, "click", this._onInsert, this);
+        // Delete
+        elDelete = initButton("elDelete", elMenuCell, sForm_id, YAHOO.yazaar.DataForm.MSG_DELETE);
+        YAHOO.util.Event.addListener(elDelete, "click", this._onDelete, this);
+        // Cancel
+        elCancel = initButton("elCancel", elMenuCell, sForm_id, YAHOO.yazaar.DataForm.MSG_CANCEL);
+        YAHOO.util.Event.addListener(elCancel, "click", this._onCancel, this);
+    } else {
+        // Submit
+        elSubmit = initButton("elSubmit", elMenuCell, sForm_id, YAHOO.yazaar.DataForm.MSG_SUBMIT);
+        YAHOO.util.Event.addListener(elSubmit, "click", this._onSubmit, this);
+        
+        // Reset
+        elReset = initButton("elReset", elMenuCell, sForm_id, YAHOO.yazaar.DataForm.MSG_RESET);
+        YAHOO.util.Event.addListener(elReset, "click", this._onReset, this);
+        
+        // Cancel
+        elCancel = initButton("elCancel", elMenuCell, sForm_id, YAHOO.yazaar.DataForm.MSG_CANCEL);
+        YAHOO.util.Event.addListener(elCancel, "click", this._onCancel, this);
+    }
     
     // Note elements for future reference
     this._elMenuRow = elMenuRow;
@@ -713,6 +780,7 @@ YAHOO.yazaar.DataForm.prototype._initControl = function(elCell,oColumn,sForm_id)
 
     elInput.name = oColumn.key;
     elInput.id = sForm_id + "_" + elInput.name;
+    elInput.disabled = this.isDisabled;
 
     YAHOO.util.Dom.addClass(elCell, classname);
     if(oColumn.className) {
@@ -733,19 +801,12 @@ YAHOO.yazaar.DataForm.prototype._initControl = function(elCell,oColumn,sForm_id)
 
     if(oColumn.formTitle) {
         elInput.title = oColumn.formTitle;
-    };
+    }
     
     return elInput;
         
 };
 
-/**
- * Generic "state" object that can be used to store select lists obtained from
- * a database call, and other objects as convenient.
- * Select options can be stored here in the format oColumn.key + "_selectOptions".
- */
-YAHOO.yazaar.DataForm.prototype.oSession = {};
-   
 YAHOO.yazaar.DataForm.prototype.checkbox = function(elCell,oColumn) {
     var elInput = elCell.appendChild(document.createElement("input"));
     elInput.type = "checkbox";
@@ -844,6 +905,13 @@ YAHOO.yazaar.DataForm.prototype._initHeadCell = function(elHeadCell,oColumn,row,
     elHeadContent.innerHTML = contentText;
 };
 
+YAHOO.yazaar.DataForm.prototype._onRecord = function(e, oSelf, sEvent) {
+    var oRecord = oSelf._oRecord; 
+    oSelf.fireEvent(sEvent, {oRecord: oRecord});
+    oSelf.logRecordEvent(sEvent, oRecord); // debug
+};
+
+
 /**
  * Handles form cancel by raising a cancelEvent that bundles the
  * original record values.
@@ -855,11 +923,12 @@ YAHOO.yazaar.DataForm.prototype._initHeadCell = function(elHeadCell,oColumn,row,
  * @private
  */
 YAHOO.yazaar.DataForm.prototype._onCancel = function(e, oSelf) {
-      var oRecord = oSelf._oRecord; // Restore this reference
-    oSelf.fireEvent("cancelEvent", {oRecord: oRecord});
-    oSelf.logRecordEvent("cancelEvent", oRecord); // debug
+    oSelf._onRecord(e,oSelf,"cancelEvent");
 };
 
+YAHOO.yazaar.DataForm.prototype._onDelete = function(e, oSelf) {
+    oSelf._onRecord(e,oSelf,"deleteEvent");
+};
 YAHOO.yazaar.DataForm.prototype._onDocumentKeyup = function(e, oSelf) {
     if (!oSelf.isActive) return;
     if (e.keyCode == 27)  {
@@ -869,6 +938,10 @@ YAHOO.yazaar.DataForm.prototype._onDocumentKeyup = function(e, oSelf) {
     if (e.keyCode == 13) {
         oSelf.update();
     }
+};
+
+YAHOO.yazaar.DataForm.prototype._onInsert = function(e, oSelf) {
+    oSelf._onRecord(e,oSelf,"insertEvent");
 };
 
 /**
@@ -898,6 +971,11 @@ YAHOO.yazaar.DataForm.prototype._onSubmit = function(e, oSelf) {
   oSelf.update();
 };
 
+YAHOO.yazaar.DataForm.prototype._onUpdate = function(e, oSelf) {
+    oSelf._onRecord(e,oSelf,"updateEvent");
+};
+
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Public member variables
@@ -922,6 +1000,15 @@ YAHOO.yazaar.DataForm.prototype.isActive = false;
 YAHOO.yazaar.DataForm.prototype.isEmpty = false;
 
 /**
+ * True if the DataForm is being used as a readonly view 
+ * with disabled input controls.
+ *
+ * @property isDisabled
+ * @type Boolean
+ */
+YAHOO.yazaar.DataForm.prototype.isDisabled = false;
+
+/**
  * DataTable instance.
  *
  * @property oDataList
@@ -930,6 +1017,17 @@ YAHOO.yazaar.DataForm.prototype.isEmpty = false;
   */
  YAHOO.yazaar.DataForm.prototype.oDataList = null;
 
+/**
+ * Generic "state" object that can be used to store select lists obtained from
+ * a database call, and other objects as convenient.
+ * Select options can be stored here in the format oColumn.key + "_selectOptions".
+ *
+ * @property oSession
+ * @type object
+ * @optional
+ */
+YAHOO.yazaar.DataForm.prototype.oSession = {};
+   
 /////////////////////////////////////////////////////////////////////////////
 //
 // Public methods
