@@ -5,10 +5,10 @@
     <title>DataForm with TabView</title>
 <!-- DPU RowFilterTable source (extends YUI version) -->
 <style type="text/css">
-    /* custom css*/
+    /*custom css*/
     body {font-family:arial}
-	
-    /* CSS FOR DataTable */	
+
+    /*CSS FOR DataTable */
     .dpu-dt {margin:1em;}
     .dpu-dt table {border-collapse:collapse;}
     .dpu-dt th, .dpu-dt td {border:1px solid #000;padding:.25em;}
@@ -20,7 +20,7 @@
     .dpu-dt .small {font-size:77%}
     .dpu-dt .yui-dt-selected {background-color:#000;color:#FFF;} /*white on black*/
     .dpu-dt .yui-dt-editable.yui-dt-highlight {background-color:#BEDAFF;} /*light blue*/
-  
+
     /*CSS For Auto Complete*/
     .filter {position:relative;padding:1em;}
     .filterForm {position:relative;margin:1em;width:15em;}/* set width of widget here*/
@@ -31,7 +31,15 @@
     .filterMatch ul {padding:5px 0;width:100%;}
     .filterMatch li {padding:0 5px;cursor:default;white-space:nowrap; font-size:small}
     .filterMatch li.yui-ac-highlight {background:#ff0;}
-</style>           
+
+    /*custom css*/
+    #contextmenu {margin:1em;}
+    #contextmenu table {border-collapse:collapse;}
+    #contextmenu th, #contextmenu td {border:1px solid #000;padding:.25em;}
+    #contextmenu th {background-color:#696969;color:#fff;}/*dark gray*/
+    #contextmenu .yui-dt-odd {background-color:#eee;} /*light gray*/
+
+</style>
 <!-- DataTable/DataForm -->
 <link type="text/css" rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/datatable/assets/datatable.css">
 <!-- TabView -->
@@ -54,7 +62,7 @@
         A DataForm can share a DataSource and ColumnSet with a DataTable, so that the two widgets can be used in tandem.
       </li>
       <li>
-        A <a href="http://code.google.com/p/yazaar/issues/detail?id=4">FLEV widget</a> is being designed which uses a DataForm, DataTable, and TabView to create a unified Find, List, Edit, View workflow. (See the <a href="../phonebook/Home.html">PhoneBook example</a>.)		
+        A <a href="http://code.google.com/p/yazaar/issues/detail?id=4">FLEV widget</a> is being designed which uses a DataForm, DataTable, and TabView to create a unified Find, List, Edit, View workflow. (See the <a href="../phonebook/Home.html">PhoneBook example</a>.)
       </li>
       <li>
         This example utilizes the test data from the <a href="http://developer.yahoo.com/yui/datatable/">DataTable</a> documentation.
@@ -71,44 +79,44 @@
                 <li><a href="#edit"><em>Edit (DataForm)</em></a></li>
             </ul>
             <div class="yui-content">
-				<div id="elList">
-					<div class="filter">
-        				<form >
-             				<p style="font-weight:bold">Find an order by:
-             				<select id="item" onchange="onFilterChange()">
-                				<option value="breed">Breed</option>
-                				<option value="name" selected="true">Name</option>
-            				</select>
-             				</p>
-            				<div class="filterForm">
-							<p>
-                				<input class="filterInput" id="input" />
-                				<div class="filterMatch" id="match"></div>
-							</p>
-            				</div>
-         				</form>
-    			    </div>			
-    	            <div id="elDataTable" class="dpu-dt"></div>				
-				</div>
-				<div id="elEdit">
-		            <div id="elDataForm"></div>				
-				</div>
+        <div id="elList">
+          <div class="filter">
+                <form >
+                    <p style="font-weight:bold">Find an order by:
+                    <select id="item" onchange="onFilterChange()">
+                        <option value="breed">Breed</option>
+                        <option value="name" selected="true">Name</option>
+                    </select>
+                    </p>
+                    <div class="filterForm">
+              <p>
+                        <input class="filterInput" id="input" />
+                        <div class="filterMatch" id="match"></div>
+              </p>
+                    </div>
+                </form>
+              </div>
+                  <div id="elDataTable" class="dpu-dt"></div>
+        </div>
+        <div id="elEdit">
+                <div id="elDataForm"></div>
+        </div>
             </div>
         </div>
       </td><td>
         <div id="elLogReader"></div>
       </td></tr>
     </table>
-    
+
   </body>
 
 <!-- Patch for IE setAttribute issue [http://delete.me.uk/2004/09/ieproto.html] -->
-<!--[if IE]>  
+<!--[if IE]>
     <script type="text/javascript" src="../../build/extras/ieproto/attributes.js"></script>
     <style type="text/css">
         * { behavior: url(../../build/extras/ieproto/attributes.htc); }
     </style>
-<![endif]-->  
+<![endif]-->
 
 <!-- DataTable/DataForm -->
 <script src="http://yui.yahooapis.com/2.2.2/build/yahoo-dom-event/yahoo-dom-event.js"></script>
@@ -125,7 +133,7 @@
 <!-- LogReader -->
 <script src="http://yui.yahooapis.com/2.2.2/build/logger/logger-min.js"></script>
 
-<!-- DPU RowFilterTable source (extends YUI version) -->   
+<!-- DPU RowFilterTable source (extends YUI version) -->
 <script src="../../build/extras/dpu/RowFilterDataTable.js" ></script>
 <script src="../../build/extras/dpu/RowFilter.js" ></script>
 
@@ -133,6 +141,10 @@
 <script src="http://yui.yahooapis.com/2.2.2/build/element/element-beta-min.js"></script>
 <!-- Source file -->
 <script src="http://yui.yahooapis.com/2.2.2/build/tabview/tabview-min.js"></script>
+
+<!-- Context Menu-->
+<script src="http://yui.yahooapis.com/2.2.2/build/container/container-min.js"type="text/javascript" ></script>
+<script src="http://yui.yahooapis.com/2.2.2/build/menu/menu-min.js"type="text/javascript" ></script>
 
 <!-- tutorial -->
 <script src="tutorial-data.js"></script>
@@ -175,7 +187,7 @@ var onActiveTabChange = function(e) {
 }
 oTabView.on('activeTabChange', onActiveTabChange);
 
-// Setup filter 
+// Setup filter
 var fnFilter = null;
 function initFilter(oResp,oDataTable){
     var data = null;
@@ -183,25 +195,25 @@ function initFilter(oResp,oDataTable){
         data=oResp.response;
     } else {
         data =  YAHOO.example.oPuppies; // TODO: Datasource?
-    }   
+    }
     fnFilter= new YAHOO.dpu.util.StringFilter(data,"name")
-    fnFilter.maxCacheEntries = 0;   
+    fnFilter.maxCacheEntries = 0;
     oAutoComp = new YAHOO.dpu.widget.RowFilter("input","match", oDataTable,fnFilter);
     var ua = navigator.userAgent.toLowerCase();
     if(ua.indexOf('msie') != -1 && ua.indexOf('opera') < 0) {
-        oAutoComp.useIFrame = true;    
+        oAutoComp.useIFrame = true;
     }
-} 
+}
 oDataTable.subscribe("dataReturnEvent",initFilter,oDataTable);
-YAHOO.util.Event.onAvailable("elDataTable", function(){initFilter(null,oDataTable)}); 
+YAHOO.util.Event.onAvailable("elDataTable", function(){initFilter(null,oDataTable)});
 
 // Respond to filter change button
 function onFilterChange() {
     var el = document.getElementById("item");
     var item = el.options[el.selectedIndex].value;
-    fnFilter.schemaItem = item;   
+    fnFilter.schemaItem = item;
 }
 
 </script>
- 
+
 </html>
