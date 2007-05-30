@@ -6,7 +6,7 @@ oDataTable.select(oDataTable.getRow(0));
 oDataTable.createEvent("recordSelectEvent");
 
 // Raise our event when a row is selected
-var onRowClickEvent = function(oArgs) {
+oDataTable.onRowClickEvent = function(oArgs) {
     var dt = oDataTable;
     var rs = dt.getRecordSet();
     var row = dt.getSelectedRecordIds();
@@ -20,11 +20,23 @@ var onRowClickEvent = function(oArgs) {
   this.fireEvent("recordSelectEvent",{record:oRecord});
   YAHOO.log("Selected Record: " + oRecord.toJSONString());
 }
-oDataTable.subscribe("cellClickEvent", onRowClickEvent);
+// oDataTable.subscribe("cellClickEvent", onRowClickEvent);
 
 // Inject extended selectOptions
 var oSession = {};
 oSession ["breed_selectOptions"] = ["Cocker Spaniel","English Bulldog","German Shepherd","Golden Retriever","Greyhound","Labrador Retriever","Norwich Terrier","Poodle","Yorkshire Terrier"];
+
+// Enable inline editing
+oDataTable.subscribe("cellClickEvent",oDataTable.onEventEditCell);
+oDataTable.subscribe("cellMouseoverEvent",oDataTable.onEventHighlightCell);
+oDataTable.subscribe("cellMouseoutEvent",oDataTable.onEventUnhighlightCell);
+
+var onCellEdit = function(oArgs) {
+    YAHOO.log("Cell \"" + oArgs.target.id +
+            "\" was updated from \"" + oArgs.oldData + "\" to \"" +
+            oArgs.newData + "\"", "info", this.toString());
+}
+oDataTable.subscribe("cellEditEvent",onCellEdit);
 
 // Setup Context Menu
 var onRowDelete = function(oArgs) {
@@ -51,6 +63,14 @@ var onContextMenuClick = function(p_sType, p_aArgs, p_oMenu) {
                     YAHOO.log("Deleting item: " + row.cells[2].innerHTML);
                     oDataTable.deleteRow(row);
                     break;
+                case 1:     // Update Item
+                    YAHOO.log("Updating item: " + row.cells[2].innerHTML);
+                    oDataTable.onRowClickEvent();
+                    break;
+                case 2:     // Insert Item
+                    YAHOO.log("Inserting item: " + row.cells[2].innerHTML);
+                    oDataTable.onRowClickEvent();
+                    break;
             }
         }
     }
@@ -58,6 +78,8 @@ var onContextMenuClick = function(p_sType, p_aArgs, p_oMenu) {
 
 var oContextMenu = new YAHOO.widget.ContextMenu("oContextMenu", { trigger: oDataTable.getBody() } );
 oContextMenu.addItem("Delete Item");
+oContextMenu.addItem("Update Item");
+oContextMenu.addItem("Insert Item");
 oContextMenu.render(document.body);
 oContextMenu.clickEvent.subscribe(onContextMenuClick);
 
