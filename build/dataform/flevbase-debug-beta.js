@@ -241,24 +241,27 @@ YAHOO.yazaar.FlevBase.prototype.sItemName = null;
 /////////////////////////////////////////////////////////////////////////////
 
 /**
- * Exits Edit and activates View.
+ * Convenience method to exit Edit and activate View.
+ * @method exitEdit
  */
 YAHOO.yazaar.FlevBase.prototype.exitEdit = function(oSelf) {
-    oSelf.oTabView.set('activeIndex', oSelf.nDataView); 
+    if (oSelf) oSelf.oTabView.set('activeIndex', oSelf.nDataView); 
 };
 
 /**
- * Exits View and activates List.
+ * Convenience method to exit View and activate List.
+ * @method exitView
  */
 YAHOO.yazaar.FlevBase.prototype.exitView = function(oSelf) {
-    oSelf.oTabView.set('activeIndex', oSelf.nDataList); 
+    if (oSelf) oSelf.oTabView.set('activeIndex', oSelf.nDataList); 
 };
 
 /**
- * Exits Edit and activates View.
+ * Convenience method to exit Edit and activate View.
+ * @method gotoEdit
  */
 YAHOO.yazaar.FlevBase.prototype.gotoEdit = function(oSelf) {
-    oSelf.oTabView.set('activeIndex', oSelf.nDataEdit); 
+    if (oSelf) oSelf.oTabView.set('activeIndex', oSelf.nDataEdit); 
 };
 
 /**
@@ -266,6 +269,7 @@ YAHOO.yazaar.FlevBase.prototype.gotoEdit = function(oSelf) {
  * Intended for use at initial load only. 
  * @param {Object} oData Incoming data in RPC response format
  * @param {Object} oSelf Runtme reference to object instance
+ * @method load
  */
 YAHOO.yazaar.FlevBase.prototype.load = function(oData,oSelf) {
         // previously defined
@@ -325,7 +329,7 @@ YAHOO.yazaar.FlevBase.prototype.load = function(oData,oSelf) {
         oDataView.subscribe("cancelEvent", oSelf.onExitView, oSelf);
         oDataView.subscribe("deleteEvent", oSelf.onDelete, oSelf);
         oDataView.subscribe("insertEvent", oSelf.onInsert, oSelf);
-        oDataView.subscribe("updateEvent", oSelf.onGotoEdit, oSelf);
+        oDataView.subscribe("updateEvent", oSelf.onUpdate, oSelf);
         oDataView.subscribe("insertFormEvent", oSelf.onInsertForm, oSelf);
         oDataView.subscribe("updateFormEvent", oSelf.onUpdateForm, oSelf);
 
@@ -381,6 +385,7 @@ YAHOO.yazaar.FlevBase.prototype.load = function(oData,oSelf) {
  * Setup autocomplete filtering. Called in response to DataReturnEvent.
  * @param {Object} oData
  * @param {Object} oSelf
+ * @method initFilter
  */
 YAHOO.yazaar.FlevBase.prototype.initFilter = function (oData,oSelf) {
 
@@ -412,28 +417,38 @@ YAHOO.yazaar.FlevBase.prototype.initFilter = function (oData,oSelf) {
     oSelf.oAutoComplete = oAutoComplete;    
 };
 /**
- * Handles deleteEvent raised by View.
- * To persist changes, override or replace this method.
+ * Handles deleteEvent raised by View by confirm the operation and removing the record from the record set.
+ * To persist changes, override this method, and delete the record from any related DataTable, 
+ * or the DataForm (but not both).
+ *
+ * @method onDelete
  */
 YAHOO.yazaar.FlevBase.prototype.onDelete = function (oData,oSelf) {
-    var isExit = confirm("Delete this record");
+    var isExit = confirm("Delete this record?");
     if (isExit) {
-        // TODO: Remove Record
-        oSelf.oTabView.set('activeIndex', oSelf.nDataList); 
+        oSelf.exitView(oSelf); 
+        var oRecord = oSelf.oDataEdit.getSelectedRecord();
+        oSelf.oDataEdit.deleteRecord(oRecord.yuiRecordId);
+        oSelf.oDataList.populateTable();
+        oSelf.oDataList.showPage(oSelf.oDataList.pageCurrent);
     }   
 };
 
 /**
- * Handles updateEvent raised by Edit.
- * To persist changes, override or replace this method.
+ * Handles updateEvent raised by Edit by switching displays.
+ * To persist changes, override this method.
+ * 
+ * @method onExitEdit
  */
 YAHOO.yazaar.FlevBase.prototype.onExitEdit = function (oData,oSelf) {
     oSelf.exitEdit(oSelf);
 };
 
 /**
- * Handles updateEvent raised by Edit.
+ * Handles updateEvent raised by Edit by switching displays..
  * To persist changes, override or replace this method.
+ * 
+ * @method onExitView
  */
 YAHOO.yazaar.FlevBase.prototype.onExitView = function (oData,oSelf) {
     oSelf.exitView(oSelf);
@@ -442,6 +457,8 @@ YAHOO.yazaar.FlevBase.prototype.onExitView = function (oData,oSelf) {
 /**
  * Change the autocomplete field.
  * Must be wired to an input control via an onChange handler.
+ * 
+ * @method onFilterChange
  */
 YAHOO.yazaar.FlevBase.prototype.onFilterChange = function () {
     var sItem = this.sListForm + "_item";
@@ -451,41 +468,39 @@ YAHOO.yazaar.FlevBase.prototype.onFilterChange = function () {
 };
 
 /**
- * Handles updateEvent raised by View.
+ * Handles insertEvent raised by Edit by switching displays.
  * To persist changes, override or replace this method.
- */
-YAHOO.yazaar.FlevBase.prototype.onGotoEdit = function (oData,oSelf) {
-   oSelf.oTabView.set('activeIndex', oSelf.nDataEdit); 
-};
-
-/**
- * Handles insertEvent raised by Edit.
- * To persist changes, override or replace this method.
+ * 
+ * @method onInsert
  */
 YAHOO.yazaar.FlevBase.prototype.onInsert = function (oData,oSelf) {
-    oSelf.exitEdit(oSelf);
+    if (oSelf) oSelf.exitEdit(oSelf);
 };
 
 /**
- * Handles insertEvent raised by View.
- * To persist changes, override or replace this method.
+ * Handles insertFormEvent raised by View by switching displays.
+ * 
+ * @method onInsertForm
  */
 YAHOO.yazaar.FlevBase.prototype.onInsertForm = function (oData,oSelf) {
-    oSelf.gotoEdit(oSelf);
+    if (oSelf) oSelf.gotoEdit(oSelf);
 };
 
 /**
- * Handles updateEvent raised by Edit.
- * To persist changes, override or replace this method.
+ * Handles updateEvent raised by Edit by switching displays.
+ * To persist changes, override this method.
+ * 
+ * @method onUpdate
  */
 YAHOO.yazaar.FlevBase.prototype.onUpdate = function (oData,oSelf) {
-    oSelf.exitEdit(oSelf);
+    if (oSelf) oSelf.exitEdit(oSelf);
 };
 
 /**
- * Handles updateEvent raised by Edit.
- * To persist changes, override or replace this method.
+ * Handles updateFormEvent raised by View.
+ * 
+ * @method onUpdateForm
  */
 YAHOO.yazaar.FlevBase.prototype.onUpdateForm = function (oData,oSelf) {
-    oSelf.gotoEdit(oSelf);
+    if (oSelf) oSelf.gotoEdit(oSelf);
 };

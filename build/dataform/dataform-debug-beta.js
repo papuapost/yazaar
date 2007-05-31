@@ -939,6 +939,7 @@ YAHOO.yazaar.DataForm.prototype._onCancel = function(e, oSelf) {
 YAHOO.yazaar.DataForm.prototype._onDelete = function(e, oSelf) {
     oSelf._onRecord(e,oSelf,"deleteEvent");
 };
+
 YAHOO.yazaar.DataForm.prototype._onDocumentKeyup = function(e, oSelf) {
     if (!oSelf.isActive) return;
     if (e.keyCode == 27)  {
@@ -1061,6 +1062,32 @@ YAHOO.yazaar.DataForm.prototype.copyRecord = function() {
 };
 
 /**
+ * Delete from the RecordSet a Record by its identifier. 
+ * This method does not delete the record from any related DataTable. 
+ * In that case, use the DataTable.delete
+ */
+YAHOO.yazaar.DataForm.prototype.deleteRecord = function(sIdentifier) {
+    var aRecords = this._oRecordSet._records;
+    var isSuccess = false;
+    if(YAHOO.lang.isNumber(sIdentifier)) {
+        return oRecordSet[sIdentifier];
+    }
+    else if(YAHOO.lang.isString(sIdentifier)) {
+        for(var i=0; i<aRecords.length; i++) {
+            if(aRecords[i].yuiRecordId == sIdentifier) {
+                // FIXME: Calling the RecordSet method didn't seem to work (?!), 
+                // so we brought up the two essential lines of code
+                // this._oRecordSet.deleteRecord[i]; 
+                aRecords.splice(i, 1);
+                aRecords._length = aRecords._length - 1;
+                isSuccess = true;
+            }
+        }
+    }
+    return isSuccess;
+}
+
+/**
  * Overridable method gives implementers a hook to access data before
  * it gets added to RecordSet and rendered to the TBODY.
  *
@@ -1148,7 +1175,7 @@ YAHOO.yazaar.DataForm.prototype.insert = function() {
  * selected record.
  *
  * @param oRecord The record to populate the form, or the selected record if omitted
- * @method populateForm
+ * @method insertForm
  */
 YAHOO.yazaar.DataForm.prototype.insertForm = function() {
     var oFields = {};
@@ -1354,6 +1381,22 @@ YAHOO.yazaar.DataForm.prototype.logRecordEvent = function(sEventName, oRecord, o
 };
 
 /**
+ * Return the selected record from the shared or standalone RecordSet.
+ * @method getSelectedRecord
+ */
+YAHOO.yazaar.DataForm.prototype.getSelectedRecord = function() {
+    this.hideTableMessages();
+    var oDataList = this.oDataList;
+    var isShared = !!(oDataList);
+    var oRecordSet =  (isShared) ? oDataList._oRecordSet : this._oRecordSet;
+    var oSelectedRecords =  (isShared) ? oDataList.getSelectedRecordIds() : this.getSelectedRecordIds();
+    var nLength = oSelectedRecords.length;
+    // TODO: For YUI 2.3.0, confirm that single select only selects one row (1703840)
+    var oRecord = (nLength > 0) ? oRecordSet.getRecord(oSelectedRecords[nLength-1]) : oRecordSet.getRecord(0);
+    return oRecord;
+}
+
+/**
  * Set the value of form input controls to the corresponding entry of the
  * selected record.
  *
@@ -1362,14 +1405,7 @@ YAHOO.yazaar.DataForm.prototype.logRecordEvent = function(sEventName, oRecord, o
  */
 YAHOO.yazaar.DataForm.prototype.populateForm = function(oRecord) {
     if (!oRecord) {
-        this.hideTableMessages();
-        var oDataList = this.oDataList;
-        var isShared = !!(oDataList);
-        var oRecordSet =  (isShared) ? oDataList._oRecordSet : this._oRecordSet;
-        var oSelectedRecords =  (isShared) ? oDataList.getSelectedRecordIds() : this.getSelectedRecordIds();
-        var nLength = oSelectedRecords.length;
-        // TODO: For YUI 2.2.4, confirm that single select only selects one row (1703840)
-        oRecord = (nLength > 0) ? oRecordSet.getRecord(oSelectedRecords[nLength-1]) : oRecordSet.getRecord(0);
+        oRecord = this.getSelectedRecord();
     }
     var oTree = this._oColumnSet.tree;
     var aFields = this._aFields;
