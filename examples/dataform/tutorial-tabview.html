@@ -164,18 +164,19 @@ var onRecordSelectEvent = function () {
 oDataTable.subscribe("recordSelectEvent", onRecordSelectEvent);
 
 // Goto to DataForm
-var doInsertEvent = function () {
+var doInsertFormEvent = function () {
   oDataForm.insertForm();
   oTabView.set('activeIndex', 1);
 }
-oDataTable.subscribe("insertEvent", doInsertEvent);
+oDataTable.subscribe("insertFormEvent", doInsertFormEvent);
 
 // Goto DataTable
 var onRecordActionEvent = function () {
   oTabView.set('activeIndex', 0);
 }
-oDataForm.subscribe("updateEvent", onRecordActionEvent);
 oDataForm.subscribe("cancelEvent", onRecordActionEvent);
+oDataForm.subscribe("insertEvent", onRecordActionEvent);
+oDataForm.subscribe("updateEvent", onRecordActionEvent);
 
 // Prompt before changing tabs
 var onBeforeActiveTabChange = function(e) {

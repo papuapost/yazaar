@@ -9,8 +9,9 @@ http://developer.yahoo.net/yui/license.txt
  * to describe the input controls and a DataSource to store new records and
  * to populate fields from a prexisting record (if any). This widget raises
  * events that bundle record data so that clients can update a remote
- * persistant store, namely updateEvent, insertEvent, deleteEvent, resetEvent,
- * and cancelEvent.
+ * persistant store, namely cancelEvent, deleteEvent, insertEvent, resetEvent,
+ * and updateEvent, as well as insertFormEvent and updateFormEvent to
+ * signal the presentation of appropriate data-entry forms. 
  * <p />
  * The DataForm can be used with an independant RecordSet,
  * or it can share a RecordSet with a companion DataTable.
@@ -195,7 +196,6 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
     /**
      * Fired when a CHECKBOX element is clicked.
      *
-     * @method checkboxClickEvent
      * @param oArgs.event {HTMLEvent} The event object.
      * @param oArgs.target {HTMLElement} The CHECKBOX element.
      * @event checkboxClickEvent
@@ -206,7 +206,6 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
     /**
      * Fired when a RADIO element is clicked.
      *
-     * @method radioClickEvent
      * @param oArgs.event {HTMLEvent} The event object.
      * @param oArgs.target {HTMLElement} The RADIO element.
      * @event radioClickEvent
@@ -216,7 +215,6 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
     /**
      * Fired when DataView instance is first initialized.
      *
-     * @method formInitEvent
      * @event formInitEvent
      */
     this.createEvent("formInitEvent");
@@ -224,7 +222,6 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
     /**
      * Fired when DataForm instance is focused.
      *
-     * @method formFocusEvent
      * @event formFocusEvent
      */
     this.createEvent("formFocusEvent");
@@ -232,7 +229,6 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
     /**
      * Fired when data is returned from DataSource.
      *
-     * @method dataReturnEvent
      * @param oArgs.request {String} Original request.
      * @param oArgs.response {Object} Response object.
      * @event dataReturnEvent
@@ -242,7 +238,6 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
     /**
      * Fired when a TD element is formatted.
      *
-     * @method cellFormatEvent
      * @param oArgs.el {HTMLElement} Reference to the TD element.
      * @event cellFormatEvent
      */
@@ -251,7 +246,6 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
     /**
      * Fired when DataForm is populated.
      *
-     * @method populateEvent
      * @param oArgs.oRecord {YAHOO.widget.Record} Record instance.
      * @event populateEvent
      */
@@ -260,7 +254,6 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
     /**
      * Fired when Record is updated.
      *
-     * @method updateEvent
      * @param oArgs.oRecord {Object} Updated Record instance.
      * @param oArgs.oPrevRecord {Object} Prior record data.
      * @param oArgs.isChanged {Boolean} Did any of the field values change?
@@ -269,18 +262,30 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
     this.createEvent("updateEvent");
 
     /**
+     * Fired when an update data-entry form is presented.
+     *
+     * @event updateFormEvent
+     */
+    this.createEvent("updateFormEvent");
+
+    /**
      * Fired when Record is inserted.
      *
-     * @method insertEvent
      * @param oArgs.oRecord {Object} Inserted Record instance.
      * @event insertEvent
      */
     this.createEvent("insertEvent");
 
     /**
+     * Fired when an insert data-entry form is presented.
+     *
+     * @event insertFormEvent
+     */
+    this.createEvent("insertFormEvent");
+
+    /**
      * Fired when a Record is deleted.
      *
-     * @method deleteEvent
      * @param oArgs.oRecord {Object} Deleted Record instance.
      * @event deleteEvent
      */
@@ -289,7 +294,6 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
     /**
      * Fired when editing is cancelled.
      *
-     * @method cancelEvent
      * @param oArgs.oRecord {Object} Record instance.
      * @event cancelEvent
      */
@@ -298,7 +302,6 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
     /**
      * Fired when editing form is reset.
      *
-     * @method resetEvent
      * @param oArgs.oRecord {Object} Record instance.
      * @event resetEvent
      */
@@ -659,10 +662,10 @@ YAHOO.yazaar.DataForm.prototype._initForm = function() {
     if (this.isDisabled) {
         // Update
         elUpdate = initButton("elUpdate", elMenuCell, sForm_id, YAHOO.yazaar.DataForm.MSG_UPDATE);
-        YAHOO.util.Event.addListener(elUpdate, "click", this._onUpdate, this);
+        YAHOO.util.Event.addListener(elUpdate, "click", this._onUpdateForm, this);
         // Insert
         elInsert = initButton("elInsert", elMenuCell, sForm_id, YAHOO.yazaar.DataForm.MSG_INSERT);
-        YAHOO.util.Event.addListener(elInsert, "click", this._onInsert, this);
+        YAHOO.util.Event.addListener(elInsert, "click", this._onInsertForm, this);
         // Delete
         elDelete = initButton("elDelete", elMenuCell, sForm_id, YAHOO.yazaar.DataForm.MSG_DELETE);
         YAHOO.util.Event.addListener(elDelete, "click", this._onDelete, this);
@@ -947,8 +950,8 @@ YAHOO.yazaar.DataForm.prototype._onDocumentKeyup = function(e, oSelf) {
     }
 };
 
-YAHOO.yazaar.DataForm.prototype._onInsert = function(e, oSelf) {
-    oSelf._onRecord(e,oSelf,"insertEvent");
+YAHOO.yazaar.DataForm.prototype._onInsertForm = function(e, oSelf) {
+    oSelf._onRecord(e,oSelf,"insertFormEvent");
 };
 
 /**
@@ -975,11 +978,14 @@ YAHOO.yazaar.DataForm.prototype._onReset = function(e, oSelf) {
  * @private
  */
 YAHOO.yazaar.DataForm.prototype._onSubmit = function(e, oSelf) {
-  oSelf.update();
+        var sIdentifier = oSelf._oRecord.yuiRecordId;
+        var oRecord = oSelf._oRecordSet.getRecord(sIdentifier);
+        if (oRecord) oSelf.update();
+        else oSelf.insert();
 };
 
-YAHOO.yazaar.DataForm.prototype._onUpdate = function(e, oSelf) {
-    oSelf._onRecord(e,oSelf,"updateEvent");
+YAHOO.yazaar.DataForm.prototype._onUpdateForm = function(e, oSelf) {
+    oSelf._onRecord(e,oSelf,"updateFormEvent");
 };
 
 
@@ -1109,6 +1115,60 @@ YAHOO.yazaar.DataForm.prototype.hideTableMessages = function() {
     this.isEmpty = false;
     this.isLoading = false;
 };
+
+/**
+ * Harvest data from form and raise insertEvent.
+ *
+ * @method insert
+ */
+YAHOO.yazaar.DataForm.prototype.insert = function() {
+
+    if (this.isInvalidInput()) return;
+
+    // Gather the data and insert the record
+    var oFields = this.harvestForm();
+    var oNewRecord = this._oRecordSet.addRecord(oFields,0); // TODO: Use current page position
+    this._oRecord = oNewRecord;
+
+    // Raise insertEvent
+    var context = {oRecord: oNewRecord};
+    this.fireEvent("insertEvent", context);
+    this.logRecordEvent("insertEvent", oNewRecord); // debug
+    
+    // Refresh the table
+    var oDataList = this.oDataList;
+    if (oDataList) {
+        oDataList.addRow(oNewRecord); // TODO: Is there a way to restore the current sort (do we want to?)
+        oDataList.showPage(oDataList.pageCurrent);
+    }
+};
+
+/**
+ * Set the value of form input controls to the corresponding entry of the
+ * selected record.
+ *
+ * @param oRecord The record to populate the form, or the selected record if omitted
+ * @method populateForm
+ */
+YAHOO.yazaar.DataForm.prototype.insertForm = function() {
+    var oFields = {};
+    var oSet = this._oColumnSet;
+    var aKeys = oSet.keys;
+    var nLength = aKeys.length;
+    for (i=0; i<nLength; i++) {
+        var oColumn = aKeys[i];
+        var type = oColumn.formType || oColumn.type;
+        switch(type) {
+            case "select":
+                var oOptions = oColumn.selectOptions || oColumn.formSelectOptions || [];
+                if (YAHOO.lang.isUndefined(oColumn.initial)) oColumn.initial = oOptions[0];
+                break;
+        }
+        oFields[oColumn.key] = oColumn.initial || "";
+    }
+    var oRecord = new YAHOO.widget.Record(oFields);
+    this.populateForm(oRecord);
+}
 
 /**
  * Compare values of a new record, or harvested form values, with the orignal
@@ -1335,26 +1395,6 @@ YAHOO.yazaar.DataForm.prototype.populateForm = function(oRecord) {
     this.logRecordEvent("populateEvent", oRecord); // debug
 };
 
-
-YAHOO.yazaar.DataForm.prototype.insertForm = function() {
-    var oFields = {};
-    var oSet = this._oColumnSet;
-    var aKeys = oSet.keys;
-    var nLength = aKeys.length;
-    for (i=0; i<nLength; i++) {
-        var oColumn = aKeys[i];
-        var type = oColumn.formType || oColumn.type;
-        switch(type) {
-            case "select":
-                var oOptions = oColumn.selectOptions || oColumn.formSelectOptions || [];
-                if (YAHOO.lang.isUndefined(oColumn.initial)) oColumn.initial = oOptions[0];
-                break;
-        }
-        oFields[oColumn.key] = oColumn.initial || "";
-    }
-    var oRecord = new YAHOO.widget.Record(oFields);
-    this.populateForm(oRecord);
-}
 
 /**
  * Placeholder row to indicate table data is empty.
