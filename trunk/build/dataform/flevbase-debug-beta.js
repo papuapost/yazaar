@@ -255,6 +255,13 @@ YAHOO.yazaar.FlevBase.prototype.exitView = function(oSelf) {
 };
 
 /**
+ * Exits Edit and activates View.
+ */
+YAHOO.yazaar.FlevBase.prototype.gotoEdit = function(oSelf) {
+    oSelf.oTabView.set('activeIndex', oSelf.nDataEdit); 
+};
+
+/**
  * Create DataTable and DataForm widgets, initialize objects with response data.
  * Intended for use at initial load only. 
  * @param {Object} oData Incoming data in RPC response format
@@ -319,6 +326,8 @@ YAHOO.yazaar.FlevBase.prototype.load = function(oData,oSelf) {
         oDataView.subscribe("deleteEvent", oSelf.onDelete, oSelf);
         oDataView.subscribe("insertEvent", oSelf.onInsert, oSelf);
         oDataView.subscribe("updateEvent", oSelf.onGotoEdit, oSelf);
+        oDataView.subscribe("insertFormEvent", oSelf.onInsertForm, oSelf);
+        oDataView.subscribe("updateFormEvent", oSelf.onUpdateForm, oSelf);
 
         // Setup DataEdit
         oSelf.oEditConfigs.oDataList = oDataList;
@@ -450,12 +459,19 @@ YAHOO.yazaar.FlevBase.prototype.onGotoEdit = function (oData,oSelf) {
 };
 
 /**
- * Handles insertEvent raised by View.
+ * Handles insertEvent raised by Edit.
  * To persist changes, override or replace this method.
  */
 YAHOO.yazaar.FlevBase.prototype.onInsert = function (oData,oSelf) {
-    // TODO: Setup a default form for adding a record; Adjust submit button.
-   oSelf.oTabView.set('activeIndex', oSelf.nDataEdit); 
+    oSelf.exitEdit(oSelf);
+};
+
+/**
+ * Handles insertEvent raised by View.
+ * To persist changes, override or replace this method.
+ */
+YAHOO.yazaar.FlevBase.prototype.onInsertForm = function (oData,oSelf) {
+    oSelf.gotoEdit(oSelf);
 };
 
 /**
@@ -464,4 +480,12 @@ YAHOO.yazaar.FlevBase.prototype.onInsert = function (oData,oSelf) {
  */
 YAHOO.yazaar.FlevBase.prototype.onUpdate = function (oData,oSelf) {
     oSelf.exitEdit(oSelf);
+};
+
+/**
+ * Handles updateEvent raised by Edit.
+ * To persist changes, override or replace this method.
+ */
+YAHOO.yazaar.FlevBase.prototype.onUpdateForm = function (oData,oSelf) {
+    oSelf.gotoEdit(oSelf);
 };
