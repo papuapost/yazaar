@@ -20,7 +20,7 @@ oDataTable.onRowClickEvent = function(oArgs) {
   this.fireEvent("recordSelectEvent",{record:oRecord});
   YAHOO.log("Selected Record: " + oRecord.toJSONString());
 }
-// oDataTable.subscribe("cellClickEvent", onRowClickEvent);
+oDataTable.subscribe("cellClickEvent", oDataTable.onRowClickEvent);
 
 // Inject extended selectOptions
 var oSession = {};
@@ -52,13 +52,12 @@ var oDataForm = new YAHOO.yazaar.DataForm("elDataForm", oColumnSet, oDataSource,
 var oLogReader = new YAHOO.widget.LogReader("elLogReader");
 
 
-// Create our own event for signaling an insert request
-oDataTable.createEvent("insertEvent");
+// Create our own event for signaling an insert form request
+oDataTable.createEvent("insertFormEvent");
 
 // Raise our event when insert item is selected
-oDataTable.onInsertEvent = function(oArgs) {
-  // Raise RecordSelectEvent with payload
-  oDataTable.fireEvent("insertEvent");
+oDataTable.onInsertFormEvent = function(oArgs) {
+  oDataTable.fireEvent("insertFormEvent");
 }
 
 var onContextMenuClick = function(p_sType, p_aArgs, p_oMenu) {
@@ -86,7 +85,7 @@ var onContextMenuClick = function(p_sType, p_aArgs, p_oMenu) {
                     break;
                 case 2:     // Insert Item
                     YAHOO.log("Inserting item: " + row.cells[2].innerHTML);
-                    oDataTable.onInsertEvent();
+                    oDataTable.onInsertFormEvent();
                     break;
             }
         }
