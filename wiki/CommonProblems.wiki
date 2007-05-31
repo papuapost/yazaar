@@ -26,6 +26,9 @@ See also [http://code.google.com/p/anvil/wiki/CommonProblems Anvil Common Proble
 
 === Yahoo User Interface (YUI) Library ===
 
+|| (!) || * YAHOO.lang.extend failed, please check that all dependencies are included.* ||
+|| (/) || If all dependencies seem to be included, check to see if any coding errors might be keeping a local class from compiling. One cause can be "commenting out" a prototype method. ||
+|| ||  ||
 || (!) || *this.body has no proerties* (Element) ||
 || (/) || A div ID reference is incorrect. ||
 || (!) || *this.oDomCainter is null or not an object.* ||
