@@ -319,8 +319,8 @@ YAHOO.yazaar.FlevBase.prototype.load = function(oData,oSelf) {
 
         // On List select, goto View. 
         var onRecordSelectEvent = function () {
-          oDataView.populateForm();
           oDataEdit.populateForm();
+          if (oSelf.nDataView!=oSelf.nDataEdit) oDataView.populateForm(); // TODO: Clarify "no View" mode.
           oTabView.set('activeIndex', oSelf.nDataView);
         };
         oDataList.subscribe("recordSelectEvent", onRecordSelectEvent);
@@ -363,7 +363,7 @@ YAHOO.yazaar.FlevBase.prototype.load = function(oData,oSelf) {
 
         // Set flag when form is in view
         var onActiveTabChange = function(e) {
-            oDataEdit.isActive = (oSelf.nDataEdit==oTabView.get('activeIndex')); // TODO: nDataEdit
+            oDataEdit.isActive = (oSelf.nDataEdit==oTabView.get('activeIndex')); 
         };
         oTabView.on('activeTabChange', onActiveTabChange);
 
