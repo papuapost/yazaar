@@ -341,6 +341,7 @@ YAHOO.yazaar.FlevBase.prototype.load = function(oData,oSelf) {
         oSelf.oEditConfigs.oDataList = oDataList;
         oDataEdit = new YAHOO.yazaar.DataForm(sDataEdit, oColumnSet, oDataSource, oSelf.oEditConfigs);
         oDataEdit.subscribe("cancelEvent", oSelf.onExitEdit, oSelf);
+        oDataEdit.subscribe("insertEvent", oSelf.onUpdate, oSelf);
         oDataEdit.subscribe("updateEvent", oSelf.onUpdate, oSelf);
 
         // Setup TabView
