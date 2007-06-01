@@ -241,15 +241,17 @@ YAHOO.yazaar.FlevBase.prototype.sItemName = null;
 /////////////////////////////////////////////////////////////////////////////
 
 /**
- * Convenience method to exit Edit and activate View.
+ * Exits Edit and activates View. 
+ * Override to activate a different display. 
  * @method exitEdit
  */
 YAHOO.yazaar.FlevBase.prototype.exitEdit = function(oSelf) {
-    if (oSelf) oSelf.oTabView.set('activeIndex', oSelf.nDataView); 
+    if (oSelf) oSelf.oTabView.set('activeIndex', oSelf.nDataList); 
 };
 
 /**
- * Convenience method to exit View and activate List.
+ * Exits View and activates List.
+ * Override to activate a different display. 
  * @method exitView
  */
 YAHOO.yazaar.FlevBase.prototype.exitView = function(oSelf) {
@@ -257,7 +259,7 @@ YAHOO.yazaar.FlevBase.prototype.exitView = function(oSelf) {
 };
 
 /**
- * Convenience method to exit Edit and activate View.
+ * Activates Edit.
  * @method gotoEdit
  */
 YAHOO.yazaar.FlevBase.prototype.gotoEdit = function(oSelf) {
@@ -265,7 +267,7 @@ YAHOO.yazaar.FlevBase.prototype.gotoEdit = function(oSelf) {
 };
 
 /**
- * Create DataTable and DataForm widgets, initialize objects with response data.
+ * Creates DataTable and DataForm widgets, initializes objects with response data.
  * Intended for use at initial load only. 
  * @param {Object} oData Incoming data in RPC response format
  * @param {Object} oSelf Runtme reference to object instance
@@ -309,7 +311,7 @@ YAHOO.yazaar.FlevBase.prototype.load = function(oData,oSelf) {
             var oRecord = rs.getRecord(row[row.length-1]); // ISSUE: Returns row selected on each page
 
           // Raise RecordSelectEvent with payload
-          this.fireEvent("recordSelectEvent",{record:oRecord});
+          oDataList.fireEvent("recordSelectEvent",{record:oRecord});
           YAHOO.log("Selected Record: " + oRecord.toJSONString());
         };
         oDataList.subscribe("cellClickEvent", onRowClickEvent);
@@ -317,6 +319,7 @@ YAHOO.yazaar.FlevBase.prototype.load = function(oData,oSelf) {
 
         // On List select, goto View. 
         var onRecordSelectEvent = function () {
+          oDataView.populateForm();
           oDataEdit.populateForm();
           oTabView.set('activeIndex', oSelf.nDataView);
         };
@@ -382,7 +385,7 @@ YAHOO.yazaar.FlevBase.prototype.load = function(oData,oSelf) {
 /////////////////////////////////////////////////////////////////////////////
 
 /**
- * Setup autocomplete filtering. Called in response to DataReturnEvent.
+ * Configures autocomplete filtering. Called in response to DataReturnEvent.
  * @param {Object} oData
  * @param {Object} oSelf
  * @method initFilter
@@ -416,11 +419,11 @@ YAHOO.yazaar.FlevBase.prototype.initFilter = function (oData,oSelf) {
 
     oSelf.oAutoComplete = oAutoComplete;    
 };
+
 /**
  * Handles deleteEvent raised by View by confirm the operation and removing the record from the record set.
  * To persist changes, override this method, and delete the record from any related DataTable, 
  * or the DataForm (but not both).
- *
  * @method onDelete
  */
 YAHOO.yazaar.FlevBase.prototype.onDelete = function (oData,oSelf) {
@@ -437,7 +440,6 @@ YAHOO.yazaar.FlevBase.prototype.onDelete = function (oData,oSelf) {
 /**
  * Handles updateEvent raised by Edit by switching displays.
  * To persist changes, override this method.
- * 
  * @method onExitEdit
  */
 YAHOO.yazaar.FlevBase.prototype.onExitEdit = function (oData,oSelf) {
@@ -447,7 +449,6 @@ YAHOO.yazaar.FlevBase.prototype.onExitEdit = function (oData,oSelf) {
 /**
  * Handles updateEvent raised by Edit by switching displays..
  * To persist changes, override or replace this method.
- * 
  * @method onExitView
  */
 YAHOO.yazaar.FlevBase.prototype.onExitView = function (oData,oSelf) {
@@ -457,7 +458,6 @@ YAHOO.yazaar.FlevBase.prototype.onExitView = function (oData,oSelf) {
 /**
  * Change the autocomplete field.
  * Must be wired to an input control via an onChange handler.
- * 
  * @method onFilterChange
  */
 YAHOO.yazaar.FlevBase.prototype.onFilterChange = function () {
@@ -470,7 +470,6 @@ YAHOO.yazaar.FlevBase.prototype.onFilterChange = function () {
 /**
  * Handles insertEvent raised by Edit by switching displays.
  * To persist changes, override or replace this method.
- * 
  * @method onInsert
  */
 YAHOO.yazaar.FlevBase.prototype.onInsert = function (oData,oSelf) {
@@ -479,17 +478,18 @@ YAHOO.yazaar.FlevBase.prototype.onInsert = function (oData,oSelf) {
 
 /**
  * Handles insertFormEvent raised by View by switching displays.
- * 
  * @method onInsertForm
  */
-YAHOO.yazaar.FlevBase.prototype.onInsertForm = function (oData,oSelf) {
-    if (oSelf) oSelf.gotoEdit(oSelf);
+YAHOO.yazaar.FlevBase.prototype.onInsertForm = function (oData,oSelf) {    
+    if (oSelf) {
+        oSelf.oDataEdit.insertForm();
+        oSelf.gotoEdit(oSelf);
+    }
 };
 
 /**
  * Handles updateEvent raised by Edit by switching displays.
  * To persist changes, override this method.
- * 
  * @method onUpdate
  */
 YAHOO.yazaar.FlevBase.prototype.onUpdate = function (oData,oSelf) {
@@ -498,7 +498,6 @@ YAHOO.yazaar.FlevBase.prototype.onUpdate = function (oData,oSelf) {
 
 /**
  * Handles updateFormEvent raised by View.
- * 
  * @method onUpdateForm
  */
 YAHOO.yazaar.FlevBase.prototype.onUpdateForm = function (oData,oSelf) {

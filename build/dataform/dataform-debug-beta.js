@@ -63,7 +63,7 @@ http://developer.yahoo.net/yui/license.txt
 /****************************************************************************/
 
 /**
- * Define yazaar namespace.
+ * Defines yazaar namespace.
  * @global yazaar
  */
 YAHOO.namespace("yazaar");
@@ -314,7 +314,7 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
 }; // end Constructor
 
 /**
- * Instantiate EventProvider
+ * Instantiates EventProvider
  * @global YAHOO.util.EventProvider
  */
 if(YAHOO.util.EventProvider) {
@@ -740,6 +740,13 @@ YAHOO.yazaar.DataForm.prototype._initHead = function(elTable, sForm_id) {
 
 };
 
+
+/**
+ * Creates data-entry controls based on field type, form* classes, 
+ * and isDisabled property.
+ *
+ * @method _initControl
+ */
 YAHOO.yazaar.DataForm.prototype._initControl = function(elCell,oColumn,sForm_id) {
     var type = oColumn.formType || oColumn.type;
     var markup = "";
@@ -810,12 +817,26 @@ YAHOO.yazaar.DataForm.prototype._initControl = function(elCell,oColumn,sForm_id)
 
 };
 
+/** 
+ * Creates checkbox control.
+ *
+ * @param elCell {DOM element} Cell to contain control.
+ * @param oColumn {Column class} Column describing control.
+ * @method checkbox
+ */
 YAHOO.yazaar.DataForm.prototype.checkbox = function(elCell,oColumn) {
     var elInput = elCell.appendChild(document.createElement("input"));
     elInput.type = "checkbox";
     return elInput;
 };
 
+/** 
+ * Creates select control.
+ *
+ * @param elCell {DOM element} Cell to contain control.
+ * @param oColumn {Column class} Column describing control.
+ * @method select
+ */
 YAHOO.yazaar.DataForm.prototype.select = function(elCell,oColumn) {
     var sKey = oColumn.key + "_selectOptions";
     var aOptions = this.oSession[sKey] || oColumn.formSelectOptions || oColumn.selectOptions || [];
@@ -842,6 +863,13 @@ YAHOO.yazaar.DataForm.prototype.select = function(elCell,oColumn) {
     return elInput;
 };
 
+/** 
+ * Creates select control.
+ *
+ * @param elCell {DOM element} Cell to contain control.
+ * @param oColumn {Column class} Column describing control.
+ * @method text
+ */
 YAHOO.yazaar.DataForm.prototype.text = function(elCell,oColumn) {
     var elInput = elCell.appendChild(document.createElement("input"));
     elInput.type = "text";
@@ -923,10 +951,8 @@ YAHOO.yazaar.DataForm.prototype._onRecord = function(e, oSelf, sEvent) {
 
 
 /**
- * Handles form cancel by raising a cancelEvent that bundles the
+ * Handles form cancel command by raising a cancelEvent that bundles the
  * original record values.
- * <p>
- * Raises cancelEvent.
  *
  * @param e {HTMLEvent} The click event.
  * @param oSelf {YAHOO.yazaar.DataForm} DataForm instance.
@@ -936,10 +962,25 @@ YAHOO.yazaar.DataForm.prototype._onCancel = function(e, oSelf) {
     oSelf._onRecord(e,oSelf,"cancelEvent");
 };
 
+/**
+ * Handles form delete command by raising a deleteEvent 
+ * that bundles the original record values.
+ *
+ * @param e {HTMLEvent} The click event.
+ * @param oSelf {YAHOO.yazaar.DataForm} DataForm instance.
+ * @private
+ */
 YAHOO.yazaar.DataForm.prototype._onDelete = function(e, oSelf) {
     oSelf._onRecord(e,oSelf,"deleteEvent");
 };
 
+/**
+ * Handles documentKeyUp event by using enter key to save editor dta.
+ *
+ * @param e {HTMLEvent} The click event.
+ * @param oSelf {YAHOO.yazaar.DataForm} DataForm instance.
+ * @private
+ */
 YAHOO.yazaar.DataForm.prototype._onDocumentKeyup = function(e, oSelf) {
     if (!oSelf.isActive) return;
     if (e.keyCode == 27)  {
@@ -951,12 +992,20 @@ YAHOO.yazaar.DataForm.prototype._onDocumentKeyup = function(e, oSelf) {
     }
 };
 
+/**
+ * Handles insert form command by raising a insertFormEvent 
+ * that bundles the original record values.
+ *
+ * @param e {HTMLEvent} The click event.
+ * @param oSelf {YAHOO.yazaar.DataForm} DataForm instance.
+ * @private
+ */
 YAHOO.yazaar.DataForm.prototype._onInsertForm = function(e, oSelf) {
     oSelf._onRecord(e,oSelf,"insertFormEvent");
 };
 
 /**
- * Handles form reset event by invoking reset method.
+ * Handles form reset command by invoking reset method.
  *
  * @param e {HTMLEvent} The click event.
  * @param oSelf {YAHOO.yazaar.DataForm} DataForm instance.
@@ -969,22 +1018,28 @@ YAHOO.yazaar.DataForm.prototype._onReset = function(e, oSelf) {
 
 /**
  * Handles form submit.
- * <p>
+ * <p />
  * Updates internal record from data is retrieved from input controls,
  * and raises updateEvent with new and old record values and an "isChanged"
- * boolean property, so that listeners can update external records.
+ * boolean property, so that listeners can log or update external records.
  *
  * @param e {HTMLEvent} The click event.
  * @param oSelf {YAHOO.yazaar.DataForm} DataForm instance.
  * @private
  */
 YAHOO.yazaar.DataForm.prototype._onSubmit = function(e, oSelf) {
-        var sIdentifier = oSelf._oRecord.yuiRecordId;
-        var oRecord = oSelf._oRecordSet.getRecord(sIdentifier);
-        if (oRecord) oSelf.update();
-        else oSelf.insert();
+    var sIdentifier = oSelf._oRecord.yuiRecordId;
+    var oRecord = oSelf._oRecordSet.getRecord(sIdentifier);
+    if (oRecord) oSelf.update();
+    else oSelf.insert();
 };
 
+/** 
+ * Handles updateForm command by raising updateFormEvent.
+ * 
+ * @method _onUpdateForm
+ * @private
+ */
 YAHOO.yazaar.DataForm.prototype._onUpdateForm = function(e, oSelf) {
     oSelf._onRecord(e,oSelf,"updateFormEvent");
 };
@@ -1050,6 +1105,8 @@ YAHOO.yazaar.DataForm.prototype.oSession = {};
 
 /**
  * Create and return a copy of the original record.
+ * 
+ * @method copyRecord
  */
 YAHOO.yazaar.DataForm.prototype.copyRecord = function() {
   var oRecord = this._oRecord;
@@ -1062,9 +1119,11 @@ YAHOO.yazaar.DataForm.prototype.copyRecord = function() {
 };
 
 /**
- * Delete from the RecordSet a Record by its identifier. 
+ * Deletes from the RecordSet a Record by its identifier. 
  * This method does not delete the record from any related DataTable. 
  * In that case, use the DataTable.delete
+ * 
+ * @method deleteRecord
  */
 YAHOO.yazaar.DataForm.prototype.deleteRecord = function(sIdentifier) {
     var aRecords = this._oRecordSet._records;
@@ -1105,14 +1164,17 @@ YAHOO.yazaar.DataForm.prototype.doBeforeLoadData = function(sRequest, oResponse)
  * Returns array of selected Record IDs.
  *
  * @return {HTMLElement[]} Array of selected TR elements.
+ * @method getSelectedRecordIds
  */
 YAHOO.yazaar.DataForm.prototype.getSelectedRecordIds = function() {
     return this._aSelectedRecords || [];
 };
 
 /**
- * Obtain the value of form input controls into a copy of the original
+ * Obtains the value of form input controls into a copy of the original
  * record, so that any record values not shown on the form are retained.
+ * 
+ * @method harvestForm
  */
 YAHOO.yazaar.DataForm.prototype.harvestForm = function() {
     var oRecord = this.copyRecord();
@@ -1130,7 +1192,9 @@ YAHOO.yazaar.DataForm.prototype.harvestForm = function() {
 };
 
 /**
- * Hide any placeholder message row.
+ * Hides any placeholder message row.
+ * 
+ * @method hideTableMessages
  */
 YAHOO.yazaar.DataForm.prototype.hideTableMessages = function() {
     if(!this.isEmpty && !this.isLoading) {
@@ -1144,7 +1208,7 @@ YAHOO.yazaar.DataForm.prototype.hideTableMessages = function() {
 };
 
 /**
- * Harvest data from form and raise insertEvent.
+ * Harvests data from form and raise insertEvent.
  *
  * @method insert
  */
@@ -1171,7 +1235,7 @@ YAHOO.yazaar.DataForm.prototype.insert = function() {
 };
 
 /**
- * Set the value of form input controls to the corresponding entry of the
+ * Sets the value of form input controls to the corresponding entry of the
  * selected record.
  *
  * @param oRecord The record to populate the form, or the selected record if omitted
@@ -1198,10 +1262,11 @@ YAHOO.yazaar.DataForm.prototype.insertForm = function() {
 }
 
 /**
- * Compare values of a new record, or harvested form values, with the orignal
- * record, and return true if any of the values differ.
+ * Compares values of a new record, or harvested form values, with the orignal
+ * record, and returns true if any of the values differ.
  *
  * @param {Object} oNewRecord Record for comparion or the form is harvested.
+ * @method isRecordChanged
  */
 YAHOO.yazaar.DataForm.prototype.isRecordChanged = function(oNewRecord) {
     if (arguments.length==0) {
@@ -1217,7 +1282,7 @@ YAHOO.yazaar.DataForm.prototype.isRecordChanged = function(oNewRecord) {
 };
 
 /**
- * Validate form data according to the CSS class names set on the input elements.
+ * Validates form data according to the CSS class names set on the input elements.
  * If validation fails, the element's title attribute is presented as an error messsage.
  * <p>
  * The attributes needed to control validation can be set through the ColumnHeader.
@@ -1241,6 +1306,8 @@ YAHOO.yazaar.DataForm.prototype.isRecordChanged = function(oNewRecord) {
  * </ul>
  * <p>
  * This implementation depends on Jamie Curnow's validate script.
+ * 
+ * @method isInvalidInput
  */
 YAHOO.yazaar.DataForm.prototype.isInvalidInput = function() {
     var errs = new Array();
@@ -1347,7 +1414,7 @@ YAHOO.yazaar.DataForm.prototype.isInvalidInput = function() {
 }; // end isInvalidInput
 
 /**
- * Log that an event is raised, including the record and old record data as JSON strings.
+ * Logs that an event is raised, including the record and old record data as JSON strings.
  * <p>
  * The method can accept one or both of the record parameters.
  * Additional parameters are ignored.
@@ -1355,6 +1422,7 @@ YAHOO.yazaar.DataForm.prototype.isInvalidInput = function() {
  * @param oRecord The current state of record under edit
  * @param oPrevRecord The prior state of record under edit
  * @debug
+ * @method logRecordEvent
  */
 YAHOO.yazaar.DataForm.prototype.logRecordEvent = function(sEventName, oRecord, oPrevRecord) {
     var nArgs, sMessage, sRecord, sPrevRecord;
@@ -1381,7 +1449,8 @@ YAHOO.yazaar.DataForm.prototype.logRecordEvent = function(sEventName, oRecord, o
 };
 
 /**
- * Return the selected record from the shared or standalone RecordSet.
+ * Returns the selected record from the shared or standalone RecordSet.
+ * 
  * @method getSelectedRecord
  */
 YAHOO.yazaar.DataForm.prototype.getSelectedRecord = function() {
@@ -1394,10 +1463,10 @@ YAHOO.yazaar.DataForm.prototype.getSelectedRecord = function() {
     // TODO: For YUI 2.3.0, confirm that single select only selects one row (1703840)
     var oRecord = (nLength > 0) ? oRecordSet.getRecord(oSelectedRecords[nLength-1]) : oRecordSet.getRecord(0);
     return oRecord;
-}
+};
 
 /**
- * Set the value of form input controls to the corresponding entry of the
+ * Sets the value of form input controls to the corresponding entry of the
  * selected record.
  *
  * @param oRecord The record to populate the form, or the selected record if omitted
@@ -1433,7 +1502,9 @@ YAHOO.yazaar.DataForm.prototype.populateForm = function(oRecord) {
 
 
 /**
- * Placeholder row to indicate table data is empty.
+ * Placeholder row. Indicates table data is empty.
+ * 
+ * @method showEmptyMessage
  */
 YAHOO.yazaar.DataForm.prototype.showEmptyMessage = function() {
     if(this.isEmpty) {
@@ -1451,7 +1522,9 @@ YAHOO.yazaar.DataForm.prototype.showEmptyMessage = function() {
 };
 
 /**
- * Placeholder row to indicate table data is loading.
+ * Placeholder row. Indicates table data is loading.
+ * 
+ * @method showLoadingMessage
  */
 YAHOO.yazaar.DataForm.prototype.showLoadingMessage = function() {
     if(this.isLoading) {
@@ -1469,18 +1542,20 @@ YAHOO.yazaar.DataForm.prototype.showLoadingMessage = function() {
 };
 
 /**
- * Public accessor to the unique name of the DataSource instance.
+ * Public accessor. Provides unique name of the DataSource instance.
  *
  * @return {String} Unique name of the DataSource instance.
+ * @method toString
  */
 YAHOO.yazaar.DataForm.prototype.toString = function() {
     return "DataForm " + this._sName;
 };
 
 /**
- * Restoring the original values to the active record.
- * <p>
- * Repopulates Recordset, and raises resetEvent.
+ * Restores the original values to the active record, 
+ * and raises resetEvent.
+ * 
+ * @method reset
  */
 YAHOO.yazaar.DataForm.prototype.reset = function() {
     var oRecord = this._oRecord; // Restore this reference
@@ -1496,7 +1571,7 @@ YAHOO.yazaar.DataForm.prototype.reset = function() {
 };
 
 /**
- * Harvest data from form and raise UpdateEvent.
+ * Harvests data from form and raises UpdateEvent.
  *
  * @method update
  */
