@@ -190,3 +190,45 @@ If code regions are utilized, prefer the common YUI regions. (`y`)
 All Subversion commits must reference an issue ticket. (So open the ticket first!). `(z)`
 
 Subversion commit messages are posted to the development group mailing list, for both the code and the wiki. Verbose logs are recommended so as to encourage other developers to peer-review code and documentation. `(z)`
+
+== Notes from Zakas presentation ==
+
+ * [http://yuiblog.com/blog/2007/05/25/video-zakas/]
+
+ * Globals are evil, create namespace objects.
+
+ * Indent code (four space increments)
+ * Comment your code
+   ** Each method
+   ** Large sections of code
+   ** Complex algorithms
+   ** Hacks
+
+ * Variable names should be nouns 
+ * Function names should be verbs
+ * Avoid useless names like foo and bar 
+ * Indicate variable type using Hungarian notation 
+ 
+ * Layer code into JavaScript (behavior), CSS (presentation), and HTML (structure) and avoid mixing layers. 
+   ** Separate CSS and JavaScript 
+
+ * Event handlers should handle events, not business logic. 
+   ** Encapsulate business logic in separate methods that can called without the event
+
+ * Don't modify objects that you don't own 
+
+ * Validate essential input
+   ** Avoid null comparisons
+      *** instanceof 
+      *** typeof 
+
+ * Throw your own errors 
+
+ * Use Constants 
+  * Repeated unique values 
+  * UI strings
+  * URLS 
+  * Any value that might change
+
+ * One object or object definition per file 
+   ** Rely on build step to combine and minimize files 
