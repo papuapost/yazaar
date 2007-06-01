@@ -145,9 +145,9 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
 
         // enhance markup
 
-        // TODO: Peek in container child nodes to see if TABLE already exists
+        // TODO: Peek in container child nodes to see if TABLE already exists (Y!)
 
-        // TODO: Progressively enhance an existing form from markup...
+        // TODO: Progressively enhance an existing form from markup... (Y!)
 
         var elForm = null;
 
@@ -179,7 +179,7 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
 
     /////////////////////////////////////////////////////////////////////////////
     //
-    // TODO: DOM Events
+    // TODO: DOM Events (Y!)
     //
     /////////////////////////////////////////////////////////////////////////////
 
@@ -1218,7 +1218,9 @@ YAHOO.yazaar.DataForm.prototype.insert = function() {
 
     // Gather the data and insert the record
     var oFields = this.harvestForm();
-    var oNewRecord = this._oRecordSet.addRecord(oFields,0); // TODO: Use current page position
+    // TODO: Use current page position for insert position
+    var oNewRecord = this._oRecordSet.addRecord(oFields,0); 
+
     this._oRecord = oNewRecord;
 
     // Raise insertEvent
@@ -1229,7 +1231,8 @@ YAHOO.yazaar.DataForm.prototype.insert = function() {
     // Refresh the table
     var oDataList = this.oDataList;
     if (oDataList) {
-        oDataList.addRow(oNewRecord); // TODO: Is there a way to restore the current sort (do we want to?)
+        // TODO: Restore the current sort (do we even want to?)
+        oDataList.addRow(oNewRecord); 
         oDataList.showPage(oDataList.pageCurrent);
     }
 };
@@ -1316,9 +1319,9 @@ YAHOO.yazaar.DataForm.prototype.isInvalidInput = function() {
     //access form elements
     //inputs
     var f_in = this._aFields;
-    // TODO selects
+    // TODO selects (Y!)
     // var f_sl = elm.getElementsByTagName('select');
-    // TODO textareas
+    // TODO textareas (Y!)
     // var f_ta = elm.getElementsByTagName('textarea');
 
     //check inputs
@@ -1480,7 +1483,7 @@ YAHOO.yazaar.DataForm.prototype.populateForm = function(oRecord) {
     var aFields = this._aFields;
     var n = 0;
     var elInput = aFields[0];
-    // FIXME: Breaks in IE - elInput.focus();
+    // NOTE: Breaks in IE - elInput.focus();
     // If the Record is empty, there's nothing to populate
     if (oRecord) for(i=0; i<oTree.length; i++) {
         for(var j=0; j<oTree[i].length; j++) {
