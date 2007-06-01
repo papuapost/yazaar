@@ -28,8 +28,16 @@ YAHOO.my.events.onEntryListReturn = function(oData) {
 }
 
 YAHOO.my.Phonebook = function() {
-    var oSelf = new YAHOO.yazaar.FlevBase();                   
-    oSelf.oColumnHeaders = [
+    YAHOO.my.Phonebook.superclass.constructor.call(this);
+    
+    YAHOO.my.events.subscribe("entryList", this.load, this);    
+    // Home.rpc.entryList(YAHOO.my.events.onEntryListReturn).call(ANVIL.channel); // live database
+    YAHOO.my.events.subscribe("entryList", YAHOO.my.events.onPhonebookLoaded, this);
+    YAHOO.my.events.onEntryListReturn(YAHOO.my.oLocalData); // static data    
+};
+YAHOO.lang.extend(YAHOO.my.Phonebook, YAHOO.yazaar.FlevBase);
+
+YAHOO.my.Phonebook.prototype.oColumnHeaders = [
         {key:"first_name", text:"First Name", sortable:true, resizeable:true, editor:"textbox", formClassName: "required", formTitle: "Enter employee's first name"},  
         {key:"last_name", text:"Last Name", sortable:true, resizeable:true, editor:"textbox", formClassName: "required", formTitle: "Enter employee's last name"},  
         {key:"extension", text:"Extension", sortable:true, resizeable:true, editor:"textbox", formClassName: "required", formTitle: "Enter extension or telephone number"},  
@@ -38,7 +46,7 @@ YAHOO.my.Phonebook = function() {
         {key:"hours", text:"Hours", sortable:true, resizeable:true, editor:"textbox", formClassName: "required, validate-number", formTitle: "Enter hours scheduled per work week as a number"}  
     ];       
 
-    oSelf.oListConfigs = {
+YAHOO.my.Phonebook.prototype.oListConfigs = {
         caption: "EntryList", 
         summary: "List of matching entries",
         paginator:true,
@@ -49,27 +57,17 @@ YAHOO.my.Phonebook = function() {
         rowSingleSelect: true                
     };            
 
-    oSelf.oResponseSchema = {
+YAHOO.my.Phonebook.prototype.oResponseSchema = {
         fields: ["entry_key","last_name","first_name","extension","username","hired","hours","editor"]
     };            
 
-    oSelf.sItemName = "last_name";
-    oSelf.sDataFind = "elList";
-    oSelf.sTabView = "elPhonebook";
-    oSelf.nDataList = 0;
-    oSelf.nDataEdit = 1;
-    oSelf.nDataView = 0;
+YAHOO.my.Phonebook.prototype.sItemName = "last_name";
+YAHOO.my.Phonebook.prototype.sDataFind = "elList";
+YAHOO.my.Phonebook.prototype.sTabView = "elPhonebook";
+YAHOO.my.Phonebook.prototype.nDataList = 0;
+YAHOO.my.Phonebook.prototype.nDataEdit = 1;
+YAHOO.my.Phonebook.prototype.nDataView = 0;
     
-    YAHOO.my.events.subscribe("entryList", oSelf.load, oSelf);    
-    // Home.rpc.entryList(YAHOO.my.events.onEntryListReturn).call(ANVIL.channel); // livedatabase
-    YAHOO.my.events.subscribe("entryList", YAHOO.my.events.onPhonebookLoaded, oSelf);
-
-    YAHOO.my.events.onEntryListReturn(YAHOO.my.oLocalData); // static data
-
-    return oSelf;
-};
-YAHOO.augment(YAHOO.my.Phonebook, YAHOO.util.EventProvider);
-
 YAHOO.my.events.onPhonebookLoaded = function(oData, oSelf) {
 	var isLoaded = YAHOO.my.events.onPhonebookLoaded.isLoaded; 
 	if (isLoaded) return;
