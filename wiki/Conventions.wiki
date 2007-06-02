@@ -152,17 +152,17 @@ The !JsDoc tool can be used with the YUI tags, but not to the same effect as ach
 If code regions are utilized, prefer the common YUI regions. (`y`)
 
  * Constructor
- * DOM Events
- * Custom Events
+ * DOM events
+ * Custom events
  * Public constants
  * Private member variables
  * Private methods
- * Private DOM Event Handlers
- * Private Custom Event Handlers
+ * Private DOM event handlers
+ * Private custom event handlers
  * Public member variables
  * Public methods
- * Public DOM Event Handlers
- * Public Custom Event Handlers
+ * Public DOM event handlers
+ * Public custom event handlers
 
 {{{
 /////////////////////////////////////////////////////////////////////////////
