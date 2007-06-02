@@ -3,7 +3,7 @@
 
 The trails step through the [http://developer.yahoo.com/yui/ YUI documentation] in a  progressive, tutorial-style order. There are three trails: Backbone, Workhorse, and Special Effects. 
 
-  _As you review the YUI documentation, it's an excellent idea to cut-and-paste the example code into your own [http://www.aptana.com/ IDE or editor] and try to get them all to work yourself. If you don't try the example code on your first reading, do try running the examples first time you use any of the modules!_
+  _As you review the YUI "Getting Started" documentation, it's an excellent idea to cut-and-paste the example code into your own [http://www.aptana.com/ IDE or editor] and try to get the examples to work in your own environment. If you don't try the example code on your first reading, do try running the example code the first time you use any of the modules!_
 
 First Trail - YUI builds on several "backbone" packages that hold the library together.
 
@@ -39,6 +39,8 @@ Including "laboratory" time to try some of the examples, each trail can take a f
 Skimming the source code for each module is strongly recommended. YUI is a superb, professional product, and there is much to be learned by studying its example. 
 
  * [Resources]
+
+
 
 
 
