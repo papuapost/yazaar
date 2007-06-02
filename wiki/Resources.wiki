@@ -7,9 +7,13 @@
  * [http://developer.yahoo.com/yui/theater/ Gopal Venkatesan — "Writing Efficient JavaScript"]
  * [http://developer.yahoo.com/yui/theater/ Nicholas Zakas — "Maintainable JavaScript"]
 
-= Read Me First =
+= Read Me First (books) =
 
- * [http://www.amazon.com/exec/obidos/tg/detail/-/0596101996/husteddotcom-20 JavaScript: The Definitive Guide] (If not first, then eventually!)
+ * [http://www.amazon.com/exec/obidos/tg/detail/-/0672328682/husteddotcom-20 Ajax in 10 Minutes] _(A little ($15) book that touches all the bases)_
+ * [http://www.amazon.com/exec/obidos/tg/detail/-/0596101996/husteddotcom-20 JavaScript: The Definitive Guide] _(If not at first, then eventually!)_
+
+= YUI Me First (web) =
+
  * [http://simon.incutio.com/slides/2006/xtech/yui-slides.pdf Ajax XTech Slides] ([http://simon.incutio.com/slides/2006/xtech/yui-notes.html Notes])
  * [HappyTrails Happy Trails to YUI!]
 
