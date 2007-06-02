@@ -155,11 +155,11 @@ If code regions are utilized, prefer the common YUI regions. (`y`)
  * DOM events
  * Custom events
  * Public constants
- * Private member variables
+ * Private member variables (properties)
  * Private methods
  * Private DOM event handlers
  * Private custom event handlers
- * Public member variables
+ * Public member variables (properties)
  * Public methods
  * Public DOM event handlers
  * Public custom event handlers
