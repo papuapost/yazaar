@@ -5,9 +5,11 @@
 
  * [http://developer.yahoo.com/yui/theater/ Douglas Crockford — "The JavaScript Programming Language"]
  * [http://developer.yahoo.com/yui/theater/ Gopal Venkatesan — "Writing Efficient JavaScript"]
+ * [http://developer.yahoo.com/yui/theater/ Nicholas Zakas — Maintainable JavaScript]
 
 = Read Me First =
 
+ * [http://www.amazon.com/exec/obidos/tg/detail/-/0596101996/husteddotcom-20 JavaScript: The Definitive Guide] (Or at least eventually!)
  * [http://simon.incutio.com/slides/2006/xtech/yui-slides.pdf Ajax XTech Slides] ([http://simon.incutio.com/slides/2006/xtech/yui-notes.html Notes])
  * [HappyTrails Happy Trails to YUI!]
 
