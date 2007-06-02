@@ -5,7 +5,7 @@
 
  * [http://developer.yahoo.com/yui/theater/ Douglas Crockford — "The JavaScript Programming Language"]
  * [http://developer.yahoo.com/yui/theater/ Gopal Venkatesan — "Writing Efficient JavaScript"]
- * [http://developer.yahoo.com/yui/theater/ Nicholas Zakas — Maintainable JavaScript]
+ * [http://developer.yahoo.com/yui/theater/ Nicholas Zakas — "Maintainable JavaScript"]
 
 = Read Me First =
 
