@@ -15,6 +15,8 @@ See also [http://code.google.com/p/anvil/wiki/CommonProblems Anvil Common Proble
 || (/) || Ensure that the the script that defines {whatever} is being imported. ||
 || (!) || *Object doesn't support this property or method* ||
 || (/) || If the object does indeed support the member, check to see if *new* is being used with the constructor ||
+|| (!) || *'undefined' is null or not an object* ||
+|| (/) || Most often, there's a property reference to an object that is either undeclared, or the name of a declared variable is misspelled. ||
 
 === IE ===
 || (!) || *Children is null or not an object* ||
