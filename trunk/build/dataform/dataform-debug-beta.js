@@ -10,8 +10,8 @@ http://developer.yahoo.net/yui/license.txt
  * to populate fields from a prexisting record (if any). This widget raises
  * events that bundle record data so that clients can update a remote
  * persistant store, namely cancelEvent, deleteEvent, insertEvent, resetEvent,
- * and updateEvent, as well as insertFormEvent and updateFormEvent to
- * signal the presentation of appropriate data-entry forms. 
+ * and updateEvent, as well as insertFormEvent and updateFormEvent to 
+ * signal the presentation of the corresponding data-entry forms.
  * <p />
  * The DataForm can be used with an independant RecordSet,
  * or it can share a RecordSet with a companion DataTable.
@@ -185,7 +185,6 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
 
     //YAHOO.util.Event.addListener(elForm, "focus", this._onFocus, this);
     //YAHOO.util.Event.addListener(elForm, "blur", this._onBlur, this);
-    YAHOO.util.Event.addListener(document, "keyup", this._onDocumentKeyup, this);
 
     /////////////////////////////////////////////////////////////////////////////
     //
@@ -204,27 +203,12 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
     //this.checkboxClickEvent.subscribeEvent.subscribe(this._registerEvent,{type:"checkboxClickEvent"},this);
 
     /**
-     * Fired when a RADIO element is clicked.
+     * Fired when a TD element is formatted.
      *
-     * @param oArgs.event {HTMLEvent} The event object.
-     * @param oArgs.target {HTMLElement} The RADIO element.
-     * @event radioClickEvent
+     * @param oArgs.el {HTMLElement} Reference to the TD element.
+     * @event cellFormatEvent
      */
-    this.createEvent("radioClickEvent");
-
-    /**
-     * Fired when DataView instance is first initialized.
-     *
-     * @event formInitEvent
-     */
-    this.createEvent("formInitEvent");
-
-    /**
-     * Fired when DataForm instance is focused.
-     *
-     * @event formFocusEvent
-     */
-    this.createEvent("formFocusEvent");
+    this.createEvent("cellFormatEvent");
 
     /**
      * Fired when data is returned from DataSource.
@@ -236,12 +220,18 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
     this.createEvent("dataReturnEvent");
 
     /**
-     * Fired when a TD element is formatted.
+     * Fired when DataForm instance is focused.
      *
-     * @param oArgs.el {HTMLElement} Reference to the TD element.
-     * @event cellFormatEvent
+     * @event formFocusEvent
      */
-    this.createEvent("cellFormatEvent");
+    this.createEvent("formFocusEvent");
+
+    /**
+     * Fired when DataView instance is first initialized.
+     *
+     * @event formInitEvent
+     */
+    this.createEvent("formInitEvent");
 
     /**
      * Fired when DataForm is populated.
@@ -249,14 +239,17 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
      * @param oArgs.oRecord {YAHOO.widget.Record} Record instance.
      * @event populateEvent
      */
-    this.createEvent("populateEvent");
+    this.createEvent("populateEvent");   
     
-    /////////////////////////////////////////////////////////////////////////////
-    //
-    // DataMenu custom events
-    //
-    /////////////////////////////////////////////////////////////////////////////
-    
+    /**
+     * Fired when a RADIO element is clicked.
+     *
+     * @param oArgs.event {HTMLEvent} The event object.
+     * @param oArgs.target {HTMLElement} The RADIO element.
+     * @event radioClickEvent
+     */
+    this.createEvent("radioClickEvent");
+
     /**
      * Fired when editing is cancelled.
      *
@@ -282,7 +275,7 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
     this.createEvent("insertEvent");
 
     /**
-     * Fired when an insert data-entry form is presented.
+     * Fired when form to insert record is requested.
      *
      * @event insertFormEvent
      */
@@ -307,14 +300,14 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
     this.createEvent("updateEvent");
 
     /**
-     * Fired when an update data-entry form is presented.
+     * Fired when form to insert record is requested.
      *
      * @event updateFormEvent
      */
     this.createEvent("updateFormEvent");
 
-    // end custom events
-
+    // end custom events    
+    
     YAHOO.yazaar.DataForm._nCount++;
     YAHOO.log("DataForm initialized", "info", this.toString());
     this.fireEvent("tableInitEvent");
@@ -489,10 +482,6 @@ YAHOO.yazaar.DataForm.prototype._oRecord = null;
 //
 /////////////////////////////////////////////////////////////////////////////
 
-
-
-
-
 /**
  * Creates HTML markup for FORM, TABLE, THEAD, TBODY.
  *
@@ -548,9 +537,16 @@ YAHOO.yazaar.DataForm.prototype._initForm = function() {
     var elMenuRow = elBody.appendChild(document.createElement("tr"));
     var elMenuCell = elMenuRow.appendChild(document.createElement("td"));
     elMenuCell.colSpan = nColSpan;    
-    this.initButtons(elTable,sForm_id,elMenuCell,this.isDisabled);
     this._elBody = elBody;
     this._elMenuRow = elMenuRow;    
+    var oDataMenu = new YAHOO.yazaar.DataMenu(elTable,sForm_id,elMenuCell,this.isDisabled);
+    oDataMenu.subscribe("cancelEvent", this.cancel, this, true);
+    oDataMenu.subscribe("submitEvent", this.insert, this, true);
+    oDataMenu.subscribe("resetEvent", this.reset, this, true);
+    oDataMenu.subscribe("insertFormEvent", this.insertForm, this, true);
+    oDataMenu.subscribe("updateFormEvent", this.updateForm, this, true); 
+    
+    this.oDataMenu = oDataMenu;   
 };
 
 /**
@@ -803,30 +799,6 @@ YAHOO.yazaar.DataForm.prototype._initHeadCell = function(elHeadCell,oColumn,row,
     elHeadContent.innerHTML = contentText;
 };
 
-YAHOO.yazaar.DataForm.prototype._onRecord = function(e, oSelf, sEvent) {
-    var oRecord = oSelf._oRecord;
-    oSelf.fireEvent(sEvent, {oRecord: oRecord});
-    oSelf.logRecordEvent(sEvent, oRecord); // debug
-};
-
-/**
- * Handles documentKeyUp event by using enter key to save editor dta.
- *
- * @param e {HTMLEvent} The click event.
- * @param oSelf {YAHOO.yazaar.DataForm} DataForm instance.
- * @private
- */
-YAHOO.yazaar.DataForm.prototype._onDocumentKeyup = function(e, oSelf) {
-    if (!oSelf.isActive) return;
-    if (e.keyCode == 27)  {
-        // escape ?
-    }
-    // enter Saves active editor data
-    if (e.keyCode == 13) {
-        oSelf.update();
-    }
-};
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // Public member variables
@@ -867,6 +839,15 @@ YAHOO.yazaar.DataForm.prototype.isDisabled = false;
  * @optional
   */
  YAHOO.yazaar.DataForm.prototype.oDataList = null;
+
+/**
+ * DataMenu instance.
+ *
+ * @property oDataMenu
+ * @type YAHOO.yazaar.DataMenu
+ * @optional
+  */
+ YAHOO.yazaar.DataForm.prototype.oDataMenu = null;
 
 /**
  * Generic "state" object that can be used to store select lists obtained from
@@ -1228,7 +1209,6 @@ YAHOO.yazaar.DataForm.prototype.populateForm = function(oRecord) {
     this.logRecordEvent("populateEvent", oRecord); // debug
 };
 
-
 /**
  * Placeholder row. Indicates table data is empty.
  * 
@@ -1279,6 +1259,82 @@ YAHOO.yazaar.DataForm.prototype.toString = function() {
     return "DataForm " + this._sName;
 };
 
+
+YAHOO.yazaar.DataForm.prototype._onRecord = function(e, oSelf, sEvent) {
+    var oRecord = oSelf._oRecord;
+    oSelf.fireEvent(sEvent, {oRecord: oRecord});
+    oSelf.logRecordEvent(sEvent, oRecord); // debug
+};
+
+/** 
+ * Raises cancelEvent. 
+ *
+ * @method cancel
+ */
+YAHOO.yazaar.DataForm.prototype.cancel = function() {
+    this.fireEvent("cancelEvent", this);
+    this.logRecordEvent("cancelEvent", {oRecord: this._oRecord}); // debug        
+};
+
+/**
+ * Harvests data from form and raise insertEvent.
+ *
+ * @method insert
+ */
+YAHOO.yazaar.DataForm.prototype.insert = function() {
+
+    if (this.isInvalidInput()) return;
+
+    // Gather the data and insert the record
+    var oFields = this.harvestForm();
+    // TODO: Use current page position for insert position
+    var oNewRecord = this._oRecordSet.addRecord(oFields,0); 
+
+    this._oRecord = oNewRecord;
+
+    // Raise insertEvent
+    var context = {oRecord: oNewRecord};
+    this.fireEvent("insertEvent", context);
+    this.logRecordEvent("insertEvent", context); // debug
+    
+    // Refresh the table
+    var oDataList = this.oDataList;
+    if (oDataList) {
+        // TODO: Restore the current sort (do we even want to?)
+        oDataList.addRow(oNewRecord); 
+        oDataList.showPage(oDataList.pageCurrent);
+    }
+};
+
+/**
+ * Sets the value of form input controls to the corresponding entry of the
+ * selected record.
+ *
+ * @param oRecord The record to populate the form, or the selected record if omitted
+ * @method insertForm
+ */
+YAHOO.yazaar.DataForm.prototype.insertForm = function() {
+    var oFields = {};
+    var oSet = this._oColumnSet;
+    var aKeys = oSet.keys;
+    var nLength = aKeys.length;
+    for (i=0; i<nLength; i++) {
+        var oColumn = aKeys[i];
+        var type = oColumn.formType || oColumn.type;
+        switch(type) {
+            case "select":
+                var oOptions = oColumn.selectOptions || oColumn.formSelectOptions || [];
+                if (YAHOO.lang.isUndefined(oColumn.initial)) oColumn.initial = oOptions[0];
+                break;
+        }
+        oFields[oColumn.key] = oColumn.initial || "";
+    }
+    var oRecord = new YAHOO.widget.Record(oFields);
+    this.populateForm(oRecord);
+    this.fireEvent("insertFormEvent", this);
+    this.logRecordEvent("insertFormEvent", {oRecord: this._oRecord}); // debug            
+};
+
 /**
  * Restores the original values to the active record, 
  * and raises resetEvent.
@@ -1295,7 +1351,63 @@ YAHOO.yazaar.DataForm.prototype.reset = function() {
         elInput.value = oRecord[elInput.name];
     }
     this.fireEvent("resetEvent", {oRecord:oRecord});
-    this.logRecordEvent("resetEvent", oRecord); // debug
+    this.logRecordEvent("resetEvent", oRecord); // debug    
+};
+
+/**
+ * Delegates to insert or update. 
+ * 
+ * @method submit
+ */
+YAHOO.yazaar.DataForm.prototype.submit = function() {
+    var sIdentifier = this._oRecord.yuiRecordId;
+    var oRecord = this._oRecordSet.getRecord(sIdentifier);
+    if (oRecord) this.update();
+    else this.insert();
+};
+
+/**
+ * Harvests data from form and raises UpdateEvent 
+ * with new and old record values and an "isChanged"
+ * boolean property
+ *
+ * @method update
+ */
+YAHOO.yazaar.DataForm.prototype.update = function() {
+
+    if (this.isInvalidInput()) return;
+
+    // Gather the usual suspects
+    var oRecord = this._oRecord;
+    var oPrevRecord = this.copyRecord();
+    var oNewRecord = this.harvestForm();
+    // Check to see if anything changed
+    var isChanged = this.isRecordChanged(oNewRecord);
+    if (isChanged) for (var prop in oRecord) {
+        oRecord[prop] = oNewRecord[prop];
+    }
+    // Raise updateEvent
+    var context = {oRecord: oNewRecord, oPrevRecord: oPrevRecord, isChanged: isChanged};
+    this.fireEvent("updateEvent", context);
+    var sLog = (isChanged) ? "updateEvent" : "updateEvent (no change)";
+    this.logRecordEvent(sLog, oNewRecord, oPrevRecord); // debug
+    if (isChanged) {
+        // Refresh the table
+        var oDataList = this.oDataList;
+        if (oDataList) {
+          oDataList.showPage(oDataList.pageCurrent);
+        }
+    }
+};
+
+/** 
+ * Raises updateFormEvent (e.g. switch tabs).
+ *
+ * @method updateForm
+ */
+YAHOO.yazaar.DataForm.prototype.updateForm = function() {
+    this.fireEvent("updateFormEvent", this);
+    this.logRecordEvent("updateFormEvent", {oRecord: this._oRecord}); // debug        
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1332,6 +1444,130 @@ YAHOO.yazaar.DataForm.prototype.onDataReturnPopulateForm = function(sRequest, oR
 //
 /////////////////////////////////////////////////////////////////////////////
 
+/**
+ * The DataMenu widget displays a strip of buttons linked to a RecordSet, 
+ * which may be shared with a DataTable or a DataMenu. 
+ * The buttons raise events with payloads that include data from the 
+ * RecordSet as appropriate. 
+ * This widget is designed to collaborate with a DataList or DataMenu. 
+ * @overview
+ * @module yazaar.datamenu
+ * @requires yahoo, dom, event, datasource
+ * @title DataMenu Widget
+ * @beta
+ */
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Constructor
+//
+/////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Creates and configures a new DataMenu instance by 
+ * generating HTML markup for a standard set of buttons, 
+ * depending whether presentation is "View" mode (or "Edit" mode).
+ *
+ * @param oConfigs Property settings. May include oDataList.
+ * @param oColumnSet {YAHOO.widget.ColumnSet} ColumnSet instance.
+ * @param oDataSource {YAHOO.util.DataSource} DataSource instance.
+*/
+YAHOO.yazaar.DataMenu = function(elTable,sForm_id,elContainer,isView) {
+   
+    var initButton = this._initButton;
+    var elUpdate,elInsert,elDelete,elCancel,elSubmit,elReset;
+    if (isView) {
+        // Update
+        elUpdate = initButton("elUpdate", elContainer, sForm_id, YAHOO.yazaar.DataMenu.MSG_UPDATE);
+        YAHOO.util.Event.addListener(elUpdate, "click", this._onUpdateForm, this);
+        // Insert
+        elInsert = initButton("elInsert", elContainer, sForm_id, YAHOO.yazaar.DataMenu.MSG_INSERT);
+        YAHOO.util.Event.addListener(elInsert, "click", this._onInsertForm, this);
+        // Delete
+        elDelete = initButton("elDelete", elContainer, sForm_id, YAHOO.yazaar.DataMenu.MSG_DELETE);
+        YAHOO.util.Event.addListener(elDelete, "click", this._onDelete, this);
+        // Cancel
+        elCancel = initButton("elCancel", elContainer, sForm_id, YAHOO.yazaar.DataMenu.MSG_CANCEL);
+        YAHOO.util.Event.addListener(elCancel, "click", this._onCancel, this);
+    } else {
+        // Submit
+        elSubmit = initButton("elSubmit", elContainer, sForm_id, YAHOO.yazaar.DataMenu.MSG_SUBMIT);
+        YAHOO.util.Event.addListener(elSubmit, "click", this._onSubmit, this);
+        // Reset
+        elReset = initButton("elReset", elContainer, sForm_id, YAHOO.yazaar.DataMenu.MSG_RESET);
+        YAHOO.util.Event.addListener(elReset, "click", this._onReset, this);
+        // Cancel
+        elCancel = initButton("elCancel", elContainer, sForm_id, YAHOO.yazaar.DataMenu.MSG_CANCEL);
+        YAHOO.util.Event.addListener(elCancel, "click", this._onCancel, this);
+    }
+
+    // Note elements for future reference
+    this._elUpdate = elUpdate;
+    this._elInsert = elInsert;
+    this._elDelete = elDelete;
+    this._elCancel = elCancel;
+    this._elSubmit = elSubmit;
+    this._elReset = elReset;
+    
+    /////////////////////////////////////////////////////////////////////////////
+    //
+    // Public custom events
+    //
+    /////////////////////////////////////////////////////////////////////////////
+    
+    /**
+     * Fired when editing is cancelled.
+     *
+     * @param oArgs.oRecord {Object} Record instance.
+     * @event cancelEvent
+     */
+    this.createEvent("cancelEvent");
+
+    /**
+     * Fired when a Record is deleted.
+     *
+     * @param oArgs.oRecord {Object} Deleted Record instance.
+     * @event deleteEvent
+     */
+    this.createEvent("deleteEvent");
+
+    /**
+     * Fired when an insert data-entry form is presented.
+     *
+     * @event insertFormEvent
+     */
+    this.createEvent("insertFormEvent");
+
+    /**
+     * Fired when editing form is reset.
+     *
+     * @param oArgs.oRecord {Object} Record instance.
+     * @event resetEvent
+     */
+    this.createEvent("resetEvent");
+
+    /**
+     * Fired when Record is updated or inserted.
+     *
+     * @param oArgs.oRecord {Object} Updated Record instance.
+     * @param oArgs.oPrevRecord {Object} Prior record data.
+     * @param oArgs.isChanged {Boolean} Did any of the field values change?
+     * @event updateEvent
+     */
+    this.createEvent("submitEvent");
+
+    /**
+     * Fired when an update data-entry form is presented.
+     *
+     * @event updateFormEvent
+     */
+    this.createEvent("updateFormEvent");
+
+    // end custom events        
+};
+
+YAHOO.augment(YAHOO.yazaar.DataMenu, YAHOO.util.EventProvider);
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Public constants
@@ -1348,7 +1584,7 @@ YAHOO.yazaar.DataForm.prototype.onDataReturnPopulateForm = function(sRequest, oR
  * @final
  * @default "SUBMIT"
  */
-YAHOO.yazaar.DataForm.MSG_SUBMIT = "SUBMIT";
+YAHOO.yazaar.DataMenu.MSG_SUBMIT = "SUBMIT";
 
 /**
  * Label for Reset button
@@ -1360,7 +1596,7 @@ YAHOO.yazaar.DataForm.MSG_SUBMIT = "SUBMIT";
  * @final
  * @default "RESET"
  */
-YAHOO.yazaar.DataForm.MSG_RESET = "RESET";
+YAHOO.yazaar.DataMenu.MSG_RESET = "RESET";
 
 /**
  * Label for Cancel button
@@ -1372,7 +1608,7 @@ YAHOO.yazaar.DataForm.MSG_RESET = "RESET";
  * @final
  * @default "CANCEL"
  */
-YAHOO.yazaar.DataForm.MSG_CANCEL = "CANCEL";
+YAHOO.yazaar.DataMenu.MSG_CANCEL = "CANCEL";
 
 /**
  * Label for Update button
@@ -1384,7 +1620,7 @@ YAHOO.yazaar.DataForm.MSG_CANCEL = "CANCEL";
  * @final
  * @default "EDIT"
  */
-YAHOO.yazaar.DataForm.MSG_UPDATE = "EDIT";
+YAHOO.yazaar.DataMenu.MSG_UPDATE = "EDIT";
 
 /**
  * Label for Insert button
@@ -1396,7 +1632,7 @@ YAHOO.yazaar.DataForm.MSG_UPDATE = "EDIT";
  * @final
  * @default "ADD"
  */
-YAHOO.yazaar.DataForm.MSG_INSERT = "ADD";
+YAHOO.yazaar.DataMenu.MSG_INSERT = "ADD";
 
 /**
  * Label for Delete button
@@ -1408,7 +1644,7 @@ YAHOO.yazaar.DataForm.MSG_INSERT = "ADD";
  * @final
  * @default "DELETE"
  */
-YAHOO.yazaar.DataForm.MSG_DELETE = "DELETE";
+YAHOO.yazaar.DataMenu.MSG_DELETE = "DELETE";
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1423,7 +1659,7 @@ YAHOO.yazaar.DataForm.MSG_DELETE = "DELETE";
  * @type HTMLElement
  * @private
  */
-YAHOO.yazaar.DataForm.prototype._elCancel = null;
+YAHOO.yazaar.DataMenu.prototype._elCancel = null;
 
 /**
  * Delete control reference.
@@ -1432,7 +1668,7 @@ YAHOO.yazaar.DataForm.prototype._elCancel = null;
  * @type HTMLElement
  * @private
  */
-YAHOO.yazaar.DataForm.prototype._elDelete = null;
+YAHOO.yazaar.DataMenu.prototype._elDelete = null;
 
 /**
  * Insert control reference ("ADD").
@@ -1441,7 +1677,7 @@ YAHOO.yazaar.DataForm.prototype._elDelete = null;
  * @type HTMLElement
  * @private
  */
-YAHOO.yazaar.DataForm.prototype._elInsert = null;
+YAHOO.yazaar.DataMenu.prototype._elInsert = null;
 
 /**
  * Reset control reference.
@@ -1450,7 +1686,7 @@ YAHOO.yazaar.DataForm.prototype._elInsert = null;
  * @type HTMLElement
  * @private
  */
-YAHOO.yazaar.DataForm.prototype._elReset = null;
+YAHOO.yazaar.DataMenu.prototype._elReset = null;
 
 /**
  * Submit control reference.
@@ -1459,7 +1695,7 @@ YAHOO.yazaar.DataForm.prototype._elReset = null;
  * @type HTMLElement
  * @private
  */
-YAHOO.yazaar.DataForm.prototype._elSubmit = null;
+YAHOO.yazaar.DataMenu.prototype._elSubmit = null;
 
 /**
  * Update control reference ("EDIT").
@@ -1468,7 +1704,7 @@ YAHOO.yazaar.DataForm.prototype._elSubmit = null;
  * @type HTMLElement
  * @private
  */
-YAHOO.yazaar.DataForm.prototype._elUpdate = null;
+YAHOO.yazaar.DataMenu.prototype._elUpdate = null;
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1477,174 +1713,70 @@ YAHOO.yazaar.DataForm.prototype._elUpdate = null;
 /////////////////////////////////////////////////////////////////////////////
 
 /**
- * Handles form cancel command by raising a cancelEvent that bundles the
- * original record values.
+ * Raises a cancelEvent.
  *
  * @param e {HTMLEvent} The click event.
- * @param oSelf {YAHOO.yazaar.DataForm} DataForm instance.
+ * @param oSelf {YAHOO.yazaar.DataMenu} DataMenu instance.
  * @private
  */
-YAHOO.yazaar.DataForm.prototype._onCancel = function(e, oSelf) {
-    oSelf._onRecord(e,oSelf,"cancelEvent");
+YAHOO.yazaar.DataMenu.prototype._onCancel = function(e, oSelf) {
+    oSelf.fireEvent("cancelEvent", e);
 };
 
 /**
- * Handles form delete command by raising a deleteEvent 
- * that bundles the original record values.
+ * Raises a deleteEvent.
  *
  * @param e {HTMLEvent} The click event.
- * @param oSelf {YAHOO.yazaar.DataForm} DataForm instance.
+ * @param oSelf {YAHOO.yazaar.DataMenu} DataMenu instance.
  * @private
  */
-YAHOO.yazaar.DataForm.prototype._onDelete = function(e, oSelf) {
-    oSelf._onRecord(e,oSelf,"deleteEvent");
+YAHOO.yazaar.DataMenu.prototype._onDelete = function(e, oSelf) {
+    oSelf.fireEvent("deleteEvent", e);
 };
 
 /**
- * Handles insert form command by raising a insertFormEvent 
- * that bundles the original record values.
+ * Raises a insertFormEvent.
  *
  * @param e {HTMLEvent} The click event.
- * @param oSelf {YAHOO.yazaar.DataForm} DataForm instance.
+ * @param oSelf {YAHOO.yazaar.DataMenu} DataMenu instance.
  * @private
  */
-YAHOO.yazaar.DataForm.prototype._onInsertForm = function(e, oSelf) {
-    oSelf._onRecord(e,oSelf,"insertFormEvent");
+YAHOO.yazaar.DataMenu.prototype._onInsertForm = function(e, oSelf) {
+    oSelf.fireEvent("insertFormEvent", e);
 };
 
 /**
- * Handles form reset command by invoking reset method.
+ * Raises a resetEvent.
  *
  * @param e {HTMLEvent} The click event.
- * @param oSelf {YAHOO.yazaar.DataForm} DataForm instance.
+ * @param oSelf {YAHOO.yazaar.DataMenu} DataMenu instance.
  * @see reset
  * @private
  */
-YAHOO.yazaar.DataForm.prototype._onReset = function(e, oSelf) {
-    oSelf.reset();
+YAHOO.yazaar.DataMenu.prototype._onReset = function(e, oSelf) {
+    oSelf.fireEvent("resetEvent", e);
 };
 
 /**
- * Handles form submit.
- * <p />
- * Updates internal record from data is retrieved from input controls,
- * and raises updateEvent with new and old record values and an "isChanged"
- * boolean property, so that listeners can log or update external records.
+ * Raises a submitEvent.
  *
  * @param e {HTMLEvent} The click event.
- * @param oSelf {YAHOO.yazaar.DataForm} DataForm instance.
+ * @param oSelf {YAHOO.yazaar.DataMenu} DataMenu instance.
  * @private
  */
-YAHOO.yazaar.DataForm.prototype._onSubmit = function(e, oSelf) {
-    var sIdentifier = oSelf._oRecord.yuiRecordId;
-    var oRecord = oSelf._oRecordSet.getRecord(sIdentifier);
-    if (oRecord) oSelf.update();
-    else oSelf.insert();
+YAHOO.yazaar.DataMenu.prototype._onSubmit = function(e, oSelf) {
+    oSelf.fireEvent("submitEvent", e);
 };
 
 /** 
- * Handles updateForm command by raising updateFormEvent.
+ * Raises a updateFormEvent.
  * 
- * @method _onUpdateForm
+ * @param e {HTMLEvent} The click event.
+ * @param oSelf {YAHOO.yazaar.DataMenu} DataMenu instance.
  * @private
  */
-YAHOO.yazaar.DataForm.prototype._onUpdateForm = function(e, oSelf) {
-    oSelf._onRecord(e,oSelf,"updateFormEvent");
-};
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Public custom event handlers
-//
-/////////////////////////////////////////////////////////////////////////////
-
-/**
- * Harvests data from form and raise insertEvent.
- *
- * @method insert
- */
-YAHOO.yazaar.DataForm.prototype.insert = function() {
-
-    if (this.isInvalidInput()) return;
-
-    // Gather the data and insert the record
-    var oFields = this.harvestForm();
-    // TODO: Use current page position for insert position
-    var oNewRecord = this._oRecordSet.addRecord(oFields,0); 
-
-    this._oRecord = oNewRecord;
-
-    // Raise insertEvent
-    var context = {oRecord: oNewRecord};
-    this.fireEvent("insertEvent", context);
-    this.logRecordEvent("insertEvent", oNewRecord); // debug
-    
-    // Refresh the table
-    var oDataList = this.oDataList;
-    if (oDataList) {
-        // TODO: Restore the current sort (do we even want to?)
-        oDataList.addRow(oNewRecord); 
-        oDataList.showPage(oDataList.pageCurrent);
-    }
-};
-
-/**
- * Sets the value of form input controls to the corresponding entry of the
- * selected record.
- *
- * @param oRecord The record to populate the form, or the selected record if omitted
- * @method insertForm
- */
-YAHOO.yazaar.DataForm.prototype.insertForm = function() {
-    var oFields = {};
-    var oSet = this._oColumnSet;
-    var aKeys = oSet.keys;
-    var nLength = aKeys.length;
-    for (i=0; i<nLength; i++) {
-        var oColumn = aKeys[i];
-        var type = oColumn.formType || oColumn.type;
-        switch(type) {
-            case "select":
-                var oOptions = oColumn.selectOptions || oColumn.formSelectOptions || [];
-                if (YAHOO.lang.isUndefined(oColumn.initial)) oColumn.initial = oOptions[0];
-                break;
-        }
-        oFields[oColumn.key] = oColumn.initial || "";
-    }
-    var oRecord = new YAHOO.widget.Record(oFields);
-    this.populateForm(oRecord);
-};
-
-/**
- * Harvests data from form and raises UpdateEvent.
- *
- * @method update
- */
-YAHOO.yazaar.DataForm.prototype.update = function() {
-
-    if (this.isInvalidInput()) return;
-
-    // Gather the usual suspects
-    var oRecord = this._oRecord;
-    var oPrevRecord = this.copyRecord();
-    var oNewRecord = this.harvestForm();
-    // Check to see if anything changed
-    var isChanged = this.isRecordChanged(oNewRecord);
-    if (isChanged) for (var prop in oRecord) {
-        oRecord[prop] = oNewRecord[prop];
-    }
-    // Raise updateEvent
-    var context = {oRecord: oNewRecord, oPrevRecord: oPrevRecord, isChanged: isChanged};
-    this.fireEvent("updateEvent", context);
-    var sLog = (isChanged) ? "updateEvent" : "updateEvent (no change)";
-    this.logRecordEvent(sLog, oNewRecord, oPrevRecord); // debug
-    if (isChanged) {
-        // Refresh the table
-        var oDataList = this.oDataList;
-        if (oDataList) {
-          oDataList.showPage(oDataList.pageCurrent);
-        }
-    }
+YAHOO.yazaar.DataMenu.prototype._onUpdateForm = function(e, oSelf) {
+    oSelf.fireEvent("updateFormEvent", e);
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1658,7 +1790,7 @@ YAHOO.yazaar.DataForm.prototype.update = function() {
  *
  * @private
  */
-YAHOO.yazaar.DataForm.prototype._initButton = function(name,parent,id,s) {
+YAHOO.yazaar.DataMenu.prototype._initButton = function(name,parent,id,s) {
   var el;
   try {
     el = document.createElement("<input type='button' />"); // IE idiom
@@ -1675,54 +1807,4 @@ YAHOO.yazaar.DataForm.prototype._initButton = function(name,parent,id,s) {
   return el;
 };
 
-/////////////////////////////////////////////////////////////////////////////
-//
-// Public methods
-//
-/////////////////////////////////////////////////////////////////////////////
-
-/**
- * Creates HTML markup for a standard set of buttons, 
- * depending whether presentation is "View" mode (or "Edit" mode).
- *
- * @public
- */
-YAHOO.yazaar.DataForm.prototype.initButtons = function(elTable,sForm_id,elContainer,isView) {
-    
-    var initButton = this._initButton;
-    var elUpdate,elInsert,elDelete,elCancel,elSubmit,elReset;
-    if (isView) {
-        // Update
-        elUpdate = initButton("elUpdate", elContainer, sForm_id, YAHOO.yazaar.DataForm.MSG_UPDATE);
-        YAHOO.util.Event.addListener(elUpdate, "click", this._onUpdateForm, this);
-        // Insert
-        elInsert = initButton("elInsert", elContainer, sForm_id, YAHOO.yazaar.DataForm.MSG_INSERT);
-        YAHOO.util.Event.addListener(elInsert, "click", this._onInsertForm, this);
-        // Delete
-        elDelete = initButton("elDelete", elContainer, sForm_id, YAHOO.yazaar.DataForm.MSG_DELETE);
-        YAHOO.util.Event.addListener(elDelete, "click", this._onDelete, this);
-        // Cancel
-        elCancel = initButton("elCancel", elContainer, sForm_id, YAHOO.yazaar.DataForm.MSG_CANCEL);
-        YAHOO.util.Event.addListener(elCancel, "click", this._onCancel, this);
-    } else {
-        // Submit
-        elSubmit = initButton("elSubmit", elContainer, sForm_id, YAHOO.yazaar.DataForm.MSG_SUBMIT);
-        YAHOO.util.Event.addListener(elSubmit, "click", this._onSubmit, this);
-        // Reset
-        elReset = initButton("elReset", elContainer, sForm_id, YAHOO.yazaar.DataForm.MSG_RESET);
-        YAHOO.util.Event.addListener(elReset, "click", this._onReset, this);
-        // Cancel
-        elCancel = initButton("elCancel", elContainer, sForm_id, YAHOO.yazaar.DataForm.MSG_CANCEL);
-        YAHOO.util.Event.addListener(elCancel, "click", this._onCancel, this);
-    }
-
-    // Note elements for future reference
-    this._elUpdate = elUpdate;
-    this._elInsert = elInsert;
-    this._elDelete = elDelete;
-    this._elCancel = elCancel;
-    this._elSubmit = elSubmit;
-    this._elReset = elReset;
-    
-};
 
