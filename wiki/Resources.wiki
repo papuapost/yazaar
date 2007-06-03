@@ -25,7 +25,7 @@
 
 = In the Wild ==
 
-Nate Koechley of Team YUI has been posting a series of blogs that feature sites featuring YUI. 
+Nate Koechley has been posting a series of blogs that feature sites featuring YUI. 
 
  * [http://yuiblog.com/blog/2007/05/23/in-the-wild-20070523/ YUI In the Wild #2]
  * [http://yuiblog.com/blog/2007/05/15/in-the-wild-20070515/ The Inaugural post]
@@ -136,7 +136,6 @@ Nate Koechley of Team YUI has been posting a series of blogs that feature sites 
  * [http://www.amazon.com/exec/obidos/tg/detail/-/0321127420/husteddotcom-20 Patterns of Enterprise Application Architecture] (Martin Fowler, Nov'02)
  * [http://www.amazon.com/exec/obidos/tg/detail/-/0201835959/husteddotcom-20 The Mythical Man-Month: Essays on Software Engineering] (Frederick P. Brooks, Aug'95)
  * [http://www.catb.org/~esr/writings/cathedral-bazaar/ The Cathedral and the Bizaar] (Eric S. Raymond; Oct'99)
-
 
 
 
