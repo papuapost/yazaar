@@ -21,7 +21,7 @@
 
  * [http://www.amazon.com/exec/obidos/tg/detail/-/1590598164/husteddotcom-20 Practical JavaScript, DOM Scripting and Ajax Projects] (Frank Zammetti; Apr'07) Features a different JavaScript library in each chapter, including YUI. One chapter walks through the JsNotes widget, which the author has since contributed to the Yazaar project.
  * [http://www.amazon.com/exec/obidos/tg/detail/-/1590598067/husteddotcom-20 Web Development Solutions: Ajax, APIs, Libraries, and Hosted Services Made Easy] (Christian Heilmann, Mark 'Norm' Norman Francis; Apr'07) A sample chapter that features the YUI Menu control can be download through the [http://yuiblog.com/blog/2007/04/ YUI blog]. 
- * [http://www.amazon.com/exec/obidos/tg/detail/-/0470109491/husteddotcom-20 Professional Ajax, 2nd Edition] (Nicholas C. Zakas, Jeremy McPeak, Joe Fawcett; Mar'07) A sample chapter that features the YUI Connection Manager can be downloaded through the [http://yuiblog.com/blog/2007/03/02/zakas-proajax/ YUI blog]. 
+ * [http://www.amazon.com/exec/obidos/tg/detail/-/0470109491/husteddotcom-20 Professional Ajax, 2nd Edition] (Nicholas C. Zakas, Jeremy !McPeak, Joe Fawcett; Mar'07) A sample chapter that features the YUI Connection Manager can be downloaded through the [http://yuiblog.com/blog/2007/03/02/zakas-proajax/ YUI blog]. 
 
 = In the Wild ==
 
@@ -136,7 +136,6 @@ Nate Koechley has been posting a series of blogs that feature sites featuring YU
  * [http://www.amazon.com/exec/obidos/tg/detail/-/0321127420/husteddotcom-20 Patterns of Enterprise Application Architecture] (Martin Fowler, Nov'02)
  * [http://www.amazon.com/exec/obidos/tg/detail/-/0201835959/husteddotcom-20 The Mythical Man-Month: Essays on Software Engineering] (Frederick P. Brooks, Aug'95)
  * [http://www.catb.org/~esr/writings/cathedral-bazaar/ The Cathedral and the Bizaar] (Eric S. Raymond; Oct'99)
-
 
 
 
