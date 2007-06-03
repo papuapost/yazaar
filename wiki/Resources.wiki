@@ -7,15 +7,29 @@
  * [http://developer.yahoo.com/yui/theater/ Gopal Venkatesan — "Writing Efficient JavaScript"]
  * [http://developer.yahoo.com/yui/theater/ Nicholas Zakas — "Maintainable JavaScript"]
 
-= Read Me First (books) =
+= Read Me First =
 
  * [http://www.amazon.com/exec/obidos/tg/detail/-/0672328682/husteddotcom-20 Ajax in 10 Minutes] _(A little ($15) book that touches all the bases)_
  * [http://www.amazon.com/exec/obidos/tg/detail/-/0596101996/husteddotcom-20 JavaScript: The Definitive Guide] _(If not at first, then eventually!)_
 
-= YUI Me First (web) =
+= Read Me Second =
 
  * [http://simon.incutio.com/slides/2006/xtech/yui-slides.pdf Ajax XTech Slides] ([http://simon.incutio.com/slides/2006/xtech/yui-notes.html Notes])
  * [HappyTrails Happy Trails to YUI!]
+
+= Books with YUI Coverage =
+
+ * [http://www.amazon.com/exec/obidos/tg/detail/-/1590598164/husteddotcom-20 Practical JavaScript, DOM Scripting and Ajax Projects] (Frank Zammetti; Apr'07) Features a different JavaScript library in each chapter, including YUI. One chapter walks through the JsNotes widget, which the author has since contributed to the Yazaar project.
+ * [http://www.amazon.com/exec/obidos/tg/detail/-/1590598067/husteddotcom-20 Web Development Solutions: Ajax, APIs, Libraries, and Hosted Services Made Easy] (Christian Heilmann, Mark 'Norm' Norman Francis; Apr'07) A sample chapter that features the YUI Menu control can be download through the [http://yuiblog.com/blog/2007/04/ YUI blog]. 
+ * [http://www.amazon.com/exec/obidos/tg/detail/-/0470109491/husteddotcom-20 Professional Ajax, 2nd Edition] (Nicholas C. Zakas, Jeremy McPeak, Joe Fawcett; Mar'07) A sample chapter that features the YUI Connection Manager can be downloaded through the [http://yuiblog.com/blog/2007/03/02/zakas-proajax/ YUI blog]. 
+
+= In the Wild ==
+
+Nate Koechley of Team YUI has been posting a series of blogs that feature sites featuring YUI. 
+
+ * [http://yuiblog.com/blog/2007/05/23/in-the-wild-20070523/ YUI In the Wild #2]
+ * [http://yuiblog.com/blog/2007/05/15/in-the-wild-20070515/ The Inaugural post]
+
 
 = Libraries and tools we use =
 
@@ -101,13 +115,33 @@
  * [http://www-128.ibm.com/developerworks/web/library/wa-selenium-ajax/ Automate acceptance tests with Selenium] (developerWorks)
 
 = Other JavaScript Resources =
- * [http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-357.pdf ECMA 357 (Dec 2005)]
- * [http://www.cambiaresearch.com/c4/702b8cd1-e5b0-42e6-83ac-25f0306e3e25/Javascript-Char-Codes-Key-Codes.aspx JavaScript Char Codes]
- * [http://javascript.crockford.com/ Douglas Crockford's Wrrrld Wide Web]
+ * [http://javascript.crockford.com/ Douglas Crockford's Wrrrld Wide Web] _(Cool!)_
  * [http://www.ebook.gen.tr/ajax/Professional%20Ajax%20Php.pdf Professional Ajax (1st Ed)]
  * [http://msexchangeteam.com/archive/2005/06/21/406646.aspx How Ajax began]
-
+ * [http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-357.pdf ECMA 357 (Dec 2005)]
+ * [http://www.cambiaresearch.com/c4/702b8cd1-e5b0-42e6-83ac-25f0306e3e25/Javascript-Char-Codes-Key-Codes.aspx JavaScript Char Codes]
 = Other Web Application Resources =
 
  * [http://www.w3.org/ W3C]
  * [http://www.whatwg.org/ Web Hypertext Application Technology Working Group]
+
+= Other Recommended Resources =
+
+ * [http://www.amazon.com/exec/obidos/tg/detail/-/0743272455/husteddotcom-20 The 7 Habits of Highly Effective People: Powerful Lessons in Personal Change] (Stephen R. Covey; Nov'04) _(Everyone should read Covey first!_
+ * [http://www.amazon.com/exec/obidos/tg/detail/-/0201702258/husteddotcom-20 Writing Effective Use Cases] (Alistair Cockburn; Jan'00)
+ * [http://www.amazon.com/exec/obidos/tg/detail/-/0321146530/husteddotcom-20 Test Driven Development: By Example] (Kent Beck; Nov'02)
+ * [http://www.amazon.com/exec/obidos/tg/detail/-/0201485672/husteddotcom-20 Refactoring: Improving the Design of Existing Code] (Martin Fowler; Jun'99) _(The most important book since [http://www.amazon.com/exec/obidos/tg/detail/-/0201633612/husteddotcom-20 Design Patterns]!)_
+ * [http://www.amazon.com/exec/obidos/tg/detail/-/0735619670/husteddotcom-20 Code Complete ](Steve McConnell, Jun'04)
+ * [http://www.amazon.com/exec/obidos/tg/detail/-/0321127420/husteddotcom-20 Patterns of Enterprise Application Architecture] (Martin Fowler, Nov'02)
+ * [http://www.amazon.com/exec/obidos/tg/detail/-/0201835959/husteddotcom-20 The Mythical Man-Month: Essays on Software Engineering] (Frederick P. Brooks, Aug'95)
+ * [http://www.catb.org/~esr/writings/cathedral-bazaar/ The Cathedral and the Bizaar] (Eric S. Raymond; Oct'99)
+
+
+
+
+
+
+
+
+
+
