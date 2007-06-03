@@ -10,12 +10,19 @@
 = Read Me First =
 
  * [http://www.amazon.com/exec/obidos/tg/detail/-/0672328682/husteddotcom-20 Ajax in 10 Minutes] _(A little ($15) book that touches all the bases)_
- * [http://www.amazon.com/exec/obidos/tg/detail/-/0596101996/husteddotcom-20 JavaScript: The Definitive Guide] _(If not at first, then eventually!)_
+ * [http://www.amazon.com/exec/obidos/tg/detail/-/0596101996/husteddotcom-20 J!avaScript: The Definitive Guide] _(If not at first, then eventually!)_
 
 = Read Me Second =
 
  * [http://simon.incutio.com/slides/2006/xtech/yui-slides.pdf Ajax XTech Slides] ([http://simon.incutio.com/slides/2006/xtech/yui-notes.html Notes])
  * [HappyTrails Happy Trails to YUI!]
+
+= YUI Articles and Tutorials =
+
+ * [http://www.devarticles.com/c/a/Web-Authoring/An-Overview-of-the-Yahoo-User-Interface-Library/ An Overview of the Yahoo User Interface Library] (Dan Wellman)
+ * [http://www.whenpenguinsattack.com/2007/04/24/top-5-javascript-frameworks/ Top 5 JavaScript Frameworks] (Justin Silverton)
+ * [http://www.devchix.com/2007/02/28/getting-started-with-yui%E2%80%99s-connection-manager-in-rails-and-php-or-all-happy-families-are-not-alike/  Getting Started with YUI's Connection Manager in Rails] (devChix)
+ * [http://yuiblog.com/blog/ YUI Blog]
 
 = Books with YUI Coverage =
 
@@ -57,6 +64,16 @@ Nate Koechley has been posting a series of blogs that feature sites featuring YU
    * [http://www.cambiaresearch.com/c4/702b8cd1-e5b0-42e6-83ac-25f0306e3e25/Javascript-Char-Codes-Key-Codes.aspx JavaScript Char Codes]
    * [https://addons.mozilla.org/en-US/firefox/addon/1095 XPath Checker for FireFox]
  * [http://code.google.com/p/jsdoc-2/ JSDoc Toolkit] ([http://jsdoc.sourceforge.net/ JSDoc] for Rhino)
+
+= Selenium Articles and Tutorials =
+
+ * [http://rip747.wordpress.com/2007/04/09/selenium-ide-im-in-love-sorry-linda/ Selenium IDE: I'm in love (sorry Linda)] (Rip's Domain)
+ * [http://www.devchix.com/2007/02/19/an-introduction-to-selenium-ide/ An Introduction to Selenium IDE] (devChix)
+ * [http://cakebaker.42dh.com/2006/12/07/preview-of-a-new-selenium-test-suite/ Preview of a new Selenium Test Suite] (PHP) (CakeBaker)
+ * [http://www.codeodor.com/index.cfm/2006/11/14/Getting-started-with-Selenium/842 Getting started with Selenium] (Sammy Larbi)
+ * [http://agiletesting.blogspot.com/2006/01/useful-tools-for-writing-selenium.html Useful tools for writing Selenium tests] (Grig Gheorghiu)
+ * [http://acspropel.com/auto-test/ Screencast of Selenium Test Suite product] (ACSPropel)
+ * [http://www-128.ibm.com/developerworks/web/library/wa-selenium-ajax/ Automate acceptance tests with Selenium] (developerWorks)
 
 = Related Projects =
 
@@ -110,23 +127,6 @@ Nate Koechley has been posting a series of blogs that feature sites featuring YU
  * [http://www.ajaxpatterns.org/ Ajax Patterns] (Mahemoff)
  * [http://www.cs.helsinki.fi/u/salaakso/patterns/ User Interface Design Patterns] (Laakso)
  * [http://webpatterns.org/wordpress/ WebPatterns] (Allsop)
-
-= YUI Articles and Tutorials =
-
- * [http://www.devarticles.com/c/a/Web-Authoring/An-Overview-of-the-Yahoo-User-Interface-Library/ An Overview of the Yahoo User Interface Library] (Dan Wellman)
- * [http://www.whenpenguinsattack.com/2007/04/24/top-5-javascript-frameworks/ Top 5 JavaScript Frameworks] (Justin Silverton)
- * [http://www.devchix.com/2007/02/28/getting-started-with-yui%E2%80%99s-connection-manager-in-rails-and-php-or-all-happy-families-are-not-alike/  Getting Started with YUI's Connection Manager in Rails] (devChix)
- * [http://yuiblog.com/blog/ YUI Blog]
-
-= Selenium Articles and Tutorials =
-
- * [http://rip747.wordpress.com/2007/04/09/selenium-ide-im-in-love-sorry-linda/ Selenium IDE: I'm in love (sorry Linda)] (Rip's Domain)
- * [http://www.devchix.com/2007/02/19/an-introduction-to-selenium-ide/ An Introduction to Selenium IDE] (devChix)
- * [http://cakebaker.42dh.com/2006/12/07/preview-of-a-new-selenium-test-suite/ Preview of a new Selenium Test Suite] (PHP) (CakeBaker)
- * [http://www.codeodor.com/index.cfm/2006/11/14/Getting-started-with-Selenium/842 Getting started with Selenium] (Sammy Larbi)
- * [http://agiletesting.blogspot.com/2006/01/useful-tools-for-writing-selenium.html Useful tools for writing Selenium tests] (Grig Gheorghiu)
- * [http://acspropel.com/auto-test/ Screencast of Selenium Test Suite product] (ACSPropel)
- * [http://www-128.ibm.com/developerworks/web/library/wa-selenium-ajax/ Automate acceptance tests with Selenium] (developerWorks)
 
 = Other JavaScript Resources =
  * [http://javascript.crockford.com/ Douglas Crockford's Wrrrld Wide Web] _(Cool!)_
