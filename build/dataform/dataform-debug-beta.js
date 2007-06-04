@@ -539,7 +539,7 @@ YAHOO.yazaar.DataForm.prototype._initForm = function() {
     elMenuCell.colSpan = nColSpan;    
     this._elBody = elBody;
     this._elMenuRow = elMenuRow;    
-    var oDataMenu = new YAHOO.yazaar.DataMenu(elTable,sForm_id,elMenuCell,this.isDisabled);
+    var oDataMenu = new YAHOO.yazaar.DataMenu(elMenuCell,sForm_id,this.isDisabled);
     oDataMenu.subscribe("cancelEvent", this.cancel, this, true);
     oDataMenu.subscribe("submitEvent", this.insert, this, true);
     oDataMenu.subscribe("resetEvent", this.reset, this, true);
@@ -1472,7 +1472,7 @@ YAHOO.yazaar.DataForm.prototype.onDataReturnPopulateForm = function(sRequest, oR
  * @param oColumnSet {YAHOO.widget.ColumnSet} ColumnSet instance.
  * @param oDataSource {YAHOO.util.DataSource} DataSource instance.
 */
-YAHOO.yazaar.DataMenu = function(elTable,sForm_id,elContainer,isView) {
+YAHOO.yazaar.DataMenu = function(elContainer,sForm_id,isView) {
    
     var initButton = this._initButton;
     var elUpdate,elInsert,elDelete,elCancel,elSubmit,elReset;
