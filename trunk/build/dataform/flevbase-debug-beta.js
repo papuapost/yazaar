@@ -246,7 +246,18 @@ YAHOO.yazaar.FlevBase.prototype.sItemName = null;
  * @method exitEdit
  */
 YAHOO.yazaar.FlevBase.prototype.exitEdit = function(oSelf) {
-    if (oSelf) oSelf.oTabView.set('activeIndex', oSelf.nDataList); 
+    if (!oSelf) oSelf = this;
+    oSelf.oTabView.set('activeIndex', oSelf.nDataList);
+};
+
+/**
+ * Exits List and activates Find.
+ * Override to activate a different display. 
+ * @method exitView
+ */
+YAHOO.yazaar.FlevBase.prototype.exitList = function(oSelf) {
+    if (!oSelf) oSelf = this;
+    oSelf.oTabView.set('activeIndex', oSelf.nDataFind); 
 };
 
 /**
@@ -255,7 +266,8 @@ YAHOO.yazaar.FlevBase.prototype.exitEdit = function(oSelf) {
  * @method exitView
  */
 YAHOO.yazaar.FlevBase.prototype.exitView = function(oSelf) {
-    if (oSelf) oSelf.oTabView.set('activeIndex', oSelf.nDataList); 
+    if (!oSelf) oSelf = this;
+    oSelf.oTabView.set('activeIndex', oSelf.nDataList); 
 };
 
 /**
@@ -263,7 +275,8 @@ YAHOO.yazaar.FlevBase.prototype.exitView = function(oSelf) {
  * @method gotoEdit
  */
 YAHOO.yazaar.FlevBase.prototype.gotoEdit = function(oSelf) {
-    if (oSelf) oSelf.oTabView.set('activeIndex', oSelf.nDataEdit); 
+    if (!oSelf) oSelf = this;
+    oSelf.oTabView.set('activeIndex', oSelf.nDataEdit); 
 };
 
 /**
@@ -440,8 +453,8 @@ YAHOO.yazaar.FlevBase.prototype.onDelete = function (oData,oSelf) {
 };
 
 /**
- * Handles updateEvent raised by Edit by switching displays.
- * To persist changes, override this method.
+ * Handles a custom event by delegating to exitEdit. 
+ *
  * @method onExitEdit
  */
 YAHOO.yazaar.FlevBase.prototype.onExitEdit = function (oData,oSelf) {
@@ -449,8 +462,17 @@ YAHOO.yazaar.FlevBase.prototype.onExitEdit = function (oData,oSelf) {
 };
 
 /**
- * Handles updateEvent raised by Edit by switching displays..
- * To persist changes, override or replace this method.
+ * Handles a custom event by delegating to exitList. 
+ *
+ * @method onExitList
+ */
+YAHOO.yazaar.FlevBase.prototype.onExitList = function (oData,oSelf) {
+    oSelf.exitList(oSelf);
+};
+
+/**
+ * Handles a custom event by delegating to exitView. 
+ *
  * @method onExitView
  */
 YAHOO.yazaar.FlevBase.prototype.onExitView = function (oData,oSelf) {
@@ -460,6 +482,7 @@ YAHOO.yazaar.FlevBase.prototype.onExitView = function (oData,oSelf) {
 /**
  * Change the autocomplete field.
  * Must be wired to an input control via an onChange handler.
+ *
  * @method onFilterChange
  */
 YAHOO.yazaar.FlevBase.prototype.onFilterChange = function () {
@@ -472,6 +495,7 @@ YAHOO.yazaar.FlevBase.prototype.onFilterChange = function () {
 /**
  * Handles insertEvent raised by Edit by switching displays.
  * To persist changes, override or replace this method.
+ *
  * @method onInsert
  */
 YAHOO.yazaar.FlevBase.prototype.onInsert = function (oData,oSelf) {
@@ -480,6 +504,7 @@ YAHOO.yazaar.FlevBase.prototype.onInsert = function (oData,oSelf) {
 
 /**
  * Handles insertFormEvent raised by View by switching displays.
+ *
  * @method onInsertForm
  */
 YAHOO.yazaar.FlevBase.prototype.onInsertForm = function (oData,oSelf) {    
@@ -492,6 +517,7 @@ YAHOO.yazaar.FlevBase.prototype.onInsertForm = function (oData,oSelf) {
 /**
  * Handles updateEvent raised by Edit by switching displays.
  * To persist changes, override this method.
+ *
  * @method onUpdate
  */
 YAHOO.yazaar.FlevBase.prototype.onUpdate = function (oData,oSelf) {
@@ -500,6 +526,7 @@ YAHOO.yazaar.FlevBase.prototype.onUpdate = function (oData,oSelf) {
 
 /**
  * Handles updateFormEvent raised by View.
+ *
  * @method onUpdateForm
  */
 YAHOO.yazaar.FlevBase.prototype.onUpdateForm = function (oData,oSelf) {
