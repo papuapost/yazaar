@@ -681,8 +681,9 @@ YAHOO.yazaar.DataForm.prototype._initControl = function(elCell,oColumn,sForm_id)
  * @method checkbox
  */
 YAHOO.yazaar.DataForm.prototype.checkbox = function(elCell,oColumn) {
-    var elInput = elCell.appendChild(document.createElement("input"));
-    elInput.type = "checkbox";
+    var el = document.createElement("input");
+    el.setAttribute("type","checkbox");
+    var elInput = elCell.appendChild(el);
     return elInput;
 };
 
