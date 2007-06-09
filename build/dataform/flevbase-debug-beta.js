@@ -41,10 +41,10 @@ YAHOO.namespace("yazaar");
  * Constructs a base FLEV widget with a default configuration.
  * Custom setings may be passed through the oConfig parameter.
  * <p />
- * The client application must provide a dataset for the load
+ * The client application must provide a dataset for the onLoad
  * method, which may be a RPC result object, or another
  * object designed to resemble a RPC result object.
- * All property changes must be made before load is called.
+ * All property changes must be made before onLoad is called.
  * <p />
  * Properties that must be configured are oColumnHeaders and oResponseSchema.
  * Properties that may be configured oListConfigs, oViewConfigs, oEditConfigs, 
@@ -61,6 +61,14 @@ YAHOO.yazaar.FlevBase = function(oConfigs) {
             this[sConfig] = oConfigs[sConfig];
         }
     }
+    
+    /**
+     * Fired when widget is ready to be loaded. 
+     *
+     * @event loadEvent
+     */
+    this.loadEvent = this.createEvent("loadEvent");
+    
     return this;
 };
 
@@ -96,7 +104,7 @@ YAHOO.yazaar.FlevBase.prototype.nDataView = 2;
 YAHOO.yazaar.FlevBase.prototype.nDataEdit = 3;
 
 /**
- * Edit form configuration instance created by load method.
+ * Edit form configuration instance created by onLoad method.
  */
 YAHOO.yazaar.FlevBase.prototype.oEditConfigs = {};
 
@@ -117,7 +125,7 @@ YAHOO.yazaar.FlevBase.prototype.oListConfigs = {
 };
 
 /**
- * View form configuration instance created by load method.
+ * View form configuration instance created by onLoad method.
  */
 YAHOO.yazaar.FlevBase.prototype.oViewConfigs = {};
 
@@ -171,7 +179,7 @@ YAHOO.yazaar.FlevBase.prototype.sListForm = "elListForm";
 /////////////////////////////////////////////////////////////////////////////
 
 /**
- * Autocomplete filter instance created by load method.
+ * Autocomplete filter instance created by onLoad method.
  */
 YAHOO.yazaar.FlevBase.prototype.fnFilter = null;
 
@@ -181,7 +189,7 @@ YAHOO.yazaar.FlevBase.prototype.fnFilter = null;
 YAHOO.yazaar.FlevBase.prototype.oAutoComplete = null;
 
 /**
- * ColumnSet instance created by load method.
+ * ColumnSet instance created by onLoad method.
  */
 YAHOO.yazaar.FlevBase.prototype.oColumnSet = null;
 
@@ -198,22 +206,22 @@ YAHOO.yazaar.FlevBase.prototype.oColumnHeaders = null;
 YAHOO.yazaar.FlevBase.prototype.oDataEdit = null;
 
 /**
- * DataFind widget instance created by load method.
+ * DataFind widget instance created by onLoad method.
  */
 YAHOO.yazaar.FlevBase.prototype.oDataFind = null;
 
 /**
- * DataList widget instance created by load method.
+ * DataList widget instance created by onLoad method.
  */
 YAHOO.yazaar.FlevBase.prototype.oDataList = null;
 
 /**
- * DataSource instance created by load method.
+ * DataSource instance created by onLoad method.
  */
 YAHOO.yazaar.FlevBase.prototype.oDataSource = null;
 
 /**
- * Instance created by load method.
+ * Instance created by onLoad method.
  */
 YAHOO.yazaar.FlevBase.prototype.oDataView = null;
 
@@ -284,9 +292,9 @@ YAHOO.yazaar.FlevBase.prototype.gotoEdit = function(oSelf) {
  * Intended for use at initial load only. 
  * @param {Object} oData Incoming data in RPC response format
  * @param {Object} oSelf Runtme reference to object instance
- * @method load
+ * @method onLoad
  */
-YAHOO.yazaar.FlevBase.prototype.load = function(oData,oSelf) {
+YAHOO.yazaar.FlevBase.prototype.onLoad = function(oData,oSelf) {
         // previously defined
         var oColumnHeaders = oSelf.oColumnHeaders;
         var oResponseSchema = oSelf.oResponseSchema;

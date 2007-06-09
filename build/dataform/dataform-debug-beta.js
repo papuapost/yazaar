@@ -1404,10 +1404,10 @@ YAHOO.yazaar.DataForm.prototype.doSubmit = function() {
     var isInsertForm = !(oRecord) || (oRecord.insertForm);
     if (isInsertForm) {
         if (oRecord) delete(oRecord.insertForm);
-        this.insert();
+        this.doInsert();
     }
     else {
-         this.update();
+         this.doUpdate();
     }
 };
 
