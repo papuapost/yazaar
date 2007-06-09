@@ -102,7 +102,7 @@ YAHOO.widget.DataTable._nCount = 0;
 || `fnFoo` || function     ||  ||
 || `nFoo`  || number       ||  ||
 || `oFoo`  || object       ||  ||
-|| `onFoo` || function to handle `fooEvent' ||  ||
+|| `onFoo` || function to handle `fooEvent` ||  ||
 || `sFoo`  || string       ||  ||
 || `xFoo`  || regular expression ||  ||
 || `isFoo` || boolean || also `hasFoo`, `useFoo`, or `bFoo` ||
@@ -269,7 +269,6 @@ Subversion commit messages are posted to the development group mailing list, for
 
  * One object or object definition per file 
    ** Rely on build step to combine and minimize files 
-
 
 
 
