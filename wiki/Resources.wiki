@@ -10,7 +10,7 @@
 = Read Me First =
 
  * [http://www.amazon.com/exec/obidos/tg/detail/-/0672328682/husteddotcom-20 Ajax in 10 Minutes] _(A little ($15) book that touches all the bases)_
- * [http://www.amazon.com/exec/obidos/tg/detail/-/0596101996/husteddotcom-20 J!avaScript: The Definitive Guide] _(If not at first, then eventually!)_
+ * [http://www.amazon.com/exec/obidos/tg/detail/-/0596101996/husteddotcom-20 JavaScript: The Definitive Guide] _(If not at first, then eventually!)_
 
 = Read Me Second =
 
@@ -19,11 +19,19 @@
 
 = YUI Articles and Tutorials =
 
- * [http://www.mischefamily.com/nathan/index.cfm/2007/6/4/ColdFusion-8--Tapping-Into-the-Power-of-the-YUI ColdFusion 8 - Tapping Into the Power of the YUI] (Nathan Mische)
  * [http://www.devarticles.com/c/a/Web-Authoring/An-Overview-of-the-Yahoo-User-Interface-Library/ An Overview of the Yahoo User Interface Library] (Dan Wellman)
- * [http://www.whenpenguinsattack.com/2007/04/24/top-5-javascript-frameworks/ Top 5 JavaScript Frameworks] (Justin Silverton)
+ * [http://www.mischefamily.com/nathan/index.cfm/2007/6/4/ColdFusion-8--Tapping-Into-the-Power-of-the-YUI ColdFusion 8 - Tapping Into the Power of the YUI] (Nathan Mische)
  * [http://www.devchix.com/2007/02/28/getting-started-with-yui%E2%80%99s-connection-manager-in-rails-and-php-or-all-happy-families-are-not-alike/  Getting Started with YUI's Connection Manager in Rails] (devChix)
+ * [http://www.whenpenguinsattack.com/2007/04/24/top-5-javascript-frameworks/ Top 5 JavaScript Frameworks] (Justin Silverton)
  * [http://yuiblog.com/blog/ YUI Blog]
+
+== Zach Leatherman ==
+
+ * [http://www.zachleat.com/web/2007/05/09/wash-your-mouth-out-with-soap-and-the-yui-connection-manager/  Wash your mouth out with SOAP and the YUI Connection Manager] (Zach Leatherman)
+ * [http://www.zachleat.com/web/2007/06/07/enlarging-your-yui-datatable-in-30-seconds-or-less/ Enlarging your YUI DataTable in 30 Seconds or Less!] - {{{NEW!}}}
+ * [http://www.zachleat.com/web/2007/03/23/yui-button-lite/ YUI Button Lite]
+ * [http://www.zachleat.com/web/2007/04/04/problems-with-yui-datatable/ Problems with YUI DataTable]
+ * [http://www.zachleat.com/web/2007/04/30/yui-datatable-and-you-making-the-marriage-work/ YUI DataTable and You: Making the Marriage Work] 
 
 = Books with YUI Coverage =
 
