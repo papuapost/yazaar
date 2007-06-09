@@ -540,11 +540,12 @@ YAHOO.yazaar.DataForm.prototype._initForm = function() {
     this._elBody = elBody;
     this._elMenuRow = elMenuRow;    
     var oDataMenu = new YAHOO.yazaar.DataMenu(elMenuCell,sForm_id,this.isDisabled);
-    oDataMenu.subscribe("cancelEvent", this.cancel, this, true);
-    oDataMenu.subscribe("submitEvent", this.insert, this, true);
-    oDataMenu.subscribe("resetEvent", this.reset, this, true);
-    oDataMenu.subscribe("insertFormEvent", this.insertForm, this, true);
-    oDataMenu.subscribe("updateFormEvent", this.updateForm, this, true); 
+    oDataMenu.subscribe("cancelEvent", this.doCancel, this, true);
+    oDataMenu.subscribe("deleteEvent", this.doDelete, this, true);
+    oDataMenu.subscribe("submitEvent", this.doSubmit, this, true); // raises insertEvent or updateEvent
+    oDataMenu.subscribe("resetEvent", this.doReset, this, true);
+    oDataMenu.subscribe("insertFormEvent", this.doInsertForm, this, true);
+    oDataMenu.subscribe("updateFormEvent", this.doUpdateForm, this, true); 
     
     this.oDataMenu = oDataMenu;   
 };
@@ -1175,6 +1176,32 @@ YAHOO.yazaar.DataForm.prototype.getSelectedRecord = function() {
     return oRecord;
 };
 
+
+/**
+ * Extends the notion of "falsy" to include a "0" string value. 
+ * @param oData The value to test for true or false
+ */
+YAHOO.yazaar.DataForm.isDataTrue = function(oData) {
+    var isTrue = Boolean(oData);
+    switch(oData) { 
+        case "0": isTrue = false; break;
+    }
+    return isTrue;    
+}
+
+/** 
+ * Represents TRUE and FALSE as YES or NO. 
+ * This method utilizes the isDataTrue method! 
+ * @param elCell {HTMLElement} Table cell element.
+ * @param oRecord {YAHOO.widget.Record} Record instance.
+ * @param oColumn {YAHOO.widget.Column} Column instance.
+ * @param oData {Object} Data value for the cell, or null
+ */
+YAHOO.yazaar.DataForm.formatYesNo = function(elCell, oRecord, oColumn, oData) {
+    elCell.innerHTML = (YAHOO.yazaar.DataForm.isDataTrue(oData)) ? "YES" : "NO" ;
+};
+
+
 /**
  * Sets the value of form input controls to the corresponding entry of the
  * selected record.
@@ -1198,7 +1225,7 @@ YAHOO.yazaar.DataForm.prototype.populateForm = function(oRecord) {
             var sKey = oColumn.key;
             elInput = aFields[n++];
             if (elInput.type == "checkbox") {
-                elInput.checked = oRecord[sKey];
+                elInput.checked = YAHOO.yazaar.DataForm.isDataTrue(oRecord[sKey]);
             }
             else {
                 elInput.value = oRecord[sKey];
@@ -1270,19 +1297,29 @@ YAHOO.yazaar.DataForm.prototype._onRecord = function(e, oSelf, sEvent) {
 /** 
  * Raises cancelEvent. 
  *
- * @method cancel
+ * @method doCancel
  */
-YAHOO.yazaar.DataForm.prototype.cancel = function() {
+YAHOO.yazaar.DataForm.prototype.doCancel = function() {
     this.fireEvent("cancelEvent", this);
     this.logRecordEvent("cancelEvent", {oRecord: this._oRecord}); // debug        
+};
+
+/** 
+ * Raises deleteEvent. 
+ *
+ * @method doDelete
+ */
+YAHOO.yazaar.DataForm.prototype.doDelete = function() {
+    this.fireEvent("deleteEvent", this);
+    this.logRecordEvent("deleteEvent", {oRecord: this._oRecord}); // debug        
 };
 
 /**
  * Harvests data from form and raise insertEvent.
  *
- * @method insert
+ * @method doInsert
  */
-YAHOO.yazaar.DataForm.prototype.insert = function() {
+YAHOO.yazaar.DataForm.prototype.doInsert = function() {
 
     if (this.isInvalidInput()) return;
 
@@ -1312,9 +1349,9 @@ YAHOO.yazaar.DataForm.prototype.insert = function() {
  * selected record.
  *
  * @param oRecord The record to populate the form, or the selected record if omitted
- * @method insertForm
+ * @method doInsertForm
  */
-YAHOO.yazaar.DataForm.prototype.insertForm = function() {
+YAHOO.yazaar.DataForm.prototype.doInsertForm = function() {
     var oFields = {};
     var oSet = this._oColumnSet;
     var aKeys = oSet.keys;
@@ -1328,21 +1365,22 @@ YAHOO.yazaar.DataForm.prototype.insertForm = function() {
                 if (YAHOO.lang.isUndefined(oColumn.initial)) oColumn.initial = oOptions[0];
                 break;
         }
-        oFields[oColumn.key] = oColumn.initial || "";
+        oFields[oColumn.key] = oColumn.initial || "";        
     }
+    oFields["insertForm"] = true; // tag record
     var oRecord = new YAHOO.widget.Record(oFields);
     this.populateForm(oRecord);
     this.fireEvent("insertFormEvent", this);
-    this.logRecordEvent("insertFormEvent", {oRecord: this._oRecord}); // debug            
+    this.logRecordEvent("insertFormEvent", {oRecord: this._oRecord}); // debug
 };
 
 /**
  * Restores the original values to the active record, 
  * and raises resetEvent.
  * 
- * @method reset
+ * @method doReset
  */
-YAHOO.yazaar.DataForm.prototype.reset = function() {
+YAHOO.yazaar.DataForm.prototype.doReset = function() {
     var oRecord = this._oRecord; // Restore this reference
     var aFields = this._aFields;
     var nFields = aFields.length;
@@ -1358,13 +1396,19 @@ YAHOO.yazaar.DataForm.prototype.reset = function() {
 /**
  * Delegates to insert or update. 
  * 
- * @method submit
+ * @method doSubmit
  */
-YAHOO.yazaar.DataForm.prototype.submit = function() {
+YAHOO.yazaar.DataForm.prototype.doSubmit = function() {
     var sIdentifier = this._oRecord.yuiRecordId;
     var oRecord = this._oRecordSet.getRecord(sIdentifier);
-    if (oRecord) this.update();
-    else this.insert();
+    var isInsertForm = !(oRecord) || (oRecord.insertForm);
+    if (isInsertForm) {
+        if (oRecord) delete(oRecord.insertForm);
+        this.insert();
+    }
+    else {
+         this.update();
+    }
 };
 
 /**
@@ -1372,9 +1416,9 @@ YAHOO.yazaar.DataForm.prototype.submit = function() {
  * with new and old record values and an "isChanged"
  * boolean property
  *
- * @method update
+ * @method doUpdate
  */
-YAHOO.yazaar.DataForm.prototype.update = function() {
+YAHOO.yazaar.DataForm.prototype.doUpdate = function() {
 
     if (this.isInvalidInput()) return;
 
@@ -1404,9 +1448,9 @@ YAHOO.yazaar.DataForm.prototype.update = function() {
 /** 
  * Raises updateFormEvent (e.g. switch tabs).
  *
- * @method updateForm
+ * @method doUpdateForm
  */
-YAHOO.yazaar.DataForm.prototype.updateForm = function() {
+YAHOO.yazaar.DataForm.prototype.doUpdateForm = function() {
     this.fireEvent("updateFormEvent", this);
     this.logRecordEvent("updateFormEvent", {oRecord: this._oRecord}); // debug        
 };
@@ -1517,7 +1561,7 @@ YAHOO.yazaar.DataMenu = function(elContainer,sForm_id,isView) {
     /////////////////////////////////////////////////////////////////////////////
     
     /**
-     * Fired when editing is cancelled.
+     * Fired when editing is to be cancelled.
      *
      * @param oArgs.oRecord {Object} Record instance.
      * @event cancelEvent
@@ -1525,7 +1569,7 @@ YAHOO.yazaar.DataMenu = function(elContainer,sForm_id,isView) {
     this.createEvent("cancelEvent");
 
     /**
-     * Fired when a Record is deleted.
+     * Fired when a Record is to be deleted.
      *
      * @param oArgs.oRecord {Object} Deleted Record instance.
      * @event deleteEvent
@@ -1533,14 +1577,14 @@ YAHOO.yazaar.DataMenu = function(elContainer,sForm_id,isView) {
     this.createEvent("deleteEvent");
 
     /**
-     * Fired when an insert data-entry form is presented.
+     * Fired when an insert data-entry form is to be presented.
      *
      * @event insertFormEvent
      */
     this.createEvent("insertFormEvent");
 
     /**
-     * Fired when editing form is reset.
+     * Fired when editing form is to be reset.
      *
      * @param oArgs.oRecord {Object} Record instance.
      * @event resetEvent
@@ -1548,7 +1592,7 @@ YAHOO.yazaar.DataMenu = function(elContainer,sForm_id,isView) {
     this.createEvent("resetEvent");
 
     /**
-     * Fired when Record is updated or inserted.
+     * Fired when Record is to be updated or inserted.
      *
      * @param oArgs.oRecord {Object} Updated Record instance.
      * @param oArgs.oPrevRecord {Object} Prior record data.
@@ -1558,7 +1602,7 @@ YAHOO.yazaar.DataMenu = function(elContainer,sForm_id,isView) {
     this.createEvent("submitEvent");
 
     /**
-     * Fired when an update data-entry form is presented.
+     * Fired when an update data-entry form is to be presented.
      *
      * @event updateFormEvent
      */
