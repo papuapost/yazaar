@@ -354,7 +354,7 @@ YAHOO.yazaar.FlevBase.prototype.load = function(oData,oSelf) {
         oSelf.oEditConfigs.oDataList = oDataList;
         oDataEdit = new YAHOO.yazaar.DataForm(sDataEdit, oColumnSet, oDataSource, oSelf.oEditConfigs);
         oDataEdit.subscribe("cancelEvent", oSelf.onExitEdit, oSelf);
-        oDataEdit.subscribe("insertEvent", oSelf.onUpdate, oSelf);
+        oDataEdit.subscribe("insertEvent", oSelf.onInsert, oSelf);
         oDataEdit.subscribe("updateEvent", oSelf.onUpdate, oSelf);
 
         // Setup TabView
@@ -367,7 +367,7 @@ YAHOO.yazaar.FlevBase.prototype.load = function(oData,oSelf) {
           if (isChanged) {
             var isExit = confirm("Exit form without saving?");
             if (isExit) {
-                oDataEdit.reset();
+                oDataEdit.doReset();
             }
             return isExit;
           } else {
@@ -509,7 +509,7 @@ YAHOO.yazaar.FlevBase.prototype.onInsert = function (oData,oSelf) {
  */
 YAHOO.yazaar.FlevBase.prototype.onInsertForm = function (oData,oSelf) {    
     if (oSelf) {
-        oSelf.oDataEdit.insertForm();
+        oSelf.oDataEdit.doInsertForm();
         oSelf.gotoEdit(oSelf);
     }
 };
