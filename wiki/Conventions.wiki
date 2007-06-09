@@ -11,7 +11,7 @@ This document may be superceded by the [http://tech.groups.yahoo.com/group/ydn-j
 
 == Coding Style ==
  
- * Observe Crockford's [http://javascript.crockford.com/code.html Code Conventions for the JavaScript Programming Language], unless otherwise noted. (Read me first!)
+ * Observe Crockford's [http://javascript.crockford.com/code.html Code Conventions for the JavaScript Programming Language] (Read me first!), unless otherwise noted. 
    ** Conventions mentioned in [http://developer.yahoo.com/yui/theater/ Crockford's videos] are also observed unless otherwise noted.
    ** Exception: A leading underscore may be used to indicate methods intended as private. `(y)`
  * Otherwise, observe typical Java coding conventions, as described by [http://java.sun.com/docs/codeconv/ Sun] and [http://www.ambysoft.com/books/elementsJavaStyle.html The Elements of Java Style].
@@ -23,7 +23,39 @@ This document may be superceded by the [http://tech.groups.yahoo.com/group/ydn-j
  * Place REL and TYPE attributes after the SRC or HREF attributes. `(z)`
  * If a scripts requires a stylesheet, keep the LINK and SCRIPT tags together. `(z)`
  * To improve legibility and coordination with LINK tags, SCRIPT tags should be specified in the HEAD. Inline scripts may be placed in a DIV at the foot of the body. `(z)`
- * Use Yahoo! hosted scripts. Place LINK and SCRIPT tags in [HappyTrails] order. `(z)`
+ * Use Yahoo! hosted scripts. Place LINK and SCRIPT tags in [HappyTrails] order (except reset-font-grids). `(z)`
+
+{{{
+
+<link href="http://yui.yahooapis.com/2.2.2/build/reset-fonts-grids/reset-fonts-grids.css" rel="stylesheet" type="text/css">
+
+<script src="http://www.json.org/json.js" type="text/javascript"></script>
+<script src="http://yui.yahooapis.com/2.2.2/build/yahoo-dom-event/yahoo-dom-event.js" type="text/javascript"></script>
+<script src="http://yui.yahooapis.com/2.2.2/build/element/element-beta-min.js" type="text/javascript"></script>
+<link  href="http://yui.yahooapis.com/2.2.2/build/logger/assets/logger.css" rel="stylesheet" type="text/css" />        
+<script src="http://yui.yahooapis.com/2.2.2/build/logger/logger-min.js" type="text/javascript"></script>        
+<script src="http://yui.yahooapis.com/2.2.0/build/connection/connection-min.js" type="text/javascript"></script>
+<script src="http://yui.yahooapis.com/2.2.2/build/animation/animation-min.js" type="text/javascript"></script>
+<script src="http://yui.yahooapis.com/2.2.2/build/dragdrop/dragdrop-min.js" type="text/javascript" ></script>
+
+<link  href="http://yui.yahooapis.com/2.2.2/build/container/assets/container.css" rel="stylesheet" type="text/css"/>
+<script src="http://yui.yahooapis.com/2.2.2/build/container/container-min.js" type="text/javascript"></script>
+<link  href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/tabview.css" rel="stylesheet" type="text/css" />
+<link  href="http://yui.yahooapis.com/2.2.2/build/tabview/assets/border_tabs.css" rel="stylesheet" type="text/css" />
+<script src="http://yui.yahooapis.com/2.2.2/build/tabview/tabview-min.js" type="text/javascript"></script>
+<link  href="http://yui.yahooapis.com/2.2.2/build/treeview/assets/tree.css" type="text/css" rel="stylesheet">
+<script src="http://yui.yahooapis.com/2.2.2/build/treeview/treeview-min.js" type="text/javascript"></script> 
+<script src="http://yui.yahooapis.com/2.2.2/build/datasource/datasource-beta-min.js" type="text/javascript"></script>        
+<link  href="http://yui.yahooapis.com/2.2.2/build/datatable/assets/datatable.css" rel="stylesheet" type="text/css" />
+
+<script src="http://yui.yahooapis.com/2.2.2/build/autocomplete/autocomplete-min.js" type="text/javascript"></script>
+<link  href="http://yui.yahooapis.com/2.2.2/build/button/assets/button.css" rel="stylesheet" type="text/css">
+<script src="http://yui.yahooapis.com/2.2.2/build/button/button-beta-min.js" type="text/javascript"></script>
+<script src="http://yui.yahooapis.com/2.2.2/build/slider/slider-min.js" type="text/javascript"></script>
+<link  href="http://yui.yahooapis.com/2.2.2/build/calendar/assets/calendar.css" rel="stylesheet" type="text/css">
+<script src="http://yui.yahooapis.com/2.2.2/build/calendar/calendar-min.js" type="text/javascript"></script>
+<script src="http://yui.yahooapis.com/2.2.2/build/history/history-experimental-min.js" type="text/javascript"></script>
+}}}
 
 === Constants == 
 
@@ -66,13 +98,18 @@ YAHOO.widget.DataTable._nCount = 0;
 || `dtFoo` || date         ||  ||
 || `eFoo`  || error        ||  ||
 || `elFoo` || HTML element ||  ||
+|| `doFoo` || function related to the `fooEvent` handler, which may be called separately or overridden ||  ||
 || `fnFoo` || function     ||  ||
 || `nFoo`  || number       ||  ||
 || `oFoo`  || object       ||  ||
-|| `onFoo` || function to handle `foo` event ||  ||
+|| `onFoo` || function to handle `fooEvent' ||  ||
 || `sFoo`  || string       ||  ||
-|| 'xFoo`  || regular expression ||  ||
+|| `xFoo`  || regular expression ||  ||
 || `isFoo` || boolean || also `hasFoo`, `useFoo`, or `bFoo` ||
+
+=== Suffixes ===
+
+|| `fooEvent` || event fired when `Foo` happens ||  ||
 
 === Other Clarifications ===
 
@@ -232,3 +269,7 @@ Subversion commit messages are posted to the development group mailing list, for
 
  * One object or object definition per file 
    ** Rely on build step to combine and minimize files 
+
+
+
+
