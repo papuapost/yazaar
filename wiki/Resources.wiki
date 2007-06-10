@@ -6,6 +6,7 @@
  * [http://yuiblog.com/blog/2007/01/24/video-crockford-tjpl/ The JavaScript Programming Language] (Douglas Crockford)
  * [http://video.yahoo.com/video/play?vid=304232 Writing Efficient JavaScript] (Gopal Venkatesan)
  * [http://yuiblog.com/blog/2007/05/25/video-zakas/ Maintainable JavaScript] (Nicholas Zakas)
+ * [http://yuiblog.com/blog/2007/06/08/video-crockford-goodstuff/ JavaScript: The Good Parts] (Douglas Crockford)
 
 = Read Me First =
 
@@ -57,6 +58,7 @@ Nate Koechley has been posting a series of blogs that feature sites featuring YU
 
 = YUI Theatre Blogs =
 
+ * [http://yuiblog.com/blog/2007/06/08/video-crockford-goodstuff/ JavaScript: The Good Parts] (Douglas Crockford)
  * [http://yuiblog.com/blog/2007/05/28/video-booch/ Grady Booch: The Promise, the Limits, the Beauty of Software]
  * [http://yuiblog.com/blog/2007/05/25/video-zakas/ Nicholas Zakas: Maintainable JavaScript]
  * [http://yuiblog.com/blog/2007/05/16/video-crockford-quality/ Douglas Crockford: Quality]
