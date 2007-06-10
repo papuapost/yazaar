@@ -981,16 +981,24 @@ YAHOO.yazaar.DataForm.prototype.hideTableMessages = function() {
  */
 YAHOO.yazaar.DataForm.prototype.isRecordChanged = function(oNewRecord) {
     if (arguments.length==0) {
-      oNewRecord = this.harvestForm();
+      oNextRecord = this.harvestForm();
     }
     var oPrevRecord = this._oRecord;
     var same = true;
     for (var prop in oPrevRecord) {
       // TODO: Subclass fields only?
-      same = same && (oPrevRecord[prop] == oNewRecord[prop]); // allow type conversions
+      var prev = oPrevRecord[prop]; 
+      var next = oNextRecord[prop]; 
+      var okay = this.isDefined(prev) && this.isDefined(next);
+      if (okay) 
+        same = same && (prev == next); // allow type conversions
     }
     return !same;
 };
+
+YAHOO.yazaar.DataForm.prototype.isDefined = function(obj) {
+    return typeof obj != 'undefined';
+}
 
 /**
  * Validates form data according to the CSS class names set on the input elements.
