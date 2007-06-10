@@ -151,6 +151,7 @@ Nate Koechley has been posting a series of blogs that feature sites featuring YU
  * [http://javascript.crockford.com/ Douglas Crockford's Wrrrld Wide Web] _(Cool!)_
  * [http://www.ebook.gen.tr/ajax/Professional%20Ajax%20Php.pdf Professional Ajax (1st Ed)]
  * [http://msexchangeteam.com/archive/2005/06/21/406646.aspx How Ajax began]
+ * [http://www.wittysparks.com/2007/06/10/26-best-ways-to-implement-ajax-css-and-javascript-based-tabs/ 26 Best ways to implement AJAX, CSS and Javascript based Tabs]
 
 = Other Web Application Resources =
 
@@ -168,7 +169,6 @@ Nate Koechley has been posting a series of blogs that feature sites featuring YU
  * [http://www.amazon.com/exec/obidos/tg/detail/-/0321127420/husteddotcom-20 Patterns of Enterprise Application Architecture] (Martin Fowler, Nov'02)
  * [http://www.amazon.com/exec/obidos/tg/detail/-/0201835959/husteddotcom-20 The Mythical Man-Month: Essays on Software Engineering] (Frederick P. Brooks, Aug'95)
  * [http://www.catb.org/~esr/writings/cathedral-bazaar/ The Cathedral and the Bizaar] (Eric S. Raymond; Oct'99)
-
 
 
 
