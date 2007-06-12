@@ -11,7 +11,8 @@
 = Read Me First =
 
  * [http://www.amazon.com/exec/obidos/tg/detail/-/0672328682/husteddotcom-20 Ajax in 10 Minutes] _(A little ($15) book that touches all the bases)_
- * [http://www.amazon.com/exec/obidos/tg/detail/-/0596101996/husteddotcom-20 JavaScript: The Definitive Guide] _(If not at first, then eventually!)_
+ * [http://www.amazon.com/exec/obidos/tg/detail/-/0596004117/husteddotcom-20 JavaScript Pocket Reference] (_What you need to know ..._)
+ * [http://www.amazon.com/exec/obidos/tg/detail/-/0596101996/husteddotcom-20 JavaScript: The Definitive Guide] _(What you want to know!)_
 
 = Read Me Second =
 
@@ -171,6 +172,8 @@ Nate Koechley has been posting a series of blogs that feature sites featuring YU
  * [http://www.amazon.com/exec/obidos/tg/detail/-/0321127420/husteddotcom-20 Patterns of Enterprise Application Architecture] (Martin Fowler, Nov'02)
  * [http://www.amazon.com/exec/obidos/tg/detail/-/0201835959/husteddotcom-20 The Mythical Man-Month: Essays on Software Engineering] (Frederick P. Brooks, Aug'95)
  * [http://www.catb.org/~esr/writings/cathedral-bazaar/ The Cathedral and the Bizaar] (Eric S. Raymond; Oct'99)
+
+
 
 
 
