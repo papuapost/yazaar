@@ -606,6 +606,8 @@ YAHOO.yazaar.DataForm.prototype._initHead = function(elTable, sForm_id) {
  */
 YAHOO.yazaar.DataForm.prototype._initControl = function(elCell,oColumn,sForm_id) {
     var type = oColumn.formType || oColumn.type;
+    var editor = oColumn.formEditor || oColumn.editor || "textbox";
+    var isTextBox = (editor == "textbox");
     var markup = "";
     var classname = "";
     var elInput = null;
@@ -640,7 +642,7 @@ YAHOO.yazaar.DataForm.prototype._initControl = function(elCell,oColumn,sForm_id)
             classname = YAHOO.widget.DataTable.CLASS_SELECT;
             break;
        default:
-            elInput = this.text(elCell,oColumn);
+            elInput = (isTextBox) ? this.text(elCell,oColumn) : this.textarea(elCell,oColumn);
             classname = YAHOO.widget.DataTable.CLASS_STRING;
         break;
     }
@@ -722,7 +724,7 @@ YAHOO.yazaar.DataForm.prototype.select = function(elCell,oColumn) {
 };
 
 /** 
- * Creates select control.
+ * Creates default text control.
  *
  * @param elCell {DOM element} Cell to contain control.
  * @param oColumn {Column class} Column describing control.
@@ -733,6 +735,21 @@ YAHOO.yazaar.DataForm.prototype.text = function(elCell,oColumn) {
     elInput.type = "text";
     return elInput;
 };
+
+/** 
+ * Creates textarea control.
+ *
+ * @param elCell {DOM element} Cell to contain control.
+ * @param oColumn {Column class} Column describing control.
+ * @method text
+ */
+YAHOO.yazaar.DataForm.prototype.textarea = function(elCell,oColumn) {
+    var elInput = elCell.appendChild(document.createElement("textarea"));
+    elInput.rows = oColumn.formTextareaRows || oColumn.textareaRows || 5 ;
+    elInput.cols = oColumn.formTextareaCols || oColumn.textareaCols || 80 ;
+    return elInput;
+};
+
 
 /*
 YAHOO.widget.Column.formatSelect = function(elCell, oRecord, oColumn, oData) {
