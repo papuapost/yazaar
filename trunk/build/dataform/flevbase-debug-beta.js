@@ -390,7 +390,7 @@ YAHOO.yazaar.FlevBase.prototype.onLoad = function(oData,oSelf) {
         };
         oTabView.on('activeTabChange', onActiveTabChange);
 
-        YAHOO.util.Event.onAvailable(sDataFind, function(){oSelf.initFilter(null,oSelf)});
+        YAHOO.util.Event.onAvailable(sDataFind, function(){oSelf.initFilter(null,oSelf);});
 
         // Retain references
         oSelf.oColumnSet = oColumnSet;
