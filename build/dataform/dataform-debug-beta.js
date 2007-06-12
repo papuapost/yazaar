@@ -976,10 +976,10 @@ YAHOO.yazaar.DataForm.prototype.hideTableMessages = function() {
  * Compares values of a new record, or harvested form values, with the orignal
  * record, and returns true if any of the values differ.
  *
- * @param {Object} oNewRecord Record for comparion or the form is harvested.
+ * @param {Object} oNextRecord Record for comparion or the form is harvested.
  * @method isRecordChanged
  */
-YAHOO.yazaar.DataForm.prototype.isRecordChanged = function(oNewRecord) {
+YAHOO.yazaar.DataForm.prototype.isRecordChanged = function(oNextRecord) {
     if (arguments.length==0) {
       oNextRecord = this.harvestForm();
     }
