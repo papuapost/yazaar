@@ -288,6 +288,15 @@ YAHOO.yazaar.FlevBase.prototype.gotoEdit = function(oSelf) {
 };
 
 /**
+ * Activates View.
+ * @method gotoView
+ */
+YAHOO.yazaar.FlevBase.prototype.gotoView = function(oSelf) {
+    if (!oSelf) oSelf = this;
+    oSelf.oTabView.set('activeIndex', oSelf.nDataView); 
+};
+
+/**
  * Creates DataTable and DataForm widgets, initializes objects with response data.
  * Intended for use at initial load only. 
  * @param {Object} oData Incoming data in RPC response format
@@ -339,6 +348,7 @@ YAHOO.yazaar.FlevBase.prototype.onLoad = function(oData,oSelf) {
         oDataList.subscribe("dataReturnEvent",oSelf.initFilter,oSelf);
 
         // On List select, goto View. 
+        /* 
         var onRecordSelectEvent = function () {
           oDataEdit.populateForm();
           // TODO: Clarify the meaning "no View" mode.
@@ -346,6 +356,7 @@ YAHOO.yazaar.FlevBase.prototype.onLoad = function(oData,oSelf) {
           oTabView.set('activeIndex', oSelf.nDataView);
         };
         oDataList.subscribe("recordSelectEvent", onRecordSelectEvent);
+        */
         
         // Setup DataView
         oSelf.oViewConfigs.oDataList = oDataList;
@@ -357,7 +368,7 @@ YAHOO.yazaar.FlevBase.prototype.onLoad = function(oData,oSelf) {
         oDataView.subscribe("updateEvent", oSelf.onUpdate, oSelf);
         oDataView.subscribe("insertFormEvent", oSelf.onInsertForm, oSelf);
         oDataView.subscribe("updateFormEvent", oSelf.onUpdateForm, oSelf);
-
+        
         // Setup DataEdit
         oSelf.oEditConfigs.oDataList = oDataList;
         oDataEdit = new YAHOO.yazaar.DataForm(sDataEdit, oColumnSet, oDataSource, oSelf.oEditConfigs);
@@ -538,5 +549,16 @@ YAHOO.yazaar.FlevBase.prototype.onUpdate = function (oData,oSelf) {
  * @method onUpdateForm
  */
 YAHOO.yazaar.FlevBase.prototype.onUpdateForm = function (oData,oSelf) {
-    if (oSelf) oSelf.gotoEdit(oSelf);
+    oSelf.oDataEdit.populateForm();
+    oSelf.gotoEdit(oSelf);
+};
+
+/**
+ * Handles viewFormEvent raised by List.
+ *
+ * @method onViewForm
+ */
+YAHOO.yazaar.FlevBase.prototype.onViewForm = function (oData,oSelf) {
+    oSelf.oDataView.populateForm(); 
+    oSelf.gotoView(oSelf);
 };

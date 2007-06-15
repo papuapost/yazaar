@@ -555,7 +555,7 @@ YAHOO.yazaar.DataForm.prototype._initForm = function() {
     oDataMenu.subscribe("resetEvent", this.doReset, this, true);
     oDataMenu.subscribe("insertFormEvent", this.doInsertForm, this, true);
     oDataMenu.subscribe("updateFormEvent", this.doUpdateForm, this, true); 
-    oDataMenu.subscribe("viewFormEvent", this.doUpdateForm, this, true); 
+    oDataMenu.subscribe("viewFormEvent", this.doViewForm, this, true); 
     
     this.oDataMenu = oDataMenu;   
 };
@@ -1495,7 +1495,7 @@ YAHOO.yazaar.DataForm.prototype.doUpdateForm = function() {
  *
  * @method doViewForm
  */
-YAHOO.yazaar.DataForm.prototype.doUpdateForm = function() {
+YAHOO.yazaar.DataForm.prototype.doViewForm = function() {
     this.fireEvent("viewFormEvent", this);
     this.logRecordEvent("viewFormEvent", {oRecord: this._oRecord}); // debug        
 };
@@ -1574,6 +1574,7 @@ YAHOO.yazaar.DataMenu = function(elContainer,sForm_id,nMenuType) {
             this._elRefresh = this._initRefresh(elContainer, sForm_id);
             this._elView = this._initView(elContainer, sForm_id);
             this._elInsert = this._initInsert(elContainer, sForm_id);
+            this._elUpdate = this._initUpdate(elContainer, sForm_id);
             this._elDelete = this._initDelete(elContainer, sForm_id);
             this._elCancel = this._initCancel(elContainer, sForm_id);
         break;
@@ -1585,6 +1586,7 @@ YAHOO.yazaar.DataMenu = function(elContainer,sForm_id,nMenuType) {
         case YAHOO.yazaar.DataMenu.INIT_VIEW:
             this._elRefresh = this._initRefresh(elContainer, sForm_id);
             this._elInsert = this._initInsert(elContainer, sForm_id);
+            this._elUpdate = this._initUpdate(elContainer, sForm_id);
             this._elDelete = this._initDelete(elContainer, sForm_id);
             this._elCancel = this._initCancel(elContainer, sForm_id);
         break;
@@ -1925,6 +1927,17 @@ YAHOO.yazaar.DataMenu.prototype._onSubmit = function(e, oSelf) {
  */
 YAHOO.yazaar.DataMenu.prototype._onUpdateForm = function(e, oSelf) {
     oSelf.fireEvent("updateFormEvent", e);
+};
+
+/** 
+ * Raises a viewFormEvent.
+ * 
+ * @param e {HTMLEvent} The click event.
+ * @param oSelf {YAHOO.yazaar.DataMenu} DataMenu instance.
+ * @private
+ */
+YAHOO.yazaar.DataMenu.prototype._onViewForm = function(e, oSelf) {
+    oSelf.fireEvent("viewFormEvent", e);
 };
 
 /////////////////////////////////////////////////////////////////////////////
