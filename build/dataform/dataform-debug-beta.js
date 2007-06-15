@@ -18,7 +18,7 @@ http://developer.yahoo.net/yui/license.txt
  * <p />
  * This control is being created as part of a
  * Find/List/Edit/View (FLEV) composite control. This control uses the
- * DataTable control as a starting point, adding and substracting code as needed.
+ * DataTable control as a starting point, adding and substracting code as needed.el
  * <p />
  * The initial version builds the form from scratch. A later version may
  * provide for progressive enhancement from existing markup, as does the
@@ -306,6 +306,14 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
      */
     this.createEvent("updateFormEvent");
 
+    /**
+     * Fired when form to view record is requested.
+     *
+     * @event viewFormEvent
+     */
+    this.createEvent("viewFormEvent");
+
+
     // end custom events    
     
     YAHOO.yazaar.DataForm._nCount++;
@@ -539,13 +547,15 @@ YAHOO.yazaar.DataForm.prototype._initForm = function() {
     elMenuCell.colSpan = nColSpan;    
     this._elBody = elBody;
     this._elMenuRow = elMenuRow;    
-    var oDataMenu = new YAHOO.yazaar.DataMenu(elMenuCell,sForm_id,this.isDisabled);
+    var nMenu = this.isDisabled ? 3 : 2; // View | Edit
+    var oDataMenu = new YAHOO.yazaar.DataMenu(elMenuCell,sForm_id,nMenu);
     oDataMenu.subscribe("cancelEvent", this.doCancel, this, true);
     oDataMenu.subscribe("deleteEvent", this.doDelete, this, true);
     oDataMenu.subscribe("submitEvent", this.doSubmit, this, true); // raises insertEvent or updateEvent
     oDataMenu.subscribe("resetEvent", this.doReset, this, true);
     oDataMenu.subscribe("insertFormEvent", this.doInsertForm, this, true);
     oDataMenu.subscribe("updateFormEvent", this.doUpdateForm, this, true); 
+    oDataMenu.subscribe("viewFormEvent", this.doUpdateForm, this, true); 
     
     this.oDataMenu = oDataMenu;   
 };
@@ -616,31 +626,31 @@ YAHOO.yazaar.DataForm.prototype._initControl = function(elCell,oColumn,sForm_id)
         case "checkbox":
             elInput = this.checkbox(elCell,oColumn);
             classname = YAHOO.widget.DataTable.CLASS_CHECKBOX;
-            break;
+        break;
         case "currency":
             elInput = this.text(elCell,oColumn);
             classname = YAHOO.widget.DataTable.CLASS_CURRENCY;
-            break;
+        break;
         case "date":
             elInput = this.text(elCell,oColumn);
             classname = YAHOO.widget.DataTable.CLASS_DATE;
-            break;
+        break;
         case "email":
             elInput = this.text(elCell,oColumn);
             classname = YAHOO.widget.DataTable.CLASS_EMAIL;
-            break;
+        break;
         case "link":
             elInput = this.text(elCell,oColumn);
             classname = YAHOO.widget.DataTable.CLASS_LINK;
-            break;
+        break;
         case "number":
             elInput = this.text(elCell,oColumn);
             classname = YAHOO.widget.DataTable.CLASS_NUMBER;
-            break;
+        break;
         case "select":
             elInput = this.select(elCell,oColumn);
             classname = YAHOO.widget.DataTable.CLASS_SELECT;
-            break;
+        break;
        default:
             elInput = (isTextBox) ? this.text(elCell,oColumn) : this.textarea(elCell,oColumn);
             classname = YAHOO.widget.DataTable.CLASS_STRING;
@@ -926,7 +936,7 @@ YAHOO.yazaar.DataForm.prototype.deleteRecord = function(sIdentifier) {
         }
     }
     return isSuccess;
-}
+};
 
 /**
  * Overridable method gives implementers a hook to access data before
@@ -1015,7 +1025,7 @@ YAHOO.yazaar.DataForm.prototype.isRecordChanged = function(oNextRecord) {
 
 YAHOO.yazaar.DataForm.prototype.isDefined = function(obj) {
     return typeof obj != 'undefined';
-}
+};
 
 /**
  * Validates form data according to the CSS class names set on the input elements.
@@ -1166,20 +1176,20 @@ YAHOO.yazaar.DataForm.prototype.logRecordEvent = function(sEventName, oRecord, o
     switch (nArgs) {
         case 0:
             sMessage = "Event details not specified!";
-            break;
+        break;
         case 1:
             sMessage = sEventName;
-            break;
+        break;
         case 2:
             sRecord = (oRecord) ? oRecord.toJSONString() : "undefined";
             sMessage = sEventName + "{oRecord: " + sRecord + "}";
-            break;
+        break;
         default:
              // 3 args or more
             sRecord = (oRecord) ? oRecord.toJSONString() : "undefined";
             sPrevRecord = (oPrevRecord) ? oPrevRecord.toJSONString() : "undefined";
             sMessage = sEventName + "{oRecord: " + sRecord + ", " + "oPrevRecord: " + sPrevRecord + "}";
-             break;
+        break;
     }
     YAHOO.log(sMessage, "info", this.toString());
 };
@@ -1212,7 +1222,7 @@ YAHOO.yazaar.DataForm.isDataTrue = function(oData) {
         case "0": isTrue = false; break;
     }
     return isTrue;    
-}
+};
 
 /** 
  * Represents TRUE and FALSE as YES or NO. 
@@ -1388,7 +1398,7 @@ YAHOO.yazaar.DataForm.prototype.doInsertForm = function() {
             case "select":
                 var oOptions = oColumn.selectOptions || oColumn.formSelectOptions || [];
                 if (YAHOO.lang.isUndefined(oColumn.initial)) oColumn.initial = oOptions[0];
-                break;
+            break;
         }
         oFields[oColumn.key] = oColumn.initial || "";        
     }
@@ -1480,6 +1490,16 @@ YAHOO.yazaar.DataForm.prototype.doUpdateForm = function() {
     this.logRecordEvent("updateFormEvent", {oRecord: this._oRecord}); // debug        
 };
 
+/** 
+ * Raises viewFormEvent (e.g. switch tabs).
+ *
+ * @method doViewForm
+ */
+YAHOO.yazaar.DataForm.prototype.doUpdateForm = function() {
+    this.fireEvent("viewFormEvent", this);
+    this.logRecordEvent("viewFormEvent", {oRecord: this._oRecord}); // debug        
+};
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Public Custom Event Handlers
@@ -1542,42 +1562,36 @@ YAHOO.yazaar.DataForm.prototype.onDataReturnPopulateForm = function(sRequest, oR
  * @param oColumnSet {YAHOO.widget.ColumnSet} ColumnSet instance.
  * @param oDataSource {YAHOO.util.DataSource} DataSource instance.
 */
-YAHOO.yazaar.DataMenu = function(elContainer,sForm_id,isView) {
+YAHOO.yazaar.DataMenu = function(elContainer,sForm_id,nMenuType) {
    
     var initButton = this._initButton;
-    var elUpdate,elInsert,elDelete,elCancel,elSubmit,elReset;
-    if (isView) {
-        // Update
-        elUpdate = initButton("elUpdate", elContainer, sForm_id, YAHOO.yazaar.DataMenu.MSG_UPDATE);
-        YAHOO.util.Event.addListener(elUpdate, "click", this._onUpdateForm, this);
-        // Insert
-        elInsert = initButton("elInsert", elContainer, sForm_id, YAHOO.yazaar.DataMenu.MSG_INSERT);
-        YAHOO.util.Event.addListener(elInsert, "click", this._onInsertForm, this);
-        // Delete
-        elDelete = initButton("elDelete", elContainer, sForm_id, YAHOO.yazaar.DataMenu.MSG_DELETE);
-        YAHOO.util.Event.addListener(elDelete, "click", this._onDelete, this);
-        // Cancel
-        elCancel = initButton("elCancel", elContainer, sForm_id, YAHOO.yazaar.DataMenu.MSG_CANCEL);
-        YAHOO.util.Event.addListener(elCancel, "click", this._onCancel, this);
-    } else {
-        // Submit
-        elSubmit = initButton("elSubmit", elContainer, sForm_id, YAHOO.yazaar.DataMenu.MSG_SUBMIT);
-        YAHOO.util.Event.addListener(elSubmit, "click", this._onSubmit, this);
-        // Reset
-        elReset = initButton("elReset", elContainer, sForm_id, YAHOO.yazaar.DataMenu.MSG_RESET);
-        YAHOO.util.Event.addListener(elReset, "click", this._onReset, this);
-        // Cancel
-        elCancel = initButton("elCancel", elContainer, sForm_id, YAHOO.yazaar.DataMenu.MSG_CANCEL);
-        YAHOO.util.Event.addListener(elCancel, "click", this._onCancel, this);
+    var elRefresh,elView,elUpdate,elInsert,elDelete,elCancel,elSubmit,elReset;
+    
+    switch(nMenuType) {
+        case YAHOO.yazaar.DataMenu.INIT_FIND:
+        break;
+        case YAHOO.yazaar.DataMenu.INIT_LIST:
+            this._elRefresh = this._initRefresh(elContainer, sForm_id);
+            this._elView = this._initView(elContainer, sForm_id);
+            this._elInsert = this._initInsert(elContainer, sForm_id);
+            this._elDelete = this._initDelete(elContainer, sForm_id);
+            this._elCancel = this._initCancel(elContainer, sForm_id);
+        break;
+        case YAHOO.yazaar.DataMenu.INIT_EDIT:
+            this._elSubmit = this._initSubmit(elContainer, sForm_id);
+            this._elReset = this._initSubmit(elContainer, sForm_id);
+            this._elCancel = this._initCancel(elContainer, sForm_id);
+        break;
+        case YAHOO.yazaar.DataMenu.INIT_VIEW:
+            this._elRefresh = this._initRefresh(elContainer, sForm_id);
+            this._elInsert = this._initInsert(elContainer, sForm_id);
+            this._elDelete = this._initDelete(elContainer, sForm_id);
+            this._elCancel = this._initCancel(elContainer, sForm_id);
+        break;
+        default: 
+            this._elCancel = this._initCancel(elContainer, sForm_id);
+        break;
     }
-
-    // Note elements for future reference
-    this._elUpdate = elUpdate;
-    this._elInsert = elInsert;
-    this._elDelete = elDelete;
-    this._elCancel = elCancel;
-    this._elSubmit = elSubmit;
-    this._elReset = elReset;
     
     /////////////////////////////////////////////////////////////////////////////
     //
@@ -1617,6 +1631,14 @@ YAHOO.yazaar.DataMenu = function(elContainer,sForm_id,isView) {
     this.createEvent("resetEvent");
 
     /**
+     * Fired when data backing the widget is to be refreshed.
+     *
+     * @param oArgs.oRecord {Object} Record instance.
+     * @event refreshEvent
+     */
+    this.createEvent("refreshEvent");
+
+    /**
      * Fired when Record is to be updated or inserted.
      *
      * @param oArgs.oRecord {Object} Updated Record instance.
@@ -1632,6 +1654,16 @@ YAHOO.yazaar.DataMenu = function(elContainer,sForm_id,isView) {
      * @event updateFormEvent
      */
     this.createEvent("updateFormEvent");
+    
+    /**
+     * Fired when a view-only form is to be presented.
+     *
+     * @param oArgs.oRecord {Object} Record instance.
+     * @event viewFormEvent
+     */
+    this.createEvent("viewFormEvent");
+
+    
 
     // end custom events        
 };
@@ -1681,6 +1713,30 @@ YAHOO.yazaar.DataMenu.MSG_RESET = "RESET";
 YAHOO.yazaar.DataMenu.MSG_CANCEL = "CANCEL";
 
 /**
+ * Label for Refresh button
+ *
+ * @static
+ * @field
+ * @property MSG_REFRESH
+ * @type String
+ * @final
+ * @default "REFRESH"
+ */
+YAHOO.yazaar.DataMenu.MSG_REFRESH = "REFRESH";
+
+/**
+ * Label for View button
+ *
+ * @static
+ * @field
+ * @property MSG_VIEW
+ * @type String
+ * @final
+ * @default "VIEW"
+ */
+YAHOO.yazaar.DataMenu.MSG_VIEW = "VIEW";
+
+/**
  * Label for Update button
  *
  * @static
@@ -1715,6 +1771,28 @@ YAHOO.yazaar.DataMenu.MSG_INSERT = "ADD";
  * @default "DELETE"
  */
 YAHOO.yazaar.DataMenu.MSG_DELETE = "DELETE";
+
+
+/**
+ * Code to initialize default Find buttons.
+ */
+YAHOO.yazaar.DataMenu.INIT_FIND = 0;
+
+/**
+ * Code to initialize default List buttons.
+ */
+YAHOO.yazaar.DataMenu.INIT_LIST = 1;
+
+/**
+ * Code to initialize default edit buttons.
+ */
+YAHOO.yazaar.DataMenu.INIT_EDIT = 2;
+
+/**
+ * Code to initialize default view buttons.
+ */
+YAHOO.yazaar.DataMenu.INIT_VIEW = 3;
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1859,8 +1937,12 @@ YAHOO.yazaar.DataMenu.prototype._onUpdateForm = function(e, oSelf) {
  * Creates HTML markup for a BUTTON.
  *
  * @private
+ * @param sName {string} Name attribute
+ * @param elParent (element) Element enclosing button
+ * @param sPrefix (string} Prefix for ID attribute
+ * @param sValue (string} value and alt attributes, appended to sPrefix to create ID attribute
  */
-YAHOO.yazaar.DataMenu.prototype._initButton = function(name,parent,id,s) {
+YAHOO.yazaar.DataMenu.prototype._initButton = function(sName,elParent,sPrefix,sValue) {
   var el;
   try {
     el = document.createElement("<input type='button' />"); // IE idiom
@@ -1869,12 +1951,115 @@ YAHOO.yazaar.DataMenu.prototype._initButton = function(name,parent,id,s) {
     el = document.createElement("input"); // w3c idiom
     el.setAttribute("type", "button");
   }
-  el.setAttribute("name", name);
-  el.setAttribute("id", id + "_" + s);
-  el.setAttribute("value", s);
-  el.setAttribute("alt", s);
-  parent.appendChild(el);
+  el.setAttribute("name", sName);
+  el.setAttribute("id", sPrefix + "_" + sValue );
+  el.setAttribute("value", sValue);
+  el.setAttribute("alt", sValue);
+  elParent.appendChild(el);
   return el;
 };
 
+/**
+ * Generate Cancel button and attach custom event listener. 
+ *
+ * @private
+ * @param elContainer (element) The enclosing element
+ * @param sForm_id (string) Prefix to use when assigning element ID
+ */
+YAHOO.yazaar.DataMenu.prototype._initCancel = function(elContainer,sForm_id) {
+    var elCancel = this._initButton("elCancel", elContainer, sForm_id, YAHOO.yazaar.DataMenu.MSG_CANCEL);
+    YAHOO.util.Event.addListener(elCancel, "click", this._onCancel, this);
+    return elCancel;
+};
+
+/**
+ * Generate Delete button and attach custom event listener. 
+ *
+ * @private
+ * @param elContainer (element) The enclosing element
+ * @param sForm_id (string) Prefix to use when assigning element ID
+ */
+YAHOO.yazaar.DataMenu.prototype._initDelete = function(elContainer,sForm_id) {
+    var elDelete = this._initButton("elDelete", elContainer, sForm_id, YAHOO.yazaar.DataMenu.MSG_DELETE);
+    YAHOO.util.Event.addListener(elDelete, "click", this._onDelete, this);
+    return elDelete;
+};
+
+/**
+ * Generate Insert button and attach custom event listener. 
+ *
+ * @private
+ * @param elContainer (element) The enclosing element
+ * @param sForm_id (string) Prefix to use when assigning element ID
+ */
+YAHOO.yazaar.DataMenu.prototype._initInsert = function(elContainer,sForm_id) {
+    var elInsert = this._initButton("elInsert", elContainer, sForm_id, YAHOO.yazaar.DataMenu.MSG_INSERT);
+    YAHOO.util.Event.addListener(elInsert, "click", this._onInsertForm, this);
+    return elInsert;
+};
+
+/**
+ * Generate Refresh button and attach custom event listener. 
+ *
+ * @private
+ * @param elContainer (element) The enclosing element
+ * @param sForm_id (string) Prefix to use when assigning element ID
+ */
+YAHOO.yazaar.DataMenu.prototype._initRefresh = function(elContainer,sForm_id) {
+    var elRefresh = this._initButton("elRefresh", elContainer, sForm_id, YAHOO.yazaar.DataMenu.MSG_REFRESH);
+    YAHOO.util.Event.addListener(elRefresh, "click", this._onRefreshForm, this);
+    return elRefresh;
+};
+
+/**
+ * Generate Reset button and attach custom event listener. 
+ *
+ * @private
+ * @param elContainer (element) The enclosing element
+ * @param sForm_id (string) Prefix to use when assigning element ID
+ */
+YAHOO.yazaar.DataMenu.prototype._initReset = function(elContainer,sForm_id) {
+    var elReset = this._initButton("elReset", elContainer, sForm_id, YAHOO.yazaar.DataMenu.MSG_RESET);
+    YAHOO.util.Event.addListener(elReset, "click", this._onReset, this);
+    return elReset;
+};
+
+/**
+ * Generate Submit button and attach custom event listener. 
+ *
+ * @private
+ * @param elContainer (element) The enclosing element
+ * @param sForm_id (string) Prefix to use when assigning element ID
+ */
+YAHOO.yazaar.DataMenu.prototype._initSubmit = function(elContainer,sForm_id) {
+    var elSubmit = this._initButton("elSubmit", elContainer, sForm_id, YAHOO.yazaar.DataMenu.MSG_SUBMIT);
+    YAHOO.util.Event.addListener(elSubmit, "click", this._onSubmit, this);
+    return elSubmit;
+};
+
+/**
+ * Generate Update button and attach custom event listener. 
+ *
+ * @private
+ * @param elContainer (element) The enclosing element
+ * @param sForm_id (string) Prefix to use when assigning element ID
+ */
+YAHOO.yazaar.DataMenu.prototype._initUpdate = function(elContainer,sForm_id) {
+    var elUpdate = this._initButton("elUpdate", elContainer, sForm_id, YAHOO.yazaar.DataMenu.MSG_UPDATE);
+    YAHOO.util.Event.addListener(elUpdate, "click", this._onUpdateForm, this);
+    return elUpdate;
+};
+
+/**
+ * Generate View button and attach custom event listener. 
+ *
+ * @private
+ * @param elContainer (element) The enclosing element
+ * @param sForm_id (string) Prefix to use when assigning element ID
+ */
+YAHOO.yazaar.DataMenu.prototype._initView = function(elContainer,sForm_id) {
+    var elView = this._initButton("elView", elContainer, sForm_id, YAHOO.yazaar.DataMenu.MSG_VIEW);
+    YAHOO.util.Event.addListener(elView, "click", this._onViewForm, this);
+    return elView;
+};
 
