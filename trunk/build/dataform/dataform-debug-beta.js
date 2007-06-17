@@ -282,6 +282,14 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
     this.createEvent("insertFormEvent");
 
     /**
+     * Fired when RecordSet is to be refreshed.
+     *
+     * @param oArgs.oRecord {Object} Record instance.
+     * @event refreshEvent
+     */
+    this.createEvent("refreshEvent");
+
+    /**
      * Fired when editing form is reset.
      *
      * @param oArgs.oRecord {Object} Record instance.
@@ -549,14 +557,14 @@ YAHOO.yazaar.DataForm.prototype._initForm = function() {
     this._elMenuRow = elMenuRow;    
     var nMenu = this.isDisabled ? 3 : 2; // View | Edit
     var oDataMenu = new YAHOO.yazaar.DataMenu(elMenuCell,sForm_id,nMenu);
-    oDataMenu.subscribe("cancelEvent", this.doCancel, this, true);
-    oDataMenu.subscribe("deleteEvent", this.doDelete, this, true);
-    oDataMenu.subscribe("submitEvent", this.doSubmit, this, true); // raises insertEvent or updateEvent
-    oDataMenu.subscribe("resetEvent", this.doReset, this, true);
-    oDataMenu.subscribe("insertFormEvent", this.doInsertForm, this, true);
-    oDataMenu.subscribe("updateFormEvent", this.doUpdateForm, this, true); 
-    oDataMenu.subscribe("viewFormEvent", this.doViewForm, this, true); 
-    
+        oDataMenu.subscribe("cancelEvent", this.doCancel, this, true);
+        oDataMenu.subscribe("deleteEvent", this.doDelete, this, true);
+        oDataMenu.subscribe("submitEvent", this.doSubmit, this, true); // raises insertEvent or updateEvent
+        oDataMenu.subscribe("refreshEvent", this.doRefresh, this, true);
+        oDataMenu.subscribe("resetEvent", this.doReset, this, true);
+        oDataMenu.subscribe("insertFormEvent", this.doInsertForm, this, true);
+        oDataMenu.subscribe("updateFormEvent", this.doUpdateForm, this, true); 
+        oDataMenu.subscribe("viewFormEvent", this.doViewForm, this, true);     
     this.oDataMenu = oDataMenu;   
 };
 
@@ -1429,6 +1437,16 @@ YAHOO.yazaar.DataForm.prototype.doReset = function() {
 };
 
 /**
+ * Raises refreshEvent. 
+ *
+ * @method doRefresh
+ */
+YAHOO.yazaar.DataForm.prototype.doRefresh = function() {
+    this.fireEvent("refreshEvent", {oRecord:oRecord});
+    this.logRecordEvent("refreshEvent", oRecord); // debug    
+};
+
+/**
  * Delegates to insert or update. 
  * 
  * @method doSubmit
@@ -1908,6 +1926,18 @@ YAHOO.yazaar.DataMenu.prototype._onReset = function(e, oSelf) {
 };
 
 /**
+ * Raises a refreshEvent.
+ *
+ * @param e {HTMLEvent} The click event.
+ * @param oSelf {YAHOO.yazaar.DataMenu} DataMenu instance.
+ * @see reset
+ * @private
+ */
+YAHOO.yazaar.DataMenu.prototype._onRefresh = function(e, oSelf) {
+    oSelf.fireEvent("refreshEvent", e);
+};
+
+/**
  * Raises a submitEvent.
  *
  * @param e {HTMLEvent} The click event.
@@ -2020,7 +2050,7 @@ YAHOO.yazaar.DataMenu.prototype._initInsert = function(elContainer,sForm_id) {
  */
 YAHOO.yazaar.DataMenu.prototype._initRefresh = function(elContainer,sForm_id) {
     var elRefresh = this._initButton("elRefresh", elContainer, sForm_id, YAHOO.yazaar.DataMenu.MSG_REFRESH);
-    YAHOO.util.Event.addListener(elRefresh, "click", this._onRefreshForm, this);
+    YAHOO.util.Event.addListener(elRefresh, "click", this._onRefresh, this);
     return elRefresh;
 };
 
