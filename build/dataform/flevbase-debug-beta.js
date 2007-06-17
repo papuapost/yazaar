@@ -288,6 +288,15 @@ YAHOO.yazaar.FlevBase.prototype.gotoEdit = function(oSelf) {
 };
 
 /**
+ * Activates List.
+ * @method gotoList
+ */
+YAHOO.yazaar.FlevBase.prototype.gotoList = function(oSelf) {
+    if (!oSelf) oSelf = this;
+    oSelf.oTabView.set('activeIndex', oSelf.nDataList); 
+};
+
+/**
  * Activates View.
  * @method gotoView
  */
@@ -301,9 +310,9 @@ YAHOO.yazaar.FlevBase.prototype.gotoView = function(oSelf) {
  * Intended for use at initial load only. 
  * @param {Object} oData Incoming data in RPC response format
  * @param {Object} oSelf Runtme reference to object instance
- * @method onLoad
+ * @method onLoadReturn
  */
-YAHOO.yazaar.FlevBase.prototype.onLoad = function(oData,oSelf) {
+YAHOO.yazaar.FlevBase.prototype.onLoadReturn = function(oData,oSelf) {
         // previously defined
         var oColumnHeaders = oSelf.oColumnHeaders;
         var oResponseSchema = oSelf.oResponseSchema;
@@ -368,6 +377,7 @@ YAHOO.yazaar.FlevBase.prototype.onLoad = function(oData,oSelf) {
         oDataView.subscribe("updateEvent", oSelf.onUpdate, oSelf);
         oDataView.subscribe("insertFormEvent", oSelf.onInsertForm, oSelf);
         oDataView.subscribe("updateFormEvent", oSelf.onUpdateForm, oSelf);
+        oDataView.subscribe("refreshEvent", oSelf.onRefresh, oSelf);
         
         // Setup DataEdit
         oSelf.oEditConfigs.oDataList = oDataList;
