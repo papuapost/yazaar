@@ -251,9 +251,10 @@ YAHOO.yazaar.FlevBase.prototype.sItemName = null;
 /**
  * Exits Edit and activates View. 
  * Override to activate a different display. 
- * @method exitEdit
+ * @param oSelf (Object) Flev instance
+ * @method doExitEdit
  */
-YAHOO.yazaar.FlevBase.prototype.exitEdit = function(oSelf) {
+YAHOO.yazaar.FlevBase.prototype.doExitEdit = function(oSelf) {
     if (!oSelf) oSelf = this;
     oSelf.oTabView.set('activeIndex', oSelf.nDataList);
 };
@@ -261,46 +262,51 @@ YAHOO.yazaar.FlevBase.prototype.exitEdit = function(oSelf) {
 /**
  * Exits List and activates Find.
  * Override to activate a different display. 
- * @method exitView
+ * @param oSelf (Object) Flev instance
+ * @method doExitList
  */
-YAHOO.yazaar.FlevBase.prototype.exitList = function(oSelf) {
+YAHOO.yazaar.FlevBase.prototype.doExitList = function(oSelf) {
     if (!oSelf) oSelf = this;
     oSelf.oTabView.set('activeIndex', oSelf.nDataFind); 
 };
 
 /**
  * Exits View and activates List.
+ * @param oSelf (Object) Flev instance
  * Override to activate a different display. 
- * @method exitView
+ * @method doExitView
  */
-YAHOO.yazaar.FlevBase.prototype.exitView = function(oSelf) {
+YAHOO.yazaar.FlevBase.prototype.doExitView = function(oSelf) {
     if (!oSelf) oSelf = this;
     oSelf.oTabView.set('activeIndex', oSelf.nDataList); 
 };
 
 /**
  * Activates Edit.
- * @method gotoEdit
+ * @param oSelf (Object) Flev instance
+ * @method doGotoEdit
  */
-YAHOO.yazaar.FlevBase.prototype.gotoEdit = function(oSelf) {
+YAHOO.yazaar.FlevBase.prototype.doGotoEdit = function(oSelf) {
     if (!oSelf) oSelf = this;
     oSelf.oTabView.set('activeIndex', oSelf.nDataEdit); 
 };
 
 /**
  * Activates List.
- * @method gotoList
+ * @param oSelf (Object) Flev instance
+ * @method doGotoList
  */
-YAHOO.yazaar.FlevBase.prototype.gotoList = function(oSelf) {
+YAHOO.yazaar.FlevBase.prototype.doGotoList = function(oSelf) {
     if (!oSelf) oSelf = this;
     oSelf.oTabView.set('activeIndex', oSelf.nDataList); 
 };
 
 /**
  * Activates View.
- * @method gotoView
+ * @param oSelf (Object) Flev instance
+ * @method doGotoView
  */
-YAHOO.yazaar.FlevBase.prototype.gotoView = function(oSelf) {
+YAHOO.yazaar.FlevBase.prototype.doGotoView = function(oSelf) {
     if (!oSelf) oSelf = this;
     oSelf.oTabView.set('activeIndex', oSelf.nDataView); 
 };
@@ -430,8 +436,8 @@ YAHOO.yazaar.FlevBase.prototype.onLoadReturn = function(oData,oSelf) {
 
 /**
  * Configures autocomplete filtering. Called in response to DataReturnEvent.
- * @param {Object} oData
- * @param {Object} oSelf
+ * @param {Object} oData Datastream to filter or null to use DataSource
+ * @param {Object} oSelf DataTable instance
  * @method initFilter
  */
 YAHOO.yazaar.FlevBase.prototype.initFilter = function (oData,oSelf) {
@@ -473,7 +479,7 @@ YAHOO.yazaar.FlevBase.prototype.initFilter = function (oData,oSelf) {
 YAHOO.yazaar.FlevBase.prototype.onDelete = function (oData,oSelf) {
     var isExit = confirm("Delete this record?");
     if (isExit) {
-        oSelf.exitView(oSelf); 
+        oSelf.doExitView(oSelf); 
         var oRecord = oSelf.oDataEdit.getSelectedRecord();
         oSelf.oDataEdit.deleteRecord(oRecord.yuiRecordId);
         oSelf.oDataList.populateTable();
@@ -482,12 +488,12 @@ YAHOO.yazaar.FlevBase.prototype.onDelete = function (oData,oSelf) {
 };
 
 /**
- * Handles a custom event by delegating to exitEdit. 
+ * Handles a custom event by delegating to doExitEdit. 
  *
  * @method onExitEdit
  */
 YAHOO.yazaar.FlevBase.prototype.onExitEdit = function (oData,oSelf) {
-    oSelf.exitEdit(oSelf);
+    oSelf.doExitEdit(oSelf);
 };
 
 /**
@@ -496,7 +502,7 @@ YAHOO.yazaar.FlevBase.prototype.onExitEdit = function (oData,oSelf) {
  * @method onExitList
  */
 YAHOO.yazaar.FlevBase.prototype.onExitList = function (oData,oSelf) {
-    oSelf.exitList(oSelf);
+    oSelf.doExitList(oSelf);
 };
 
 /**
@@ -505,7 +511,7 @@ YAHOO.yazaar.FlevBase.prototype.onExitList = function (oData,oSelf) {
  * @method onExitView
  */
 YAHOO.yazaar.FlevBase.prototype.onExitView = function (oData,oSelf) {
-    oSelf.exitView(oSelf);
+    oSelf.doExitView(oSelf);
 };
 
 /**
@@ -527,8 +533,8 @@ YAHOO.yazaar.FlevBase.prototype.onFilterChange = function () {
  *
  * @method onInsert
  */
-YAHOO.yazaar.FlevBase.prototype.onInsert = function (oData,oSelf) {
-    if (oSelf) oSelf.exitEdit(oSelf);
+YAHOO.yazaar.FlevBase.prototype.onInsert = function (oEvent,oSelf) {
+    if (oSelf) oSelf.doExitEdit(oSelf);
 };
 
 /**
@@ -536,10 +542,10 @@ YAHOO.yazaar.FlevBase.prototype.onInsert = function (oData,oSelf) {
  *
  * @method onInsertForm
  */
-YAHOO.yazaar.FlevBase.prototype.onInsertForm = function (oData,oSelf) {    
+YAHOO.yazaar.FlevBase.prototype.onInsertForm = function (oEvent,oSelf) {    
     if (oSelf) {
         oSelf.oDataEdit.doInsertForm();
-        oSelf.gotoEdit(oSelf);
+        oSelf.doGotoEdit(oSelf);
     }
 };
 
@@ -549,8 +555,8 @@ YAHOO.yazaar.FlevBase.prototype.onInsertForm = function (oData,oSelf) {
  *
  * @method onUpdate
  */
-YAHOO.yazaar.FlevBase.prototype.onUpdate = function (oData,oSelf) {
-    if (oSelf) oSelf.exitEdit(oSelf);
+YAHOO.yazaar.FlevBase.prototype.onUpdate = function (oEvent,oSelf) {
+    if (oSelf) oSelf.doExitEdit(oSelf);
 };
 
 /**
@@ -558,9 +564,9 @@ YAHOO.yazaar.FlevBase.prototype.onUpdate = function (oData,oSelf) {
  *
  * @method onUpdateForm
  */
-YAHOO.yazaar.FlevBase.prototype.onUpdateForm = function (oData,oSelf) {
+YAHOO.yazaar.FlevBase.prototype.onUpdateForm = function (oEvent,oSelf) {
     oSelf.oDataEdit.populateForm();
-    oSelf.gotoEdit(oSelf);
+    oSelf.doGotoEdit(oSelf);
 };
 
 /**
@@ -568,7 +574,7 @@ YAHOO.yazaar.FlevBase.prototype.onUpdateForm = function (oData,oSelf) {
  *
  * @method onViewForm
  */
-YAHOO.yazaar.FlevBase.prototype.onViewForm = function (oData,oSelf) {
+YAHOO.yazaar.FlevBase.prototype.onViewForm = function (oEvent,oSelf) {
     oSelf.oDataView.populateForm(); 
-    oSelf.gotoView(oSelf);
+    oSelf.doGotoView(oSelf);
 };
