@@ -1598,7 +1598,7 @@ YAHOO.yazaar.DataMenu = function(elContainer,sForm_id,nMenuType) {
         break;
         case YAHOO.yazaar.DataMenu.INIT_EDIT:
             this._elSubmit = this._initSubmit(elContainer, sForm_id);
-            this._elReset = this._initSubmit(elContainer, sForm_id);
+            this._elReset = this._initReset(elContainer, sForm_id);
             this._elCancel = this._initCancel(elContainer, sForm_id);
         break;
         case YAHOO.yazaar.DataMenu.INIT_VIEW:
