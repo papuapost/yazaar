@@ -75,7 +75,7 @@ YAHOO.yazaar.FlevBase = function(oConfigs) {
 /**
  * Augments FlevBase constructor with event provider members.
  */
-YAHOO.augment(YAHOO.yazaar.FlevBase, YAHOO.util.EventProvider);
+YAHOO.lang.augment(YAHOO.yazaar.FlevBase, YAHOO.util.EventProvider);
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -578,3 +578,163 @@ YAHOO.yazaar.FlevBase.prototype.onViewForm = function (oEvent,oSelf) {
     oSelf.oDataView.populateForm(); 
     oSelf.doGotoView(oSelf);
 };
+
+
+/**
+ * Provides a base event handler object. 
+ */
+YAHOO.yazaar.DataEvents = function() {
+    return this;
+};
+YAHOO.lang.augment(YAHOO.yazaar.DataEvents, YAHOO.util.EventProvider);        
+
+/**
+ * Extends FlevBase with service methods 
+ * for interacting with a remote database. 
+ */
+YAHOO.yazaar.DataService = function() {
+    YAHOO.yazaar.DataService.superclass.constructor.call(this);    
+    this.oEvents = new YAHOO.yazaar.DataEvents();
+    this.setupEvents(this);
+};
+YAHOO.lang.extend(YAHOO.yazaar.DataService, YAHOO.yazaar.FlevBase);
+
+YAHOO.yazaar.DataService.prototype.setupEvents = function(oSelf) {
+    oSelf.createEventHandler("LoadReturnEvent", oSelf.onLoadReturn, oSelf);
+    oSelf.createEventHandler("FindReturnEvent", oSelf.onFindReturn, oSelf);
+    oSelf.createEventHandler("DeleteReturnEvent", oSelf.onDeleteReturn, oSelf);
+    oSelf.createEventHandler("SaveReturnEvent", oSelf.onSaveReturn, oSelf);
+};
+
+YAHOO.yazaar.DataService.prototype.parseEventName = function(sEvent) {
+        var last, i, trim, sHandler;
+        i = sEvent.substring(0,1).toUpperCase();
+        trim = sEvent.lastIndexOf("Event");
+        last = (trim>0) ? trim : sEvent.length;
+        sHandler = "on" + i + sEvent.substring(1,last);
+        return sHandler;    
+    };
+    
+    // Create event, add handler function to oEvents, and subscribe handler to event
+YAHOO.yazaar.DataService.prototype.createEventHandler = function(sEvent, fnEvent, oTarget) {    
+        var sHandler = this.parseEventName(sEvent);
+        oTarget.oEvents.createEvent(sEvent); 
+        oTarget.oEvents[sHandler] = function(oData) {
+            // my.info(sEvent); // debug
+            // my.loading(false);
+            oTarget.oEvents.fireEvent(sEvent, oData);
+        };
+        oTarget.oEvents.subscribe(sEvent, fnEvent, oTarget);        
+    };
+
+YAHOO.yazaar.DataService.prototype.loading = function(isLoading) {
+    // Override to provide functionality
+}
+
+YAHOO.yazaar.DataService.prototype.message = function(sMessage) {
+    // Override to provide functionality
+}
+
+YAHOO.yazaar.DataService.prototype.oEvents = null;
+
+YAHOO.yazaar.DataService.prototype.oListConfigs = {
+    caption: "Entry List",
+    summary: "List of matching entries",
+    paginator:true,
+        paginatorOptions: {
+        rowsPerPage: 10,
+        dropdownOptions: [10,100,1000],
+        pageLinks: 5
+    },
+    rowSingleSelect: true
+};
+
+YAHOO.yazaar.DataService.prototype.oServices = null;
+
+YAHOO.yazaar.DataService.prototype.onDelete = function (oData,oSelf) {
+    var isExit = confirm("Delete this entry?");
+    if (isExit) {
+        oSelf.doExitView(oSelf); 
+        var oValues = oSelf.oDataEdit.getSelectedRecord();
+        oSelf.oServices.doDelete(oValues,oSelf.oEvents.onDeleteReturn).call(ANVIL.channel);
+    }   
+};
+
+YAHOO.yazaar.DataService.prototype.onDeleteReturn = function(oData,oSelf) {
+    oSelf.message(oData.result.message);
+    var sIdentifier = oData.result.values.yuiRecordId;
+    oSelf.oDataEdit.deleteRecord(sIdentifier);
+    oSelf.oDataList.populateTable();
+    oSelf.oDataList.showPage(oSelf.oDataList.pageCurrent);
+    oSelf.oDataView.doInsertForm(); // clear form    
+    oSelf.doExitView(oSelf);
+};
+
+YAHOO.yazaar.DataService.prototype.onFind = function(oData,oSelf) { 
+    oSelf.loading(true);
+    oSelf.oServices.doList(oValues,oSelf.oEvents.onFindReturn).call(ANVIL.channel);
+};
+
+YAHOO.yazaar.DataService.prototype.onFindReturn = function(oData,oSelf) {
+    oSelf.message(oData.result.message);
+    var oValues = oData.result.values;
+    var oDataList = oSelf.oDataList;  
+    // Refresh list                      
+    var refreshedRecords = oDataList.getRecordSet().replace(oValues);
+    oDataList.replaceRows(refreshedRecords);                         
+    oSelf.oDataList.showPage(oSelf.oDataList.pageCurrent); // TODO: is page out of range now?
+    // Refresh edit, view
+    var sIdentifier = oValues.yuiRecordId;
+    var oRecord = oSelf.oDataEdit._oRecordSet.getRecord(sIdentifier);
+    if (oRecord) oSelf.oDataEdit.populateForm(oRecord); 
+    oSelf.oDataEdit.doInsertForm(); // clear form 
+    oSelf.doGotoList(oSelf);
+};
+        
+YAHOO.yazaar.DataService.prototype.onInsert = function (oData,oSelf) {
+    var oValues = oData.oRecord;
+    oSelf.oServices.doSave(oValues,oSelf.oEvents.onSaveReturn).call(ANVIL.channel);
+};
+
+YAHOO.yazaar.DataService.prototype.onLoad = function(oData,oSelf) { 
+    oSelf.loading(true);
+    oSelf.oServices.doList(oData,oSelf.oEvents.onLoadReturn).call(ANVIL.channel);
+};
+
+YAHOO.yazaar.DataService.prototype.onRefresh = function (oEvent,oSelf) {    
+    var oValues = {project_id:0}; // TODO: Obtain criteria from Find
+    oSelf.loading(true);
+    oSelf.oServices.doList(oValues,oSelf.oEvents.onFindReturn).call(ANVIL.channel);
+};
+
+YAHOO.yazaar.DataService.prototype.onSaveReturn = function(oData,oSelf) {
+    oSelf.message(oData.result.message);
+    var oValues = oData.result.values;
+    var sIdentifier = oValues.yuiRecordId;
+    var oRecord = oSelf.oDataEdit._oRecordSet.getRecord(sIdentifier);
+    // Update the local record with any values returned from server
+    for (var prop in oValues) {
+        oRecord[prop] = oValues[prop];
+    }
+    oSelf.oDataList.showPage(oSelf.oDataList.pageCurrent);                        
+    oSelf.oDataEdit.populateForm(oRecord); 
+    oSelf.oDataEdit.doInsertForm(); // clear form    
+    oSelf.doExitEdit(oSelf);
+};
+        
+YAHOO.yazaar.DataService.prototype.onUpdate = function (oData,oSelf) {
+    var oValues = oData.oRecord;
+    oSelf.oServices.doSave(oValues,oSelf.oEvents.onSaveReturn).call(ANVIL.channel);
+};
+
+// Configure standard DataMenu; subclass can call method from load method
+YAHOO.yazaar.DataService.prototype.setupDataMenu = function(oDataMenu,oSelf) {
+    oDataMenu.subscribe("cancelEvent", oSelf.onExitList, oSelf);
+    oDataMenu.subscribe("deleteEvent", oSelf.onDelete, oSelf);
+    oDataMenu.subscribe("insertFormEvent", oSelf.onInsertForm, oSelf);
+    oDataMenu.subscribe("updateFormEvent", oSelf.onUpdateForm, oSelf);
+    oDataMenu.subscribe("viewFormEvent", oSelf.onViewForm, oSelf);     
+    oDataMenu.subscribe("refreshEvent", oSelf.onRefresh, oSelf);                   
+    oSelf.oDataMenu = oDataMenu;
+};
+        
