@@ -750,6 +750,9 @@ YAHOO.yazaar.DataForm.prototype.select = function(elCell,oColumn) {
  */
 YAHOO.yazaar.DataForm.prototype.text = function(elCell,oColumn) {
     var elInput = elCell.appendChild(document.createElement("input"));
+    elInput.size = oColumn.formSize || oColumn.size || 60 ;
+    var nMaxLength = oColumn.formMaxLength || oColumn.maxLength || 0; 
+    if ((nMaxLength) > 0) elInput.maxLength = nMaxLength;
     elInput.type = "text";
     return elInput;
 };
@@ -763,8 +766,8 @@ YAHOO.yazaar.DataForm.prototype.text = function(elCell,oColumn) {
  */
 YAHOO.yazaar.DataForm.prototype.textarea = function(elCell,oColumn) {
     var elInput = elCell.appendChild(document.createElement("textarea"));
-    elInput.rows = oColumn.formTextareaRows || oColumn.textareaRows || 5 ;
-    elInput.cols = oColumn.formTextareaCols || oColumn.textareaCols || 80 ;
+    elInput.rows = oColumn.formRows || oColumn.textRows || 5 ;
+    elInput.cols = oColumn.formCols || oColumn.textCols || 80 ;
     return elInput;
 };
 
