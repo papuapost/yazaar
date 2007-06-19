@@ -682,7 +682,7 @@ YAHOO.yazaar.DataService.prototype.onFindReturn = function(oData,oSelf) {
     // Refresh list                      
     var refreshedRecords = oDataList.getRecordSet().replace(oValues);
     oDataList.replaceRows(refreshedRecords);                         
-    oSelf.oDataList.showPage(oSelf.oDataList.pageCurrent); // TODO: is page out of range now?
+    oDataList.showPage(oDataList.pageCurrent); // TODO: is page out of range now?
     // Refresh edit, view
     var sIdentifier = oValues.yuiRecordId;
     var oRecord = oSelf.oDataEdit._oRecordSet.getRecord(sIdentifier);

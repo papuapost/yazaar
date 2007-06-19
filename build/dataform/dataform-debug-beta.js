@@ -710,27 +710,54 @@ YAHOO.yazaar.DataForm.prototype.checkbox = function(elCell,oColumn) {
 
 /** 
  * Creates select control.
+ * 
+ * The control will obtain options from the oSession object under  a key 
+ * equal to the value of the columnSet key field plus the suffix "_selectOptions", 
+ * from the columnSet "formSelectOptions" field, or from the standard columnSet 
+ * "selectOptions" field. The formSelectOptions alternative lets us display 
+ * the selected option as text in the list, but as a select box when editing. 
+ * The oSession alternative makes it easier to obtain the list from a database call.
+ * The options may be a simple list, or passed as a record with text and value fields. 
+ * An alternate record format with value and key fields is also supported. 
+ * When using either text/value or value/key, a "selectOptionsKey" value may also 
+ * be set, to indicate another field that will contain the selected value 
+ * (which would be different than the display value). If set through the oSsession, 
+ * the suffix is "_selectOptionsKey". 
  *
  * @param elCell {DOM element} Cell to contain control.
  * @param oColumn {Column class} Column describing control.
  * @method select
  */
 YAHOO.yazaar.DataForm.prototype.select = function(elCell,oColumn) {
+    var elInput = elCell.appendChild(document.createElement("select"));
     var sKey = oColumn.key + "_selectOptions";
     var aOptions = this.oSession[sKey] || oColumn.formSelectOptions || oColumn.selectOptions || [];
-    var elInput = elCell.appendChild(document.createElement("select"));
     var nOption = aOptions.length;
+    var sKey2 = sKey + "Key";
+    var sOptionsKey = this.oSession[sKey2] || oColumn.formSelectOptionsKey || oColumn.selectOptionsKey || [];
+    // Expando sOptionsKey (or set to null)
+    elInput.sOptionsKey = sOptionsKey;
     if (nOption==0) return elInput;
-    var isTextValue = !YAHOO.lang.isUndefined(aOptions[0].text);
+    // FIXME: Need to swap Key/Value for Value/Text
+    var type = "simple"; 
+    if (!YAHOO.lang.isUndefined(aOptions[0].text)) type = "text-value";
+    if (!YAHOO.lang.isUndefined(aOptions[0].key)) type = "value-key";
     var elOption;
     for (var n=0; n<nOption; n++) {
         elOption = document.createElement('option');
-        if (isTextValue) {
-            elOption.text = aOptions[n].text;
-            elOption.value = aOptions[n].value;
-        } else {
-            elOption.text = aOptions[n];
-            elOption.value = aOptions[n];
+        switch(type) {
+            case "text-value":
+                elOption.text = aOptions[n].text;
+                elOption.value = aOptions[n].value;
+            break;
+            case "value-key":
+                elOption.text = aOptions[n].value;
+                elOption.value = aOptions[n].key;
+            break;
+            default:
+                elOption.text = aOptions[n];
+                elOption.value = aOptions[n];
+            break;
         }
         try {
             elInput.add(elOption,null);
@@ -984,13 +1011,32 @@ YAHOO.yazaar.DataForm.prototype.harvestForm = function() {
     var aFields = this._aFields;
     var nFields = aFields.length;
     for (var i=0; i<nFields; i++) {
-      var elInput = aFields[i];
-      if (elInput.type == "checkbox") {
-        oRecord[elInput.name] = (elInput.checked) ? 1 : 0;
-      } else {
-          oRecord[elInput.name] = elInput.value;
-      }
-    }
+        var elInput = aFields[i];
+        var name = elInput.name;
+        var type = elInput.type;
+        switch(type) {
+            case "checkbox":
+                oRecord[elInput.name] = (elInput.checked) ? 1 : 0;
+            break;
+            case "select-one": 
+                var nSelected = elInput.selectedIndex;
+                var isSelected = (nSelected>-1);
+                if (isSelected) {
+                    var sOptionsKey = elInput.sOptionsKey;
+                    if (sOptionsKey) {
+                        oRecord[sOptionsKey] = elInput.value;
+                    }
+                    var aOptions = elInput.options;
+                    var oOption = aOptions[nSelected];
+                    var sText = oOption.innerText;
+                    oRecord[name] = sText;
+                }
+            break;
+            default: 
+              oRecord[name] = elInput.value;
+            break;
+        };
+    };
     return oRecord;
 };
 
@@ -1256,6 +1302,7 @@ YAHOO.yazaar.DataForm.formatYesNo = function(elCell, oRecord, oColumn, oData) {
  * @method populateForm
  */
 YAHOO.yazaar.DataForm.prototype.populateForm = function(oRecord) {
+    // this._oColumnSet
     if (!oRecord) {
         oRecord = this.getSelectedRecord();
     }
@@ -1270,11 +1317,19 @@ YAHOO.yazaar.DataForm.prototype.populateForm = function(oRecord) {
             var oColumn = oTree[i][j];
             var sKey = oColumn.key;
             elInput = aFields[n++];
-            if (elInput.type == "checkbox") {
-                elInput.checked = YAHOO.yazaar.DataForm.isDataTrue(oRecord[sKey]);
-            }
-            else {
-                elInput.value = oRecord[sKey];
+            var type = elInput.type;
+            switch(type) {
+                case "checkbox":
+                    elInput.checked = YAHOO.yazaar.DataForm.isDataTrue(oRecord[sKey]);
+                break;
+                case "select-one": 
+                    var sOptionsKey = elInput.sOptionsKey;
+                    var value = (sOptionsKey) ? oRecord[sOptionsKey] : oRecord[sKey];
+                    elInput.value = value;
+                break;
+                default: 
+                    elInput.value = oRecord[sKey];
+                break;
             }
         }
     }
