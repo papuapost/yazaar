@@ -734,7 +734,7 @@ YAHOO.yazaar.DataForm.prototype.select = function(elCell,oColumn) {
     var aOptions = this.oSession[sKey] || oColumn.formSelectOptions || oColumn.selectOptions || [];
     var nOption = aOptions.length;
     var sKey2 = sKey + "Key";
-    var sOptionsKey = this.oSession[sKey2] || oColumn.formSelectOptionsKey || oColumn.selectOptionsKey || [];
+    var sOptionsKey = this.oSession[sKey2] || oColumn.formSelectOptionsKey || oColumn.selectOptionsKey || null;
     // Expando sOptionsKey (or set to null)
     elInput.sOptionsKey = sOptionsKey;
     if (nOption==0) return elInput;
