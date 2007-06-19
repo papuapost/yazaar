@@ -1426,6 +1426,7 @@ YAHOO.yazaar.DataForm.prototype.doInsert = function() {
 
     // Gather the data and insert the record
     var oFields = this.harvestForm();
+    if (oFields.insertForm) delete(oFields.insertForm); // untag record    
     // TODO: Use current page position for insert position
     var oNewRecord = this._oRecordSet.addRecord(oFields,0); 
 
@@ -1514,7 +1515,6 @@ YAHOO.yazaar.DataForm.prototype.doSubmit = function() {
     var oRecord = this._oRecordSet.getRecord(sIdentifier);
     var isInsertForm = !(oRecord) || (oRecord.insertForm);
     if (isInsertForm) {
-        if (oRecord) delete(oRecord.insertForm);
         this.doInsert();
     }
     else {
