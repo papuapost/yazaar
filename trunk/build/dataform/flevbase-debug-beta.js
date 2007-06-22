@@ -691,7 +691,6 @@ YAHOO.yazaar.DataService.prototype.onFindReturn = function(oData,oSelf) {
         
 YAHOO.yazaar.DataService.prototype.onInsert = function (oData,oSelf) {
     var oValues = oData.oRecord;
-    oValues["project_id"] = 0; // FIXME - Hacking project ID for now.
     oSelf.oServices.doSave(oValues,oSelf.oEvents.onSaveReturn).call(ANVIL.channel);
 };
 
@@ -701,7 +700,7 @@ YAHOO.yazaar.DataService.prototype.onLoad = function(oData,oSelf) {
 };
 
 YAHOO.yazaar.DataService.prototype.onRefresh = function (oEvent,oSelf) {    
-    var oValues = {project_id:0}; // TODO: Obtain criteria from Find
+    var oValues = {}; // TODO: Obtain criteria from Find
     oSelf.loading(true);
     oSelf.oServices.doList(oValues,oSelf.oEvents.onFindReturn).call(ANVIL.channel);
 };
@@ -736,4 +735,8 @@ YAHOO.yazaar.DataService.prototype.setupDataMenu = function(oDataMenu,oSelf) {
     oDataMenu.subscribe("refreshEvent", oSelf.onRefresh, oSelf);                   
     oSelf.oDataMenu = oDataMenu;
 };
-        
+
+YAHOO.yazaar.DataService.prototype.setSessionOptions = function(options,oSelf) {       
+    oSelf.oViewConfigs["oSession"] = options;
+    oSelf.oEditConfigs["oSession"] = options;
+}
