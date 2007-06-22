@@ -362,16 +362,14 @@ YAHOO.yazaar.FlevBase.prototype.onLoadReturn = function(oData,oSelf) {
         oDataList.subscribe("cellClickEvent", onRowClickEvent);
         oDataList.subscribe("dataReturnEvent",oSelf.initFilter,oSelf);
 
-        // On List select, goto View. 
-        /* 
+        // On List select, populate form
         var onRecordSelectEvent = function () {
           oDataEdit.populateForm();
           // TODO: Clarify the meaning "no View" mode.
           if (oSelf.nDataView!=oSelf.nDataEdit) oDataView.populateForm(); 
-          oTabView.set('activeIndex', oSelf.nDataView);
+          // oTabView.set('activeIndex', oSelf.nDataView); // Switch to view tab
         };
         oDataList.subscribe("recordSelectEvent", onRecordSelectEvent);
-        */
         
         // Setup DataView
         oSelf.oViewConfigs.oDataList = oDataList;

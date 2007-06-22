@@ -1647,11 +1647,11 @@ YAHOO.yazaar.DataMenu = function(elContainer,sForm_id,nMenuType) {
         case YAHOO.yazaar.DataMenu.INIT_FIND:
         break;
         case YAHOO.yazaar.DataMenu.INIT_LIST:
-            this._elRefresh = this._initRefresh(elContainer, sForm_id);
             this._elView = this._initView(elContainer, sForm_id);
-            this._elInsert = this._initInsert(elContainer, sForm_id);
             this._elUpdate = this._initUpdate(elContainer, sForm_id);
+            this._elInsert = this._initInsert(elContainer, sForm_id);
             this._elDelete = this._initDelete(elContainer, sForm_id);
+            this._elRefresh = this._initRefresh(elContainer, sForm_id);
             this._elCancel = this._initCancel(elContainer, sForm_id);
         break;
         case YAHOO.yazaar.DataMenu.INIT_EDIT:
@@ -1660,10 +1660,10 @@ YAHOO.yazaar.DataMenu = function(elContainer,sForm_id,nMenuType) {
             this._elCancel = this._initCancel(elContainer, sForm_id);
         break;
         case YAHOO.yazaar.DataMenu.INIT_VIEW:
-            this._elRefresh = this._initRefresh(elContainer, sForm_id);
-            this._elInsert = this._initInsert(elContainer, sForm_id);
             this._elUpdate = this._initUpdate(elContainer, sForm_id);
+            this._elInsert = this._initInsert(elContainer, sForm_id);
             this._elDelete = this._initDelete(elContainer, sForm_id);
+            this._elRefresh = this._initRefresh(elContainer, sForm_id);
             this._elCancel = this._initCancel(elContainer, sForm_id);
         break;
         default: 
