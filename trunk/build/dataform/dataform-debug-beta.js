@@ -5,7 +5,7 @@ Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
 */
 /**
- * The DataForm widget displays a data-entry form that utilizes a ColumnSet
+ * The DataForm widget displays a data-entry form that utilizes agf ColumnSet
  * to describe the input controls and a DataSource to store new records and
  * to populate fields from a prexisting record (if any). This widget raises
  * events that bundle record data so that clients can update a remote
@@ -629,6 +629,7 @@ YAHOO.yazaar.DataForm.prototype._initControl = function(elCell,oColumn,sForm_id)
     var markup = "";
     var classname = "";
     var elInput = null;
+    var isDisabled = this.isDisabled;
 
     switch(type) {
         case "checkbox":
@@ -659,6 +660,11 @@ YAHOO.yazaar.DataForm.prototype._initControl = function(elCell,oColumn,sForm_id)
             elInput = this.select(elCell,oColumn);
             classname = YAHOO.widget.DataTable.CLASS_SELECT;
         break;
+        case "disabled":
+            elInput = (isTextBox) ? this.text(elCell,oColumn) : this.textarea(elCell,oColumn);
+            isDisabled = true;
+            classname = YAHOO.widget.DataTable.CLASS_STRING;
+        break;
        default:
             elInput = (isTextBox) ? this.text(elCell,oColumn) : this.textarea(elCell,oColumn);
             classname = YAHOO.widget.DataTable.CLASS_STRING;
@@ -667,7 +673,7 @@ YAHOO.yazaar.DataForm.prototype._initControl = function(elCell,oColumn,sForm_id)
 
     elInput.name = oColumn.key;
     elInput.id = sForm_id + "_" + elInput.name;
-    elInput.disabled = this.isDisabled;
+    elInput.disabled = isDisabled;
 
     YAHOO.util.Dom.addClass(elCell, classname);
     if(oColumn.className) {
