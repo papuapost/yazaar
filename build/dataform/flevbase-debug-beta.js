@@ -481,7 +481,7 @@ YAHOO.yazaar.FlevBase.prototype.onDelete = function (oData,oSelf) {
         var oRecord = oSelf.oDataEdit.getSelectedRecord();
         oSelf.oDataEdit.deleteRecord(oRecord.yuiRecordId);
         oSelf.oDataList.populateTable();
-        oSelf.oDataList.showPage(oSelf.oDataList.pageCurrent);
+        oSelf.oDataList.showPage(oSelf.oDataList._paginator.currentPage);                        
     }   
 };
 
@@ -663,7 +663,7 @@ YAHOO.yazaar.DataService.prototype.onDeleteReturn = function(oData,oSelf) {
     var sIdentifier = oData.result.values.yuiRecordId;
     oSelf.oDataEdit.deleteRecord(sIdentifier);
     oSelf.oDataList.populateTable();
-    oSelf.oDataList.showPage(oSelf.oDataList.pageCurrent);
+    oSelf.oDataList.showPage(oSelf.oDataList._paginator.currentPage);
     oSelf.oDataView.doInsertForm(); // clear form    
     oSelf.doExitView(oSelf);
 };
@@ -680,7 +680,7 @@ YAHOO.yazaar.DataService.prototype.onFindReturn = function(oData,oSelf) {
     // Refresh list                      
     var refreshedRecords = oDataList.getRecordSet().replace(oValues);
     oDataList.replaceRows(refreshedRecords);                         
-    oDataList.showPage(oDataList.pageCurrent); // TODO: is page out of range now?
+    oSelf.oDataList.showPage(oSelf.oDataList._paginator.currentPage); // TODO: is page out of range now?
     // Refresh edit, view
     var sIdentifier = oValues.yuiRecordId;
     var oRecord = oSelf.oDataEdit._oRecordSet.getRecord(sIdentifier);
@@ -714,7 +714,7 @@ YAHOO.yazaar.DataService.prototype.onSaveReturn = function(oData,oSelf) {
     for (var prop in oValues) {
         oRecord[prop] = oValues[prop];
     }
-    oSelf.oDataList.showPage(oSelf.oDataList.pageCurrent);                        
+    oSelf.oDataList.showPage(oSelf.oDataList._paginator.currentPage);                        
     oSelf.oDataEdit.populateForm(oRecord); 
     oSelf.oDataEdit.doInsertForm(); // clear form    
     oSelf.doExitEdit(oSelf);
