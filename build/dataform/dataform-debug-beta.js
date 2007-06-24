@@ -151,6 +151,7 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
 
         var elForm = null;
 
+        /*
         // Create markup from scratch using the provided DataSource
         if(this.dataSource) {
             this._initForm();
@@ -167,6 +168,9 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
             this._initForm();
             this.showEmptyMessage();
         }
+        */
+        this._initForm();
+        // this.showEmptyMessage();        
     }
     // Container element not found in document
     else {
@@ -298,6 +302,14 @@ YAHOO.yazaar.DataForm = function(elContainer,oColumnSet,oDataSource,oConfigs) {
     this.createEvent("resetEvent");
 
     /**
+     * Fired when search criteria are specified.
+     *
+     * @param oArgs.oRecord {Object} Record instance.
+     * @event criteriaEvent
+     */
+    this.createEvent("criteriaEvent");
+
+    /**
      * Fired when Record is updated.
      *
      * @param oArgs.oRecord {Object} Updated Record instance.
@@ -371,6 +383,26 @@ YAHOO.yazaar.DataForm.CLASS_HEADCONTAINER = "yazaar-df-headcontainer";
 YAHOO.yazaar.DataForm.CLASS_HEADTEXT = "yazaar-df-headtext";
 
 /**
+ * Code to initialize default Find buttons.
+ */
+YAHOO.yazaar.DataForm.INIT_FIND = 0;
+
+/**
+ * Code to initialize default List buttons.
+ */
+YAHOO.yazaar.DataForm.INIT_LIST = 1;
+
+/**
+ * Code to initialize default edit buttons.
+ */
+YAHOO.yazaar.DataForm.INIT_EDIT = 2;
+
+/**
+ * Code to initialize default view buttons.
+ */
+YAHOO.yazaar.DataForm.INIT_VIEW = 3;
+
+/**
  * Class name assigned to TBODY element that holds buttons.
  *
  * @static
@@ -381,8 +413,6 @@ YAHOO.yazaar.DataForm.CLASS_HEADTEXT = "yazaar-df-headtext";
  * @default "yazaar-dt-body"
  */
 YAHOO.yazaar.DataForm.MENU_BODY = "yazaar-df-menu";
-
-
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -543,7 +573,7 @@ YAHOO.yazaar.DataForm.prototype._initForm = function() {
     this._elMsgBody = elTable.appendChild(elMsgBody);
     this._elMsgRow = elMsgRow;
     this._elMsgCell = elMsgCell;
-    this.showLoadingMessage();
+    // this.showLoadingMessage();
 
     // Create TBODY for data-entry controls
     var elBody = elTable.appendChild(document.createElement("tbody"));
@@ -555,11 +585,10 @@ YAHOO.yazaar.DataForm.prototype._initForm = function() {
     elMenuCell.colSpan = nColSpan;    
     this._elBody = elBody;
     this._elMenuRow = elMenuRow;    
-    var nMenu = this.isDisabled ? 3 : 2; // View | Edit
-    var oDataMenu = new YAHOO.yazaar.DataMenu(elMenuCell,sForm_id,nMenu);
+    var oDataMenu = new YAHOO.yazaar.DataMenu(elMenuCell,sForm_id,this.nInitMode);
         oDataMenu.subscribe("cancelEvent", this.doCancel, this, true);
         oDataMenu.subscribe("deleteEvent", this.doDelete, this, true);
-        oDataMenu.subscribe("submitEvent", this.doSubmit, this, true); // raises insertEvent or updateEvent
+        oDataMenu.subscribe("submitEvent", this.doSubmit, this, true); // raises criteriaEvent, insertEvent, or updateEvent
         oDataMenu.subscribe("refreshEvent", this.doRefresh, this, true);
         oDataMenu.subscribe("resetEvent", this.doReset, this, true);
         oDataMenu.subscribe("insertFormEvent", this.doInsertForm, this, true);
@@ -604,8 +633,10 @@ YAHOO.yazaar.DataForm.prototype._initHead = function(elTable, sForm_id) {
             elDataCell.id = id + "-data";
 
             var elInput = this._initControl(elDataCell,oColumn,sForm_id);
-            aFields[n++] = elInput;
-            YAHOO.util.Dom.addClass(elInput,YAHOO.widget.DataTable.CLASS_EDITABLE);
+            if (elInput) {
+                aFields[n++] = elInput;
+                YAHOO.util.Dom.addClass(elInput,YAHOO.widget.DataTable.CLASS_EDITABLE);
+            }             
         }
     }
 
@@ -618,7 +649,7 @@ YAHOO.yazaar.DataForm.prototype._initHead = function(elTable, sForm_id) {
 
 /**
  * Creates data-entry controls based on field type, form* classes, 
- * and isDisabled property.
+ * and nMode property.
  *
  * @method _initControl
  */
@@ -629,7 +660,11 @@ YAHOO.yazaar.DataForm.prototype._initControl = function(elCell,oColumn,sForm_id)
     var markup = "";
     var classname = "";
     var elInput = null;
-    var isDisabled = this.isDisabled;
+    var isDisabled = this.isDisabled();        
+    var isSearchable = (oColumn.searchable);
+    var isFind = (this.nInitMode == YAHOO.yazaar.DataForm.INIT_FIND);
+    var isSkip = isFind && (!isSearchable);
+    if (isSkip) return null;
 
     switch(type) {
         case "checkbox":
@@ -738,18 +773,18 @@ YAHOO.yazaar.DataForm.prototype.select = function(elCell,oColumn) {
     var elInput = elCell.appendChild(document.createElement("select"));
     var sKey = oColumn.key + "_selectOptions";
     var aOptions = this.oSession[sKey] || oColumn.formSelectOptions || oColumn.selectOptions || [];
-    var nOption = aOptions.length;
+    var nLength = aOptions.length;
     var sKey2 = sKey + "Key";
     var sOptionsKey = this.oSession[sKey2] || oColumn.formSelectOptionsKey || oColumn.selectOptionsKey || null;
     // Expando sOptionsKey (or set to null)
     elInput.sOptionsKey = sOptionsKey;
-    if (nOption==0) return elInput;
+    if (nLength==0) return elInput;
     // FIXME: Need to swap Key/Value for Value/Text
     var type = "simple"; 
     if (!YAHOO.lang.isUndefined(aOptions[0].text)) type = "text-value";
     if (!YAHOO.lang.isUndefined(aOptions[0].key)) type = "value-key";
     var elOption;
-    for (var n=0; n<nOption; n++) {
+    for (var n=0; n<nLength; n++) {
         elOption = document.createElement('option');
         switch(type) {
             case "text-value":
@@ -896,13 +931,36 @@ YAHOO.yazaar.DataForm.prototype.isActive = false;
 YAHOO.yazaar.DataForm.prototype.isEmpty = false;
 
 /**
+ * The initilization mode for this DataForm 
+ * (INIT_FIND, INIT_LIST, INIT_EDIT, INIT_VIEW).
+ * Should not be changed after initilization. 
+ *
+ * @property nInitMode
+ * @type Numeric
+ */
+YAHOO.yazaar.DataForm.prototype.nInitMode = YAHOO.yazaar.DataForm.INIT_LIST;
+
+/**
  * True if the DataForm is being used as a readonly view
  * with disabled input controls.
  *
- * @property isDisabled
+ * @method isDisabled
  * @type Boolean
  */
-YAHOO.yazaar.DataForm.prototype.isDisabled = false;
+YAHOO.yazaar.DataForm.prototype.isDisabled = function () {
+    return (this.nInitMode == YAHOO.yazaar.DataForm.INIT_VIEW);
+};
+
+/**
+ * True if the DataForm is being used as a readonly view
+ * with disabled input controls.
+ *
+ * @method isDisabled
+ * @type Boolean
+ */
+YAHOO.yazaar.DataForm.prototype.isFind = function () {
+    return (this.nInitMode == YAHOO.yazaar.DataForm.INIT_FIND);
+};
 
 /**
  * DataTable instance.
@@ -1041,8 +1099,8 @@ YAHOO.yazaar.DataForm.prototype.harvestForm = function() {
             default: 
               oRecord[name] = elInput.value;
             break;
-        };
-    };
+        }
+    }
     return oRecord;
 };
 
@@ -1489,13 +1547,13 @@ YAHOO.yazaar.DataForm.prototype.doInsertForm = function() {
  * @method doReset
  */
 YAHOO.yazaar.DataForm.prototype.doReset = function() {
-    var oRecord = this._oRecord; // Restore this reference
+    var oRecord = this._oRecord || {} ; // Restore this reference
     var aFields = this._aFields;
     var nFields = aFields.length;
     for (var i=0; i<nFields; i++) {
         // TODO: Subclass fields only?
         var elInput = aFields[i];
-        elInput.value = oRecord[elInput.name];
+        elInput.value = oRecord[elInput.name] || "";
     }
     this.fireEvent("resetEvent", {oRecord:oRecord});
     this.logRecordEvent("resetEvent", oRecord); // debug    
@@ -1512,24 +1570,41 @@ YAHOO.yazaar.DataForm.prototype.doRefresh = function() {
 };
 
 /**
- * Delegates to insert or update. 
+ * Harvests data from form and raises criteriaEvent 
+ * with record values to match. 
+ * 
+ * @method doCriteria
+ */
+YAHOO.yazaar.DataForm.prototype.doCriteria = function() {
+    var oRecord = this.harvestForm();
+    this.fireEvent("criteriaEvent", {oRecord:oRecord});
+    this.logRecordEvent("criteriaEvent", oRecord); // debug    
+};
+
+/**
+ * Delegates to select, insert, or update. 
  * 
  * @method doSubmit
  */
 YAHOO.yazaar.DataForm.prototype.doSubmit = function() {
-    var sIdentifier = this._oRecord.yuiRecordId;
-    var oRecord = this._oRecordSet.getRecord(sIdentifier);
-    var isInsertForm = !(oRecord) || (oRecord.insertForm);
-    if (isInsertForm) {
-        this.doInsert();
+    if (this.isFind()) {
+        return this.doCriteria();
     }
     else {
-         this.doUpdate();
-    }
+        var sIdentifier = this._oRecord.yuiRecordId;
+        var oRecord = this._oRecordSet.getRecord(sIdentifier);
+        var isInsertForm = !(oRecord) || (oRecord.insertForm);
+        if (isInsertForm) {
+            return this.doInsert();
+        }
+        else {
+             return this.doUpdate();
+        }
+    }  
 };
 
 /**
- * Harvests data from form and raises UpdateEvent 
+ * Harvests data from form and raises updateEvent 
  * with new and old record values and an "isChanged"
  * boolean property
  *
@@ -1644,15 +1719,17 @@ YAHOO.yazaar.DataForm.prototype.onDataReturnPopulateForm = function(sRequest, oR
  * @param oColumnSet {YAHOO.widget.ColumnSet} ColumnSet instance.
  * @param oDataSource {YAHOO.util.DataSource} DataSource instance.
 */
-YAHOO.yazaar.DataMenu = function(elContainer,sForm_id,nMenuType) {
+YAHOO.yazaar.DataMenu = function(elContainer,sForm_id,nInitMode) {
    
     var initButton = this._initButton;
     var elRefresh,elView,elUpdate,elInsert,elDelete,elCancel,elSubmit,elReset;
     
-    switch(nMenuType) {
-        case YAHOO.yazaar.DataMenu.INIT_FIND:
+    switch(nInitMode) {
+        case YAHOO.yazaar.DataForm.INIT_FIND:
+            this._elSubmit = this._initSubmit(elContainer, sForm_id);
+            this._elReset = this._initReset(elContainer, sForm_id);
         break;
-        case YAHOO.yazaar.DataMenu.INIT_LIST:
+        case YAHOO.yazaar.DataForm.INIT_LIST:
             this._elView = this._initView(elContainer, sForm_id);
             this._elUpdate = this._initUpdate(elContainer, sForm_id);
             this._elInsert = this._initInsert(elContainer, sForm_id);
@@ -1660,12 +1737,12 @@ YAHOO.yazaar.DataMenu = function(elContainer,sForm_id,nMenuType) {
             this._elRefresh = this._initRefresh(elContainer, sForm_id);
             this._elCancel = this._initCancel(elContainer, sForm_id);
         break;
-        case YAHOO.yazaar.DataMenu.INIT_EDIT:
+        case YAHOO.yazaar.DataForm.INIT_EDIT:
             this._elSubmit = this._initSubmit(elContainer, sForm_id);
             this._elReset = this._initReset(elContainer, sForm_id);
             this._elCancel = this._initCancel(elContainer, sForm_id);
         break;
-        case YAHOO.yazaar.DataMenu.INIT_VIEW:
+        case YAHOO.yazaar.DataForm.INIT_VIEW:
             this._elUpdate = this._initUpdate(elContainer, sForm_id);
             this._elInsert = this._initInsert(elContainer, sForm_id);
             this._elDelete = this._initDelete(elContainer, sForm_id);
@@ -1855,27 +1932,6 @@ YAHOO.yazaar.DataMenu.MSG_INSERT = "ADD";
  * @default "DELETE"
  */
 YAHOO.yazaar.DataMenu.MSG_DELETE = "DELETE";
-
-
-/**
- * Code to initialize default Find buttons.
- */
-YAHOO.yazaar.DataMenu.INIT_FIND = 0;
-
-/**
- * Code to initialize default List buttons.
- */
-YAHOO.yazaar.DataMenu.INIT_LIST = 1;
-
-/**
- * Code to initialize default edit buttons.
- */
-YAHOO.yazaar.DataMenu.INIT_EDIT = 2;
-
-/**
- * Code to initialize default view buttons.
- */
-YAHOO.yazaar.DataMenu.INIT_VIEW = 3;
 
 
 /////////////////////////////////////////////////////////////////////////////
