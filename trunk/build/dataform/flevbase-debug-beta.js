@@ -47,7 +47,7 @@ YAHOO.namespace("yazaar");
  * All property changes must be made before onLoad is called.
  * <p />
  * Properties that must be configured are oColumnHeaders and oResponseSchema.
- * Properties that may be configured oListConfigs, oViewConfigs, oEditConfigs, 
+ * Properties that may be configured oFindConfigs, oListConfigs, oEditConfigs, oViewConfigs, 
  * sDataFind, sDataList, sDataView, sDataEdit, sTabView, sListForm, sItemName.
  * Methods that may be configured are onInsert, onUpdate, onDelete, onCancel, and onReset.
  *
@@ -83,30 +83,37 @@ YAHOO.lang.augment(YAHOO.yazaar.FlevBase, YAHOO.util.EventProvider);
 //
 /////////////////////////////////////////////////////////////////////////////
 
+
 /**
- * Relative menu index of DataFind
+ * Initial message for DataList.
+ */
+YAHOO.yazaar.FlevBase.MSG_CRITERIA = "Submit criteria to list entries.";
+
+
+/**
+ * Relative menu index of DataFind (not necessarily INIT_FIND)
  */
 YAHOO.yazaar.FlevBase.prototype.nDataFind = 0;
 
 /**
- * Relative menu index of DataList
+ * Relative menu index of DataList (not necessarily INIT_LIST)
  */
 YAHOO.yazaar.FlevBase.prototype.nDataList = 1;
 
 /**
- * Relative menu index of DataView
+ * Relative menu index of DataView (not necessarily INIT_VIEW)
  */
 YAHOO.yazaar.FlevBase.prototype.nDataView = 2;
 
 /**
- * Relative menu index of DataEdit
+ * Relative menu index of DataEdit (not necessarily INIT_EDIT)
  */
 YAHOO.yazaar.FlevBase.prototype.nDataEdit = 3;
 
 /**
  * Edit form configuration instance created by onLoad method.
  */
-YAHOO.yazaar.FlevBase.prototype.oEditConfigs = {};
+YAHOO.yazaar.FlevBase.prototype.oFindConfigs = {};
 
 /**
  * An Array of object literals that define the DataTable configuration.
@@ -123,6 +130,11 @@ YAHOO.yazaar.FlevBase.prototype.oListConfigs = {
         },
         rowSingleSelect: true
 };
+
+/**
+ * Edit form configuration instance created by onLoad method.
+ */
+YAHOO.yazaar.FlevBase.prototype.oEditConfigs = {};
 
 /**
  * View form configuration instance created by onLoad method.
@@ -331,12 +343,18 @@ YAHOO.yazaar.FlevBase.prototype.onLoadReturn = function(oData,oSelf) {
         // to be defined
         var oColumnSet, oDataSource, oDataFind, oDataList, oDataView, oDataEdit, oTabView;
 
+        // Setup DataList
         oColumnSet = new YAHOO.widget.ColumnSet(oColumnHeaders);
         oDataSource = new YAHOO.util.DataSource(oData.result);
             oDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
             oDataSource.responseSchema = oResponseSchema;
+        oListConfigs.nInitMode = YAHOO.yazaar.DataForm.INIT_LIST;            
         oDataList = new YAHOO.dpu.widget.DataTable(sDataList, oColumnSet, oDataSource, oListConfigs);
 
+        // Hack loading message        
+        var elCell = oDataList._elMsgCell;
+        elCell.innerHTML = YAHOO.yazaar.FlevBase.MSG_CRITERIA;
+        
         // Enable DataTable Row Selection
         oDataList.subscribe("cellClickEvent",oDataList.onEventSelectRow);
         oDataList.select(oDataList.getRow(0));
@@ -360,7 +378,7 @@ YAHOO.yazaar.FlevBase.prototype.onLoadReturn = function(oData,oSelf) {
           YAHOO.log("Selected Record: " + oRecord.toJSONString());
         };
         oDataList.subscribe("cellClickEvent", onRowClickEvent);
-        oDataList.subscribe("dataReturnEvent",oSelf.initFilter,oSelf);
+        // TODO: oDataList.subscribe("dataReturnEvent",oSelf.initFilter,oSelf);
 
         // On List select, populate form
         var onRecordSelectEvent = function () {
@@ -373,7 +391,7 @@ YAHOO.yazaar.FlevBase.prototype.onLoadReturn = function(oData,oSelf) {
         
         // Setup DataView
         oSelf.oViewConfigs.oDataList = oDataList;
-        oSelf.oViewConfigs.isDisabled = true;
+        oSelf.oViewConfigs.nInitMode = YAHOO.yazaar.DataForm.INIT_VIEW;
         oDataView = new YAHOO.yazaar.DataForm(sDataView, oColumnSet, oDataSource, oSelf.oViewConfigs);
         oDataView.subscribe("cancelEvent", oSelf.onExitView, oSelf);
         oDataView.subscribe("deleteEvent", oSelf.onDelete, oSelf);
@@ -385,10 +403,17 @@ YAHOO.yazaar.FlevBase.prototype.onLoadReturn = function(oData,oSelf) {
         
         // Setup DataEdit
         oSelf.oEditConfigs.oDataList = oDataList;
+        oSelf.oEditConfigs.nInitMode = YAHOO.yazaar.DataForm.INIT_EDIT;
         oDataEdit = new YAHOO.yazaar.DataForm(sDataEdit, oColumnSet, oDataSource, oSelf.oEditConfigs);
         oDataEdit.subscribe("cancelEvent", oSelf.onExitEdit, oSelf);
         oDataEdit.subscribe("insertEvent", oSelf.onInsert, oSelf);
         oDataEdit.subscribe("updateEvent", oSelf.onUpdate, oSelf);
+
+        // Setup DataFind
+        oSelf.oFindConfigs.oDataList = oDataList;
+        oSelf.oFindConfigs.nInitMode = YAHOO.yazaar.DataForm.INIT_FIND;
+        oDataFind = new YAHOO.yazaar.DataForm(sDataFind, oColumnSet, oDataSource, oSelf.oFindConfigs);
+        oDataFind.subscribe("criteriaEvent", oSelf.onCriteria, oSelf);
 
         // Setup TabView
         oTabView = new YAHOO.widget.TabView(sTabView);
@@ -415,7 +440,7 @@ YAHOO.yazaar.FlevBase.prototype.onLoadReturn = function(oData,oSelf) {
         };
         oTabView.on('activeTabChange', onActiveTabChange);
 
-        YAHOO.util.Event.onAvailable(sDataFind, function(){oSelf.initFilter(null,oSelf);});
+        // TODO: YAHOO.util.Event.onAvailable(sDataFind, function(){oSelf.initFilter(null,oSelf);});
 
         // Retain references
         oSelf.oColumnSet = oColumnSet;
@@ -599,7 +624,7 @@ YAHOO.lang.extend(YAHOO.yazaar.DataService, YAHOO.yazaar.FlevBase);
 
 YAHOO.yazaar.DataService.prototype.setupEvents = function(oSelf) {
     oSelf.createEventHandler("LoadReturnEvent", oSelf.onLoadReturn, oSelf);
-    oSelf.createEventHandler("FindReturnEvent", oSelf.onFindReturn, oSelf);
+    oSelf.createEventHandler("CriteriaReturnEvent", oSelf.onCriteriaReturn, oSelf);
     oSelf.createEventHandler("DeleteReturnEvent", oSelf.onDeleteReturn, oSelf);
     oSelf.createEventHandler("SaveReturnEvent", oSelf.onSaveReturn, oSelf);
 };
@@ -627,11 +652,11 @@ YAHOO.yazaar.DataService.prototype.createEventHandler = function(sEvent, fnEvent
 
 YAHOO.yazaar.DataService.prototype.loading = function(isLoading) {
     // Override to provide functionality
-}
+};
 
 YAHOO.yazaar.DataService.prototype.message = function(sMessage) {
     // Override to provide functionality
-}
+};
 
 YAHOO.yazaar.DataService.prototype.oEvents = null;
 
@@ -668,19 +693,29 @@ YAHOO.yazaar.DataService.prototype.onDeleteReturn = function(oData,oSelf) {
     oSelf.doExitView(oSelf);
 };
 
-YAHOO.yazaar.DataService.prototype.onFind = function(oData,oSelf) { 
+
+YAHOO.yazaar.DataService.prototype.oCriteria = {};
+
+/**
+ * Handles criteriaEvent raised by Find by opening a data channel.
+ *
+ * @method onCriteria
+ */
+YAHOO.yazaar.DataService.prototype.onCriteria = function(oEvent,oSelf) { 
     oSelf.loading(true);
-    oSelf.oServices.doList(oValues,oSelf.oEvents.onFindReturn).call(ANVIL.channel);
+    var oValues = oEvent.oRecord
+    oSelf.oCriteria = oValues;
+    oSelf.oServices.doList(oValues,oSelf.oEvents.onCriteriaReturn).call(ANVIL.channel);
 };
 
-YAHOO.yazaar.DataService.prototype.onFindReturn = function(oData,oSelf) {
+YAHOO.yazaar.DataService.prototype.onCriteriaReturn = function(oData,oSelf) {
     oSelf.message(oData.result.message);
     var oValues = oData.result.values;
     var oDataList = oSelf.oDataList;  
     // Refresh list                      
     var refreshedRecords = oDataList.getRecordSet().replace(oValues);
     oDataList.replaceRows(refreshedRecords);                         
-    oSelf.oDataList.showPage(oSelf.oDataList._paginator.currentPage); // TODO: is page out of range now?
+    oSelf.oDataList.showPage();
     // Refresh edit, view
     var sIdentifier = oValues.yuiRecordId;
     var oRecord = oSelf.oDataEdit._oRecordSet.getRecord(sIdentifier);
@@ -696,13 +731,12 @@ YAHOO.yazaar.DataService.prototype.onInsert = function (oData,oSelf) {
 
 YAHOO.yazaar.DataService.prototype.onLoad = function(oData,oSelf) { 
     oSelf.loading(true);
-    oSelf.oServices.doList(oData,oSelf.oEvents.onLoadReturn).call(ANVIL.channel);
+    oSelf.oServices.doLoad(oData,oSelf.oEvents.onLoadReturn).call(ANVIL.channel);
 };
 
 YAHOO.yazaar.DataService.prototype.onRefresh = function (oEvent,oSelf) {    
-    var oValues = {}; // TODO: Obtain criteria from Find
     oSelf.loading(true);
-    oSelf.oServices.doList(oValues,oSelf.oEvents.onFindReturn).call(ANVIL.channel);
+    oSelf.oServices.doList(oSelf.oCriteria,oSelf.oEvents.onCriteriaReturn).call(ANVIL.channel);
 };
 
 YAHOO.yazaar.DataService.prototype.onSaveReturn = function(oData,oSelf) {
@@ -737,6 +771,7 @@ YAHOO.yazaar.DataService.prototype.setupDataMenu = function(oDataMenu,oSelf) {
 };
 
 YAHOO.yazaar.DataService.prototype.setSessionOptions = function(options,oSelf) {       
+    oSelf.oFindConfigs["oSession"] = options;
     oSelf.oViewConfigs["oSession"] = options;
     oSelf.oEditConfigs["oSession"] = options;
-}
+};
