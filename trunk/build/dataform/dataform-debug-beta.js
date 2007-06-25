@@ -620,9 +620,12 @@ YAHOO.yazaar.DataForm.prototype._initHead = function(elTable, sForm_id) {
         // ...and create THEAD cells
         for(var j=0; j<colTree[i].length; j++) {
 
+            oColumn = colTree[i][j];
+            var isSkip = this.isNotSearchable(oColumn);
+            if (isSkip) continue;
+            
             var elHeadRow = elHead.appendChild(document.createElement("tr"));
             elHeadRow.id = this.id+"-hdrow"+i;
-            oColumn = colTree[i][j];
 
             var elHeadCell = elHeadRow.appendChild(document.createElement("th"));
             var id = oColumn.getId();
@@ -660,10 +663,8 @@ YAHOO.yazaar.DataForm.prototype._initControl = function(elCell,oColumn,sForm_id)
     var markup = "";
     var classname = "";
     var elInput = null;
-    var isDisabled = this.isDisabled();        
-    var isSearchable = (oColumn.searchable);
-    var isFind = (this.nInitMode == YAHOO.yazaar.DataForm.INIT_FIND);
-    var isSkip = isFind && (!isSearchable);
+    var isDisabled = this.isDisabled(oColumn);
+    var isSkip = this.isNotSearchable(oColumn);
     if (isSkip) return null;
 
     switch(type) {
@@ -694,11 +695,6 @@ YAHOO.yazaar.DataForm.prototype._initControl = function(elCell,oColumn,sForm_id)
         case "select":
             elInput = this.select(elCell,oColumn);
             classname = YAHOO.widget.DataTable.CLASS_SELECT;
-        break;
-        case "disabled":
-            elInput = (isTextBox) ? this.text(elCell,oColumn) : this.textarea(elCell,oColumn);
-            isDisabled = true;
-            classname = YAHOO.widget.DataTable.CLASS_STRING;
         break;
        default:
             elInput = (isTextBox) ? this.text(elCell,oColumn) : this.textarea(elCell,oColumn);
@@ -947,8 +943,20 @@ YAHOO.yazaar.DataForm.prototype.nInitMode = YAHOO.yazaar.DataForm.INIT_LIST;
  * @method isDisabled
  * @type Boolean
  */
-YAHOO.yazaar.DataForm.prototype.isDisabled = function () {
-    return (this.nInitMode == YAHOO.yazaar.DataForm.INIT_VIEW);
+YAHOO.yazaar.DataForm.prototype.isDisabled = function (oColumn) {
+    var isDisabled;
+    switch (this.nInitMode) {
+        case YAHOO.yazaar.DataForm.INIT_VIEW: 
+            isDisabled = true;
+        break;
+        case YAHOO.yazaar.DataForm.INIT_EDIT: 
+            isDisabled = !(oColumn.editor); 
+        break;
+        default:
+            isDisabled = false;
+        break;
+    }
+    return isDisabled;
 };
 
 /**
@@ -961,6 +969,21 @@ YAHOO.yazaar.DataForm.prototype.isDisabled = function () {
 YAHOO.yazaar.DataForm.prototype.isFind = function () {
     return (this.nInitMode == YAHOO.yazaar.DataForm.INIT_FIND);
 };
+
+
+/**
+ * True if this DataForm is a Find form, 
+ * and the column is marked searchable.
+ *
+ * @param oColumn (object) Column object of ColumnSet to check
+ * @method isNotSearchable
+ * @type Boolean
+ */
+YAHOO.yazaar.DataForm.prototype.isNotSearchable = function (oColumn) {
+    var isSearchable = (oColumn.searchable);
+    return (this.isFind()) && (!isSearchable);
+};
+
 
 /**
  * DataTable instance.
@@ -1366,7 +1389,6 @@ YAHOO.yazaar.DataForm.formatYesNo = function(elCell, oRecord, oColumn, oData) {
  * @method populateForm
  */
 YAHOO.yazaar.DataForm.prototype.populateForm = function(oRecord) {
-    // this._oColumnSet
     if (!oRecord) {
         oRecord = this.getSelectedRecord();
     }
