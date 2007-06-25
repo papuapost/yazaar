@@ -414,6 +414,7 @@ YAHOO.yazaar.FlevBase.prototype.onLoadReturn = function(oData,oSelf) {
         oSelf.oFindConfigs.nInitMode = YAHOO.yazaar.DataForm.INIT_FIND;
         oDataFind = new YAHOO.yazaar.DataForm(sDataFind, oColumnSet, oDataSource, oSelf.oFindConfigs);
         oDataFind.subscribe("criteriaEvent", oSelf.onCriteria, oSelf);
+        oDataFind.doReset();
 
         // Setup TabView
         oTabView = new YAHOO.widget.TabView(sTabView);
@@ -445,6 +446,7 @@ YAHOO.yazaar.FlevBase.prototype.onLoadReturn = function(oData,oSelf) {
         // Retain references
         oSelf.oColumnSet = oColumnSet;
         oSelf.oDataSource = oDataSource;
+        oSelf.oDataFind = oDataFind;
         oSelf.oDataList = oDataList;
         oSelf.oDataView = oDataView;
         oSelf.oDataEdit = oDataEdit;
@@ -623,10 +625,11 @@ YAHOO.yazaar.DataService = function() {
 YAHOO.lang.extend(YAHOO.yazaar.DataService, YAHOO.yazaar.FlevBase);
 
 YAHOO.yazaar.DataService.prototype.setupEvents = function(oSelf) {
-    oSelf.createEventHandler("LoadReturnEvent", oSelf.onLoadReturn, oSelf);
     oSelf.createEventHandler("CriteriaReturnEvent", oSelf.onCriteriaReturn, oSelf);
     oSelf.createEventHandler("DeleteReturnEvent", oSelf.onDeleteReturn, oSelf);
+    oSelf.createEventHandler("LoadReturnEvent", oSelf.onLoadReturn, oSelf);
     oSelf.createEventHandler("SaveReturnEvent", oSelf.onSaveReturn, oSelf);
+    oSelf.createEventHandler("SessionReturnEvent", oSelf.onSessionReturn, oSelf);
 };
 
 YAHOO.yazaar.DataService.prototype.parseEventName = function(sEvent) {
@@ -703,14 +706,14 @@ YAHOO.yazaar.DataService.prototype.oCriteria = {};
  */
 YAHOO.yazaar.DataService.prototype.onCriteria = function(oEvent,oSelf) { 
     oSelf.loading(true);
-    var oValues = oEvent.oRecord
+    var oValues = oEvent.oRecord;
     oSelf.oCriteria = oValues;
     oSelf.oServices.doList(oValues,oSelf.oEvents.onCriteriaReturn).call(ANVIL.channel);
 };
 
 YAHOO.yazaar.DataService.prototype.onCriteriaReturn = function(oData,oSelf) {
-    oSelf.message(oData.result.message);
-    var oValues = oData.result.values;
+    oSelf.message(oData.result.message);    
+    var oValues = oData.result.values;    
     var oDataList = oSelf.oDataList;  
     // Refresh list                      
     var refreshedRecords = oDataList.getRecordSet().replace(oValues);
@@ -720,7 +723,7 @@ YAHOO.yazaar.DataService.prototype.onCriteriaReturn = function(oData,oSelf) {
     var sIdentifier = oValues.yuiRecordId;
     var oRecord = oSelf.oDataEdit._oRecordSet.getRecord(sIdentifier);
     if (oRecord) oSelf.oDataEdit.populateForm(oRecord); 
-    oSelf.oDataEdit.doInsertForm(); // clear form 
+    oSelf.oDataEdit.doInsertForm(); // clear form
     oSelf.doGotoList(oSelf);
 };
         
@@ -734,9 +737,14 @@ YAHOO.yazaar.DataService.prototype.onLoad = function(oData,oSelf) {
     oSelf.oServices.doLoad(oData,oSelf.oEvents.onLoadReturn).call(ANVIL.channel);
 };
 
+YAHOO.yazaar.DataService.prototype.onSessionReturn = function(oData,oSelf) {
+    ; // override to provide functionality
+};
+
 YAHOO.yazaar.DataService.prototype.onRefresh = function (oEvent,oSelf) {    
     oSelf.loading(true);
     oSelf.oServices.doList(oSelf.oCriteria,oSelf.oEvents.onCriteriaReturn).call(ANVIL.channel);
+    oSelf.oServices.doLoad({},oSelf.oEvents.onSessionReturn).call(ANVIL.channel);
 };
 
 YAHOO.yazaar.DataService.prototype.onSaveReturn = function(oData,oSelf) {
