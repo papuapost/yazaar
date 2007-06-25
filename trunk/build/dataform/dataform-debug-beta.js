@@ -11,7 +11,7 @@ http://developer.yahoo.net/yui/license.txt
  * events that bundle record data so that clients can update a remote
  * persistant store, namely cancelEvent, deleteEvent, insertEvent, resetEvent,
  * and updateEvent, as well as insertFormEvent and updateFormEvent to 
- * signal the presentation of the corresponding data-entry forms.
+ * signal the presentation of the corresponding data-entry forms.G
  * <p />
  * The DataForm can be used with an independant RecordSet,
  * or it can share a RecordSet with a companion DataTable.
