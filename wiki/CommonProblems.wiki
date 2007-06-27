@@ -53,3 +53,14 @@ See also [http://code.google.com/p/anvil/wiki/CommonProblems Anvil Common Proble
 
 || (?) || FLEV: *Changing from List to Edit exposes the "Exit without saving changes" prompt before the edit screen is presented, but only for some entries.* ||
 || (/) || If Edit uses a select control, confirm that the data for the entry matches an select option. ||
+|| || ||
+|| (?) || FLEV: "elInput.value" is undefined (find) ||
+|| (/) || Add "searchable:true" to the aColumnConfig setup ||
+|| || ||
+|| (?) || FLEV: Edit - field is disabled ||
+|| (/) || Add "editor:"textbox"" to the aColumnConfig setup ||
+
+
+
+
+
