@@ -55,7 +55,13 @@ YAHOO.namespace("yazaar");
  * @param oConfigs {object} (optional) Object literal of configuration values.
  */
 YAHOO.yazaar.FlevBase = function(oConfigs) {
-    // Validate and apply any configuration settings
+
+    // identify
+    this._nIndex = YAHOO.yazaar.FlevBase._nCount;
+    this._sName = "instance" + this._nIndex;
+    this.id = "yazaar-fb"+this._nIndex;
+
+    // configure
     if(oConfigs && (oConfigs.constructor == Object)) {
         for(var sConfig in oConfigs) {
             this[sConfig] = oConfigs[sConfig];
@@ -63,7 +69,7 @@ YAHOO.yazaar.FlevBase = function(oConfigs) {
     }
     
     /**
-     * Fired when widget is ready to be loaded. 
+     * Fired when widget is loaded and ready to use. 
      *
      * @event loadEvent
      */
@@ -76,6 +82,41 @@ YAHOO.yazaar.FlevBase = function(oConfigs) {
  * Augments FlevBase constructor with event provider members.
  */
 YAHOO.lang.augment(YAHOO.yazaar.FlevBase, YAHOO.util.EventProvider);
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Private properties (class and member variables)
+//
+/////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Internal class variable to index multiple FlevBaseinstances.
+ *
+ * @property _nCount
+ * @type Number
+ * @private
+ * @static
+ */
+YAHOO.yazaar.FlevBase._nCount = 0;
+
+/**
+ * Unique instance name.
+ *
+ * @property _sName
+ * @type String
+ * @private
+ */
+YAHOO.yazaar.FlevBase.prototype._sName = null;
+
+/**
+ * Instance index.
+ *
+ * @property _nIndex
+ * @type Number
+ * @private
+ */
+YAHOO.yazaar.FlevBase.prototype._nIndex = null;
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -323,6 +364,18 @@ YAHOO.yazaar.FlevBase.prototype.doGotoView = function(oSelf) {
     oSelf.oTabView.set('activeIndex', oSelf.nDataView); 
 };
 
+YAHOO.yazaar.FlevBase.prototype.getSelectedRecord = function() {
+    var dt = this.oDataList;
+    var rs = dt.getRecordSet();
+    var row = dt.getSelectedRecordIds();
+    if (row.length===0) {
+        dt.getRow(0); // No row was selected
+        row = dt.getSelectedRecordIds();
+    }
+    var oRecord = rs.getRecord(row[row.length-1]); // ISSUE: Returns row selected on each page
+    return oRecord;
+};
+
 /**
  * Creates DataTable and DataForm widgets, initializes objects with response data.
  * Intended for use at initial load only. 
@@ -363,21 +416,12 @@ YAHOO.yazaar.FlevBase.prototype.onLoadReturn = function(oData,oSelf) {
         oDataList.createEvent("recordSelectEvent");
 
         // Raise our event when a row is selected
-        var onRowClickEvent = function(oArgs) {
-            var dt = oDataList;
-            var rs = dt.getRecordSet();
-            var row = dt.getSelectedRecordIds();
-            if (row.length===0) {
-                dt.getRow(0); // No row was selected
-                row = dt.getSelectedRecordIds();
-            }
-            var oRecord = rs.getRecord(row[row.length-1]); // ISSUE: Returns row selected on each page
-
-          // Raise RecordSelectEvent with payload
-          oDataList.fireEvent("recordSelectEvent",{record:oRecord});
-          YAHOO.log("Selected Record: " + oRecord.toJSONString());
+        var onRowClickEvent = function(oEvent,oFlev) {
+            var oRecord = oFlev.getSelectedRecord();
+            oFlev.oDataList.fireEvent("recordSelectEvent",{record:oRecord});
+            YAHOO.log("Selected Record: " + oRecord.toJSONString());
         };
-        oDataList.subscribe("cellClickEvent", onRowClickEvent);
+        oDataList.subscribe("cellClickEvent", onRowClickEvent,oSelf);
         // TODO: oDataList.subscribe("dataReturnEvent",oSelf.initFilter,oSelf);
 
         // On List select, populate form
@@ -451,7 +495,22 @@ YAHOO.yazaar.FlevBase.prototype.onLoadReturn = function(oData,oSelf) {
         oSelf.oDataView = oDataView;
         oSelf.oDataEdit = oDataEdit;
         oSelf.oTabView = oTabView;
+        oSelf.fireEvent("contentReady",oSelf);
+        YAHOO.log("Data widget loaded", "info", this.toString());        
+        oSelf.fireEvent("loadEvent");                
     };
+
+/**
+ * Public accessor to the unique name of the widget instance.
+ *
+ * @method toString
+ * @return {String} Unique name of the DataSource instance.
+ */
+
+YAHOO.yazaar.FlevBase.prototype.toString = function() {
+    return "FlevBase " + this._sName;
+};
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -680,6 +739,7 @@ YAHOO.yazaar.DataService.prototype.oServices = null;
 YAHOO.yazaar.DataService.prototype.onDelete = function (oData,oSelf) {
     var isExit = confirm("Delete this entry?");
     if (isExit) {
+        oSelf.loading(true);
         oSelf.doExitView(oSelf); 
         var oValues = oSelf.oDataEdit.getSelectedRecord();
         oSelf.oServices.doDelete(oValues,oSelf.oEvents.onDeleteReturn).call(ANVIL.channel);
@@ -687,13 +747,14 @@ YAHOO.yazaar.DataService.prototype.onDelete = function (oData,oSelf) {
 };
 
 YAHOO.yazaar.DataService.prototype.onDeleteReturn = function(oData,oSelf) {
-    oSelf.message(oData.result.message);
     var sIdentifier = oData.result.values.yuiRecordId;
     oSelf.oDataEdit.deleteRecord(sIdentifier);
     oSelf.oDataList.populateTable();
     oSelf.oDataList.showPage(oSelf.oDataList._paginator.currentPage);
     oSelf.oDataView.doInsertForm(); // clear form    
     oSelf.doExitView(oSelf);
+    oSelf.loading(false);
+    oSelf.message(oData.result.message);
 };
 
 
@@ -705,14 +766,13 @@ YAHOO.yazaar.DataService.prototype.oCriteria = {};
  * @method onCriteria
  */
 YAHOO.yazaar.DataService.prototype.onCriteria = function(oEvent,oSelf) { 
-    oSelf.loading(true);
     var oValues = oEvent.oRecord;
+    oSelf.loading(true);
     oSelf.oCriteria = oValues;
     oSelf.oServices.doList(oValues,oSelf.oEvents.onCriteriaReturn).call(ANVIL.channel);
 };
 
 YAHOO.yazaar.DataService.prototype.onCriteriaReturn = function(oData,oSelf) {
-    oSelf.message(oData.result.message);    
     var oValues = oData.result.values;    
     var oDataList = oSelf.oDataList;  
     // Refresh list                      
@@ -725,10 +785,13 @@ YAHOO.yazaar.DataService.prototype.onCriteriaReturn = function(oData,oSelf) {
     if (oRecord) oSelf.oDataEdit.populateForm(oRecord); 
     oSelf.oDataEdit.doInsertForm(); // clear form
     oSelf.doGotoList(oSelf);
+    oSelf.loading(false);
+    oSelf.message(oData.result.message);    
 };
         
 YAHOO.yazaar.DataService.prototype.onInsert = function (oData,oSelf) {
     var oValues = oData.oRecord;
+    oSelf.loading(true);
     oSelf.oServices.doSave(oValues,oSelf.oEvents.onSaveReturn).call(ANVIL.channel);
 };
 
@@ -748,7 +811,6 @@ YAHOO.yazaar.DataService.prototype.onRefresh = function (oEvent,oSelf) {
 };
 
 YAHOO.yazaar.DataService.prototype.onSaveReturn = function(oData,oSelf) {
-    oSelf.message(oData.result.message);
     var oValues = oData.result.values;
     var sIdentifier = oValues.yuiRecordId;
     var oRecord = oSelf.oDataEdit._oRecordSet.getRecord(sIdentifier);
@@ -760,10 +822,13 @@ YAHOO.yazaar.DataService.prototype.onSaveReturn = function(oData,oSelf) {
     oSelf.oDataEdit.populateForm(oRecord); 
     oSelf.oDataEdit.doInsertForm(); // clear form    
     oSelf.doExitEdit(oSelf);
+    oSelf.loading(false);
+    oSelf.message(oData.result.message);
 };
         
 YAHOO.yazaar.DataService.prototype.onUpdate = function (oData,oSelf) {
     var oValues = oData.oRecord;
+    oSelf.loading(true);
     oSelf.oServices.doSave(oValues,oSelf.oEvents.onSaveReturn).call(ANVIL.channel);
 };
 
