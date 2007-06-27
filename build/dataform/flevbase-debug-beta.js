@@ -1,4 +1,4 @@
-/*
+/**
 Copyright (c) 2007, Husted dot Com, Inc. All rights reserved.
 Portions Copyright (c) 2007, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
@@ -23,7 +23,7 @@ http://developer.yahoo.net/yui/license.txt
  * @module yazaar.flevbase
  * @requires yahoo, dom, event, datasource
  * @title FLEV Widget
- * @alpha
+ * @beta
  */
 
 /**
@@ -335,13 +335,14 @@ YAHOO.yazaar.FlevBase.prototype.doExitView = function(oSelf) {
 };
 
 /**
- * Activates Edit.
+ * Activates Find.
  * @param oSelf (Object) Flev instance
  * @method doGotoEdit
  */
-YAHOO.yazaar.FlevBase.prototype.doGotoEdit = function(oSelf) {
+YAHOO.yazaar.FlevBase.prototype.doGotoFind = function(oSelf) {
     if (!oSelf) oSelf = this;
-    oSelf.oTabView.set('activeIndex', oSelf.nDataEdit); 
+    oSelf.oTabView.getTab(oSelf.nDataFind).disabled = false;        
+    oSelf.oTabView.set('activeIndex', oSelf.nDataFind); 
 };
 
 /**
@@ -351,7 +352,19 @@ YAHOO.yazaar.FlevBase.prototype.doGotoEdit = function(oSelf) {
  */
 YAHOO.yazaar.FlevBase.prototype.doGotoList = function(oSelf) {
     if (!oSelf) oSelf = this;
+    oSelf.oTabView.getTab(oSelf.nDataList).disabled = false;    
     oSelf.oTabView.set('activeIndex', oSelf.nDataList); 
+};
+
+/**
+ * Activates Edit.
+ * @param oSelf (Object) Flev instance
+ * @method doGotoEdit
+ */
+YAHOO.yazaar.FlevBase.prototype.doGotoEdit = function(oSelf) {
+    if (!oSelf) oSelf = this;
+    oSelf.oTabView.getTab(oSelf.nDataEdit).disabled = false;        
+    oSelf.oTabView.set('activeIndex', oSelf.nDataEdit); 
 };
 
 /**
@@ -361,6 +374,7 @@ YAHOO.yazaar.FlevBase.prototype.doGotoList = function(oSelf) {
  */
 YAHOO.yazaar.FlevBase.prototype.doGotoView = function(oSelf) {
     if (!oSelf) oSelf = this;
+    oSelf.oTabView.getTab(oSelf.nDataView).disabled = false;    
     oSelf.oTabView.set('activeIndex', oSelf.nDataView); 
 };
 
@@ -462,6 +476,11 @@ YAHOO.yazaar.FlevBase.prototype.onLoadReturn = function(oData,oSelf) {
 
         // Setup TabView
         oTabView = new YAHOO.widget.TabView(sTabView);
+            // FIXME: Disabling doesn't seem to work
+            oTabView.getTab(oSelf.nDataFind).disabled = true;
+            oTabView.getTab(oSelf.nDataList).disabled = true;
+            oTabView.getTab(oSelf.nDataEdit).disabled = true;
+            oTabView.getTab(oSelf.nDataView).disabled = true;
 
         // Prompt before changing tabs
         var onBeforeActiveTabChange = function(e) {
@@ -497,6 +516,8 @@ YAHOO.yazaar.FlevBase.prototype.onLoadReturn = function(oData,oSelf) {
         oSelf.oTabView = oTabView;
         oSelf.fireEvent("contentReady",oSelf);
         YAHOO.log("Data widget loaded", "info", this.toString());        
+        
+        oSelf.doGotoFind(oSelf);
         oSelf.fireEvent("loadEvent");                
     };
 
@@ -778,7 +799,8 @@ YAHOO.yazaar.DataService.prototype.onCriteriaReturn = function(oData,oSelf) {
     // Refresh list                      
     var refreshedRecords = oDataList.getRecordSet().replace(oValues);
     oDataList.replaceRows(refreshedRecords);                         
-    oSelf.oDataList.showPage();
+    oDataList.showPage();
+    oDataList.selectRow(oDataList.getFirstRow());
     // Refresh edit, view
     var sIdentifier = oValues.yuiRecordId;
     var oRecord = oSelf.oDataEdit._oRecordSet.getRecord(sIdentifier);
