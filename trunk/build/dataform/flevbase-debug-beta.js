@@ -46,7 +46,7 @@ YAHOO.namespace("yazaar");
  * object designed to resemble a RPC result object.
  * All property changes must be made before onLoad is called.
  * <p />
- * Properties that must be configured are oColumnHeaders and oResponseSchema.
+ * Properties that must be configured are aColumnConfig and oResponseSchema.
  * Properties that may be configured oFindConfigs, oListConfigs, oEditConfigs, oViewConfigs, 
  * sDataFind, sDataList, sDataView, sDataEdit, sTabView, sListForm, sItemName.
  * Methods that may be configured are onInsert, onUpdate, onDelete, onCancel, and onReset.
@@ -247,11 +247,11 @@ YAHOO.yazaar.FlevBase.prototype.oAutoComplete = null;
 YAHOO.yazaar.FlevBase.prototype.oColumnSet = null;
 
 /**
- * Array of object literals that define header cells for the ColumnSet.
+ * Array of object literals that define the ColumnSet.
  * At a minimum, each object should contain a key and a text property.
  * Must be configured.
  */
-YAHOO.yazaar.FlevBase.prototype.oColumnHeaders = null;
+YAHOO.yazaar.FlevBase.prototype.aColumnConfig = null;
 
 /**
  * DataEdit instance created by this object.
@@ -399,7 +399,7 @@ YAHOO.yazaar.FlevBase.prototype.getSelectedRecord = function() {
  */
 YAHOO.yazaar.FlevBase.prototype.onLoadReturn = function(oData,oSelf) {
         // previously defined
-        var oColumnHeaders = oSelf.oColumnHeaders;
+        var aColumnConfig = oSelf.aColumnConfig;
         var oResponseSchema = oSelf.oResponseSchema;
         var oListConfigs = oSelf.oListConfigs;
         var sDataFind = oSelf.sDataFind;
@@ -411,7 +411,7 @@ YAHOO.yazaar.FlevBase.prototype.onLoadReturn = function(oData,oSelf) {
         var oColumnSet, oDataSource, oDataFind, oDataList, oDataView, oDataEdit, oTabView;
 
         // Setup DataList
-        oColumnSet = new YAHOO.widget.ColumnSet(oColumnHeaders);
+        oColumnSet = new YAHOO.widget.ColumnSet(aColumnConfig);
         oDataSource = new YAHOO.util.DataSource(oData.result);
             oDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
             oDataSource.responseSchema = oResponseSchema;
