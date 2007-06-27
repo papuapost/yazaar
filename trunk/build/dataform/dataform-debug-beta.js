@@ -1539,24 +1539,22 @@ YAHOO.yazaar.DataForm.prototype.doInsert = function() {
  * @param oRecord The record to populate the form, or the selected record if omitted
  * @method doInsertForm
  */
-YAHOO.yazaar.DataForm.prototype.doInsertForm = function() {
+YAHOO.yazaar.DataForm.prototype.doInsertForm = function(oValues) {
     var oFields = {};
+    var oInitial = oValues || {};
     var oSet = this._oColumnSet;
     var aKeys = oSet.keys;
     var nLength = aKeys.length;
+    var oColumn, sKey, sKey2, oRecord;
     for (i=0; i<nLength; i++) {
-        var oColumn = aKeys[i];
-        var type = oColumn.formType || oColumn.type;
-        switch(type) {
-            case "select":
-                var oOptions = oColumn.selectOptions || oColumn.formSelectOptions || [];
-                if (YAHOO.lang.isUndefined(oColumn.initial)) oColumn.initial = oOptions[0];
-            break;
-        }
-        oFields[oColumn.key] = oColumn.initial || "";        
+        oColumn = aKeys[i];
+        sKey = oColumn.key;
+        oFields[sKey] = oInitial[sKey] || oColumn.initial || "" ;
+        sKey2 = oColumn.formSelectOptionsKey;
+        if (sKey2) oFields[sKey2] = oInitial[sKey2];
     }
     oFields["insertForm"] = true; // tag record
-    var oRecord = new YAHOO.widget.Record(oFields);
+    oRecord = new YAHOO.widget.Record(oFields);
     this.populateForm(oRecord);
     this.fireEvent("insertFormEvent", this);
     this.logRecordEvent("insertFormEvent", {oRecord: this._oRecord}); // debug
