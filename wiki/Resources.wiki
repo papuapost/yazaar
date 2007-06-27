@@ -27,6 +27,7 @@
  * [http://www.mischefamily.com/nathan/index.cfm/2007/6/4/ColdFusion-8--Tapping-Into-the-Power-of-the-YUI ColdFusion 8 - Tapping Into the Power of the YUI] (Nathan Mische)
  * [http://www.devchix.com/2007/02/28/getting-started-with-yui%E2%80%99s-connection-manager-in-rails-and-php-or-all-happy-families-are-not-alike/  Getting Started with YUI's Connection Manager in Rails] (devChix)
  * [http://www.whenpenguinsattack.com/2007/04/24/top-5-javascript-frameworks/ Top 5 JavaScript Frameworks] (Justin Silverton)
+ * [http://www.forta.com/blog/index.cfm/2007/5/31/ColdFusion-Ajax-Tutorial-1-AutoSuggest Ben Forta's Coldfusion 8 Ajax Tutorials] (Ben Forta)
  * [http://yuiblog.com/blog/ YUI Blog]
 
 == Zach Leatherman ==
