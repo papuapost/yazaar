@@ -1,7 +1,7 @@
 #summary State Handler System UseCase Template (Issue 26)
 #labels Phase-Requirements
 
-==Narrative==
+=Narrative=
 
 Miranda configured a [FLEV_System_UseCase FLEV widget] to manage a Contacts entity. The widget obtains data from a RPC service and uses it to create a client-side recordset. The widget's DataForm component raises an insertEvent, updateEvent, or deleteEvent whenever the recordset is changed. But, the widget cannot update the original datasource without additional configuration.
 
@@ -9,7 +9,7 @@ To complete the DataForm configuration, Miranda updates the FLEV subclass constr
 
 If the RPC method fails, an internal handler automatically displays the failure message instead. 
 
-==Goal==
+=Goal=
 
 (Why does the component exist? What problem does it solve?)
 
@@ -17,14 +17,16 @@ If the RPC method fails, an internal handler automatically displays the failure 
 || *Trigger* || FLEV widget must conform changes to a remote service  || 
 || *Primary Actor* || Developer ||
 
-==Main Success Scenario (MSS)==
+= = 
+=Main Success Scenario (MSS)=
 
 || *Step* || *Action* ||
 || *1* || Configure [Flev_System_UseCase FLEV widget]      ||
 || *2* || Set new onInsert, onUpdate, and onDelete methods to make RPC ||
 || *4* || Provide a callback method that displays return message and changes view ||
 
-==Sample Code==
+= =
+=Sample Code=
 
 || *Step* || Code ||
 || *1*    ||{{{Contacts.js}}} ||
@@ -59,3 +61,4 @@ MY.Contact = function() {
 }}}
 
 || [http://code.google.com/p/yazaar/issues/detail?id=# Issue 26] ||
+
