@@ -3,13 +3,13 @@
 
 This document may be superceded by the [http://tech.groups.yahoo.com/group/ydn-javascript/message/13648 Y! JavaScript Conventions], should they be published.
 
-== Prime Directive ==
+= Prime Directive =
  * Planet Yazaar add-ons should look and feel like YUI components.
    ** Conventions observed in code created for later releases of YUI are preferred to conventions of earlier releases.
    ** Conventions documented by Douglas Crockford are preferred to conventions observed in YUI code or standard Java conventions.
    ** Items are tagged `(c)`, `(y)`, or `(z)` to indicate whether the source of the convention is Crockford, YUI, or Yazaar.
 
-== Coding Style ==
+= Coding Style =
  
  * Observe Crockford's [http://javascript.crockford.com/code.html Code Conventions for the JavaScript Programming Language] (Read me first!), unless otherwise noted. 
    ** Conventions mentioned in [http://developer.yahoo.com/yui/theater/ Crockford's videos] are also observed unless otherwise noted.
@@ -17,7 +17,7 @@ This document may be superceded by the [http://tech.groups.yahoo.com/group/ydn-j
  * Otherwise, observe typical Java coding conventions, as described by [http://java.sun.com/docs/codeconv/ Sun] and [http://www.ambysoft.com/books/elementsJavaStyle.html The Elements of Java Style].
  * The Crockford and Java conventions are incorporated by reference. Noted here are exceptions, additions, and clarifications.
 
-=== HTML tags ===
+== HTML tags ==
  
  * Observe [http://www.w3.org/TR/html4/strict.dtd HTML 4.01 Strict], and include TYPE attributes in SCRIPT tags, as it is required by the DTD. `(z)`
  * Place REL and TYPE attributes after the SRC or HREF attributes. `(z)`
@@ -57,7 +57,7 @@ This document may be superceded by the [http://tech.groups.yahoo.com/group/ydn-j
 <script src="http://yui.yahooapis.com/2.2.2/build/history/history-experimental-min.js" type="text/javascript"></script>
 }}}
 
-=== Constants == 
+== Constants ==
 
 As in Java, predefined values (or "constants") can be expressed as variables in all UPPER_CASE. !JavaScript does not prevent these variables from being changed, and so developers must practice constraint (and observe coding conventions!).
 
@@ -107,11 +107,11 @@ YAHOO.widget.DataTable._nCount = 0;
 || `xFoo`  || regular expression ||  ||
 || `isFoo` || boolean || also `hasFoo`, `useFoo`, or `bFoo` ||
 
-=== Suffixes ===
+== Suffixes ==
 
 || `fooEvent` || event fired when `Foo` happens ||  ||
 
-=== Other Clarifications ===
+== Other Clarifications ==
 
  * Utilize either "new" Constructors or "object" Constructors as convenient to the circumstances. `(c)`,`(y)`
  * Insert a space after a `if` or `else` statement. Do not insert a space between a function name and the parameter list, but insert a space if the function is anonymous. `(c)`
@@ -120,11 +120,11 @@ YAHOO.widget.DataTable._nCount = 0;
    ** `function outer(c, ) {`
    ** `method: function () {`
 
-== File Format ==
+= File Format =
 
 !JavaScript files should include a copyright and license header, and documentation comments using !JavaDoc style tags. Code may also be organized into a common set of regions. `(y)`
 
-=== Copyright/License Header ===
+== Copyright/License Header ==
 
 {{{
 /*
@@ -139,7 +139,7 @@ http://developer.yahoo.net/yui/license.txt
  * Cite Yahoo! if the code is derived from a YUI class. 
    ** There is not need to cite Yahoo! as a copyright holder if the code is original and merely uses YUI components.
 
-=== JavaDoc Style Comments ===
+== JavaDoc Style Comments ==
 
  * All code contributions should be fully documented, in the YUI style. `(y)`
  * In general observe the [http://java.sun.com/j2se/javadoc/writingdoccomments/index.html Sun JavaDoc conventions].
@@ -184,7 +184,7 @@ http://developer.yahoo.net/yui/license.txt
 The !JsDoc tool can be used with the YUI tags, but not to the same effect as achieved by [http://tech.groups.yahoo.com/group/ydn-javascript/message/13086 YUI's internal tool]. The !JsDoc Toolkit can also be used if certain required tags and include. [http://code.google.com/p/yazaar/wiki/Taglets Other tools and taglets may be used.]
 
 
-=== Common Code Regions ===
+== Common Code Regions ==
 
 If code regions are utilized, prefer the common YUI regions. (`y`)
 
@@ -209,26 +209,26 @@ If code regions are utilized, prefer the common YUI regions. (`y`)
 /////////////////////////////////////////////////////////////////////////////
 }}}
 
-=== Inline Comments ===
+== Inline Comments ==
 
  * Mark any known issue or feature request with a TODO comment. `(z)`
  * Mark any code or markup segment that must be finished before release with a FIXME comment. `(z)`
  * File issue tickets for significant TODOs, and cross reference the inline comment. `(z)`
  * Do not use version designations, since Yazaar does not issue versioned releases (only distributions). `(z)`
 
-== Coding Tools ==
+= Coding Tools =
 
  * Validate submissions and revisions with [http://www.javascriptlint.com/ JavaScript Lint] or equivalent. `(c)`
  * Do not use HTML Tidy to format test pages, since it upsets the script formatting. `(z)`
  ** *Do* validate all test pages with HTML Tidy or the !FireFox HTML validator plugin before committing. `(z)`
 
-== Commit style ==
+= Commit style =
 
 All Subversion commits must reference an issue ticket. (So open the ticket first!). `(z)`
 
 Subversion commit messages are posted to the development group mailing list, for both the code and the wiki. Verbose logs are recommended so as to encourage other developers to peer-review code and documentation. `(z)`
 
-== Notes from Zakas presentation ==
+= Notes from Zakas presentation =
 
  * [http://yuiblog.com/blog/2007/05/25/video-zakas/]
 
