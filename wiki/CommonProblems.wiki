@@ -11,6 +11,7 @@
 See also [http://code.google.com/p/anvil/wiki/CommonProblems Anvil Common Problems]
 
 = JavaScript =
+
 || (!) || *{whatever} is not a constructor.* ||
 || (/) || Ensure that the the script that defines {whatever} is being imported. ||
 || (!) || *Object doesn't support this property or method* ||
@@ -18,7 +19,9 @@ See also [http://code.google.com/p/anvil/wiki/CommonProblems Anvil Common Proble
 || (!) || *'undefined' is null or not an object* ||
 || (/) || Most often, there's a property reference to an object that is either undeclared, or the name of a declared variable is misspelled. ||
 
+= = 
 = IE =
+
 || (!) || *Children is null or not an object* ||
 || (/) || If JSON is being used to create objects, ensure that the last item in an array does not include a trailing comma before the closing bracket. FireFox ignores a trailing JSON comma, but IE does not. ||
 || (?) || *Can't set the style attribute in IE* ||
@@ -26,6 +29,7 @@ See also [http://code.google.com/p/anvil/wiki/CommonProblems Anvil Common Proble
 || (?) || *Can't change the input type in IE* ||
 || (/) || The type for an input element must be set at creation for IE. Either create the element using innerHtml, or try the IE approach and fall back to w3c in a catch clause. ||
 
+= =
 = Yahoo User Interface (YUI) Library =
 
 || (!) || * YAHOO.lang.extend failed, please check that all dependencies are included.* ||
@@ -49,6 +53,7 @@ See also [http://code.google.com/p/anvil/wiki/CommonProblems Anvil Common Proble
 || (!) || *: 'undefined' is null or not an object* ||
 || (/) || If data is being input from a static array, there may be an extra comma after the last array item. || 
 
+= =
 = Yazaar =
 
 || (?) || FLEV: *Changing from List to Edit exposes the "Exit without saving changes" prompt before the edit screen is presented, but only for some entries.* ||
@@ -59,6 +64,7 @@ See also [http://code.google.com/p/anvil/wiki/CommonProblems Anvil Common Proble
 || || ||
 || (?) || FLEV: Edit - field is disabled ||
 || (/) || Add "editor:"textbox"" to the aColumnConfig setup ||
+
 
 
 
