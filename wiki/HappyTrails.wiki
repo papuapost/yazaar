@@ -5,32 +5,42 @@ The trails step through the [http://developer.yahoo.com/yui/ YUI documentation] 
 
   _As you review the YUI "Getting Started" documentation, it's an excellent idea to cut-and-paste the example code into your own [http://www.aptana.com/ IDE or editor] and try to get the examples to work in your own environment. If you don't try the example code on your first reading, do try running the example code the first time you use any of the modules!_
 
-= First Trail = 
+= First Trail: Backbone = 
 
-YUI builds on several "backbone" packages that hold the library together.
+The YUI library builds on several "backbone" packages that hold the library together.
 
  * [http://developer.yahoo.com/yui/yahoo/ yahoo]
  * [http://developer.yahoo.com/yui/dom/ dom]
  * [http://developer.yahoo.com/yui/event/ event]
- * [http://developer.yahoo.com/yui/element/ element]
- * [http://developer.yahoo.com/yui/animation/ animation]
- * [http://developer.yahoo.com/yui/dragdrop/ dragdrop]
 
-= Second Trail = 
+= Second Trail: Infrastructure = 
 
-To help us track and trace what's happening behind the scenes, the library provides a logger, data loaders, images loaders, history management, and a unit testing framework.
+To help us track and trace what's happening behind the scenes, the library provides several "infrastructure" packages.
 
- * [http://developer.yahoo.com/yui/yuiloader/ YUILoader Utility]
- * [http://developer.yahoo.com/yui/connection/ connection]
- * [http://developer.yahoo.com/yui/datasource/ datasource]
  * [http://developer.yahoo.com/yui/logger/ logger]
+ * [http://developer.yahoo.com/yui/yuitest/ yuitest]
+ * [http://developer.yahoo.com/yui/yuiloader/ YUILoader Utility]
  * [http://developer.yahoo.com/yui/imageloader/ imageloader]
  * [http://developer.yahoo.com/yui/history/ history]
- * [http://developer.yahoo.com/yui/yuitest/ yuitest]
 
-= Third Trail = 
+= Third Trail: Workhorse = 
 
-The library provides several workhorse packages that manage and display data.
+To help us acquire data from an external source, the library provides several "workhorse" packages.
+
+ * [http://developer.yahoo.com/yui/connection/ connection]
+ * [http://developer.yahoo.com/yui/datasource/ datasource]
+
+= Fourth Trail: Pixie =
+
+To help us manipulate visual objects, the library provides several "pixie" packages.
+
+ * [http://developer.yahoo.com/yui/element/ element]
+ * [http://developer.yahoo.com/yui/dragdrop/ dragdrop]
+ * [http://developer.yahoo.com/yui/animation/ animation]
+
+= Fifth Trail: Workflow =
+
+To help us guide users through complex tasks, the library provides several "workflow" packages.
 
  * [http://developer.yahoo.com/yui/container/ container]
  * [http://developer.yahoo.com/yui/menu/ menu]
@@ -38,9 +48,9 @@ The library provides several workhorse packages that manage and display data.
  * [http://developer.yahoo.com/yui/tabview/ tabview]
  * [http://developer.yahoo.com/yui/treeview/ treeview]
 
-= Fourth Trail = 
+= Sixth Trail: IO = 
 
-Other library controls provides special effects, like sliders and buttons, calendars, editors, and grid-based layouts.
+To help us display output and acquire input, the library provides several "IO" packages. 
 
  * [http://developer.yahoo.com/yui/autocomplete/ autocomplete]
  * [http://developer.yahoo.com/yui/slider/ slider]
@@ -48,6 +58,11 @@ Other library controls provides special effects, like sliders and buttons, calen
  * [http://developer.yahoo.com/yui/calendar/ calendar]
  * [http://developer.yahoo.com/yui/editor/ editor]
  * [http://developer.yahoo.com/yui/datatable/ datatable]
+
+= Seventh Trail: Finish = 
+
+To help us customize the look and feel of our widgets, the library provides several "Finish" packages.
+
  * [http://developer.yahoo.com/yui/reset/ reset], [http://developer.yahoo.com/yui/examples/base/ base], [http://developer.yahoo.com/yui/fonts/ fonts], and [http://developer.yahoo.com/yui/grids/ grids]
 
 Including "laboratory" time to try some of the examples, each trail can take a full day. (And probably should!) 
