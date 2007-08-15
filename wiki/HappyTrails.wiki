@@ -1,13 +1,13 @@
 #summary Stepping through the YUI documentation (Issue 1)
 #labels Featured
 
-The trails step through the [http://developer.yahoo.com/yui/ YUI documentation] in a  progressive, tutorial-style order. There are four trails: Backbone, Subdermal, Workhorse, and Special Effects. 
+The trails step through the [http://developer.yahoo.com/yui/ YUI documentation] in a  progressive, tutorial-style order. There are seven trails in this series: Backbone, Infrastructure, Workhorse, FX, Workflow, IO, and CSS.
 
   _As you review the YUI "Getting Started" documentation, it's an excellent idea to cut-and-paste the example code into your own [http://www.aptana.com/ IDE or editor] and try to get the examples to work in your own environment. If you don't try the example code on your first reading, do try running the example code the first time you use any of the modules!_
 
 = First Trail: Backbone = 
 
-The YUI library builds on several "backbone" packages that hold the library together.
+The YUI library builds on three "backbone" packages that hold the library together.
 
  * [http://developer.yahoo.com/yui/yahoo/ yahoo]
  * [http://developer.yahoo.com/yui/dom/ dom]
@@ -15,7 +15,7 @@ The YUI library builds on several "backbone" packages that hold the library toge
 
 = Second Trail: Infrastructure = 
 
-To help us track and trace what's happening behind the scenes, the library provides several "infrastructure" packages.
+To help us track and trace what's happening behind the scenes, the library provides five "infrastructure" packages.
 
  * [http://developer.yahoo.com/yui/logger/ logger]
  * [http://developer.yahoo.com/yui/yuitest/ yuitest]
@@ -25,14 +25,14 @@ To help us track and trace what's happening behind the scenes, the library provi
 
 = Third Trail: Workhorse = 
 
-To help us acquire data from an external source, the library provides several "workhorse" packages.
+To help us acquire data from an external source, the library provides two "workhorse" packages.
 
  * [http://developer.yahoo.com/yui/connection/ connection]
  * [http://developer.yahoo.com/yui/datasource/ datasource]
 
-= Fourth Trail: Pixie =
+= Fourth Trail: FX =
 
-To help us manipulate visual objects, the library provides several "pixie" packages.
+To help us manipulate visual objects, the library provides three "Special Effects"  packages.
 
  * [http://developer.yahoo.com/yui/element/ element]
  * [http://developer.yahoo.com/yui/dragdrop/ dragdrop]
@@ -40,7 +40,7 @@ To help us manipulate visual objects, the library provides several "pixie" packa
 
 = Fifth Trail: Workflow =
 
-To help us guide users through complex tasks, the library provides several "workflow" packages.
+To help us guide users through complex tasks, the library provides five "workflow" packages.
 
  * [http://developer.yahoo.com/yui/container/ container]
  * [http://developer.yahoo.com/yui/menu/ menu]
@@ -50,7 +50,7 @@ To help us guide users through complex tasks, the library provides several "work
 
 = Sixth Trail: IO = 
 
-To help us display output and acquire input, the library provides several "IO" packages. 
+To help us display output and acquire input, the library provides six "IO" packages. 
 
  * [http://developer.yahoo.com/yui/autocomplete/ autocomplete]
  * [http://developer.yahoo.com/yui/slider/ slider]
@@ -59,9 +59,9 @@ To help us display output and acquire input, the library provides several "IO" p
  * [http://developer.yahoo.com/yui/editor/ editor]
  * [http://developer.yahoo.com/yui/datatable/ datatable]
 
-= Seventh Trail: Finish = 
+= Seventh Trail: CSS = 
 
-To help us customize the look and feel of our widgets, the library provides several "Finish" packages.
+To help us customize the look and feel of our widgets, the library provides four CSS packages.
 
  * [http://developer.yahoo.com/yui/reset/ reset], [http://developer.yahoo.com/yui/examples/base/ base], [http://developer.yahoo.com/yui/fonts/ fonts], and [http://developer.yahoo.com/yui/grids/ grids]
 
@@ -70,4 +70,5 @@ Including "laboratory" time to try some of the examples, each trail can take a f
 Skimming the source code for each module is strongly recommended. YUI is a superb, professional product, and there is much to be learned by studying its example. 
 
  * [Resources]
+
 
