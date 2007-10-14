@@ -49,7 +49,9 @@ MY.Menu.prototype.setTitle = function(nIndex) {
     YAHOO.util.Dom.setStyle(['Welcome', 'Contacts', 'Notes', 'Logs'], 'display', 'none'); 
     YAHOO.util.Dom.setStyle(sTitle, 'display', 'block');
     var oView = my.oViewManager.oViews[sTitle];
-    if (oView) oView.focus();    
+    if (oView) { 
+    	oView.focus()
+	};    
     return true;
 };
 

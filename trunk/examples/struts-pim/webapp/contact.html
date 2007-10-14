@@ -83,16 +83,8 @@ Code licensed under the BSD License: http://developer.yahoo.net/yui/license.txt
                     _Self = new MY.Contact(); // Convenience "global" for this page.
                     oView.oContent = _Self;
                     my.oEvent.subscribe("contactLoad", _Self.load, _Self);
-                    // my.oEvent.onContactLoadReturn(_Self.LOCAL_DATA); // static data                    
-                    var callback = {
-        				success : function(o) {
-        					// var data = o.responseText;
-        					// var payload = eval("("+data.substring(data.indexOf("\/\*")+2, data.lastIndexOf("\*\/"))+")");           
-        					var payload =  eval("(" + o.responseText + ")") ;
-        					my.oEvent.onContactLoadReturn(payload);
-        				}
-        			};                               
-					YAHOO.util.Connect.asyncRequest('GET', "contact-load.do", callback, null);					                                                         
+					my.asyncRequest("contact-load.do", my.oEvent.onContactLoadReturn);
+//                  my.oEvent.onContactLoadReturn(_Self.LOCAL_DATA); // static data                    
                 };
                 YAHOO.util.Event.onContentReady("elBody",fnReady);
             </script>

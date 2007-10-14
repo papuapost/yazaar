@@ -9,6 +9,45 @@ if (typeof parent.MY != "undefined") {
     
     var MY = {};
     var my = {};
+    
+	my.message = false; // ISSUE: Make private
+	my.isMessage = function(b) {
+    	if (typeof b == 'boolean') {
+        	my.message = b;
+    	}
+   	return my.message;
+	};
+
+	my.error = function (sMessage, sStackTrace) {    
+  		var sTemplate = "<table><tr><th valign=top>Message:&nbsp;</th><td>{message}</td></tr><tr><th valign=top>Location:</th><td>{stackTrace}</td></tr></table>";
+  		var oContext = {message: sMessage, stackTrace: sStackTrace};
+  		document.getElementById("elError").innerHTML = sTemplate.supplant(oContext);
+  		alert("Error Communicating with Server! See message area for details.");  
+  		my.isMessage(true);
+	};
+
+	my.asyncRequestError = function (o) {
+    	var oPayload =  eval("(" + o + ")") ; // JSON.eval(o);
+    	error(oPayload.error.message,oPayload.error.stackTrace);
+	};
+
+	my.asyncRequest = function (sAction, fnCallback) {
+		return YAHOO.util.Connect.asyncRequest("POST", sAction, {
+            success : function(o)
+        		{
+             		var oPayload =  eval("(" + o.responseText + ")") ; // JSON.eval(o.responseText)           
+             		if (oPayload.error) {
+                		my.error( payload.error.message, payload.error.stackTrack );
+                 	return;
+              	}
+            	fnCallback(oPayload);
+        	},
+        	failure : function(o)
+        	{
+            	my.asyncRequestError(o.responseText);
+        	}
+    	});
+	};              
 
     MY.Event = function() {
         return this;
