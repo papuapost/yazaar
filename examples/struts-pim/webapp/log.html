@@ -1,0 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!-- 
+Copyright (c) 2007, Husted dot Com, Inc. All rights reserved.
+Code licensed under the BSD License: http://developer.yahoo.net/yui/license.txt
+-->
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <title>Logs</title>
+        <link href="http://yui.yahooapis.com/2.2.2/build/logger/assets/logger.css" rel="stylesheet" type="text/css" />
+        <script src="http://yui.yahooapis.com/2.2.2/build/yahoo-dom-event/yahoo-dom-event.js" type="text/javascript"></script>
+        <script src="http://yui.yahooapis.com/2.2.2/build/logger/logger-min.js" type="text/javascript"></script>        
+        <script src="http://yui.yahooapis.com/2.2.2/build/dragdrop/dragdrop-min.js" type="text/javascript"></script>
+        <script src="http://yui.yahooapis.com/2.2.2/build/container/container-min.js" type="text/javascript"></script>        
+        <script src="my.js" type="text/javascript"></script>                      
+    </head>
+    <body>
+        <div id="elBody" class="bd">
+            <div id="elContent"></div>
+        </div>
+        <div id="elScript" class="js">
+            <script type="text/javascript">
+                var fnReady = function() {
+                   var oView = new MY.View("elBody","Log");
+                   oView.oContent = new YAHOO.widget.LogReader("elContent");   
+                   my.oLogger = YAHOO.widget.Logger;
+                };
+                YAHOO.util.Event.onContentReady("elBody",fnReady);
+            </script>
+        </div>
+    </body>
+</html>

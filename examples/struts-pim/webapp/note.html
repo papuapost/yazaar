@@ -1,0 +1,306 @@
+<!--
+Copyright (c) 2007, Frank W. Zammetti
+
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright notice, this
+  list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above copyright notice,
+  this list of conditions and the following disclaimer in the documentation
+  and/or other materials provided with the distribution.
+
+* Neither the name of the <ORGANIZATION> nor the names of its contributors
+  may be used to endorse or promote products derived from this software
+  without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<html>
+
+  <head>
+
+    <title>Notes</title>
+
+    <link rel="stylesheet" href="http://yazaar.org/2.2.2/jsnotes/assets/styles.css">
+    <link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/logger/assets/logger.css">
+    <link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/fonts/fonts.css">
+    <link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/reset/reset.css">
+    <link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/menu/assets/menu.css">
+    <link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/container/assets/container.css">
+    <link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/calendar/assets/calendar.css" />
+    <link rel="stylesheet" href="http://yui.yahooapis.com/2.2.2/build/treeview/assets/tree.css" />
+
+    <script type="text/javascript" src="http://yazaar.org/2.2.2/jsnotes/jscript.dom.js"></script>
+    <script type="text/javascript" src="http://yazaar.org/2.2.2/jsnotes/JSNotes.js"></script>
+    <script type="text/javascript" src="http://yazaar.org/2.2.2/jsnotes/Note.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/yahoo/yahoo-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/event/event-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/dom/dom-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/dragdrop/dragdrop-min.js" ></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/connection/connection-min.js" ></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/logger/logger-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/container/container-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/menu/menu-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/animation/animation-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/calendar/calendar-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/slider/slider-min.js"></script>
+    <script type="text/javascript" src="http://yui.yahooapis.com/2.2.2/build/treeview/treeview-min.js"></script>
+
+    <script>
+
+      // The one and only instance of JSNotes.
+      var jsNotes = new JSNotes();
+
+    </script>
+
+  </head>
+
+  <body onLoad="jsNotes.init();">
+
+    <div class="cssMain" id="divMain">
+
+      <!-- Menubar DIV. -->
+      <div id="divMainMenu" class="yuimenubar">
+        <div class="bd">
+          <ul class="first-of-type">
+            <li class="yuimenubaritem first-of-type">File
+              <div class="yuimenu">
+                <div class="bd">
+                  <ul>
+                    <li class="yuimenuitem"><a href="javascript:void(0);"
+                      onClick="jsNotes.showAddNote();">Add Note</a></li>
+                    <li class="yuimenuitem"><a href="javascript:void(0);"
+                      onClick="jsNotes.deleteNote();">Delete Current Note
+                      </a></li>
+                    <li class="yuimenuitem"><a href="javascript:void(0);"
+                      onClick="jsNotes.showExportNote();">Export Note</a>
+                    </li>
+                    <li class="yuimenuitem"><a href="javascript:void(0);"
+                      onClick="jsNotes.exit();">Exit</a></li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+            <li class="yuimenubaritem">Help
+              <div class="yuimenu">
+                <div class="bd">
+                  <ul>
+                    <li class="yuimenuitem"><a href="javascript:void(0);"
+                      onClick="jsNotes.showUsing();">Using JSNotes</a></li>
+                    <li class="yuimenuitem"><a href="javascript:void(0);"
+                      onClick="jsNotes.toggleLogging();">Toggle Logging</a></li>
+                    <li class="yuimenuitem"><a href="javascript:void(0);"
+                      onClick="jsNotes.showAbout();">About JSNotes</a></li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Main content DIV. -->
+      <div id="divContent" class="cssContent">
+        <span id="spnLeft" class="cssContentLeft">
+          <div id="divTreeview" class="cssPadded"></div>
+        </span>
+        <span id="spnRight" class="cssContentLeft">
+          <div id="divNote" class="cssPadded">
+            <table border="0" cellpadding="2" cellspacing="2">
+              <tr>
+                <td valign="top">Date:&nbsp;</td>
+                <td id="currentNoteDate">&nbsp;</td>
+              </tr>
+              <tr><td colspan="2">&nbsp;</td></tr>
+              <tr>
+                <td>Time:&nbsp;</td>
+                <td id="currentNoteTime">&nbsp;</td>
+              </tr>
+              <tr><td colspan="2">&nbsp;</td></tr>
+              <tr>
+                <td valign="top">Subject:&nbsp;</td>
+                <td id="currentNoteSubject">&nbsp;</td>
+              </tr>
+              <tr><td colspan="2">&nbsp;</td></tr>
+              <tr>
+                <td valign="top">Note:&nbsp;</td>
+                <td id="currentNoteText">&nbsp;</td>
+              </tr>
+            </table>
+          </div>
+        </span>
+      </div>
+
+    </div>
+
+    <!-- Logging DIV. -->
+    <div id="divLog" style="display:none;"></div>
+
+    <!-- About DIV. -->
+    <div id="divAbout" class="cssOverlay">
+      <table border="0" cellpadding="0" cellspacing="0" class="cssOverlayTable">
+        <tr>
+          <td align="center" valign="middle" class="cssPadded">
+            JSNotes 1.0
+            <br><br>
+            Frank W. Zammetti
+            <br><br><br><br>
+            From the book "Practical JavaScript Projects"
+            <br>
+            Published by Apress in 2007
+            <br><br><br><br>
+            <a href="javascript:void(0);" onClick="jsNotes.hideAbout();">Ok</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Export DIV. -->
+    <div id="divExport" class="cssOverlay">
+      <table border="0" cellpadding="0" cellspacing="0" class="cssOverlayTable">
+        <tr>
+          <td align="center" valign="middle" class="cssPadded">
+            <textarea id="taExport" rows="16" cols="60"></textarea>
+            <br><br>
+            You may now copy the above text and paste it into another program.
+            <br><br><br><br>
+            <a href="javascript:void(0);"
+              onClick="jsNotes.hideExportNote();">Ok</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Using DIV. -->
+    <div id="divUsing" class="cssOverlay" >
+      <table border="0" cellpadding="0" cellspacing="0" class="cssOverlayTable">
+        <tr>
+          <td align="left" valign="middle" class="cssPadded">
+            <center>Using JSNotes</center>
+            <br><br>
+            JSNotes is about as easy to use as can be!  To create a note, select
+            the Add Note option from the File menu.  In the dialog that appears,
+            select the category you want the note to appear in (defaults to
+            Personal), select the date the note was created on (defaults to the
+            current day), select the time the note was created at (defaults to
+            the current time), enter a subject for the note, and finally of
+            course, enter the note itself.  Then click Submit.  You can click
+            Cancel at any time if you decide you don't want to create the note.
+            <br><br>
+            You can click on a note in either category to view its details on
+            the right.  Once a note is displayed on the right, you can delete it
+            by selecting Delete Current Note from the File menu.
+            <br><br>
+            If you wish to save a copy of the current note, select the Export
+            Note option from the File menu.  The note will be presented in a
+            form suitable for copying and pasting into another application.
+            <br><br>
+            To exit the application, select Exit from the File menu.
+            <br><br>
+            You can view the about information for the application by selecting
+            About JSNotes from the Help menu.  You obviously know about the
+            Using JSNotes help already!
+            <br><br>
+            Lastly, to enable and disable the logging console, select the Toggle
+            Logging option from the Help menu.
+            <br><br>
+            <center><a href="javascript:void(0);"
+              onClick="jsNotes.hideUsing();">Ok</a></center>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Add Note DIV. -->
+    <div id="divAddNote">
+      <div class="hd">Add Note</div>
+      <div class="bd">
+        <form onSubmit="return false;" id="frmNewNote">
+          <table border="0">
+            <tr>
+              <td class="cssTDNewNote" colspan="2">Category&nbsp;</td>
+              <td class="cssTDNewNote">
+                <select name="newNoteCategorySelect" id="newNoteCategorySelect">
+                  <option value="Personal">Personal</option>
+                  <option value="Business">Business</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td class="cssTDNewNote" valign="top" colspan="2">Date:&nbsp;</td>
+              <td class="cssTDNewNote">
+                <div id="addNoteCalendar"></div>
+              </td>
+            </tr>
+            <tr>
+              <td class="cssTDNewNote">Time (HH):&nbsp;</td>
+              <td class="cssTDNewNote" width="20">
+                <span id="divHHValue" class="cssTimeSpan"></span>
+              </td>
+              <td class="cssTDNewNote">
+                <div id="divHHSliderBG" class="cssSliderBGHH">
+                    <div id="divHHSliderThumb" class="cssSliderHandle">
+                      <img alt="" src="img/horizSlider.png">
+                    </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="cssTDNewNote" >Time (MM):&nbsp;</td>
+              <td class="cssTDNewNote" width="20">
+                <span id="divMMValue" class="cssTimeSpan"></span>
+              </td>
+              <td class="cssTDNewNote">
+                <div id="divMMSliderBG" class="cssSliderBGMM">
+                    <div id="divMMSliderThumb" class="cssSliderHandle">
+                      <img alt="" src="img/horizSlider.png">
+                    </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="cssTDNewNote" colspan="2">&nbsp;</td>
+              <td class="cssTDNewNote">
+                <input type="radio" name="newNoteAMPM" id="newNoteAM">&nbsp;AM
+                &nbsp;&nbsp;
+                <input type="radio" name="newNoteAMPM"
+                  id="newNotePM">&nbsp;PM
+              </td>
+            </tr>
+            <tr>
+              <td class="cssTDNewNote" colspan="2">Subject:&nbsp;</td>
+              <td class="cssTDNewNote">
+                <input type="text" name="newNoteSubject"
+                  id="newNoteSubject" size="25">
+              </td>
+            </tr>
+            <tr>
+              <td class="cssTDNewNote" colspan="2">Note:&nbsp;</td>
+              <td class="cssTDNewNote">
+                <textarea cols="24" rows="4" name="newNoteText"
+                  id="newNoteText"></textarea>
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+    </div>
+
+  </body>
+
+</html>
