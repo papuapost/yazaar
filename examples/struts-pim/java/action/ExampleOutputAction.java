@@ -1,13 +1,16 @@
-package actions;
+package action;
 
 import java.util.Map;
 import java.util.HashMap;
+
+import com.googlecode.jsonplugin.JSONResult;
 import com.googlecode.jsonplugin.annotations.JSON;
-import org.texturemedia.smarturls.ParentPackage;
-import org.texturemedia.smarturls.Result;
+
+import org.apache.struts2.config.ParentPackage;
+import org.apache.struts2.config.Result;
 
 @ParentPackage("json-default")
-@Result(name="success", type="json", location="")
+@Result(name="success", value="", type=JSONResult.class)
 @SuppressWarnings("unchecked")
 public class ExampleOutputAction {
 
@@ -40,7 +43,7 @@ public class ExampleOutputAction {
     public String getNextRecord() {
         return nextRecord;
     }
-    
+
     //'transient' fields are not serialized
     @SuppressWarnings("unused")
     private transient String stayHome;
@@ -53,5 +56,5 @@ public class ExampleOutputAction {
         map.put("Zaphod", "Just this guy, you know");
         map.put("Arthur", "Monkey-Boy");
         return "success";
-    }    
+    }
 }
