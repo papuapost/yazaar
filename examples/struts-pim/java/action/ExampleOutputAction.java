@@ -2,10 +2,8 @@ package action;
 
 import java.util.Map;
 import java.util.HashMap;
-
 import com.googlecode.jsonplugin.JSONResult;
 import com.googlecode.jsonplugin.annotations.JSON;
-
 import org.apache.struts2.config.ParentPackage;
 import org.apache.struts2.config.Result;
 
