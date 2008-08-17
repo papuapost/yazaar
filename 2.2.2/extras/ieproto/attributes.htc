@@ -1,0 +1,12 @@
+<PUBLIC:COMPONENT>
+    <PUBLIC:METHOD NAME="getAttribute"
+           INTERNALNAME="_getAttribute" />
+    <PUBLIC:METHOD NAME="setAttribute"
+           INTERNALNAME="_setAttribute" />
+
+    <script type="text/javascript">
+        var el = new Element;
+        _getAttribute = el.getAttribute;
+        _setAttribute = el.setAttribute;
+    </script>
+</PUBLIC:COMPONENT>
