@@ -21,13 +21,12 @@
 			</result-type>
        </result-types>
 
-		<!-- 
-        <action name="contact-load" class="actions.ContactLoadAction">
+		<!-- No contact-load.jsp -->    		
+        <action name="contact-load" class="action.ContactLoadAction">
 	       	<interceptor-ref name="json">
        		</interceptor-ref>       
              <result />
         </action>
-         -->    
     </package>
     
 
