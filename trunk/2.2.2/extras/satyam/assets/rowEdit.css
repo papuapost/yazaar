@@ -1,0 +1,16 @@
+.yui-dt-edit-form label {
+ float: left;
+}
+
+.yui-dt-edit-form input {
+ margin-left:300px;
+ display:block;
+}
+.yui-dt-edit-form select {
+ margin-left:300px;
+ display:block;
+}
+.yui-dt-edit-form textarea {
+ margin-left:300px;
+ display:block;
+} 

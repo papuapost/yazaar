@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- http://www.webstandards.org/2006/04/13/dom-builder/ -->
+<!-- http://svn.danwebb.net/external/DomBuilder/trunk/ --> 
+<html>
+<head>
+	<title></title>
+	<script src="dombuilder.js"></script>
+	<style>
+		.test {
+			color : red;
+		}
+	</style>
+	<script>
+		DomBuilder.apply(window);
+		var times = 0;
+
+		document.onclick = function() {
+			times++;
+			document.body.appendChild(
+				DIV({ id : "el_" + times, 'onclick' : 'alert("sdsdsd")'}, 
+					STRONG({ 'class' : 'test' },"Lovely"), " nodes! #" + times,
+					INPUT({type : 'text', name : 'test'})
+				)
+			);
+		}
+	</script>
+</head>
+
+<body>
+
+<p>Click anywhere in the window to generate some content.</p>
+</body>
+</html>
