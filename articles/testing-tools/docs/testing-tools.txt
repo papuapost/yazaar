@@ -1,22 +1,10 @@
-It would be even simpler to collect input and present the output without talking to the server. But, without the server, we wouldn't be testing a working Ajax application -- only a lonely JavaScript application. Server-side interaction puts the A in Ajax.
+In this article, you will learn:
 
-http://www.alexhopmann.com/story-of-xmlhttp/
-
-
+* When, where, and how to test Ajax components;
+* How to create automatic tests with popular, free, open-source tools;
+* How to use testing tools with IDEs and Continuous Integration systems.
 
 ----
-
-Not long ago, testing web applications with Ajax components meant play-testing a page by hand. Today, there are a growing number of tools we can use to simplify and automate Ajax testing.
-
-In this session we will cover when to test, what to test and how to test web applications with Ajax components. You learn how to create automatic tests with tools like OpenQA Selenium, and how to use Ajax testing tools with continuous integration systems, like CruiseControl or Hudson.
-
-In this session, you will learn:
-
- * How Ajax works, and why it complicates testing;
- * When, where, and how to test Ajax components;
- * How to use Ajax testing tools with continuous integration systems.
-
- ----
 
 Testing Ajax Web Applications from Square One by Ted Husted
 
@@ -24,11 +12,7 @@ Not long ago, testing Ajax components meant play-testing a page by hand. Today, 
 
 In this article, we spell out when to test, what to test, and how to test Ajax components. We demonstrate creating automatic tests with YUI Test and OpenQA Selenium, as well using Ajax testing tools with IDEs and continuous integration systems, like CruiseControl or Hudson.
 
-In this article, you will learn:
-
-* When, where, and how to test Ajax components;
-* How to create automatic tests with popular, free, open-source tools;
-* How to use testing tools with IDEs and Continuous Integration systems.
+We'll start by introducing Ajax as a technology. Building on that foundation, we then introduce an application we can test with our suite of open source testing tools.  
 
 
 What is Ajax?
@@ -40,16 +24,108 @@ The goal is to let web pages behave less like flat documents and more like dynam
 
 How does Ajax work?
 
-Ajax works its magic using a non-standard, but ubiquitous, asyncronous JavaScript feature known as the XMLHttpRequest (or XHR). We can trigger an XHR using any JavaScript event: pressing a button, changing a list selection, tabbing from field to field. The XHR differs from an ordinary HttpRequest in that it works asynchronously. The script fires off the call, and the proceeds on its way, without waiting for a response. Instead of waiting, the script registers a "callback" method that can be invoked when the response returns. In the meantime, the script can continue, or even end, and the application doesn't seem to lockup or stall. 
+Ajax works its magic using a (still) non-standard, but ubiquitous, asyncronous JavaScript feature known as the XMLHttpRequest (or XHR). We can trigger an XHR using any JavaScript event: pressing a button, changing a list selection, tabbing from field to field. The XHR differs from an ordinary HttpRequest in that it works asynchronously. The script fires off the call, and the proceeds on its way, without waiting for a response. Instead of waiting, the script registers a "callback" method that can be invoked when the response returns. In the meantime, the script can continue, or even end, and the application doesn't seem to lockup or stall. 
 
-When the response does return, the script engine invokes the callback method. The method can then use the content returned in the response to update the page dynamically. We may call it a XMLHttpRequest, but the content it returns can be anything: plain text, a HTML fragment, XML; whatever we need. 
+When the response does return, the script engine invokes the callback method. The method can then use the content returned in the response to update the page dynamically. We may call it a XMLHttpRequest, but the content it returns can be anything: plain text, a HTML fragment, XML; whatever we need. The Ajax lifecycle is illustrated in the figure "Visual Ajax". 
+
+"Figure: Ajax in Action" 
+[TBD]
+
+While this article isn't intended as an Ajax tutorial, a simple Hello World illustration will make it easier to understand testing JavaScript applications. The HTML code in the example "Simple Javascript Application" presents a message when the button is clicked and pops up an Alert dialog. 
+
+"Example: Simple JavaScript Application" 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+  <title>Simple JavaScript Application</title>
+  <!-- (1) Load library scripts, courtesy of Yahoo! YUI. -->
+  <script src="http://yui.yahooapis.com/2.6.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+  <script src="http://yui.yahooapis.com/2.6.0/build/element/element-beta-min.js"></script>
+</head>
+<body>
+  <!-- (2) Render a button control. -->
+  <input id="hello-button" type="button" value="Say Hello World via AJAX" />
+  <br /><br />
+  <!-- (3) Provide a message area. --> 
+ <div id="hello-div"></div>
+  <!-- (4) Initialize the button and div, define the "handleClick" function and attach it to the button. -->
+  <script>
+    var elButton = new YAHOO.util.Element("hello-button");
+    var elDiv = YAHOO.util.Dom.get("hello-div");
+    var handleClick = function(e) {
+        elDiv.innerHTML = this.get("value");
+        alert(this.get("id") + " raised " + e.type);
+		elDiv.innerHTML = "Try Again!";
+        this.removeListener(handleClick);
+    };
+    elButton.on("click", handleClick, elButton); 
+  </script>
+  </body>
+</html> 
+
+Given an Internet connection, you can copy the example to a HTML file and open it with a browser. The figure "Hello World Storyboard" shows the example in action. 
+
+"Figure: Hello World Storyboard" 
+[TBD]
+
+While we could use Hello World to demonstate testing a Javascript application, it's not a true Ajax application, since it does not use an XHR to interact with the server. To introduce a XHR, we can add a server-side file to provide the "Hello World" text, and a callback function to receive the response and present the text.
+
+"Example: Simple Ajax Application"
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+  <title>Simple Ajax Application</title>
+  <!-- (1) Load library scripts, courtesy of Yahoo! YUI. -->
+  <script src="http://yui.yahooapis.com/2.6.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+  <script src="http://yui.yahooapis.com/2.6.0/build/element/element-beta-min.js"></script>
+  <!-- New scripts for Ajax connectivity. -->
+  <script src="http://yui.yahooapis.com/2.6.0/build/yahoo/yahoo-min.js" type="text/javascript"></script>
+  <script src="http://yui.yahooapis.com/2.6.0/build/connection/connection-min.js" type="text/javascript"></script>
+</head>
+<body>
+  <!-- (2) Render a button control. -->
+  <input id="hello-button" type="button" value="Say Hello World via AJAX" /
+  <br /><br />
+  <!-- (3) Provide a message area. --> 
+  <div id="hello-div"></div>
+  <!-- (4) Initialize the button and div, define the callback and handleClick functions, and attach handleClick to the button. -->
+  <script>
+    var elButton = new YAHOO.util.Element('hello-button');
+    var elDiv = YAHOO.util.Dom.get("hello-div");
+    var sUrl = "HelloWorks-result.txt";
+    
+	<!-- (5) The callback function runs when the XHR returns. -->
+    var callback = {
+     success: function(o) {
+        elDiv.innerHTML = o.responseText;
+        alert("AJAX works! " + "Status is (" + o.status + ") " + o.statusText + "."); //SUCCESS
+        },
+     failure: function(o) {
+        alert("AJAX doesn't work! " + "Status is (" + o.status + ") " + o.statusText + "."); //FAILURE
+     }
+    }
+
+	<!-- (6) The event handler hands off to the callback method. --> 
+    var handleClick = function(e) {
+        var transaction = YAHOO.util.Connect.asyncRequest("GET", sUrl, callback, null);
+        this.removeListener(handleClick);
+    };
+    elButton.on('click', handleClick, elButton);
+
+    </script>
+  </body>
+</html>
+
+In the update example, we read the contents of the server-side "index-result.txt", and present it on the web page. Unlike the JavaScript example, the Ajax example requires the use of a web server to read the file for us.  
+
+While Hello World examples are a great way to introduce a technology like Ajax, we need an application with more interactivity to exercise our testing tools. 
 
 
 What's the simplest Ajax application that we could possibly test?
  
 Automated testing is popular in Agile development disciplines, like Extreme Programming. In XP, we usually try to start with the simplest implementation that can possibly work, prove that it works with automatic unit tests, and then refactor the implementation to meet all of its functional and nonfunctional requirements. 
 
-To kick-off our review of testing tools, let's start with the simplest Ajax application that we could possibly test. As a design pattern, Ajax lets us update the state of the application and conform the presentation, without resorting to a full browser page refresh. Accordingly, our simple Ajax application would need to:  
+To kick-off our exploration of testing tools, let's start with the simplest Ajax application that we could possibly test. As a design pattern, Ajax lets us update the state of the application and conform the presentation, without resorting to a full browser page refresh. Accordingly, our simple Ajax application would need to:  
 
  * collect input, 
  * interact with the server, and 
@@ -57,17 +133,17 @@ To kick-off our review of testing tools, let's start with the simplest Ajax appl
 
 all without reloading the page. 
 
-For the application to both simple and realistic, there should also be the potential for error when interacting with server. Depending on the input, we should be able to present an error message as output. 
+For the application to be both simple and realistic, there should also be the potential for error when interacting with server. Depending on the input, we should be able to present an error message as output. 
 
-One of the most common workflows in a business applications is authenticating users with a login/logout routine. A typical routine is described by "Figure 1: Sign In and Out Use Case." 
+One of the most common workflows in a business applications is authenticating users with a login/logout routine. A typical routine is described by the figure "Sign In and Out Use Case." 
 
 ----
 
-"Figure 1: Sign In and Out Use Case" 
+"Figure: Sign In and Out Use Case" 
 
 Main Success Scenario (MSS)
 
-  1 Unauthenticated user access the application 
+  1 Unauthenticated user access the application. 
   2 System presents username and password text input controls, with another control labeled "Sign In".
   3 User inputs credentials and selects the "Sign In" control.
   4 System validates input against business rules.
@@ -81,7 +157,7 @@ Extension to MSS
 
   4a Username validation fails
   .1 System determines username input is empty or not a valid format for an email address.
-  .2 System presents validation message in the form "${username}is required and must be a valid email format."
+  .2 System presents validation message in the form "Your username is required and must be a valid email format."
   .3 Return at MSS 2
    
   4b Password validation fails
@@ -101,16 +177,16 @@ Extension to MSS
 
 ----
   
-Of course, Steps 8 and 9 in Figure 1 could also be part of a separate "Sign Out" use case, but for our purposes, it's more effective to keep everything as a single workflow. 
+Steps 8 and 9 in the adjacent figure could also be part of a separate "Sign Out" use case, but for our purposes, it's more effective to keep everything as a single workflow. 
+
  
 Where do we begin?
 
-With a use case in hand (see Figure 1), we can whip up a quick UI sketch as shown in "Figure 2: 
-Sign In Wireframes".
+With our "Sign In and Out Use Case" in hand (Figure TBD), we can whip up a quick UI sketch as shown in the figure "Sign In Wireframes".
 
 ----
 
-"Figure 2: Sign In Wireframes" 
+"Figure: Sign In Wireframes" 
 
  ...  Username:[        ] Password:[        ]  [Sign In]
 --
@@ -119,15 +195,14 @@ Sign In Wireframes".
 
  ...  | Alert |
       | Username is required and must be a valid email format. |
-	  | Password is required and must be a valid password format. |
+      | Password is required and must be a valid password format. |
       | [OK] | 
 --
  .... Welcome ${Username} [Sign Out]
  
 ----
 
-The next step is to design a aystem interface for our application, and then we can work on the user interface. Since we're designing an Ajax application, our system interface includes a connection method and a callback method. The Ajax interface also includes any events we need to raise, to indicate system state. Example 1 "Authentification Interface" shows the method signatures and events that we can use. 
-
+The next step is to design a system interface to support the user interface requirements. Since we're designing an Ajax application, our system interface includes a connection method and a callback method. The Ajax interface also includes any events we need to raise to indicate system state. The example "Authentification Interface" shows the method signatures and events that we can use. 
 
 -----
 
@@ -146,108 +221,13 @@ System Methods
  * signin_validate_password(password)
  * validate_message(message)
 
-----
+Method Signatures 
+ * authenticate_connect(username, password) 
+ * authenticate_callback(e) 
 
-method signatures 
-
-
-authenticate_connect(username, password) 
-
-authenticate_callback(e) 
-
-
-events 
-
-authenticate_success
-
-authenticate_failure 
-
-
-
-<html>
-<head>
-  <title>Simple Hello World Example</title>
-  <script src="http://yui.yahooapis.com/2.5.2/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-  <script src="http://yui.yahooapis.com/2.5.2/build/element/element-beta-min.js"></script>
-</head>
-<body>
-  <input id="hello-button" type="button" value="Say Hello World via AJAX" />
-  <br /><br />
-  <div id="hello-div"></div>
-  <script>
-	var elButton = new YAHOO.util.Element('hello-button');
-	var elDiv = YAHOO.util.Dom.get("hello-div");
-	var handleClick = function(e) {
-		elDiv.innerHTML = this.get("value");
-		alert(this.get('id') + " raised " + e.type);
-		this.removeListener(handleClick); 
-	};
-	elButton.on('click', handleClick, elButton); 
-  </script>
-  </body>
-</html>
+Events 
+ * authenticate_success
+ * authenticate_failure 
 
 ----
-
-<html>
-<head>
-  <title>Simple Hello World Example</title>
-  <script src="http://yui.yahooapis.com/2.5.2/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-  <script src="http://yui.yahooapis.com/2.5.2/build/element/element-beta-min.js"></script>
-  <script src="http://yui.yahooapis.com/2.2.2/build/yahoo/yahoo-min.js" type="text/javascript"></script> 
-  <script src="http://yui.yahooapis.com/2.2.2/build/connection/connection-min.js" type="text/javascript"></script>
-</head>
-<body>
-  <input id="hello-button" type="button" value="Say Hello World via AJAX" />
-  <br /><br />
-  <div id="hello-div"></div>
-  <script>
-	var elButton = new YAHOO.util.Element('hello-button');
-	var elDiv = YAHOO.util.Dom.get("hello-div");
-	var sUrl = "index-result.txt";
-	
-	var callback = {
-     success: function(o) {
-	    // elDiv.innerHTML = value;
-        alert("AJAX Works"); //SUCCESS
-        },
-     failure: function(o) {
-        alert("AJAX doesn't work"); //FAILURE
-     }
-	}
-	
-	var handleClick = function(e) {
-		var transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null); 
-		this.removeListener(handleClick);		
-	};
-	elButton.on('click', handleClick, elButton); 
-
-	</script>
-  </body>
-</html>
-
-----
-+	var sUrl = "index-result.do";
-+ 	var sUrl = "index-result.action";
-----
-
-One of the most popular Ajax widgets is an Autocomplete control, where the system predicts a word or phrase that we mean to enter before we enter it completely. Autocomplete controls are used to opine terms we have input before, stored in a local cache, or to suggest terms from a rapid search on a remote database. 
-
-A well-known example of autocomplete is Google Search. Rather than waste time typing in an entire search term, Google Search executes a series of searches while we type, as shown in Figure 1: "Hello Wo! (2)". 
-
-"Figure 1: Hello Wo!" 
-[figure-1-hello-wo.gif]
-
-Other examples of autocomplete abound. Email clients offer up contacts from our address books. Web forms eerily remember data we typed into other forms. Code editors eagerly offer attributes. 
-
-Let's start by coding and testing the simplest case first, and then move on to a more interesting example that fully utilizes the Ajax model. The simplest case would be offering suggestions from a list in memory, such as list of US states. "Example 1: ListSearch.html" shows our first autocomplete application. 
-
-"Example 1: ListSearch.html"
-
-Our ListSearch example is based on the Yahoo! User Interface (YUI) Library, and we can write our first tests usng YUI Test from the same library. 
-
-(Testing the local list.) 
-
-(Moving the list to a server.)
-
 
