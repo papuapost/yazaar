@@ -29,6 +29,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -40,21 +41,24 @@
     <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="test-logger.html" />
-    <Content Include="jquery\contact.html" />
-    <Content Include="css\tutorial.css" />
+    <Content Include="ajax-works-2.html" />
+    <Content Include="ajax-works-2.js" />
+    <Content Include="ajax-works-result.txt" />
     <Content Include="ajax-works.html" />
+    <Content Include="hello-world-2.html" />
+    <Content Include="hello-world-2.js" />
     <Content Include="hello-world.html" />
-    <Content Include="ajax-works-result-off.txt" />
-    <Content Include="images\alert.jpg" />
-    <Content Include="images\body_bg.png" />
-    <Content Include="images\cancel.png" />
-    <Content Include="images\check.png" />
-    <Content Include="images\demo_contact_form.jpg" />
-    <Content Include="images\demo_contact_form2.jpg" />
-    <Content Include="images\fade.gif" />
-    <Content Include="images\form_bg.png" />
-    <Content Include="images\start.jpg" />
+    <Content Include="jquery\css\tutorial.css" />
+    <Content Include="jquery\images\alert.jpg" />
+    <Content Include="jquery\images\body_bg.png" />
+    <Content Include="jquery\images\cancel.png" />
+    <Content Include="jquery\images\check.png" />
+    <Content Include="jquery\images\demo_contact_form.jpg" />
+    <Content Include="jquery\images\demo_contact_form2.jpg" />
+    <Content Include="jquery\images\fade.gif" />
+    <Content Include="jquery\images\form_bg.png" />
+    <Content Include="jquery\images\start.jpg" />
+    <Content Include="jquery\contact.html" />
     <Content Include="authenticate.html" />
     <Content Include="jquery\index.html" />
     <Content Include="jquery\pages\exampleutils.js" />
@@ -66,6 +70,9 @@
     <Content Include="jquery\pages\part3.xsl" />
     <Content Include="jquery\runonload.js" />
     <Content Include="Service.asmx" />
+    <Content Include="test-ajax-works.html" />
+    <Content Include="test-hello-world.html" />
+    <Content Include="test-yui-setup.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -74,9 +81,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="images\Thumbs.db" />
+    <Compile Include="TestNUnit.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

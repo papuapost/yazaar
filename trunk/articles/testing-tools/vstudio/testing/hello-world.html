@@ -8,7 +8,7 @@
 </head>
 <body>
   <!-- (2) Render a button control. -->
-  <input id="hello-button" type="button" value="Say Hello World" />
+  <input id="hello-button" type="button" value="Say Hello World!" />
   <br /><br />
   <!-- (3) Provide a message area. --> 
  <div id="hello-div"></div>
@@ -19,7 +19,6 @@
     var handleClick = function(e) {
         elDiv.innerHTML = this.get("value");
         alert(this.get("id") + " raised " + e.type);
-		elDiv.innerHTML = "Try Again!";
         this.removeListener(handleClick);
     };
     elButton.on("click", handleClick, elButton); 
