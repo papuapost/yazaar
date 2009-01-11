@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+    <head>
+        <title>Example 1</title>
+        <style type="text/css">
+            div.notes
+            {
+                border: 1px solid black;
+                padding: 10px;
+            }
+        </style>
+        <script type="text/javascript" src="exampleutils.js"></script>
+        <script type="text/javascript">
+            // <![CDATA[
+            
+            /**
+             * Handler for server's response to notes.xml request.
+             * Notes are pulled from notes.xml and replace the
+             * contents of the DIV with id 'notesSection'.
+             */
+            function notesResponseHandler()
+            {
+                // Make sure the request is loaded (readyState = 4)
+                if (req.readyState == 4)
+                {
+                    // Make sure the status is "OK"
+                    if (req.status == 200)
+                    {
+                        var swappableSection = document.getElementById('notesSection');
+                        var notes = req.responseXML.getElementsByTagName('note');
+                        var str = '';
+                        for(i=0; i < notes.length; i++)
+                        {
+                            var noteNode = notes.item(i);
+                            if(noteNode != null && noteNode.hasChildNodes())
+                            {
+                                str += noteNode.getAttribute('name') + ': ';
+                                str += noteNode.firstChild.nodeValue + '<br />';
+                            }
+                        }
+                        swappableSection.innerHTML = str;
+                    }
+                    else
+                    {
+                        alert("There was a problem retrieving the XML data:\n" +
+                            req.statusText);
+                    }
+                }
+            }
+                
+            // ]]>
+        </script>
+    </head>
+    <body>
+        Click <a href="javascript: xmlGet('notes.xml', notesResponseHandler);">here</a>
+        to get the contents of <code>notes.xml</code> from the server.
+        <br />
+        <div class="notes" id="notesSection"></div>
+    </body>
+</html>

@@ -10,7 +10,7 @@ Testing Ajax Web Applications from Square One by Ted Husted
 
 Not long ago, testing Ajax components meant play-testing a page by hand. Today, there are a growing number of tools we can use to simplify and automate Ajax testing.
 
-In this article, we spell out when to test, what to test, and how to test Ajax components. We demonstrate creating automatic tests with YUI Test and OpenQA Selenium, as well using Ajax testing tools with IDEs and continuous integration systems, like CruiseControl or Hudson.
+In this article, we spell out when to test, what to test, and how to test Ajax components. We demonstrate creating automatic tests with YUI Test and OpenQA Selenium, continuous integration systems, like CruiseControl or Hudson.
 
 We'll start by introducing Ajax as a technology. Building on that foundation, we then introduce an application we can test with our suite of open source testing tools.  
 
@@ -24,9 +24,12 @@ The goal is to let web pages behave less like flat documents and more like dynam
 
 How does Ajax work?
 
-Ajax works its magic using a (still) non-standard, but ubiquitous, asyncronous JavaScript feature known as the XMLHttpRequest (or XHR). We can trigger an XHR using any JavaScript event: pressing a button, changing a list selection, tabbing from field to field. The XHR differs from an ordinary HttpRequest in that it works asynchronously. The script fires off the call, and the proceeds on its way, without waiting for a response. Instead of waiting, the script registers a "callback" method that can be invoked when the response returns. In the meantime, the script can continue, or even end, and the application doesn't seem to lockup or stall. 
+Ajax works its magic using a (still) non-standard, but ubiquitous, asyncronous JavaScript feature known as the XMLHttpRequest (or XHR). We can trigger an XHR using any JavaScript event: pressing a button, changing a list selection, tabbing from field to field. The XHR differs from an ordinary HttpRequest in that it works asynchronously. The script fires off the call and goes merrily on its way, without pausing for a response. Instead of waiting, the script registers a "callback" method that can be invoked when the response returns. In the meantime, the script can continue, or even end, and the application doesn't seem to lockup or stall waiting for the server respond. 
 
-When the response does return, the script engine invokes the callback method. The method can then use the content returned in the response to update the page dynamically. We may call it a XMLHttpRequest, but the content it returns can be anything: plain text, a HTML fragment, XML; whatever we need. The Ajax lifecycle is illustrated in the figure "Visual Ajax". 
+"Callout:" 
+The XHR differs from an ordinary HttpRequest in that it works asynchronously ... and the application doesn't seem to lockup or stall waiting for the server respond."
+
+When the response does return, the script engine invokes the callback method. The method can then use the content returned in the response to update the page dynamically. We may call it a XMLHttpRequest, but the content it returns can be anything: plain text, a HTML fragment, XML; whatever we need. The Ajax lifecycle is illustrated in the figure "Ajax in Action". 
 
 "Figure: Ajax in Action" 
 [TBD]
@@ -39,12 +42,12 @@ While this article isn't intended as an Ajax tutorial, a simple Hello World illu
 <head>
   <title>Simple JavaScript Application</title>
   <!-- (1) Load library scripts, courtesy of Yahoo! YUI. -->
-  <script src="http://yui.yahooapis.com/2.6.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-  <script src="http://yui.yahooapis.com/2.6.0/build/element/element-beta-min.js"></script>
+  <script src="http://yui.yahooapis.com/2.6.0/build/yahoo-dom-event/yahoo-dom-event.js" type="text/javascript"></script>
+  <script src="http://yui.yahooapis.com/2.6.0/build/element/element-beta-min.js" type="text/javascript"></script>
 </head>
 <body>
   <!-- (2) Render a button control. -->
-  <input id="hello-button" type="button" value="Say Hello World via AJAX" />
+  <input id="hello-button" type="button" value="Say Hello World" />
   <br /><br />
   <!-- (3) Provide a message area. --> 
  <div id="hello-div"></div>
@@ -63,21 +66,20 @@ While this article isn't intended as an Ajax tutorial, a simple Hello World illu
   </body>
 </html> 
 
-Given an Internet connection, you can copy the example to a HTML file and open it with a browser. The figure "Hello World Storyboard" shows the example in action. 
+To simplify the code, the script uses the popular Yahoo! User Interface (YUI) library. Given an Internet connection, you can copy the example to a HTML file and open it with a browser. The figure "Hello World Storyboard" shows the example in action. 
 
 "Figure: Hello World Storyboard" 
 [TBD]
 
-While we could use Hello World to demonstate testing a Javascript application, it's not a true Ajax application, since it does not use an XHR to interact with the server. To introduce a XHR, we can add a server-side file to provide the "Hello World" text, and a callback function to receive the response and present the text.
+While we could use Hello World to demonstate testing a Javascript application, it's not a true Ajax application, since we do not use a XHR to interact with the server. To introduce a XHR, we can add a server-side file to provide the "Hello World" text, and a callback function to receive the response and present the text.
 
-"Example: Simple Ajax Application"
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
   <title>Simple Ajax Application</title>
   <!-- (1) Load library scripts, courtesy of Yahoo! YUI. -->
-  <script src="http://yui.yahooapis.com/2.6.0/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-  <script src="http://yui.yahooapis.com/2.6.0/build/element/element-beta-min.js"></script>
+  <script src="http://yui.yahooapis.com/2.6.0/build/yahoo-dom-event/yahoo-dom-event.js" type="text/javascript"></script>
+  <script src="http://yui.yahooapis.com/2.6.0/build/element/element-beta-min.js" type="text/javascript"></script>
   <!-- New scripts for Ajax connectivity. -->
   <script src="http://yui.yahooapis.com/2.6.0/build/yahoo/yahoo-min.js" type="text/javascript"></script>
   <script src="http://yui.yahooapis.com/2.6.0/build/connection/connection-min.js" type="text/javascript"></script>
@@ -92,7 +94,7 @@ While we could use Hello World to demonstate testing a Javascript application, i
   <script>
     var elButton = new YAHOO.util.Element('hello-button');
     var elDiv = YAHOO.util.Dom.get("hello-div");
-    var sUrl = "HelloWorks-result.txt";
+    var sUrl = "ajax-works-result.txt";
     
 	<!-- (5) The callback function runs when the XHR returns. -->
     var callback = {
@@ -116,9 +118,38 @@ While we could use Hello World to demonstate testing a Javascript application, i
   </body>
 </html>
 
-In the update example, we read the contents of the server-side "index-result.txt", and present it on the web page. Unlike the JavaScript example, the Ajax example requires the use of a web server to read the file for us.  
+In the update example, we read the contents of the server-side "ajax-works-result.txt", and present it on the web page. Unlike the JavaScript example, the Ajax example requires the use of a web server to read the file for us. (For this example, any web server would do.) The figure "Ajax Works Storyboard" shows what happens when the example succeeds, and what happens when the file is missing, and Ajax Works fails. 
+
+"Figure: Ajax Works Storyboard" 
+[TBD]
+
+
+
+How do we test it?
+
+In the beginning, all Javascript and Ajax testing came in the form of Alerts, like those we used with Ajax Works. Today, the scripting landscape is almost crowded with testing tools. In January 2009, the website opensourcetesting.org includes 16 matches for JavaScript tools and 7 for Ajax, as shown by the figure "Open Source Testing Tools". 
+
+
+In this article, we'll look at two tools for testing Ajax at different levels, and a third tool for continuous integration. 
+
+YUI Test - 
+
+Open QA Selenium - 
+
+Hudson -
+
+
+
+Testing Ajax Works with YUI Test  
+
+
+
 
 While Hello World examples are a great way to introduce a technology like Ajax, we need an application with more interactivity to exercise our testing tools. 
+
+
+
+
 
 
 What's the simplest Ajax application that we could possibly test?
@@ -148,9 +179,9 @@ Main Success Scenario (MSS)
   3 User inputs credentials and selects the "Sign In" control.
   4 System validates input against business rules.
   5 System authenticates credentials against application state.
-  6 System presents the message "Welcome ${username}" and a "Sign Out" control.
+  6 System presents the message "Welcome ${nickname}" and "Edit Account" and "Sign Out" controls.
   7 User continues to interact with the system without being prompted for credentials.
-  8 User selects Sign Out control. 
+  8 User selects "Sign Out" control. 
   9 System unathenticates user.
 
 Extension to MSS
@@ -161,8 +192,8 @@ Extension to MSS
   .3 Return at MSS 2
    
   4b Password validation fails
-  .1 System determines username input is empty not a valid format for a password.
-  .2 System presents validation message in the form "${password} is required and must be a valid password format.".
+  .1 System determines password input is empty not a valid format for a password.
+  .2 System presents validation message in the form "Your password is required and must be a valid password format.".
   .3 Return at MSS 2
   
   5a Authentification fails
@@ -170,11 +201,16 @@ Extension to MSS
   .2 System presents validation message in the form "The username and password combination must match our records.".
   .3 Return at MSS 2.
   
-  7a Autentification times-out
+  7a Authentification times-out
   .1 User discontinues interaction with system.
   .2 System notes inactivity and unathenticates user.
   .3 Return at MSS 1.
 
+  7b User selects "Edit Account"
+  .1 System presents Account Form.
+  .2 User submits updated values. 
+  .3 
+  
 ----
   
 Steps 8 and 9 in the adjacent figure could also be part of a separate "Sign Out" use case, but for our purposes, it's more effective to keep everything as a single workflow. 
