@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+    <head>
+        <title>Part 2 Example</title>
+        <script type="text/javascript" src="exampleutils.js"></script>
+        <script type="text/javascript">
+            // <![CDATA[
+            
+            /**
+             * Requests table data for a specific page.
+             * 
+             * @param pageNum the page number to request data for
+             */
+            function getTableData(pageNum)
+            {
+                xmlGet('TableServlet?page=' + pageNum, tableResponseHandler);
+            }
+
+            /**
+             * Handler for server's response to table requests.
+             * Table content is pulled from response XML and a HTML
+             * table is built.  The table is then inserted into the
+             * 'tableSection' DIV.
+             */
+            function tableResponseHandler()
+            {
+                // Make sure the request is loaded (readyState = 4)
+                if (req.readyState == 4)
+                {
+                    // Make sure the status is "OK"
+                    if (req.status == 200)
+                    {
+                        var swappableSection = document.getElementById('tableSection');
+                        var str = '<table>';
+
+                        // Get the column names and create the table header
+                        var headerNode = req.responseXML.getElementsByTagName('header').item(0);
+                        var headerCells = headerNode.getElementsByTagName('cell');
+                        str += '<tr>';
+                        for(j=0; j < headerCells.length; j++)
+                        {
+                            var colName = headerCells[j].firstChild.nodeValue;
+                            str += '<td>' + colName + '</td>';
+                        }
+                        str += '</tr>';
+                        
+                        // Get the row data and create table cells
+                        var rows = req.responseXML.getElementsByTagName('row');
+                        for(i=0; i < rows.length; i++)
+                        {
+                            var rowNode = rows.item(i);
+                            if(rowNode != null && rowNode.hasChildNodes())
+                            {
+                                str += '<tr>';
+                                // For each column, get the row's value
+                                for(j=0; j < headerCells.length; j++)
+                                {
+                                    var colName = headerCells[j].getAttribute('key');
+                                    var colNode = getNodesWithKey(rowNode, 'cell', colName);
+                                    var colValue = colNode.firstChild.nodeValue;
+                                    str += '<td>' + colValue + '</td>';
+                                }
+                                str += '</tr>';
+                            }
+                        }
+                        str += '</table>';
+                        swappableSection.innerHTML = str;
+                    }
+                    else
+                    {
+                        alert("There was a problem retrieving the XML data:\n" +
+                            req.statusText);
+                    }
+                }
+            }
+            // ]]>
+        </script>
+    </head>
+    <body>
+        Page&nbsp;<a href="javascript: getTableData(1);">1</a>&nbsp;<a href="javascript: getTableData(2);">2</a>
+        <br />
+        <div style="border: 1px solid black; padding: 10px;" id="tableSection">&nbsp;</div>
+    </body>
+</html>

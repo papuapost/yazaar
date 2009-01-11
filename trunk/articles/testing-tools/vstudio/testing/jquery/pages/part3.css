@@ -1,0 +1,35 @@
+table.datatable
+{
+    width: 100%;
+    font-family: Verdana;
+    font-size: 12px;
+}
+
+table.datatable tr th
+{
+    border-bottom:1px solid black;
+    padding: 2px;
+    text-align: left;
+}
+
+table.datatable tr td
+{
+    vertical-align: top;
+    padding: 2px;
+    border-bottom: 1px solid white;
+}
+
+table.datatable tr.odd
+{
+    background-color: #E0E0E0;
+}
+
+table.datatable tr.even
+{ 
+    background-color: #F0F0F0;
+}
+
+table.datatable tr.blank
+{
+    background-color: #FFFFFF;
+}
