@@ -6,6 +6,12 @@ In this article, you will learn:
 
 ----
 
+Source: 1400 words
+Target: 2500 to 4000 words 
+
+----
+
+
 Testing Ajax Web Applications from Square One by Ted Husted
 
 Not long ago, testing Ajax components meant play-testing a page by hand. Today, there are a growing number of tools we can use to simplify and automate Ajax testing.
@@ -24,7 +30,7 @@ The goal is to let web pages behave less like flat documents and more like dynam
 
 How does Ajax work?
 
-Ajax works its magic using a (still) non-standard, but ubiquitous, asyncronous JavaScript feature known as the XMLHttpRequest (or XHR). We can trigger an XHR using any JavaScript event: pressing a button, changing a list selection, tabbing from field to field. The XHR differs from an ordinary HttpRequest in that it works asynchronously. The script fires off the call and goes merrily on its way, without pausing for a response. Instead of waiting, the script registers a "callback" method that can be invoked when the response returns. In the meantime, the script can continue, or even end, and the application doesn't seem to lockup or stall waiting for the server respond. 
+Ajax works its magic using a (still) non-standard, but ubiquitous, asynchronous  JavaScript feature known as the XMLHttpRequest (or XHR). We can trigger an XHR using any JavaScript event: pressing a button, changing a list selection, tabbing from field to field. The XHR differs from an ordinary HttpRequest in that it works asynchronously. The script fires off the call and goes merrily on its way, without pausing for a response. Instead of waiting, the script registers a "callback" method that can be invoked when the response returns. In the meantime, the script can continue, or even end, and the application doesn't seem to lockup or stall waiting for the server respond. 
 
 "Callout:" 
 The XHR differs from an ordinary HttpRequest in that it works asynchronously ... and the application doesn't seem to lockup or stall waiting for the server respond."
@@ -32,238 +38,105 @@ The XHR differs from an ordinary HttpRequest in that it works asynchronously ...
 When the response does return, the script engine invokes the callback method. The method can then use the content returned in the response to update the page dynamically. We may call it a XMLHttpRequest, but the content it returns can be anything: plain text, a HTML fragment, XML; whatever we need. The Ajax lifecycle is illustrated in the figure "Ajax in Action". 
 
 "Figure: Ajax in Action" 
-[TBD]
+[TBD: ajax-in-action.png]
 
 While this article isn't intended as an Ajax tutorial, a simple Hello World illustration will make it easier to understand testing JavaScript applications. The HTML code in the example "Simple Javascript Application" presents a message when the button is clicked and pops up an Alert dialog. 
 
 "Example: Simple JavaScript Application" 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-<head>
-  <title>Simple JavaScript Application</title>
-  <!-- (1) Load library scripts, courtesy of Yahoo! YUI. -->
-  <script src="http://yui.yahooapis.com/2.6.0/build/yahoo-dom-event/yahoo-dom-event.js" type="text/javascript"></script>
-  <script src="http://yui.yahooapis.com/2.6.0/build/element/element-beta-min.js" type="text/javascript"></script>
-</head>
-<body>
-  <!-- (2) Render a button control. -->
-  <input id="hello-button" type="button" value="Say Hello World" />
-  <br /><br />
-  <!-- (3) Provide a message area. --> 
- <div id="hello-div"></div>
-  <!-- (4) Initialize the button and div, define the "handleClick" function and attach it to the button. -->
-  <script>
-    var elButton = new YAHOO.util.Element("hello-button");
-    var elDiv = YAHOO.util.Dom.get("hello-div");
-    var handleClick = function(e) {
-        elDiv.innerHTML = this.get("value");
-        alert(this.get("id") + " raised " + e.type);
-		elDiv.innerHTML = "Try Again!";
-        this.removeListener(handleClick);
-    };
-    elButton.on("click", handleClick, elButton); 
-  </script>
-  </body>
-</html> 
+[hello-world.html]
 
 To simplify the code, the script uses the popular Yahoo! User Interface (YUI) library. Given an Internet connection, you can copy the example to a HTML file and open it with a browser. The figure "Hello World Storyboard" shows the example in action. 
 
 "Figure: Hello World Storyboard" 
-[TBD]
+[TBD: hello-world.png]
+[TBD: hello-world-alert.png]
 
-While we could use Hello World to demonstate testing a Javascript application, it's not a true Ajax application, since we do not use a XHR to interact with the server. To introduce a XHR, we can add a server-side file to provide the "Hello World" text, and a callback function to receive the response and present the text.
+While we could use Hello World to demonstrate testing a JavaScript application, it's not a true Ajax application, since we do not use a XHR to interact with the server. To introduce a XHR, we can add a server-side file to provide the "Hello World" text, and a callback function to receive the response and present the text. The HTML code in the example "Simple Ajax application" presents a message when the callback succeeds.
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-<head>
-  <title>Simple Ajax Application</title>
-  <!-- (1) Load library scripts, courtesy of Yahoo! YUI. -->
-  <script src="http://yui.yahooapis.com/2.6.0/build/yahoo-dom-event/yahoo-dom-event.js" type="text/javascript"></script>
-  <script src="http://yui.yahooapis.com/2.6.0/build/element/element-beta-min.js" type="text/javascript"></script>
-  <!-- New scripts for Ajax connectivity. -->
-  <script src="http://yui.yahooapis.com/2.6.0/build/yahoo/yahoo-min.js" type="text/javascript"></script>
-  <script src="http://yui.yahooapis.com/2.6.0/build/connection/connection-min.js" type="text/javascript"></script>
-</head>
-<body>
-  <!-- (2) Render a button control. -->
-  <input id="hello-button" type="button" value="Say Hello World via AJAX" /
-  <br /><br />
-  <!-- (3) Provide a message area. --> 
-  <div id="hello-div"></div>
-  <!-- (4) Initialize the button and div, define the callback and handleClick functions, and attach handleClick to the button. -->
-  <script>
-    var elButton = new YAHOO.util.Element('hello-button');
-    var elDiv = YAHOO.util.Dom.get("hello-div");
-    var sUrl = "ajax-works-result.txt";
-    
-	<!-- (5) The callback function runs when the XHR returns. -->
-    var callback = {
-     success: function(o) {
-        elDiv.innerHTML = o.responseText;
-        alert("AJAX works! " + "Status is (" + o.status + ") " + o.statusText + "."); //SUCCESS
-        },
-     failure: function(o) {
-        alert("AJAX doesn't work! " + "Status is (" + o.status + ") " + o.statusText + "."); //FAILURE
-     }
-    }
-
-	<!-- (6) The event handler hands off to the callback method. --> 
-    var handleClick = function(e) {
-        var transaction = YAHOO.util.Connect.asyncRequest("GET", sUrl, callback, null);
-        this.removeListener(handleClick);
-    };
-    elButton.on('click', handleClick, elButton);
-
-    </script>
-  </body>
-</html>
+"Example: Simple Ajax Application" 
+[ajax-works.html]
 
 In the update example, we read the contents of the server-side "ajax-works-result.txt", and present it on the web page. Unlike the JavaScript example, the Ajax example requires the use of a web server to read the file for us. (For this example, any web server would do.) The figure "Ajax Works Storyboard" shows what happens when the example succeeds, and what happens when the file is missing, and Ajax Works fails. 
 
 "Figure: Ajax Works Storyboard" 
-[TBD]
-
+[TBD: ajax-works.png]
+[TBD: ajax-works-success.png]
+[TBD: ajax-works-failure.png]
 
 
 How do we test it?
 
-In the beginning, all Javascript and Ajax testing came in the form of Alerts, like those we used with Ajax Works. Today, the scripting landscape is almost crowded with testing tools. In January 2009, the website opensourcetesting.org includes 16 matches for JavaScript tools and 7 for Ajax, as shown by the figure "Open Source Testing Tools". 
+In the beginning, all JavaScript and Ajax testing came in the form of Alerts, like those we used with Ajax Works. Today, the scripting landscape is almost crowded with testing tools. In January 2009, the website opensourcetesting.org includes 16 matches for JavaScript tools and 7 for Ajax, as shown by the figure "Open Source Testing Tools". 
 
+"Figure: Open Source Testing Tools" 
+[TBD: opensourcetesting.png]
 
 In this article, we'll look at two tools for testing Ajax at different levels, and a third tool for continuous integration. 
 
-YUI Test - 
+* YUI Test (http://developer.yahoo.com/yui/) is an unit testing framework for adding code-level tests to browser-based JavaScript solutions. If you're familiar with other unit testing frameworks, YUI Test derives characteristics from NUnit (http://www.nunit.org/) and JUnit (http://www.junit.org/).
 
-Open QA Selenium - 
+* Open QA Selenium (http://seleniumhq.org/) is a functional testing framework for adding UI-level tests to browser-based JavaScript solutions. If you're familiar with other functional testing frameworks, Selenium is similar in design to Canoo Web Test (http://webtest.canoo.com/) and Mercury. 
 
-Hudson -
+* Hudson (https://hudson.dev.java.net/) is a continuous integration framework for compiling application and running tests on an automatic or regular basis. CI frameworks like Hudson include Cruise Control (http://cruisecontrol.sourceforge.net/) and Bamboo.
 
-
-
-Testing Ajax Works with YUI Test  
+Using this set of tools, we can test an Ajax application like we would test any other solution. We can start with unit tests against the internal code, and then add functional tests against the external user interface. With internal and external tests in place, we can use a continuous integration system to run the tests automatically. 
 
 
+How do we test Ajax with YUI Test?
+
+When we test conventional applications with frameworks like JUnit and NUnit, our goal is to test the code at the "unit of work" level. In practice, unit testing means using a second program (or test case) to exercise the public methods within a class. The example "Hello NUnit" shows the source and output for a simple NUnit test setup. 
+
+"Example: Hello NUnit" 
+[TestNUnit.cs]
+[TBD: TestNUnit.png]
+
+Yahoo's YUI Test framework follows the same paradigm as JUnit or NUnit. To unit test our code, we create a test case, in the form of a HTML page, to exercise the public methods with a script. YUI Test even has its own version of a test runner that pops up over the page and displays the outcome of the test methods. The example "Hello YUI" shows the source and output for a simple YUI test setup. 
+
+"Example: Hello YUI Test" 
+[test-yui-setup.html]
+[TBD: test-yui-setup.png]
+
+In our first Hello World example, we embedded some test code, in the form of an alert, into the HTML code. Let's try the same sort of thing with YUI. 
+
+A key feature of YUI Test is that it can select user controls so that tests can run unattended. If we also move the page's script into a separate file, we can call the same script from the production page and the unit test. The example "Test Hello World" shows a YUI Test that clicks the button to present the message, and itemizes the result in the test logger. 
+
+"Example: Test Hello World" 
+[hello-world-2.html]
+[TBD: hello-world-2.png]
+[hello-world-2.js]
+[test-hello-world.html]
+[TBD: test-hello-world.png]
+
+That was easy! Let's try it with the Ajax example. (A few minutes later.) Hmmm, that's strange. As shown in the figure "Ajax False Positive", the screen renders correctly, but the YUI Test logger says it failed ...
+
+"Figure: Ajax False Positive" 
+[TBD: ajax-false-positive.png]
+
+The false positive is a result of the asynchronous nature of Ajax. The browser doesn't wait for the Ajax XHR response, and the test script continues to run. Microseconds later, the response returns, but it's too late. The test has already reported failure!  
+
+To test asynchronous code, YUI Test provides a wait() method that can be used in two different ways. Without a parameter, the wait() method exits the script until a resume method is called (usually by a callback handler). The resume() method accepts a single parameter, which is a function to run when the script resumes. Alternatively, a function can be passed to wait() with a timeout value (in miliseconds). When the timeout expires, YUI runs the function. 
 
 
-While Hello World examples are a great way to introduce a technology like Ajax, we need an application with more interactivity to exercise our testing tools. 
-
-
-
-
-
-
-What's the simplest Ajax application that we could possibly test?
- 
-Automated testing is popular in Agile development disciplines, like Extreme Programming. In XP, we usually try to start with the simplest implementation that can possibly work, prove that it works with automatic unit tests, and then refactor the implementation to meet all of its functional and nonfunctional requirements. 
-
-To kick-off our exploration of testing tools, let's start with the simplest Ajax application that we could possibly test. As a design pattern, Ajax lets us update the state of the application and conform the presentation, without resorting to a full browser page refresh. Accordingly, our simple Ajax application would need to:  
-
- * collect input, 
- * interact with the server, and 
- * present output,  
-
-all without reloading the page. 
-
-For the application to be both simple and realistic, there should also be the potential for error when interacting with server. Depending on the input, we should be able to present an error message as output. 
-
-One of the most common workflows in a business applications is authenticating users with a login/logout routine. A typical routine is described by the figure "Sign In and Out Use Case." 
-
-----
-
-"Figure: Sign In and Out Use Case" 
-
-Main Success Scenario (MSS)
-
-  1 Unauthenticated user access the application. 
-  2 System presents username and password text input controls, with another control labeled "Sign In".
-  3 User inputs credentials and selects the "Sign In" control.
-  4 System validates input against business rules.
-  5 System authenticates credentials against application state.
-  6 System presents the message "Welcome ${nickname}" and "Edit Account" and "Sign Out" controls.
-  7 User continues to interact with the system without being prompted for credentials.
-  8 User selects "Sign Out" control. 
-  9 System unathenticates user.
-
-Extension to MSS
-
-  4a Username validation fails
-  .1 System determines username input is empty or not a valid format for an email address.
-  .2 System presents validation message in the form "Your username is required and must be a valid email format."
-  .3 Return at MSS 2
-   
-  4b Password validation fails
-  .1 System determines password input is empty not a valid format for a password.
-  .2 System presents validation message in the form "Your password is required and must be a valid password format.".
-  .3 Return at MSS 2
-  
-  5a Authentification fails
-  .1 System determines that the username does not exist in application state.
-  .2 System presents validation message in the form "The username and password combination must match our records.".
-  .3 Return at MSS 2.
-  
-  7a Authentification times-out
-  .1 User discontinues interaction with system.
-  .2 System notes inactivity and unathenticates user.
-  .3 Return at MSS 1.
-
-  7b User selects "Edit Account"
-  .1 System presents Account Form.
-  .2 User submits updated values. 
-  .3 
-  
-----
-  
-Steps 8 and 9 in the adjacent figure could also be part of a separate "Sign Out" use case, but for our purposes, it's more effective to keep everything as a single workflow. 
 
  
-Where do we begin?
 
-With our "Sign In and Out Use Case" in hand (Figure TBD), we can whip up a quick UI sketch as shown in the figure "Sign In Wireframes".
+How do we test Ajax with Selenium? 
 
-----
 
-"Figure: Sign In Wireframes" 
 
- ...  Username:[        ] Password:[        ]  [Sign In]
---
 
- ...  Username:[husted@apache.org    ] Password:[********   ]  [Sign In]
+How do we run our tests automatically with Hudson?
 
- ...  | Alert |
-      | Username is required and must be a valid email format. |
-      | Password is required and must be a valid password format. |
-      | [OK] | 
---
- .... Welcome ${Username} [Sign Out]
- 
-----
 
-The next step is to design a system interface to support the user interface requirements. Since we're designing an Ajax application, our system interface includes a connection method and a callback method. The Ajax interface also includes any events we need to raise to indicate system state. The example "Authentification Interface" shows the method signatures and events that we can use. 
 
------
+Is that all there is?
 
-System Use Cases 
- * Present "Sign In" controls
- * Read input 
- ** Validate input
- ** Submit input
- * Present "Sign Out" controls
- * Present alerts
+Using tools like YUI Test, Selenium, and Hudson, we can test Ajax applications as easily as conventional web applications. Aside from the products discussed here, there are alternatives in each category, like JS Unit, Webtest Canoo, and Cruise Control. The sidebar "Testing Tool Review" outlines some pros and cons of each product. 
 
-System Methods 
- * signin_present(button) 
- * signin_submit(username, password)
- * signin_validate_username(username)
- * signin_validate_password(password)
- * validate_message(message)
+"Sidebar: Testing Tool Review" 
+[TBD]
 
-Method Signatures 
- * authenticate_connect(username, password) 
- * authenticate_callback(e) 
 
-Events 
- * authenticate_success
- * authenticate_failure 
+The important thing is to try one or more of these tools with your next project, and follow Kent Beck's sage advice: "Test until fear turns to boredom!"
 
-----
-
+####

@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <title>Simple Ajax Application</title>
   <!-- (1) Load library scripts, courtesy of Yahoo! YUI. -->
@@ -11,15 +11,15 @@
 </head>
 <body>
   <!-- (2) Render a button control. -->
-  <input id="hello-button" type="button" value="Say Hello World via AJAX" /
+  <input id="hello-button" type="button" value="Say Hello World via AJAX" />
   <br /><br />
   <!-- (3) Provide a message area. --> 
   <div id="hello-div"></div>
   <!-- (4) Initialize the button and div, define the callback and handleClick functions, and attach handleClick to the button. -->
-  <script>
+  <script type="text/javascript">
     var elButton = new YAHOO.util.Element('hello-button');
     var elDiv = YAHOO.util.Dom.get("hello-div");
-    var sUrl = "hello-works-result.txt";
+    var sUrl = "ajax-works-result.txt";
     
 	<!-- (5) The callback function runs when the XHR returns. -->
     var callback = {
