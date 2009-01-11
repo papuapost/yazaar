@@ -2,11 +2,11 @@ In this article, you will learn:
 
 * When, where, and how to test Ajax components;
 * How to create automatic tests with popular, free, open-source tools;
-* How to use testing tools with IDEs and Continuous Integration systems.
+* How to use testing tools with continuous integration systems.
 
 ----
 
-Source: 1400 words
+Source: 1600 words
 Target: 2500 to 4000 words 
 
 ----
@@ -16,7 +16,7 @@ Testing Ajax Web Applications from Square One by Ted Husted
 
 Not long ago, testing Ajax components meant play-testing a page by hand. Today, there are a growing number of tools we can use to simplify and automate Ajax testing.
 
-In this article, we spell out when to test, what to test, and how to test Ajax components. We demonstrate creating automatic tests with YUI Test and OpenQA Selenium, continuous integration systems, like CruiseControl or Hudson.
+In this article, we spell out when to test, what to test, and how to test Ajax components. We demonstrate creating automatic tests with YUI Test and OpenQA Selenium, and launching the tests with Hudson, a continuous integration system.
 
 We'll start by introducing Ajax as a technology. Building on that foundation, we then introduce an application we can test with our suite of open source testing tools.  
 
@@ -30,10 +30,10 @@ The goal is to let web pages behave less like flat documents and more like dynam
 
 How does Ajax work?
 
-Ajax works its magic using a (still) non-standard, but ubiquitous, asynchronous  JavaScript feature known as the XMLHttpRequest (or XHR). We can trigger an XHR using any JavaScript event: pressing a button, changing a list selection, tabbing from field to field. The XHR differs from an ordinary HttpRequest in that it works asynchronously. The script fires off the call and goes merrily on its way, without pausing for a response. Instead of waiting, the script registers a "callback" method that can be invoked when the response returns. In the meantime, the script can continue, or even end, and the application doesn't seem to lockup or stall waiting for the server respond. 
+Ajax works its magic using a (still) non-standard (but ubiquitous) JavaScript feature known as the asynchronous  XMLHttpRequest (or XHR). We can trigger an XHR using any JavaScript event: pressing a button, changing a list selection, tabbing from field to field. The XHR differs from an ordinary HttpRequest in that it works asynchronously. The script fires off the call and goes merrily on its way, without pausing for a response. Instead of waiting, the script registers a "callback" method that can be invoked when the response returns. In the meantime, the script can continue, or even end, and the application doesn't seem to lockup or stall waiting for the server respond. 
 
 "Callout:" 
-The XHR differs from an ordinary HttpRequest in that it works asynchronously ... and the application doesn't seem to lockup or stall waiting for the server respond."
+"The XHR differs from an ordinary HttpRequest in that it works asynchronously ... and the application doesn't seem to lockup or stall waiting for the server respond."
 
 When the response does return, the script engine invokes the callback method. The method can then use the content returned in the response to update the page dynamically. We may call it a XMLHttpRequest, but the content it returns can be anything: plain text, a HTML fragment, XML; whatever we need. The Ajax lifecycle is illustrated in the figure "Ajax in Action". 
 
@@ -66,7 +66,7 @@ In the update example, we read the contents of the server-side "ajax-works-resul
 
 How do we test it?
 
-In the beginning, all JavaScript and Ajax testing came in the form of Alerts, like those we used with Ajax Works. Today, the scripting landscape is almost crowded with testing tools. In January 2009, the website opensourcetesting.org includes 16 matches for JavaScript tools and 7 for Ajax, as shown by the figure "Open Source Testing Tools". 
+In the beginning, all JavaScript and Ajax testing came in the form of Alerts, like those we used with Hello World. Today, the scripting landscape is almost crowded with testing tools. In January 2009, the website opensourcetesting.org includes 16 matches for JavaScript tools and 7 for Ajax, as shown by the figure "Open Source Testing Tools". 
 
 "Figure: Open Source Testing Tools" 
 [TBD: opensourcetesting.png]
@@ -77,7 +77,7 @@ In this article, we'll look at two tools for testing Ajax at different levels, a
 
 * Open QA Selenium (http://seleniumhq.org/) is a functional testing framework for adding UI-level tests to browser-based JavaScript solutions. If you're familiar with other functional testing frameworks, Selenium is similar in design to Canoo Web Test (http://webtest.canoo.com/) and Mercury. 
 
-* Hudson (https://hudson.dev.java.net/) is a continuous integration framework for compiling application and running tests on an automatic or regular basis. CI frameworks like Hudson include Cruise Control (http://cruisecontrol.sourceforge.net/) and Bamboo.
+* Hudson (https://hudson.dev.java.net/) is a continuous integration framework for compiling application and running tests on an automatic or regular basis. Other CI frameworks like Hudson include Cruise Control (http://cruisecontrol.sourceforge.net/) and Bamboo.
 
 Using this set of tools, we can test an Ajax application like we would test any other solution. We can start with unit tests against the internal code, and then add functional tests against the external user interface. With internal and external tests in place, we can use a continuous integration system to run the tests automatically. 
 
@@ -107,20 +107,30 @@ A key feature of YUI Test is that it can select user controls so that tests can 
 [test-hello-world.html]
 [TBD: test-hello-world.png]
 
-That was easy! Let's try it with the Ajax example. (A few minutes later.) Hmmm, that's strange. As shown in the figure "Ajax False Positive", the screen renders correctly, but the YUI Test logger says it failed ...
+That was easy! Let's try it with the Ajax example. (A few minutes later.) Hmmm, that's strange. As shown in the figure "Ajax False Positive", the screen renders correctly, but the YUI Test logger says the test failed ...
 
 "Figure: Ajax False Positive" 
 [TBD: ajax-false-positive.png]
 
 The false positive is a result of the asynchronous nature of Ajax. The browser doesn't wait for the Ajax XHR response, and the test script continues to run. Microseconds later, the response returns, but it's too late. The test has already reported failure!  
 
-To test asynchronous code, YUI Test provides a wait() method that can be used in two different ways. Without a parameter, the wait() method exits the script until a resume method is called (usually by a callback handler). The resume() method accepts a single parameter, which is a function to run when the script resumes. Alternatively, a function can be passed to wait() with a timeout value (in miliseconds). When the timeout expires, YUI runs the function. 
+To test asynchronous code, YUI Test provides a wait() method that can be used in two different ways. Without a parameter, the wait() method exits the script until a resume() method is called, usually by an event handler. The resume() method accepts a single parameter, which is a function to run when the script resumes. Alternatively, a function can be passed to wait() along with a timeout value (in miliseconds). When the timeout expires, YUI runs the function. 
 
+The example "Test Ajax Works" shows using the wait() method to give the callback enough time to return. 
 
+"Example: Test Ajax Works" 
+[ajax-works-2.html]
+[TBD: ajax-works-2.png]
+[ajax-works-2.js]
+[test-ajax-works.html]
+[TBD: test-ajax-works.png]
 
- 
+YUI Test is a mature framework with many more features than we have been able to show here. For more, see the excellent documentation on the YUI site (http://developer.yahoo.com/yui/yuitest/).
+
 
 How do we test Ajax with Selenium? 
+
+While YUI Test can simulate some user actions, it's not intended to fully test the user interface of an application. 
 
 
 
