@@ -6,12 +6,6 @@ In this article, you will learn:
 
 ----
 
-Source: 1600 words
-Target: 2500 to 4000 words 
-
-----
-
-
 Testing Ajax Web Applications from Square One by Ted Husted
 
 Not long ago, testing Ajax components meant play-testing a page by hand. Today, there are a growing number of tools we can use to simplify and automate Ajax testing.
@@ -34,10 +28,10 @@ Ajax works its magic using a (still) non-standard (but ubiquitous) JavaScript fe
 
 Callout: "The XHR differs from an ordinary HttpRequest in that it works asynchronously ... and the application doesn't seem to lockup or stall waiting for the server respond."
 
-When the response does return, the script engine invokes the callback method. The method can then use the content returned in the response to update the page dynamically. We may call it a XMLHttpRequest, but the content it returns can be anything: plain text, a HTML fragment, XML; whatever we need. The Ajax lifecycle is illustrated in the figure "Ajax in Action". 
+When the response does return, the script engine invokes the callback method. The method can then use the content returned in the response to update the page dynamically. We may call it a XMLHttpRequest, but the content it returns can be anything: plain text, a HTML fragment, XML; whatever we need. The classic Ajax lifecycle is illustrated in the figure "Ajax in Action". 
 
 Figure: "Ajax in Action" 
-[TBD: ajax-in-action.png]
+[ajax-in-action.png]
 
 While this article isn't intended as an Ajax tutorial, a simple Hello World illustration will make it easier to understand testing JavaScript applications. The HTML code in the example "Simple Javascript Application" presents a message when the button is clicked and pops up an Alert dialog. 
 
@@ -47,8 +41,8 @@ Example: "Simple JavaScript Application"
 To simplify the code, the script uses the popular Yahoo! User Interface (YUI) library. Given an Internet connection, you can copy the example to a HTML file and open it with a browser. The figure "Hello World Storyboard" shows the example in action. 
 
 Figure: "Hello World Storyboard" 
-[TBD: hello-world.png]
-[TBD: hello-world-alert.png]
+[hello-world.png]
+[hello-world-alert.png]
 
 While we could use Hello World to demonstrate testing a JavaScript application, it's not a true Ajax application, since we do not use a XHR to interact with the server. To introduce a XHR, we can add a server-side file to provide the "Hello World" text, and a callback function to receive the response and present the text. The HTML code in the example "Simple Ajax application" presents a message when the callback succeeds.
 
@@ -58,9 +52,9 @@ Example: "Simple Ajax Application"
 In the update example, we read the contents of the server-side "ajax-works-result.txt", and present it on the web page. Unlike the JavaScript example, the Ajax example requires the use of a web server to read the file for us. (For this example, any web server would do.) The figure "Ajax Works Storyboard" shows what happens when the example succeeds, and what happens when the file is missing, and Ajax Works fails. 
 
 Figure: "Ajax Works Storyboard" 
-[TBD: ajax-works.png]
-[TBD: ajax-works-success.png]
-[TBD: ajax-works-failure.png]
+[ajax-works.png]
+[ajax-works-success.png]
+[ajax-works-failure.png]
 
 
 How do we test it?
@@ -68,7 +62,8 @@ How do we test it?
 In the beginning, all JavaScript and Ajax testing came in the form of Alerts, like those we used with Hello World. Today, the scripting landscape is almost crowded with testing tools. In January 2009, the website opensourcetesting.org includes 16 matches for JavaScript tools and 7 for Ajax, as shown by the figure "Open Source Testing Tools". 
 
 Figure: "Open Source Testing Tools" 
-[TBD: opensourcetesting.png]
+[opensourcetesting-javascript.png]
+[opensourcetesting-ajax.png]
 
 In this article, we'll look at two tools for testing Ajax at different levels, and a third tool for continuous integration. 
 
@@ -87,13 +82,13 @@ When we test conventional applications with frameworks like JUnit and NUnit, our
 
 Example: "Hello NUnit" 
 [TestNUnit.cs]
-[TBD: TestNUnit.png]
+[TestNUnit.png]
 
 Yahoo's YUI Test framework follows the same paradigm as JUnit or NUnit. To unit test our code, we create a test case, in the form of a HTML page, to exercise the public methods with a script. YUI Test even has its own version of a test runner that pops up over the page and displays the outcome of the test methods. The example "Hello YUI" shows the source and output for a simple YUI test setup. 
 
 Example: "Hello YUI Test" 
 [test-yui-setup.html]
-[TBD: test-yui-setup.png]
+[test-yui-setup.png]
 
 In our first Hello World example, we embedded some test code, in the form of an alert, into the HTML code. Let's try the same sort of thing with YUI. 
 
@@ -101,15 +96,15 @@ A key feature of YUI Test is that it can select user controls so that tests can 
 
 Example: "Test Hello World" 
 [hello-world-2.html]
-[TBD: hello-world-2.png]
 [hello-world-2.js]
+[hello-world-2.png]
 [test-hello-world.html]
-[TBD: test-hello-world.png]
+[test-hello-world.png]
 
 That was easy! Let's try it with the Ajax example. (A few minutes later.) Hmmm, that's strange. As shown in the figure "Ajax False Positive", the screen renders correctly, but the YUI Test logger says the test failed ...
 
 Figure: "Ajax False Positive" 
-[TBD: ajax-false-positive.png]
+[ajax-false-positive.png]
 
 The false positive is a result of the asynchronous nature of Ajax. The browser doesn't wait for the Ajax XHR response, and the test script continues to run. Microseconds later, the response returns, but it's too late. The test has already reported failure!  
 
@@ -121,10 +116,10 @@ The example "Test Ajax Works" shows using the wait() method to give the callback
 
 Example: "Test Ajax Works" 
 [ajax-works-2.html]
-[TBD: ajax-works-2.png]
+[ajax-works-2.png]
 [ajax-works-2.js]
 [test-ajax-works.html]
-[TBD: test-ajax-works.png]
+[test-ajax-works.png]
 
 YUI Test is a mature framework with many more features than we have been able to show here. For more, see the excellent documentation on the YUI site (http://developer.yahoo.com/yui/yuitest/).
 
