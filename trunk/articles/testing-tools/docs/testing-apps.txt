@@ -17,44 +17,45 @@ We'll start by introducing Ajax as a technology. Building on that foundation, we
 
 What is Ajax?
 
-The term Ajax was coined in 2005 as an acronym for "Asynchronous JavaScript And XML". The term describes a technique where a script running inside of a browser makes requests to a server and updates the content dynamically, without the usual full-page refresh. Though the acronym is recent, the technique itself dates back to 1998. 
+The term Ajax was coined in 2005 as an acronym for "Asynchronous JavaScript And XML". The term describes a technique where scripts running inside of a browser make requests to a server and update the content dynamically, without the usual full-page refresh. Though the acronym is recent, the technique itself dates back to 1998. 
 
 The goal is to let web pages behave less like flat documents and more like dynamic GUI applications. In fact, the popular form of the technique was born out of an attempt to make the Microsoft Exchange Web Client look exactly like Outlook (http://msexchangeteam.com/archive/2005/06/21/406646.aspx). Today, many web-based applications have a rich, GUI-like, look and feel.
 
 
 How does Ajax work?
 
-Ajax works its magic using a (still) non-standard (but ubiquitous) JavaScript feature known as the asynchronous  XMLHttpRequest (or XHR). We can trigger a XHR using any JavaScript event: pressing a button, changing a list selection, tabbing from field to field. The XHR differs from an ordinary HttpRequest in that it works asynchronously. The script fires off the call and goes merrily on its way, without pausing for a response. Instead of waiting, the script registers a "callback" method that can be invoked when the response returns. In the meantime, the script can continue, or even end, and the application doesn't seem to lockup or stall waiting for the server respond. 
+Ajax works its magic using a (still) non-standard (but ubiquitous) JavaScript feature known as the asynchronous XMLHttpRequest (or XHR). We can trigger a XHR using any JavaScript event: pressing a button, changing a list selection, tabbing from field to field. The XHR differs from an ordinary HttpRequest in that it works asynchronously. The script fires off the call and goes merrily on its way, without pausing for a response. Instead of waiting, the script registers a "callback" method that can be invoked when the response returns. In the meantime, the script can continue, or even end, and the application doesn't seem to lockup or stall waiting for the server respond. 
 
 Callout: "The XHR differs from an ordinary HttpRequest in that it works asynchronously ... and the application doesn't seem to lockup or stall waiting for the server respond."
 
 When the response does return, the script engine invokes the callback method. The method can then use the content returned in the response to update the page dynamically. We may call it a XMLHttpRequest, but the content it returns can be anything: plain text, a HTML fragment, XML; whatever we need. The classic Ajax lifecycle is illustrated in the figure "Ajax in Action". 
 
 Figure: "Ajax in Action" 
-[ajax-in-action.png]
+[01-ajax-in-action.png]
 
 While this article isn't intended as an Ajax tutorial, a simple Hello World illustration will make it easier to understand testing JavaScript applications. The HTML code in the example "Simple Javascript Application" presents a message when the button is clicked and pops up an Alert dialog. 
 
 Example: "Simple JavaScript Application" 
-[hello-world.html]
+[02-hello-world.html]
 
 To simplify the code, the script uses the popular Yahoo! User Interface (YUI) library. Given an Internet connection, you can copy the example to a HTML file and open it with a browser. The figure "Hello World Storyboard" shows the example in action. 
 
 Figure: "Hello World Storyboard" 
-[hello-world.png]
-[hello-world-alert.png]
+[03a-hello-world.png]
+[03b-hello-world-alert.png]
 
 While we could use Hello World to demonstrate testing a JavaScript application, it's not a true Ajax application, since we do not use a XHR to interact with the server. To introduce a XHR, we can add a server-side file to provide the "Hello World" text, and a callback function to receive the response and present the text. The HTML code in the example "Simple Ajax application" presents a message when the callback succeeds.
 
 Example: "Simple Ajax Application" 
-[ajax-works.html]
+[04-ajax-works.html]
+[04b-ajax-works-result.txt]
 
 In the update example, we read the contents of the server-side "ajax-works-result.txt", and present it on the web page. Unlike the JavaScript example, the Ajax example requires the use of a web server to read the file for us. (For this example, any web server would do.) The figure "Ajax Works Storyboard" shows what happens when the example succeeds, and what happens when the file is missing and Ajax Works fails. 
 
 Figure: "Ajax Works Storyboard" 
-[ajax-works.png]
-[ajax-works-success.png]
-[ajax-works-failure.png]
+[05a-ajax-works.png]
+[05b-ajax-works-success.png]
+[05c-ajax-works-failure.png]
 
 
 How do we test it?
@@ -62,16 +63,16 @@ How do we test it?
 In the beginning, all JavaScript and Ajax testing came in the form of Alerts, like those we used with Hello World. Today, the scripting landscape is almost crowded with testing tools. In January 2009, the website opensourcetesting.org includes 16 matches for JavaScript tools and 7 for Ajax, as shown by the figure "Open Source Testing Tools". 
 
 Figure: "Open Source Testing Tools" 
-[opensourcetesting-javascript.png]
-[opensourcetesting-ajax.png]
+[06a-opensourcetesting-javascript.png]
+[06b-opensourcetesting-ajax.png]
 
 In this article, we'll look at two tools for testing Ajax at different levels, and a third tool for continuous integration. 
 
  * YUI Test (http://developer.yahoo.com/yui/) is an unit testing framework for adding code-level tests to browser-based JavaScript solutions. If you're familiar with other unit testing frameworks, YUI Test derives characteristics from NUnit (http://www.nunit.org/) and JUnit (http://www.junit.org/).
 
- * Open QA Selenium (http://seleniumhq.org/) is a functional testing framework for adding UI-level tests to browser-based JavaScript solutions. If you're familiar with other functional testing frameworks, Selenium is similar in design to Canoo Web Test (http://webtest.canoo.com/) and HP QuickTest Professional (http://en.wikipedia.org/wiki/HP_QuickTest_Professional). 
+ * Open QA Selenium (http://seleniumhq.org/) is a functional testing framework for adding UI-level tests to browser-based JavaScript solutions. If you're familiar with other functional testing frameworks, Selenium is similar in design to Canoo WebTest (http://webtest.canoo.com/) and HP QuickTest Professional (http://en.wikipedia.org/wiki/HP_QuickTest_Professional). 
 
- * Hudson (https://hudson.dev.java.net/) is a continuous integration framework for compiling application and running tests on an automatic or regular basis. Other CI frameworks like Hudson include Cruise Control (http://cruisecontrol.sourceforge.net/) and Atlassian Bamboo (http://www.atlassian.com/software/bamboo/).
+ * Hudson (https://hudson.dev.java.net/) is a continuous integration framework for compiling applications and running tests on an automatic or regular basis. Other CI frameworks like Hudson include Cruise Control (http://cruisecontrol.sourceforge.net/) and Atlassian Bamboo (http://www.atlassian.com/software/bamboo/).
 
 Using this set of tools, we can test an Ajax application like we would test any other solution. We can start with unit tests against the internal code, and then add functional tests against the external user interface. With internal and external tests in place, we can use a continuous integration system to run the tests automatically. 
 
@@ -81,45 +82,45 @@ How do we test Ajax with YUI Test?
 When we test conventional applications with frameworks like JUnit and NUnit, our goal is to test the code at the "unit of work" level. In practice, unit testing means using a second program (or test case) to exercise the public methods within a class. The example "Hello NUnit" shows the source and output for a simple NUnit test setup. 
 
 Example: "Hello NUnit" 
-[TestNUnit.cs]
-[TestNUnit.png]
+[07a-TestNUnit.cs]
+[07b-TestNUnit.png]
 
 Yahoo's YUI Test framework follows the same paradigm as JUnit or NUnit. To unit test our code, we create a test case in the form of a HTML page to exercise the public methods with a script. YUI Test even has its own version of a test runner that pops up over the page and displays the outcome of the test methods. The example "Hello YUI" shows the source and output for a simple YUI test setup. 
 
 Example: "Hello YUI Test" 
-[test-yui-setup.html]
-[test-yui-setup.png]
+[08a-test-yui-setup.html]
+[08b-test-yui-setup.png]
 
 In our first Hello World example, we embedded some test code, in the form of an alert, into the HTML code. Let's try the same sort of thing with YUI. 
 
 A key feature of YUI Test is that it can select user controls so that tests can run unattended. If we also move the page's script into a separate file, we can call the same script from the production page and the unit test. The example "Test Hello World" shows a YUI Test that clicks the button to present the message, and itemizes the result in the test logger. 
 
 Example: "Test Hello World" 
-[hello-world-2.html]
-[hello-world-2.js]
-[hello-world-2.png]
-[test-hello-world.html]
-[test-hello-world.png]
+[09a-hello-world-2.html]
+[09b-hello-world-2.js]
+[09c-hello-world-2.png]
+[09d-test-hello-world.html]
+[09e-test-hello-world.png]
 
 That was easy! Let's try it with the Ajax example. (A few minutes later.) Hmmm, that's strange. As shown in the figure "Ajax False Negative", the screen renders correctly, but the YUI Test logger says the test failed ...
 
 Figure: "Ajax False Negative" 
-[ajax-false-positive.png]
+[10-ajax-false-positive.png]
 
 The false positive is a result of the asynchronous nature of Ajax. The browser doesn't wait for the Ajax XHR response, and the test script continues to run. Microseconds later, the response returns, but it's too late. The test has already reported failure!  
 
 Callout: "The false negative is a result of the asynchronous nature of Ajax ... Microseconds later ... the test has already reported failure!"
 
-To test asynchronous code, YUI Test provides a wait() method that can be used in two different ways. Without a parameter, the wait() method exits the script until a resume() method is called (usually by an event handler). The resume() method accepts a single parameter, which is a function to run when the script resumes. Alternatively, a function can be passed to wait() along with a timeout value (in miliseconds). When the timeout expires, YUI runs the function. 
+To test asynchronous code, YUI Test provides a wait() method that can be used in two different ways. Without a parameter, the wait() method exits the script until a resume() method is called (usually by an event handler). The resume() method accepts a single parameter, which is a function to run when the script resumes. Alternatively, a function can be passed to wait() along with a timeout value (in miliseconds), so that the server has a chance to respond. When the timeout expires, YUI runs the function. 
 
-The example "Test Ajax Works" shows using the wait() method to give the callback enough time to return. (As before, this example must be run on a web server to succeed.)
+The example "Test Ajax Works" shows using the wait() method to give the callback enough time to launch. (As before, this example must be run on a web server to succeed.)
 
 Example: "Test Ajax Works" 
-[ajax-works-2.html]
-[ajax-works-2.png]
-[ajax-works-2.js]
-[test-ajax-works.html]
-[test-ajax-works.png]
+[11a-ajax-works-2.html]
+[11b-ajax-works-2.png]
+[11c-ajax-works-2.js]
+[11d-test-ajax-works.html]
+[11e-test-ajax-works.png]
 
 YUI Test is a mature framework with many more features than we have been able to show here. For more, see the excellent documentation on the YUI site (http://developer.yahoo.com/yui/yuitest/).
 
@@ -136,44 +137,49 @@ Selenium is actually a suite of tools, each with its own speciality.
 
 A common workflow is to create, run, and edit tests using Selenium IDE, export the tests to run with Remote Control, and finally to load-test everything with Grid. The net result is an end-to-end functional testing solution. 
 
+In this article, we use IDE to record tests, and then we use Remote Control to run the tests with Hudson.
+
 
 How do we record tests with Selenium IDE?
 
-The Selenium IDE can be loaded directly into FireFox from the plugin repository. When launched, the plugin opens a child window where we can record and edit user actions. Selenium can select control, input data, and read text from the screen as it is updated. The figure "Selenium IDE" shows completing a typical data-entry form with the plugin activated. 
+The Selenium IDE can be loaded directly into FireFox from the plugin repository. When launched, the plugin opens a child window where we can record and edit user actions. Selenium can select controls, input data, and read text from the screen as it is updated. The figure "Selenium IDE" shows completing a typical data-entry form with the plugin activated. 
 
 Figure: "Selenium IDE"
-[selenium-ide.png]
+[12-selenium-ide.png]
 
-If we make a mistake during recording, the IDE edit the original input, as shown in the figure "Editing Selenese." The IDE includes hints and autocomplete for all of the Selenium commands, making it easy to learn the language with resorting to (ugh!) opening a manual.  
+If we make a mistake during recording, the IDE can edit the original input, as shown in the figure "Editing Selenese." The IDE includes hints and autocomplete for all of the Selenium commands, making it easy to learn the language with resorting to (ugh!) opening a manual.  
 
 Figure: "Editing Selenese"
-[editing-selenese.png]
+[13-editing-selenese.png]
  
-As we progress through a workflow, Selenium can confirm where we are by reading text from the document object model (DOM) loaded into the browser. The figure "Verifying Text" shows how we can confirm that a login succeeded, and the user's name is being displayed. Note that while we indicate the text on the screen, Selenium reads from the DOM not the display. 
+As we progress through a workflow, Selenium can confirm where we are by reading text from the document object model (DOM) loaded into the browser. The figure "Verifying Text" shows how we can confirm that a login succeeded, and the user's name is being displayed. Note that while we indicate the text on the screen, Selenium reads from the DOM -- not the display. 
 
 Figure: "Verifying Text"
-[verifying-text.png]
+[14-verifying-text.png]
 
-Like YUI Test, Selenium includes features that support testing asycronous Ajax code. Instead of just verifying text is on the screen now, we can ask Selenium to pause for a time certain, or to watch for a change, and then proceed. The net result is testing Ajax web applications with Selenium is simply a matter of choosing the "wait" version of a command. 
+Like YUI Test, Selenium includes features that support testing asycronous Ajax code. Instead of just verifying text is on the screen "now", we can ask Selenium to pause for a time certain, or to watch for a change, and then proceed. The net result is testing Ajax web applications with Selenium is simply a matter of choosing the "wait" version of a command. 
 
 When our application workflow is complete, we can save the test script for later use, as shown by the figure "Saving Selenese". 
 
 Figure: "Saving Selenese"
-[saving-selenese.png]
+[15-saving-selenese.png]
 
-Natively, Selenium stores commands in a HTML table with three colums. The first column is the command name, the second column is an HTML identifer, and the third column is an additional argument, like text to insert. If the IDE's editing capabilities weren't enough, you can also edit the HTML file directly. 
+Natively, Selenium stores commands in a HTML table with three columns. The first column is the command name, the second column is an HTML identifier, and the third column is an additional argument, like text to insert. (See the figure "Native Selenese".) If the IDE's editing capabilities weren't enough, you can also edit the HTML file directly. 
+
+Figure: "Native Selenese"
+[16-native-selenese.png]
 
 The IDE can also playback the Selenium tests, as shown by the figure "Running Selenese". In usual unit test form, the IDE glows green when the tests pass, and burns red when tests fail. 
 
 Figure: "Running Selenese"
-[running-selenese.png]
+[17-running-selenese.png]
 
 While the browser-based IDE and test runner are sufficient for light testing, more rigorous acceptance tests can make good use of a conventional testing environment. To answer that concern, the IDE lets us export the test to conventional source code languages, ready to run with JUnit, NUnit, or the Perl, Python, and Ruby equivalents. The figure "Exporting Selenese" shows the JUnit equivalent of our HTML test. 
 
 Figure: "Exporting Selenese"
-[exporting-selenese.png]
+[18-exporting-selenese.png]
 
-Once scripts are exported to conventional source code, we can run them as part of an ordinary unit test run ... with the help of Selenium Remote Control. 
+Once scripts are exported to conventional source code, we can run them as part of an ordinary unit test suite ... with the help of Selenium Remote Control. 
 
 
 How can we use Selenium Remote Control to run unit tests?
@@ -182,7 +188,7 @@ With the help of Remote Control, exported Selenium tests can be run and maintain
 
 [TBD]
 
-As an added bonus, since Selenium is designed to automatically open browser pages, it can also run our YUI Tests. The net result is that we can run all of our tests using any tool that can run conventional unit tests. One such tool is the Hudson continous integration server. 
+As an added bonus, since Selenium is designed to automatically open browser pages, it can also run our YUI Tests. The net result is that we can run all of our tests using any tool that can run conventional unit tests. One such tool is the Hudson continuous integration server. 
 
 While mature, Selenium suffers from a perpetual beta state. After years of betas, the Selenium team is hoping to have a 1.0 "production" release in 2009. But, don't let the beta tag fool you. Many of us have been using Selenium for years. For more about Selenium, cruise the documentation at their new Selenium HQ website (http://seleniumhq.org/). 
 
@@ -194,7 +200,7 @@ How can we use Hudson to automate our Ajax tests?
 
 Is that all there is?
 
-Using tools like YUI Test, Selenium, and Hudson, we can test Ajax applications as easily as conventional web applications. Aside from the products discussed here, there are alternatives in each category, like JS Unit, Webtest Canoo, and Cruise Control. The sidebar "Testing Tool Review" outlines some pros and cons of each product. 
+Using tools like YUI Test, Selenium, and Hudson, we can test Ajax applications as easily as conventional web applications. Aside from the products discussed here, there are alternatives in each category, like JS Unit, Canoo WebTest, and Cruise Control. The sidebar "Testing Tool Review" outlines some pros and cons of each product. 
 
 Sidebar: "Testing Tool Review"
 [TBD]
