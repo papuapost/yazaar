@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>"Hello World" YUI Setup Test</title> 
+    <!-- (1) Load library scripts, courtesy of Yahoo! YUI. -->
+    <script src="http://yui.yahooapis.com/2.6.0/build/yahoo-dom-event/yahoo-dom-event.js" type="text/javascript"></script>
+    <script src="http://yui.yahooapis.com/2.6.0/build/element/element-beta-min.js" type="text/javascript"></script>
+    <!-- New scripts for Ajax connectivity. -->
+    <script src="http://yui.yahooapis.com/2.6.0/build/yahoo/yahoo-min.js" type="text/javascript"></script>
+    <script src="http://yui.yahooapis.com/2.6.0/build/connection/connection-min.js" type="text/javascript"></script>
+    <!-- New stylesheets and scripts for YUI testing. -->
+    <!-- http://developer.yahoo.com/yui/articles/hosting/#configure (-min, Combine, Rollup, Fonts, YUI Test) -->
+    <style type="text/css"> 
+        <!-- turn off margin and padding on body as a foundation for YUI CSS treatments. -->
+        body{margin:0;padding:0;}
+    </style>
+    <link href="http://yui.yahooapis.com/2.6.0/build/fonts/fonts-min.css" rel="stylesheet" type="text/css" />
+    <link href="http://yui.yahooapis.com/2.6.0/build/logger/assets/skins/sam/logger.css" rel="stylesheet" type="text/css" />
+    <link href="http://yui.yahooapis.com/2.6.0/build/yuitest/assets/skins/sam/yuitest.css" rel="stylesheet" type="text/css" />
+    <script src="http://yui.yahooapis.com/2.6.0/build/logger/logger-min.js" type="text/javascript"></script>
+    <script src="http://yui.yahooapis.com/2.6.0/build/yuitest/yuitest-min.js" type="text/javascript" ></script>
+    <!-- (2) Custom script to initialize the page. -->
+    <script src="ajax-works-2.js" type="text/javascript"></script>
+</head> 
+<body class="yui-skin-sam"> 
+
+  <!-- (3) Needed for initialization. -->
+  <input id="hello-button" type="button" value="Say Hello World via Ajax!" />
+  <br /><br />
+  <div id="hello-div"></div>
+  
+  <!-- (4) Test Case. -->
+  <hr />
+  <div id="ajaxWorksLogger"></div> 
+  <script type="text/javascript"> 
+    YAHOO.util.Event.onDOMReady(function (){
+       var elButton = new YAHOO.util.Element("hello-button");
+       var elDiv = YAHOO.util.Dom.get("hello-div");
+       ajaxWorksInit(elButton, elDiv);
+       YAHOO.namespace("my");
+       YAHOO.my.AjaxWorksTestCase = new YAHOO.tool.TestCase({   
+           testMessage: function () {
+               YAHOO.util.UserAction.click("hello-button");
+               this.wait(function(){
+                   var Assert = YAHOO.util.Assert;
+                   Assert.areEqual("Say Hello World via Ajax!", elDiv.innerHTML);            
+                }, 1000);
+            }
+        });
+        var logger = new YAHOO.tool.TestLogger("ajaxWorksLogger");
+        YAHOO.my.AjaxWorksSuite = new YAHOO.tool.TestSuite("Ajax Works Suite");
+        YAHOO.my.AjaxWorksSuite.add(YAHOO.my.AjaxWorksTestCase);
+        YAHOO.tool.TestRunner.add(YAHOO.my.AjaxWorksSuite);
+        YAHOO.tool.TestRunner.run();            
+    });
+</script> 
+</body> 
+</html> 
