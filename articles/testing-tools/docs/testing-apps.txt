@@ -33,30 +33,35 @@ When the response does return, the script engine invokes the callback method. Th
 Figure: "Ajax in Action" 
 [01-ajax-in-action.png]
 
-While this article isn't intended as an Ajax tutorial, a simple Hello World illustration will make it easier to understand testing JavaScript applications. The HTML code in the example "Simple Javascript Application" presents a message when the button is clicked and pops up an Alert dialog. 
-
-Example: "Simple JavaScript Application" 
-[02-hello-world.html]
-
-To simplify the code, the script uses the popular Yahoo! User Interface (YUI) library. Given an Internet connection, you can copy the example to a HTML file and open it with a browser. The figure "Hello World Storyboard" shows the example in action. 
+While this article isn't intended as an Ajax tutorial, a simple Hello World illustration will make it easier to understand testing JavaScript applications. The figure "Hello World Storyboard" shows the example in action. 
 
 Figure: "Hello World Storyboard" 
-[03a-hello-world.png]
+[02a-hello-world.png]
 [03b-hello-world-alert.png]
 
-While we could use Hello World to demonstrate testing a JavaScript application, it's not a true Ajax application, since we do not use a XHR to interact with the server. To introduce a XHR, we can add a server-side file to provide the "Hello World" text, and a callback function to receive the response and present the text. The HTML code in the example "Simple Ajax application" presents a message when the callback succeeds.
+The example presents a message when the button is clicked and pops up an Alert dialog. 
 
-Example: "Simple Ajax Application" 
-[04-ajax-works.html]
-[04b-ajax-works-result.txt]
+To simplify the code, the script for the example, as shown in the figure "Simple Javascript Application", uses the popular Yahoo! User Interface (YUI) library. Given an Internet connection, you can copy the example to a HTML file and open it with a browser. 
 
-In the update example, we read the contents of the server-side "ajax-works-result.txt", and present it on the web page. Unlike the JavaScript example, the Ajax example requires the use of a web server to read the file for us. (For this example, any web server would do.) The figure "Ajax Works Storyboard" shows what happens when the example succeeds, and what happens when the file is missing and Ajax Works fails. 
+Example: "Simple JavaScript Application" 
+[03-hello-world.html]
+
+While we could use Hello World to demonstrate testing a JavaScript application, it's not a true Ajax application, since we do not use a XHR to interact with the server. To introduce a XHR, we can add a server-side file to provide the "Hello World" text, and a callback function to receive the response and present the text. 
+
+In our update example, we read the contents of the server-side "ajax-works-result.txt", and present it on the web page. The figure "Ajax Works Storyboard" shows what happens when the example succeeds, and what happens when the file is missing and Ajax Works fails. 
 
 Figure: "Ajax Works Storyboard" 
-[05a-ajax-works.png]
-[05b-ajax-works-success.png]
-[05c-ajax-works-failure.png]
+[04a-ajax-works.png]
+[04b-ajax-works-success.png]
+[04c-ajax-works-failure.png]
 
+The HTML code in the example "Simple Ajax application" presents a message when the callback succeeds.
+
+Example: "Simple Ajax Application" 
+[05a-ajax-works.html]
+[05b-ajax-works-resulst.txt]
+
+Unlike the JavaScript example, the Ajax example requires the use of a web server to read the file for us. (For this example, any web server would do.) 
 
 How do we test it?
 
@@ -66,7 +71,7 @@ Figure: "Open Source Testing Tools"
 [06a-opensourcetesting-javascript.png]
 [06b-opensourcetesting-ajax.png]
 
-In this article, we'll look at two tools for testing Ajax at different levels, and a third tool for continuous integration. 
+In this article, we'll look at two tools for testing Ajax at different levels and a third tool for continuous integration. 
 
  * YUI Test (http://developer.yahoo.com/yui/) is an unit testing framework for adding code-level tests to browser-based JavaScript solutions. If you're familiar with other unit testing frameworks, YUI Test derives characteristics from NUnit (http://www.nunit.org/) and JUnit (http://www.junit.org/).
 
@@ -184,9 +189,41 @@ Once scripts are exported to conventional source code, we can run them as part o
 
 How can we use Selenium Remote Control to run unit tests?
 
-With the help of Remote Control, exported Selenium tests can be run and maintained along with the rest of the applications unit tests. 
+With the help of Remote Control, exported Selenium tests can be run and maintained along with the rest of the applications unit tests. The figure "Testing Ajax Works" shows the C# version of a simple Selenium test set. 
 
-[TBD]
+Figure: "Testing Ajax Works"
+[19-Testing-Ajax-Works.cs]
+
+Selenium Remote Control is a free, open source download from OpenQA <>. There's not a formal installation utility, you can just unzip the files to any convenient directory. 
+
+We created the C# source code by 
+
+ 1 opening our Ajax test pages with the Selenium IDE recorder running. 
+ 2 exporting the test to C#. 
+ 3 coping the code into a Visual Studio class file and tweaking the namespace. 
+ 4 adding a refrence to the Selenium DDL in the Remote Control download. 
+ 
+(For another platform, such as Java, the process is similar, and just as easy.)
+
+At this point, the source compiles, but it won't run as a unit test, because the code calls the Selenum Remote Control server. 
+
+Selenium RC is not currently available for .NET, but it is available for Java. Since test reaches out through HTTP, the platform doesn't really matter. We can run the proxy server under Java, and our class can use the proxy to run our tests under C#. 
+
+Likewise, it doesn't matter what type of web server hosts the underlying Ajax pages. It could be Microsoft IIS, or Apache Tomcat, or Apache HTTPD. Sincd the tranaction goes through HTTP, any standards-compliant web server will do. 
+
+The figure "Launching Selenium Server" shows the simple batch file we used to launch the server under Windows. For your environment, the drive and path names may vary. 
+
+Figure: "Launching Selenium Server"
+[20-selenium-server.bat]
+
+To run the Remote Control Selenium server, we setup a simple batch file, shown as figure "Selenium Server". 
+
+With both a web server and the Selenium server running, we can launch the process using the NUnit test runner. When the test runner launches, it automatically brings up FireFox to run the tests. FireFox, in turn, opens two windows, one for its own test runner, and another for the code under test. 
+
+The figure "Selenium Remote Control in Action" is a screen shot of all all three windows running together. 
+
+Figure: "Selenium Remote Control in Action"
+[21-selenium-remote-control.png]
 
 As an added bonus, since Selenium is designed to automatically open browser pages, it can also run our YUI Tests. The net result is that we can run all of our tests using any tool that can run conventional unit tests. One such tool is the Hudson continuous integration server. 
 
@@ -195,15 +232,59 @@ While mature, Selenium suffers from a perpetual beta state. After years of betas
 
 How can we use Hudson to automate our Ajax tests?
 
-[TBD]
+While reducing the Selenium test to a unit test seems is a step toward full automation, we still have to press the button. Ideally, we'd like the test to be run automatically, without human intervention, each time a change is made to the project's source code. 
+
+One feature provided by a continuous integration server is to automatically run our unit tests whenever a change is checked into a project's repository. There are many popular integration servers available, such as CruiseControl, Bamboo, or Continuum. One of the easiest to setup is a product named "Hudson". 
+
+Hudson ships as a standalone Java web application, ready to auto-deploy to most Java containers. If you are already running a Java container on your server, this can be the easiest way to deploy Hudson. 
+
+If you are not running a Java web server, Hudson also ships with an embedded web server so that you run it from the Java command line. After downloading the the hudson.war from <http://hudson.gotdns.com/latest/hudson.war>, with Java 1.5 or later installed, you can immediately launch the server by running 
+
+> java -jar hudson.war
+
+Once Hudson bootstraps itself, the server's dashboard can be accessed on port 8080, as shown in the figure "Welcome to Hudson".  
+
+Figure: "Welcome to Hudgson"
+[21-welcome-to-hudson.png]
+
+If you are already running a service on port 8080, or haven't set JAVA_HOME in your environment, you can specify those settings at the end of the command line. (Note the double hyphens.)
+
+ --httpPort=8080
+ --javaHome=<no default>
+ --webroot=~/.hudson/war
+
+By default, Hudson will use ${user.home$]/.hudson to store its configuration files, which can be overridden by setting HUDSON_HOME as an enviroment variable, system property, or JNDI variable. 
+
+Hudson is easy to reconfigure, so don't worry about getting the startup settings right the first time!
+
+
+How do we configure Hudson to run our tests?
+
+Once the Hudson dashboard is up and running, setting up a job is mainly a matter of point and click. The figure "Tasking Hudson" shows the configuration user interface.
+
+Figure: "Tasking Hudson"
+[21-tasking-hudson.png]
+
+In creating a job, only one setting is required, an external build script that builds the code. (Of course, even this script could be empty, if it were an pure script project with nothing to build.) Other optional tasks that Hudson can include in a job are:
+
+ * Access a SCM, such as CVS, Subversion, or Perforce. 
+ * Configure a trigger to fire the job. 
+ * Collect post-build information to archive binaries or record results. 
+ * Notify other people or systems with the job result. 
+ 
+A typical Hudson job will monitor the source code repository (SCM) for a change. When the code changes, Hudson will trigger a check-out, build the latest and greatest and run any automatic tests, and then notify oter actors of the outcome. 
+
+The figure Run, Hudson, Run shows the continuous integration system running our NUnit tests, automatically, in response to a checking in an update to Subversion.
+ 
+Figure: "Run, Hudson, Run"
+[21-tasking-hudson.png]
+
+Although it's a Java server, Hudson can be used to build software from other platforms, including Ruby and .NET. 
 
 
 Is that all there is?
 
-Using tools like YUI Test, Selenium, and Hudson, we can test Ajax applications as easily as conventional web applications. Aside from the products discussed here, there are alternatives in each category, like JS Unit, Canoo WebTest, and Cruise Control. The sidebar "Testing Tool Review" outlines some pros and cons of each product. 
-
-Sidebar: "Testing Tool Review"
-[TBD]
+Using tools like YUI, Selenium, and Hudson, we can test Ajax applications as easily as conventional web applications. Aside from the products discussed here, there are alternatives in each category, like JS Unit, Canoo WebTest, and Cruise Control. 
 
 The important thing is to try one or more of these tools with your next project, and follow Kent Beck's sage advice: "Test until fear turns to boredom!"
 
