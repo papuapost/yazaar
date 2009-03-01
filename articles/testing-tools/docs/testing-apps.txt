@@ -37,7 +37,7 @@ While this article isn't intended as an Ajax tutorial, a simple Hello World illu
 
 Figure: "Hello World Storyboard" 
 [02a-hello-world.png]
-[03b-hello-world-alert.png]
+[02b-hello-world-alert.png]
 
 The example presents a message when the button is clicked and pops up an Alert dialog. 
 
@@ -62,6 +62,7 @@ Example: "Simple Ajax Application"
 [05b-ajax-works-resulst.txt]
 
 Unlike the JavaScript example, the Ajax example requires the use of a web server to read the file for us. (For this example, any web server would do.) 
+
 
 How do we test it?
 
@@ -230,7 +231,7 @@ While mature, Selenium suffers from a perpetual beta state. After years of betas
 
 How can we use Hudson to automate our Ajax tests?
 
-While reducing the Selenium test to a unit test seems is a step toward full automation, we still have to press the button. Ideally, we'd like the test to be run automatically, without human intervention, each time a change is made to the project's source code. 
+While reducing the Selenium test to a unit test seems automatic, we still have to press the button. Ideally, we'd like the test to be run automatically, without human intervention, each time a change is made to the project's source code. 
 
 One feature provided by a continuous integration server is to automatically run the unit test suite whenever a change is checked into a project's repository. There are many popular integration servers available, such as CruiseControl, Bamboo, or Continuum. One of the easiest to setup is a product named "Hudson". 
 
@@ -238,7 +239,7 @@ Hudson ships as a standalone Java web application, ready to auto-deploy to most 
 
 If you are not running a Java web server, Hudson also ships with an embedded container so that you run it from the Java command line. After downloading the the hudson.war from <http://hudson.gotdns.com/latest/hudson.war>, with Java 1.5 or later installed, you can immediately launch the server by running 
 
-> java -jar hudson.war
+ > java -jar hudson.war
 
 Once Hudson bootstraps itself, the server's dashboard can be accessed on port 8080, as shown in the figure "Welcome to Hudson".  
 
@@ -263,7 +264,7 @@ Once the Hudson dashboard is up and running, setting up a job is mainly a matter
 Figure: "Tasking Hudson"
 [23-tasking-hudson.png]
 
-In creating a job, only one setting is required, one or more build tasks to build the code, run the tests, or perform other related work. Other optional tasks that Hudson can include in a job are:
+In creating a job, the only required task is one or more build tasks to build the code, run the tests, or perform other related work. Other optional tasks that Hudson can include in a job are:
 
  * Utilize a SCM, such as CVS, SourceSafe, or Subversion, among others. 
  * Select a trigger to fire the job. 
@@ -277,7 +278,7 @@ The figure "Running Hudson" shows the continuous integration system running our 
 Figure: "Running Hudson"
 [24-running-hudson.png]
 
-Although it's a Java server, Hudson can be used to build software from other platforms, including Ruby and .NET. There's even a plugin for Microsoft's Team Foundation Server!
+Although it's a Java server, Hudson can build software from other platforms too, including Ruby and .NET. There's even a plugin for Microsoft's Team Foundation Server!
 
 
 Is that all there is?
