@@ -207,7 +207,7 @@ We created the C# source code by
 
 At this point, the source compiles, but it won't run as a unit test, because the code calls the Selenum Remote Control server. 
 
-Selenium RC is not currently available for .NET, but it is available for Java. Since test reaches out through HTTP, the platform doesn't really matter. We can run the proxy server under Java, and our class can use the proxy to run our tests under C#. 
+Selenium RC is not currently available for .NET, but it is available for Java. Since our test reaches out through HTTP, the platform doesn't really matter. We can run the proxy server under Java, and our class can use the proxy to run our tests under C#. 
 
 Likewise, it doesn't matter what type of web server hosts the underlying Ajax pages. It could be Microsoft IIS, or Apache Tomcat, or Apache HTTPD. Sincd the tranaction goes through HTTP, any standards-compliant web server will do. 
 
@@ -215,8 +215,6 @@ The figure "Launching Selenium Server" shows the simple batch file we used to la
 
 Figure: "Launching Selenium Server"
 [20-selenium-server.bat]
-
-To run the Remote Control Selenium server, we setup a simple batch file, shown as figure "Selenium Server". 
 
 With both a web server and the Selenium server running, we can launch the process using the NUnit test runner. When the test runner launches, it automatically brings up FireFox to run the tests. FireFox, in turn, opens two windows, one for its own test runner, and another for the code under test. 
 
@@ -234,57 +232,57 @@ How can we use Hudson to automate our Ajax tests?
 
 While reducing the Selenium test to a unit test seems is a step toward full automation, we still have to press the button. Ideally, we'd like the test to be run automatically, without human intervention, each time a change is made to the project's source code. 
 
-One feature provided by a continuous integration server is to automatically run our unit tests whenever a change is checked into a project's repository. There are many popular integration servers available, such as CruiseControl, Bamboo, or Continuum. One of the easiest to setup is a product named "Hudson". 
+One feature provided by a continuous integration server is to automatically run the unit test suite whenever a change is checked into a project's repository. There are many popular integration servers available, such as CruiseControl, Bamboo, or Continuum. One of the easiest to setup is a product named "Hudson". 
 
 Hudson ships as a standalone Java web application, ready to auto-deploy to most Java containers. If you are already running a Java container on your server, this can be the easiest way to deploy Hudson. 
 
-If you are not running a Java web server, Hudson also ships with an embedded web server so that you run it from the Java command line. After downloading the the hudson.war from <http://hudson.gotdns.com/latest/hudson.war>, with Java 1.5 or later installed, you can immediately launch the server by running 
+If you are not running a Java web server, Hudson also ships with an embedded container so that you run it from the Java command line. After downloading the the hudson.war from <http://hudson.gotdns.com/latest/hudson.war>, with Java 1.5 or later installed, you can immediately launch the server by running 
 
 > java -jar hudson.war
 
 Once Hudson bootstraps itself, the server's dashboard can be accessed on port 8080, as shown in the figure "Welcome to Hudson".  
 
-Figure: "Welcome to Hudgson"
-[21-welcome-to-hudson.png]
+Figure: "Welcome to Hudson"
+[22-welcome-to-hudson.png]
 
-If you are already running a service on port 8080, or haven't set JAVA_HOME in your environment, you can specify those settings at the end of the command line. (Note the double hyphens.)
+If you are already running a service on port 8080, or haven't set JAVA_HOME in your environment, or prefer a different web root, you can specify those settings at the end of the command line. (Note the double hyphens.)
 
  --httpPort=8080
  --javaHome=<no default>
  --webroot=~/.hudson/war
 
-By default, Hudson will use ${user.home$]/.hudson to store its configuration files, which can be overridden by setting HUDSON_HOME as an enviroment variable, system property, or JNDI variable. 
+By default, Hudson will use a ".hudson" folder in the user's home directory to store its configuration files, which can be overridden by setting HUDSON_HOME as an enviroment variable, system property, or JNDI variable. 
 
 Hudson is easy to reconfigure, so don't worry about getting the startup settings right the first time!
 
 
 How do we configure Hudson to run our tests?
 
-Once the Hudson dashboard is up and running, setting up a job is mainly a matter of point and click. The figure "Tasking Hudson" shows the configuration user interface.
+Once the Hudson dashboard is up and running, setting up a job is mainly a matter of point and click. The figure "Tasking Hudson" shows the configuration form.
 
 Figure: "Tasking Hudson"
-[21-tasking-hudson.png]
+[23-tasking-hudson.png]
 
-In creating a job, only one setting is required, an external build script that builds the code. (Of course, even this script could be empty, if it were an pure script project with nothing to build.) Other optional tasks that Hudson can include in a job are:
+In creating a job, only one setting is required, one or more build tasks to build the code, run the tests, or perform other related work. Other optional tasks that Hudson can include in a job are:
 
- * Access a SCM, such as CVS, Subversion, or Perforce. 
- * Configure a trigger to fire the job. 
+ * Utilize a SCM, such as CVS, SourceSafe, or Subversion, among others. 
+ * Select a trigger to fire the job. 
  * Collect post-build information to archive binaries or record results. 
  * Notify other people or systems with the job result. 
  
-A typical Hudson job will monitor the source code repository (SCM) for a change. When the code changes, Hudson will trigger a check-out, build the latest and greatest and run any automatic tests, and then notify oter actors of the outcome. 
+A typical Hudson job will monitor the source code repository (SCM) for a change. When the code changes, Hudson will trigger a check-out, build the latest and greatest and run any automatic tests, and then notify other actors of the outcome. 
 
-The figure Run, Hudson, Run shows the continuous integration system running our NUnit tests, automatically, in response to a checking in an update to Subversion.
+The figure "Running Hudson" shows the continuous integration system running our NUnit tests, automatically, in response to checking in an update to Subversion.
  
-Figure: "Run, Hudson, Run"
-[21-tasking-hudson.png]
+Figure: "Running Hudson"
+[24-running-hudson.png]
 
-Although it's a Java server, Hudson can be used to build software from other platforms, including Ruby and .NET. 
+Although it's a Java server, Hudson can be used to build software from other platforms, including Ruby and .NET. There's even a plugin for Microsoft's Team Foundation Server!
 
 
 Is that all there is?
 
-Using tools like YUI, Selenium, and Hudson, we can test Ajax applications as easily as conventional web applications. Aside from the products discussed here, there are alternatives in each category, like JS Unit, Canoo WebTest, and Cruise Control. 
+Using tools like YUI, Selenium, and Hudson, we can test Ajax applications as easily as conventional web applications. Aside from the products discussed here, there are alternatives in each category, like JS Unit, Canoo WebTest, and CruiseControl. 
 
 The important thing is to try one or more of these tools with your next project, and follow Kent Beck's sage advice: "Test until fear turns to boredom!"
 
